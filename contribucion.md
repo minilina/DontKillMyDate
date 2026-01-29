@@ -1,4 +1,4 @@
-# 📄 Informe de Contribución: [Nombre del Videojuego]
+# 📄 Informe de Contribución: Don't Kill My Date
 
 **Fecha del informe:** 16 de Enero, 2026
 **Estado del proyecto:** [Ej: Beta / Finalizado / Sprint 3]
@@ -7,7 +7,7 @@
 
 ## 👥 Desglose por Miembros
 
-### 👤 @dev_master_99
+### 👤 @minilina
 * **Rol:** Programador Principal / Gameplay
 * **Tareas Realizadas:**
     * Implementación del sistema de movimiento del jugador y físicas de salto.
@@ -20,7 +20,7 @@
 
 ---
 
-### 👤 @pixel_art_luna
+### 👤 @meriwen
 * **Rol:** Artista 2D / UI
 * **Tareas Realizadas:**
     * Diseño y animación del personaje principal (Idle, Run, Jump, Attack).
