@@ -82,7 +82,7 @@
 
 | Usuario (GitHub)    | Rol             | Puntuación | Puntuación como número |
 |:--------------------|:----------------|:----------:|:----------------------:|
-| **@dev_master_99**  | Programación    |   ⭐⭐⭐⭐⭐ |           5            |
-| **@pixel_art_luna** | Arte / UI       |   ⭐⭐⭐⭐⭐ |           5            |
+| **@minilina**  | Programación    |   ⭐⭐⭐⭐⭐ |           5            |
+| **@meriwen** | Arte / UI       |   ⭐⭐⭐⭐⭐ |           5            |
 | **@audio_dave**     | Audio / Diseño  |   ⭐⭐⭐⭐☆ |           4            |
 | **@lazy_coder_x**   | Programación UI |   ⭐⭐☆☆☆  |           2            |
