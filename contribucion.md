@@ -7,7 +7,7 @@
 
 ## 👥 Desglose por Miembros
 
-### 👤 @minilina
+### 👤 @minilina (Alba Gómez)
 * **Rol:** Programador Principal / Gameplay
 * **Tareas Realizadas:**
     * Implementación del sistema de movimiento del jugador y físicas de salto.
@@ -20,7 +20,7 @@
 
 ---
 
-### 👤 @meriwen
+### 👤 @meriwen (María Bravo)
 * **Rol:** Artista 2D / UI
 * **Tareas Realizadas:**
     * Diseño y animación del personaje principal (Idle, Run, Jump, Attack).
@@ -33,7 +33,7 @@
 
 ---
 
-### 👤 @audio_dave
+### 👤 @audio_dave (Diego Barba)
 * **Rol:** Diseño de Sonido / Level Design
 * **Tareas Realizadas:**
     * Composición del tema principal y música de batalla.
@@ -45,7 +45,29 @@
 
 ---
 
-### 👤 @lazy_coder_x
+### 👤 @lazy_coder_x (Laura Valles)
+* **Rol:** Programador de UI / Soporte
+* **Tareas Realizadas:**
+    * Programación de la funcionalidad de los botones del Menú Principal.
+    * Ajustes menores en los créditos del juego.
+* **Valoración General:**
+    Su contribución fue baja en comparación con el resto del equipo. Faltó a varias reuniones de *daily scrum* y la funcionalidad del menú tuvo que ser refactorizada por @dev_master_99 debido a errores de lógica.
+* **Puntuación:** ⭐⭐☆☆☆ (2/5)
+
+---
+
+### 👤 @lazy_coder_x (Lucas Suárez)
+* **Rol:** Programador de UI / Soporte
+* **Tareas Realizadas:**
+    * Programación de la funcionalidad de los botones del Menú Principal.
+    * Ajustes menores en los créditos del juego.
+* **Valoración General:**
+    Su contribución fue baja en comparación con el resto del equipo. Faltó a varias reuniones de *daily scrum* y la funcionalidad del menú tuvo que ser refactorizada por @dev_master_99 debido a errores de lógica.
+* **Puntuación:** ⭐⭐☆☆☆ (2/5)
+
+---
+
+### 👤 @lazy_coder_x (Sergio Casanova)
 * **Rol:** Programador de UI / Soporte
 * **Tareas Realizadas:**
     * Programación de la funcionalidad de los botones del Menú Principal.
