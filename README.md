@@ -1,2 +1,2 @@
 # Grupo-DVI
-Videojuego hecho en la asignatura de Desarrollo de Viedeojuegos en Tecnologías Web del UCM
+Videojuego hecho para la asignatura de Desarrollo de Videojuegos en Tecnologías Web.
