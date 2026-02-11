@@ -50,8 +50,9 @@ La cámara es fija y muestra una vista en primera persona
 
 ## 5.	Mundo del juego
 ### 5.1.	Personajes
-#### 5.1.1.	Hechicero
+#### 5.1.1.	Hechicer@
 #### 5.1.2.	Mamá
+#### 5.1.3.	David el Gnomo
 
 ### 5.2.	Objetos
 ## 6.	Estética y contenido
