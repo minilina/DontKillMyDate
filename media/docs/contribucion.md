@@ -1,14 +1,14 @@
-#DON'T KILL MY DATE!
+# DON'T KILL MY DATE!
 
-#BACKGROUND
+# BACKGROUND
 Tras la Gran Guerra Mágica, el mundo de "HADAMAM" quedó dividido en 5 reinos segregados por razas. En esta nueva realidad llena de crueldad y odio, dos inocentes almas cometieron el error de enamorarse. Pese a la negativa de los 5 Líderes, y de su propio padre, ALBERTO no se rindió y luchó por su amor con una simple humana (MARIBEL). Juntos, escaparon a los suburbios humanos, marginados de manea unánime por el resto de las razas al ser considerados inútiles y absurdos por poseer ningún tipo de poder ni habilidad.
 
 Con el tiempo, el padre de ALBERTO cae enfermo, obligando a este, su único hijo y heredero, y a su esposa embarazada a volver al reino. Con el nacimiento de su hija y su nuevo ascenso al trono, se propuso que las cosas a partir de ahora cambiarían, que se acabaría la guerra entre los reinos y con los humanos y que poco a poco todo volvería a la paz que un día hubo. 
 
-#BACKGROUND 2.0
+# BACKGROUND 2.0
 Años después de ascencer al trono, MARIBEL decide abrir un pequeño consultorio para ayudar a las distintas razas a encontrar el amor. Tú, como su hija, empiezas a involucrarte poco a poco en el trabajo de tu madre y aprendes de ella sus artes del amor
 
-#ACTUALIDAD
+# ACTUALIDAD
 Nuestra madre, cansada ya del negocio, está a punto de retirarse así que tú, inspirada por el amor incondicional de tus padres y por las cosas buenas que ha logrado tu madre, decides seguir con el negocio familiar. En este momento, tu madre te pregunta dónde quieres instalar tu consultorio. El reino que elijas será el reino en el que hayas nacido.
 
 (Tutorial) El tutorial es un día donde vas a ayudar a tu madre con el consultorio. Ella te va contando el orden y la razón de las cosas (ingredientes, razas básicas, etc etc). Al final del tutorial el jugador elige entre 3 diseños de personaje que determinarán su compatibilidad para toda la partida (esto podrá verse si se puede cambiar o no)
@@ -17,7 +17,7 @@ Una vez elegido tu personaje (raza), abrirás tu propio consultorio en el reino 
 
 
 
-LOS 5 REINOS
+# LOS 5 REINOS
 
 HADAS (aire)
 NINFAS (agua)
