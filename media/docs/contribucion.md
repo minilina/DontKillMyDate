@@ -1,66 +1,28 @@
-# 📄 Informe de Contribución: [Nombre del Videojuego]
+#DON'T KILL MY DATE!
 
-**Fecha del informe:** 16 de Enero, 2026
-**Estado del proyecto:** [Ej: Beta / Finalizado / Sprint 3]
+#BACKGROUND
+Tras la Gran Guerra Mágica, el mundo de "HADAMAM" quedó dividido en 5 reinos segregados por razas. En esta nueva realidad llena de crueldad y odio, dos inocentes almas cometieron el error de enamorarse. Pese a la negativa de los 5 Líderes, y de su propio padre, ALBERTO no se rindió y luchó por su amor con una simple humana (MARIBEL). Juntos, escaparon a los suburbios humanos, marginados de manea unánime por el resto de las razas al ser considerados inútiles y absurdos por poseer ningún tipo de poder ni habilidad.
 
----
+Con el tiempo, el padre de ALBERTO cae enfermo, obligando a este, su único hijo y heredero, y a su esposa embarazada a volver al reino. Con el nacimiento de su hija y su nuevo ascenso al trono, se propuso que las cosas a partir de ahora cambiarían, que se acabaría la guerra entre los reinos y con los humanos y que poco a poco todo volvería a la paz que un día hubo. 
 
-## 👥 Desglose por Miembros
+#BACKGROUND 2.0
+Años después de ascencer al trono, MARIBEL decide abrir un pequeño consultorio para ayudar a las distintas razas a encontrar el amor. Tú, como su hija, empiezas a involucrarte poco a poco en el trabajo de tu madre y aprendes de ella sus artes del amor
 
-### 👤 @dev_master_99
-* **Rol:** Programador Principal / Gameplay
-* **Tareas Realizadas:**
-    * Implementación del sistema de movimiento del jugador y físicas de salto.
-    * Creación del script `GameManager` para el control de estados (Menú, Juego, Game Over).
-    * Integración de colisiones y *triggers* para los enemigos básicos.
-    * Corrección de bugs críticos en el sistema de guardado.
-* **Valoración General:**
-    Su trabajo ha sido fundamental para el "core loop" del juego. El código es limpio y modular. Asumió el liderazgo técnico resolviendo los problemas de fusión en Git.
-* **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
+#ACTUALIDAD
+Nuestra madre, cansada ya del negocio, está a punto de retirarse así que tú, inspirada por el amor incondicional de tus padres y por las cosas buenas que ha logrado tu madre, decides seguir con el negocio familiar. En este momento, tu madre te pregunta dónde quieres instalar tu consultorio. El reino que elijas será el reino en el que hayas nacido.
 
----
+(Tutorial) El tutorial es un día donde vas a ayudar a tu madre con el consultorio. Ella te va contando el orden y la razón de las cosas (ingredientes, razas básicas, etc etc). Al final del tutorial el jugador elige entre 3 diseños de personaje que determinarán su compatibilidad para toda la partida (esto podrá verse si se puede cambiar o no)
 
-### 👤 @pixel_art_luna
-* **Rol:** Artista 2D / UI
-* **Tareas Realizadas:**
-    * Diseño y animación del personaje principal (Idle, Run, Jump, Attack).
-    * Creación del *tileset* para el nivel 1 (bosque) y nivel 2 (cueva).
-    * Diseño de la interfaz de usuario (HUD): barra de vida y contador de monedas.
-    * Diseño del logotipo del juego y pantalla de título.
-* **Valoración General:**
-    La calidad visual es excelente y coherente. Entregó todos los *assets* a tiempo y correctamente exportados para Unity/Godot. Mostró gran iniciativa proponiendo mejoras visuales en la UI.
-* **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
+Una vez elegido tu personaje (raza), abrirás tu propio consultorio en el reino de tu raza y empezarás a recibir clientes de tu raza. A medida que pase el tiempo ganarás reputación y te irán visitando habitantes de otros reinos (de más compatibles a menos compatibles)
 
----
 
-### 👤 @audio_dave
-* **Rol:** Diseño de Sonido / Level Design
-* **Tareas Realizadas:**
-    * Composición del tema principal y música de batalla.
-    * Creación de efectos de sonido (SFX) para salto, golpe y recolección de items.
-    * Diseño del layout del Nivel 1.
-* **Valoración General:**
-    El audio encaja muy bien con la estética. Sin embargo, hubo un retraso en la entrega del diseño del Nivel 1, lo que obligó a los programadores a usar prototipos grises (placeholders) durante más tiempo del previsto.
-* **Puntuación:** ⭐⭐⭐⭐☆ (4/5)
 
----
+LOS 5 REINOS
 
-### 👤 @lazy_coder_x
-* **Rol:** Programador de UI / Soporte
-* **Tareas Realizadas:**
-    * Programación de la funcionalidad de los botones del Menú Principal.
-    * Ajustes menores en los créditos del juego.
-* **Valoración General:**
-    Su contribución fue baja en comparación con el resto del equipo. Faltó a varias reuniones de *daily scrum* y la funcionalidad del menú tuvo que ser refactorizada por @dev_master_99 debido a errores de lógica.
-* **Puntuación:** ⭐⭐☆☆☆ (2/5)
+HADAS (aire)
+NINFAS (agua)
+KITSUNE (fuego)
+ELFOS (planta)
+GNOMOS (tierra)
 
----
-
-## 📊 Resumen de Puntuaciones
-
-| Usuario (GitHub)    | Rol             | Puntuación | Puntuación como número |
-|:--------------------|:----------------|:----------:|:----------------------:|
-| **@dev_master_99**  | Programación    |   ⭐⭐⭐⭐⭐ |           5            |
-| **@pixel_art_luna** | Arte / UI       |   ⭐⭐⭐⭐⭐ |           5            |
-| **@audio_dave**     | Audio / Diseño  |   ⭐⭐⭐⭐☆ |           4            |
-| **@lazy_coder_x**   | Programación UI |   ⭐⭐☆☆☆  |           2            |
+COMPATIBILIDADES
