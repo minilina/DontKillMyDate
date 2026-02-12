@@ -84,5 +84,7 @@
 |:--------------------|:----------------|:----------:|:----------------------:|
 | **@minilina**  | Programación    |   ⭐⭐⭐⭐⭐ |           5            |
 | **@meriwen** | Arte / UI       |   ⭐⭐⭐⭐⭐ |           5            |
-| **@audio_dave**     | Audio / Diseño  |   ⭐⭐⭐⭐☆ |           4            |
-| **@lazy_coder_x**   | Programación UI |   ⭐⭐☆☆☆  |           2            |
+| **@didimax89** | Arte / UI       |   ⭐⭐⭐⭐⭐ |           5            |
+| **@laurimba**     | Audio / Diseño  |   ⭐⭐⭐⭐☆ |           4            |
+| **@**     | Audio / Diseño  |   ⭐⭐⭐⭐☆ |           4            |
+| **@sergiicl**   | Programación UI |   ⭐⭐☆☆☆  |           2            |
