@@ -33,7 +33,7 @@
 
 ---
 
-### 👤 @audio_dave (Diego Barba)
+### 👤 @didimax89 (Diego Barba)
 * **Rol:** Diseño de Sonido / Level Design
 * **Tareas Realizadas:**
     * Composición del tema principal y música de batalla.
@@ -45,7 +45,7 @@
 
 ---
 
-### 👤 @lazy_coder_x (Laura Valles)
+### 👤 @laurimba (Laura Valles)
 * **Rol:** Programador de UI / Soporte
 * **Tareas Realizadas:**
     * Programación de la funcionalidad de los botones del Menú Principal.
@@ -67,7 +67,7 @@
 
 ---
 
-### 👤 @lazy_coder_x (Sergio Casanova)
+### 👤 @sergiicl (Sergio Casanova)
 * **Rol:** Programador de UI / Soporte
 * **Tareas Realizadas:**
     * Programación de la funcionalidad de los botones del Menú Principal.
