@@ -23,7 +23,7 @@ body {
 
 /* ---------------- HEADER ---------------- */
 
-.hero {
+.banner {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -32,28 +32,28 @@ body {
     border-bottom: 4px solid var(--dorado);
 }
 
-.hero-texto {
+.banner-text {
     flex: 1;
     color: var(--morado-oscuro);
 }
 
-.hero-texto h1 {
+.banner-texto h1 {
     font-family: 'Pixelify Sans', sans-serif;
     font-size: 56px;
     margin: 0 0 10px;
     text-shadow: 0 0 10px var(--blanco-magico);
 }
 
-.hero-texto h2 {
+.banner-texto h2 {
     font-size: 22px;
     margin: 0 0 20px;
 }
 
-.hero-texto p {
+.banner-texto p {
     font-size: 16px;
     max-width: 420px;flex: 1;
 }
-
+/*
 .hero-boton {
     display: inline-block;
     margin-top: 18px;
@@ -70,13 +70,13 @@ body {
 .hero-boton:hover {
     transform: translateY(-2px);
     box-shadow: 0 0 18px var(--dorado);
-}
+}*/
 
-.hero-imagen {
+.banner-imagen {
     text-align: right;
 }
 
-.hero-imagen img {
+.banner-imagen img {
     width: 150px;
     border-radius: 16px;
     border: 3px solid var(--dorado);
