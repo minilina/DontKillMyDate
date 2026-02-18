@@ -1,5 +1,5 @@
 {
-  "name": "plantillaphaser",
+  "name": "dontkillmydate",
   "version": "1.0.0",
   "main": "./main.js",
   "description": "Videojuego realizado con Phaser",
@@ -19,9 +19,9 @@
   "author": "Alba Gomez <14272.alba@gmail.es>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/minilina/PlantillaPhaser/issues"
+    "url": "https://github.com/minilina/DontKillMyDate/issues"
   },
-  "homepage": "https://github.com/minilina/PlantillaPhaser#readme",
+  "homepage": "https://github.com/minilina/DontKillMyDate#readme",
   "type": "module",
   "devDependencies": {
     "electron": "^34.0.1",
@@ -33,5 +33,4 @@
   "dependencies": {
     "phaser": "3.85.2"
   }
-  
 }
