@@ -3,19 +3,63 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="assets/sprites/player.png" type="image/png" />
+    <link rel="shortcut icon" href="assets/web/seta.png" type="image/png" />
     <meta name="viewport" content="width=device-width, initial-scale=2.0">
     <link rel="stylesheet" href="./css/game.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=VT323&display=swap" rel="stylesheet"> <!-- fuente importada de google fonts -->
 
-    <title>¡Juego con Phaser!</title>
+    <title>Don't Kill my Date !</title>
 </head>
 
 <body>
-    <h1>Juego con Phaser</h1>
     <script src="./src/game.js" type="module"></script>
-    <!-- El juego irá dentro de este <div> por la propiedad `parent` que pasamos `new Phaser.Game` -->
-    <div id="juego"></div>
-    <p><center><a href="https://github.com/cleongh/plantillaphaser">Repositorio de GitHub</a></center></p>
+
+    <header class="banner">
+        <div class="banner-text">
+            <h1>Don't kill my date !</h1>
+        </div>
+    </header>
+
+    <div class="content">
+        <main>
+            <section class="seccion">
+                <!-- El juego irá dentro de este <div> por la propiedad `parent` que pasamos `new Phaser.Game` -->
+                <div id="juego"></div>
+            </section>
+
+            <section class="seccion">
+                <div class="contenedor-titulo">
+                    <img src="assets/web/seta.png" class="imagen-titulo">
+                    <h2>Descripción</h2>
+                </div>
+                <p>
+                    <i>Don't Kill My Date !</i> es un videojuego en el que el jugador encarna a un hechicero que dirige una consulta en un pequeño pueblo.
+                    Allí acuden clientes con disputas románticas, a quienes ayuda creando pociones adaptadas a sus necesidades mediante la selección y preparación de distintos ingredientes.
+                </p>
+                <p>
+                    La combinación de ingredientes y la destreza del jugador para trabajar a contrarreloj determinan la calidad y los efectos de cada poción. 
+                    El resultado influye directamente en el éxito o fracaso de la cita del cliente y en su reputación como hechicero. 
+                    A medida que aumenta esta reputación, se desbloquean mejoras que amplían las posibilidades del jugador y le permiten enfrentarse a desafíos románticos cada vez más complejos.
+                </p>
+            </section>
+
+            <section class="seccion">
+                <div class="contenedor-titulo">
+                    <img src="assets/web/seta.png" class="imagen-titulo">
+                    <h2>Controles</h2>
+                </div>
+                <p>
+                    Ratón y teclas awsd.
+                </p>
+            </section>
+        </main>
+
+    <footer>
+        <a href="https://github.com/minilina/DontKillMyDate.git" target="_blank" rel="noopener noreferrer">
+                <img src="assets/web/github.png" class="github-icon">
+        </a>
+         © 2026 Don't kill my date ! · Proyecto de Desarrollo de Videojuegos mediante Tecnologías Web · Facultad de Informática UCM
+    </footer>
 </body>
 
 </html>
