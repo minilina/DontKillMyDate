@@ -1,5 +1,5 @@
-import Platform from './platform.js';
-import Player from './player.js';
+import Platform from '../platform.js';
+import Player from '../game-objects/player.js';
 import Phaser from 'phaser';
 
 
@@ -23,15 +23,11 @@ export default class Level extends Phaser.Scene {
      * Creación de los elementos de la escena principal de juego
      */
     create() {
-        this.stars = 10;
-        this.bases = this.add.group();
-        this.player = new Player(this, 200, 300);
 
-        new Platform(this, this.player, this.bases, 150, 350);
-        new Platform(this, this.player, this.bases, 850, 350);
-        new Platform(this, this.player, this.bases, 500, 200);
-        new Platform(this, this.player, this.bases, 150, 100);
-        new Platform(this, this.player, this.bases, 850, 100);
+        this.background = this.add.image(500, 250, 'background');
+        this.player = new Player(this, 10, 10);
+
+        
         this.spawn();
 
     }
@@ -42,7 +38,7 @@ export default class Level extends Phaser.Scene {
      * Si es null, entonces se crea aleatoriamente sobre cualquiera de las bases existentes
      */
     spawn(from = null) {
-        Phaser.Math.RND.pick(from || this.bases.children.entries).spawn();
+       
     }
 
     /**
@@ -51,14 +47,6 @@ export default class Level extends Phaser.Scene {
      * @param {Base} base La base sobre la que estaba la estrella que se ha cogido
      */
     starPickt(base) {
-        this.player.point();
-        if (this.player.score == this.stars) {
-            this.scene.start('end');
-        }
-        else {
-            let s = this.bases.children.entries;
-            this.spawn(s.filter(o => o !== base));
-
-        }
+        
     }
 }

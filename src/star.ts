@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import Base from './base.js'
-import Player from './player.js'
+import Player from './game-objects/player.js'
 import Level from './level.js'
 
 /**
