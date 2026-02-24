@@ -74,15 +74,15 @@ section p {
     text-align: justify;
 }
 
-#phaser-game-container {
+#juego {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    min-height: 500px;
+    min-height: 100px;
 }
 
-#phaser-game-container canvas {
+#juego canvas {
     max-width: 100%;
     height: auto;
 }

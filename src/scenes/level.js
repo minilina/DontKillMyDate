@@ -24,12 +24,13 @@ export default class Level extends Phaser.Scene {
      */
     create() {
 
-        this.background = this.add.image(500, 250, 'background');
+        this.background = this.add.image(0, 0, 'background').setOrigin(0,0);
+        this.background.setDisplaySize(this.scale.width, this.scale.height);
         this.player = new Player(this, 10, 10);
 
         
         this.spawn();
-
+        
     }
 
     /**

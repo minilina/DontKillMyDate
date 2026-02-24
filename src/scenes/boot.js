@@ -5,7 +5,7 @@ import platform from '../../assets/sprites/platform.png'
 import base from '../../assets/sprites/base.png'
 import star from '../../assets/sprites/star.png'
 import player from '../../assets/sprites/default.png'
-import background from '../../assets/sprites/fondo.jpeg'
+import background from '../../assets/sprites/fondo.jpg'
 
 
 /**

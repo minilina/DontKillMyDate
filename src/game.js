@@ -9,12 +9,12 @@ import Phaser from 'phaser';
  */
 let config = {
     type: Phaser.AUTO,
-    width: 1000,
-    height: 500,
+    width: 960,
+    height: 540,
     parent: 'juego',
     scale: {
-        //mode: Phaser.Scale.FIT,  
-        autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
+        mode: Phaser.Scale.FIT,  
+        autoCenter: Phaser.Scale.NO_CENTER
     },
     pixelArt: true,
     scene: [Boot, Level, End],
