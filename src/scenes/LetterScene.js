@@ -35,7 +35,7 @@ export default class LetterScene extends Phaser.Scene {
     this.textContainer = this.add.container(this.textArea.x, this.textArea.y);
 
     this.letterText = this.add.text(0, 0, "", {
-      fontSize: "20px",
+      fontSize: "17px",
       color: "#1a1a1a",
       wordWrap: { width: this.textArea.width },
       lineSpacing: 8,

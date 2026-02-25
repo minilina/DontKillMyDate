@@ -31,15 +31,75 @@ const Diccionario = {
     gnomos: ["los gnomos de las minas", "mis hermanos gnomos", "nuestro gremio de manitas", "la gente de la tierra"],
     elfos: ["los altos elfos", "mi gente del bosque", "nuestra estirpe élfica", "los guardianes antiguos"],
   },
+
+  // Extras que no afectan requisitos
+  saludos: {
+    neutro: [
+      "Buenas.",
+      "Hola.",
+      "Saludos.",
+      "Disculpa.",
+      "Buenas, ¿tienes un momento?",
+    ],
+    educado: [
+      "Buenos días, alquimista.",
+      "Mis respetos. ¿Podrías ayudarme?",
+      "Perdona que te interrumpa.",
+      "Gracias por atenderme.",
+    ],
+    borde: [
+      "Eh...",
+      "Oye, necesito algo ya.",
+      "Escucha bien, alquimista. No tengo todo el día.",
+      "Vengo con prisa, así que escucha bien.",
+      "",
+    ],
+    nervioso: [
+      "Shh... ¿podemos hablar en voz baja?",
+      "Perdón, perdón... es importante.",
+      "No sé si debería estar aquí, pero...",
+      "Estoy un poco nervioso, disculpa.",
+      "¡Por favor, rápido!",
+    ],
+    misterioso: [
+      "Que las sombras no te confundan.",
+      "Los astros me han traído hasta aquí.",
+      "La noche susurra tu nombre, alquimista.",
+      "He seguido señales para encontrarte.",
+      "He viajado mucho para encontrar esto.",
+      "Los astros se alinean y requiero de tu arte."
+    ],
+  },
+  despedidas: [
+    "No me falles.",
+    "Confío en tu mano.",
+    "Que la fortuna te acompañe.",
+    "Que te vaya bien.",
+    "No me hagas esperar.",
+    "Será mejor que salga bien.",
+    "No me decepciones.",
+    "Estoy en tus manos.",
+    "Te lo pagaré bien si sale perfecto.",
+    "¡Suerte!",
+    "Que tu pulso no tiemble.",
+    "Que tu mezcla sea precisa.",
+    "No cometas errores.",
+    "Hazlo con cuidado.",
+    "Ponle dedicación.",
+    "Que salga perfecto.",
+    "¿Podrás hacerlo?",
+  ],
 };
+
+
 
 // Plantillas de personalidad (string largo)
 const Templates = [
-  "He viajado mucho para encontrar esto. Para {raza} es vital una mezcla {color}. Solo asegúrate de que sepa {sabor} y me lo entregues {consistencia}.",
-  "Escucha bien, alquimista. No tengo todo el día. Prepárame algo {sabor}, que sea {color}. Y más te vale que esté {consistencia}, {raza} no toleramos errores.",
-  "¡Por favor, rápido! Necesito algo {sabor}... tiene que ser {color} o no funcionará. ¡Ah! Y dámelo {consistencia}, es para {raza}, ¡me va la vida en ello!",
-  "Buenas. Vengo a pedir un encargo para {raza}. Ya sabes, {color}, un poquito {sabor} y todo {consistencia}. Gracias.",
-  "Los astros se alinean y {raza} requerimos de tu arte. Buscamos una esencia {color}, que al paladar resulte {sabor}. Y recuerda, el ingrediente debe presentarse {consistencia}.",
+  "{saludo} Para {raza} es vital una mezcla {color}. Solo asegúrate de que sepa {sabor} y me lo entregues {consistencia}. {despedida}",
+  "{saludo} Prepárame algo {sabor}, que sea {color}. Y más te vale que esté {consistencia}, {raza} no toleramos errores. {despedida}",
+  "{saludo} Necesito algo {sabor}... tiene que ser {color} o no funcionará. ¡Ah! Y dámelo {consistencia}, es para {raza}, ¡me va la vida en ello! {despedida}",
+  "{saludo} Vengo a pedir un encargo para {raza}. Ya sabes, {color}, un poquito {sabor} y todo {consistencia}. Gracias. {despedida}",
+  "{saludo} Busco una esencia {color}, que al paladar resulte {sabor} para mi amor {raza}. Y recuerda, el ingrediente debe presentarse {consistencia}. {despedida}",
 ];
 
 /**
@@ -50,11 +110,14 @@ export function generateRandomRequest() {
   const reqColor = Phaser.Utils.Array.GetRandom(Object.keys(Diccionario.colores));
   const reqConsist = Phaser.Utils.Array.GetRandom(Object.keys(Diccionario.consistencias));
   const reqRaza = Phaser.Utils.Array.GetRandom(Object.keys(Diccionario.razas));
+  const reqSaludo = Phaser.Utils.Array.GetRandom(Object.keys(Diccionario.saludos));
 
   const txtSabor = Phaser.Utils.Array.GetRandom(Diccionario.sabores[reqSabor]);
   const txtColor = Phaser.Utils.Array.GetRandom(Diccionario.colores[reqColor]);
   const txtConsist = Phaser.Utils.Array.GetRandom(Diccionario.consistencias[reqConsist]);
   const txtRaza = Phaser.Utils.Array.GetRandom(Diccionario.razas[reqRaza]);
+  const txtSaludo = Phaser.Utils.Array.GetRandom(Diccionario.saludos[reqSaludo]);
+  const txtDespedida = Phaser.Utils.Array.GetRandom(Diccionario.despedidas);
 
   const template = Phaser.Utils.Array.GetRandom(Templates);
 
@@ -62,7 +125,9 @@ export function generateRandomRequest() {
     .replace("{raza}", txtRaza)
     .replace("{color}", txtColor)
     .replace("{sabor}", txtSabor)
-    .replace("{consistencia}", txtConsist);
+    .replace("{consistencia}", txtConsist)
+    .replace("{saludo}", txtSaludo)
+    .replace("{despedida}", txtDespedida);
 
   return {
     text,
@@ -71,6 +136,7 @@ export function generateRandomRequest() {
       color: reqColor,
       consistencia: reqConsist,
       raza: reqRaza,
+      saludo: reqSaludo,
     },
   };
 }

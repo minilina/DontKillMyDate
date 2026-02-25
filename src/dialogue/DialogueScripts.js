@@ -50,6 +50,6 @@ export function buildDialogueFromRequest(request) {
 
   return {
     speakerName: "Cliente", // luego podéis cambiarlo por nombre real
-    lines: ["Buenas.", ...orderLines, "¿Puedes prepararlo?"],
+    lines: orderLines,
   };
 }
