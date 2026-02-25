@@ -65,10 +65,11 @@ export default class LetterScene extends Phaser.Scene {
     this.scrollTrack.setVisible(false);
 
     const cx = this.scale.width / 2;
+    const inputY = this.scale.height / 2 + 170;
 
     // UI nombre
     this.nameInput = this.add
-      .dom(cx, 520, "input", {
+      .dom(cx, inputY, "input", {
         fontSize: "24px",
         padding: "10px",
       })
@@ -77,21 +78,14 @@ export default class LetterScene extends Phaser.Scene {
     this.nameInput.node.placeholder = "Escribe tu nombre";
     this.nameInput.node.setAttribute("inputmode", "text");
     this.nameInput.node.setAttribute("autocomplete", "off");
-    this.nameInput.node.setAttribute("autocapitalize", "none"); // no auto-mayúsculas
+    this.nameInput.node.setAttribute("autocapitalize", "none");
     this.nameInput.node.setAttribute("spellcheck", "false");
 
-    // Filtrar en tiempo real: NO números, NO distinguir may/min (guardamos en minúsculas)
+    // Filtrar en tiempo real: sin números, normalizar a minúsculas
     this.nameInput.node.addEventListener("input", (e) => {
-      // 1) quitar dígitos
       let v = e.target.value.replace(/\d+/g, "");
-
-      // 2) normalizar: todo minúsculas (así no distinguís may/min)
       v = v.toLowerCase();
-
-      // (opcional) también puedes limpiar dobles espacios:
       v = v.replace(/\s{2,}/g, " ");
-
-      // aplicar
       e.target.value = v;
     });
 
@@ -102,7 +96,7 @@ export default class LetterScene extends Phaser.Scene {
     });
 
     this.confirmText = this.add
-      .text(cx, 570, "Confirmar", {
+      .text(cx, inputY + 50, "Confirmar", {
         fontSize: "24px",
         color: "#000",
       })
@@ -114,7 +108,7 @@ export default class LetterScene extends Phaser.Scene {
 
     // Botón cerrar
     this.closeButton = this.add
-      .text(cx, 570, "Cerrar carta", {
+      .text(cx, inputY + 50, "Cerrar carta", {
         fontSize: "26px",
         backgroundColor: "#ffffff",
         color: "#000",
@@ -214,16 +208,20 @@ export default class LetterScene extends Phaser.Scene {
     this.typewriterEffect(this.before, () => {
       this.nameInput.setVisible(true);
       this.confirmText.setVisible(true);
-      this.nameInput.node.focus();
+
+      // En algunos navegadores el focus inmediato falla: delay corto
+      this.time.delayedCall(50, () => {
+        this.nameInput.node.focus();
+        this.nameInput.node.click();
+      });
     });
   }
 
   onConfirmName() {
-    // Ya llega filtrado (sin números y en minúsculas), pero limpiamos por seguridad
     const raw = this.nameInput.node.value ?? "";
     const name = raw.replace(/\d+/g, "").trim().toLowerCase() || "jugador";
 
-    // Guardar para el resto del juego (normalizado)
+    // Guardar para el resto del juego
     this.registry.set("playerName", name);
 
     this.nameInput.setVisible(false);
