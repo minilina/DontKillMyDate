@@ -1,6 +1,6 @@
 import Boot from './scenes/boot.js';
-import LetterScene from './scenes/LetterScene.js';
-import Level from './scenes/level.js';
+import LetterScene from './scenes/letterScene.js';
+import Level from './scenes/storeScene.js';
 import Phaser from 'phaser';
 import End from './scenes/end.js';
 
@@ -10,6 +10,10 @@ let config = {
   height: 540,
   parent: 'juego',
 
+  /* Comment: para qué sirve esto? 
+    * Phaser crea un div contenedor dentro del parent: 'juego'.
+    * Cuando llamas a this.add.dom(...), Phaser añade ahí el <input> y lo posiciona según las coordenadas del juego.
+  */
   dom: {
     createContainer: true
   },
@@ -19,7 +23,7 @@ let config = {
     autoCenter: Phaser.Scale.NO_CENTER
   },
   pixelArt: true,
-  scene: [Boot, LetterScene, Level, End],
+  scene: [Boot, LetterScene, Level, End], /*Carga las escenas en orden, pero no las inicia. El orden de inicio se controla desde cada escena con this.scene.start('nombreDeLaEscena')*/
   physics: {
     default: 'arcade',
     arcade: {

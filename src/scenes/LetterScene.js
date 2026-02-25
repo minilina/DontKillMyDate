@@ -4,7 +4,7 @@ import pergamino from "../../assets/sprites/pergamino.png";
 
 export default class LetterScene extends Phaser.Scene {
   constructor() {
-    super("LetterScene");
+    super("letterScene");
   }
 
   preload() {
@@ -118,7 +118,7 @@ export default class LetterScene extends Phaser.Scene {
       .setInteractive()
       .setVisible(false);
 
-    this.closeButton.on("pointerdown", () => this.scene.start("level"));
+    this.closeButton.on("pointerdown", () => this.scene.start("store"));
 
     // Texto
     this.fullText = letterData.text;
