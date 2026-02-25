@@ -1,16 +1,6 @@
-import Platform from '../platform.js';
-import Player from '../game-objects/player.js';
 import Phaser from 'phaser';
+import CustomerFlowManager from "../dialogue/CustomerFlowManager.js";
 
-
-/**
- * Escena principal del juego. La escena se compone de una serie de plataformas 
- * sobre las que se sitúan las bases en las podrán aparecer las estrellas. 
- * El juego comienza generando aleatoriamente una base sobre la que generar una estrella. 
- * @abstract Cada vez que el jugador recoge la estrella, aparece una nueva en otra base.
- * El juego termina cuando el jugador ha recogido 10 estrellas.
- * @extends Phaser.Scene
- */
 export default class Store extends Phaser.Scene {
     /**
      * Constructor de la escena
@@ -23,31 +13,27 @@ export default class Store extends Phaser.Scene {
      * Creación de los elementos de la escena principal de juego
      */
     create() {
+        // 1) La escena base
+        // Fondo++
+        this.add
+            .image(0, 0, "background")
+            .setOrigin(0, 0)
+            .setDisplaySize(this.scale.width, this.scale.height);
+        // 2) Crear diálogo
+        this.flow = new CustomerFlowManager(this);
 
-        this.background = this.add.image(0, 0, 'background').setOrigin(0,0);
-        this.background.setDisplaySize(this.scale.width, this.scale.height);
-        
-        this.player = new Player(this, this.scale.width / 2, this.scale.height / 2 + 7);
+        // Metemos la cantidad de clientes n elegida a la cola
+        let n = 1;
+        this.flow.startShift(n);
 
-        
-        this.spawn();
+        this.events.on("wake", () => {
+            this.flow.continueShift();
+        });
     }
 
-    /**
-     * Genera una estrella en una de las bases del escenario
-     * @param {Array<Base>} from Lista de bases sobre las que se puede crear una estrella
-     * Si es null, entonces se crea aleatoriamente sobre cualquiera de las bases existentes
-     */
-    spawn(from = null) {
-       
-    }
-
-    /**
-     * Método que se ejecuta al coger una estrella. Se pasa la base
-     * sobre la que estaba la estrella cogida para evitar repeticiones
-     * @param {Base} base La base sobre la que estaba la estrella que se ha cogido
-     */
-    starPickt(base) {
-        
+    update(time, delta) {
+        this.flow?.update(time, delta);
     }
 }
+
+/* EN PRINCIPIO ESTO SE QUEDA ASÍ*/ 

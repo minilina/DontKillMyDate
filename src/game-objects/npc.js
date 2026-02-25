@@ -28,6 +28,44 @@ export default class NPC extends Phaser.GameObjects.Container {
         // Si el sprite es muy grande o pequeño, puedes ajustarlo aquí:
         // this.sprite.setScale(1.5);
 
+        this.add(this.sprite); // Añadimos el sprite al contenedor
+
+        scene.add.existing(this); // Añadimos el contenedor a la escena
+    }
+}
+
+
+/* Extra
+ // Entrada suave
+    this.alpha = 0;
+    scene.tweens.add({
+      targets: this,
+      alpha: 1,
+      duration: 300,
+      ease: "Linear",
+    });
+  }
+
+  leave(onComplete) {
+    this.scene.tweens.add({
+      targets: this,
+      alpha: 0,
+      duration: 300,
+      ease: "Linear",
+      onComplete: () => {
+        this.destroy();
+        if (onComplete) onComplete();
+      },
+    });
+  }
+    */
+
+
+
+
+
+        /*
+
         // 3. CREAMOS EL BOCADILLO DE DIÁLOGO
         // Lo colocamos por encima de la cabeza del sprite (ej. y: -80)
         this.dialogText = scene.add.text(0, -80, dialogText, {
@@ -59,10 +97,10 @@ export default class NPC extends Phaser.GameObjects.Container {
             ease: 'Linear'
         });
     }
-
-    /**
-     * Método para hacer que el NPC se vaya cuando ha sido atendido
-     */
+/*
+   
+      Método para hacer que el NPC se vaya cuando ha sido atendido
+     
     leave() {
         // Animación de salida (Fade out)
         this.scene.tweens.add({
@@ -76,3 +114,5 @@ export default class NPC extends Phaser.GameObjects.Container {
         });
     }
 }
+
+*/
