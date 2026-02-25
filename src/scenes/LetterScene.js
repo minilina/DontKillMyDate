@@ -8,36 +8,76 @@ export default class LetterScene extends Phaser.Scene {
   }
 
   preload() {
-this.load.image('letter', pergamino);}
+    this.load.image('letter', pergamino);
+  }
 
   create() {
+    // Fondo
+    this.add.image(0, 0, 'background')
+      .setOrigin(0, 0)
+      .setDisplaySize(this.scale.width, this.scale.height);
 
-    // Fondo carta
-    this.add.image(400, 300, "letter");
+    // Carta
+    this.add.image(this.scale.width / 2, this.scale.height / 2, "letter")
+      .setDisplaySize(1250, 700);
 
-    this.letterText = this.add.text(220, 140, "", {
+    // Área visible del texto (MÁS ANCHA)
+    this.textArea = {
+      x: this.scale.width / 2 - 240,
+      y: this.scale.height / 2 - 140,
+      width: 500,
+      height: 300
+    };
+
+    // Container del texto
+    this.textContainer = this.add.container(this.textArea.x, this.textArea.y);
+
+    this.letterText = this.add.text(0, 0, "", {
       fontSize: "20px",
       color: "#1a1a1a",
-      wordWrap: { width: 360 },
+      wordWrap: { width: this.textArea.width },
       lineSpacing: 8
     });
 
-    // UI nombre (empieza OCULTO)
-    this.nameInput = this.add.dom(400, 500, "input", {
+    this.textContainer.add(this.letterText);
+
+    // Máscara
+    const maskGfx = this.make.graphics({});
+    maskGfx.fillStyle(0xffffff);
+    maskGfx.fillRect(
+      this.textArea.x,
+      this.textArea.y,
+      this.textArea.width,
+      this.textArea.height
+    );
+    this.textContainer.setMask(maskGfx.createGeometryMask());
+
+    // Scroll state
+    this.scrollY = 0;
+    this.targetScrollY = 0;
+    this.scrollEnabled = false;
+
+    // Scrollbar
+    this.createScrollbar();
+    this.scrollThumb.setVisible(false);
+    this.scrollTrack.setVisible(false);
+
+    // UI nombre
+    this.nameInput = this.add.dom(400, 520, "input", {
       fontSize: "24px",
       padding: "10px"
     }).setVisible(false);
     this.nameInput.node.placeholder = "Escribe tu nombre";
 
-    this.confirmText = this.add.text(400, 550, "Confirmar", {
+    this.confirmText = this.add.text(400, 570, "Confirmar", {
       fontSize: "24px",
       color: "#000"
     }).setOrigin(0.5).setInteractive().setVisible(false);
 
     this.confirmText.on("pointerdown", () => this.onConfirmName());
 
-    // Botón cerrar (oculto)
-    this.closeButton = this.add.text(400, 520, "Cerrar carta", {
+    // Botón cerrar
+    this.closeButton = this.add.text(400, 570, "Cerrar carta", {
       fontSize: "26px",
       backgroundColor: "#ffffff",
       color: "#000",
@@ -46,27 +86,98 @@ this.load.image('letter', pergamino);}
 
     this.closeButton.on("pointerdown", () => this.scene.start("level"));
 
-    // Texto completo con marcador
-    this.fullText = letterData.text; // Debe incluir {{NAME}}
+    // Texto
+    this.fullText = letterData.text;
     this.marker = "{{NAME}}";
 
-    // Empieza escribiendo nada más entrar
     this.typeUntilMarker(this.fullText, this.marker);
   }
 
-  typeUntilMarker(text, marker) {
-    const markerIndex = text.indexOf(marker);
+  // ─────────────────────────────
+  // SCROLLBAR
+  // ─────────────────────────────
+  createScrollbar() {
+    const barX = this.textArea.x + this.textArea.width + 12;
+    const barY = this.textArea.y;
+    const barHeight = this.textArea.height;
 
-    if (markerIndex === -1) {
-      // Si no hay marcador, escribe todo y muestra cerrar
-      return this.typewriterEffect(text, () => this.closeButton.setVisible(true));
+    this.scrollTrack = this.add.rectangle(
+      barX, barY, 6, barHeight, 0xcccccc
+    ).setOrigin(0, 0);
+
+    this.scrollThumb = this.add.rectangle(
+      barX - 2, barY, 10, 60, 0x888888
+    ).setOrigin(0, 0).setInteractive({ draggable: true });
+
+    this.input.setDraggable(this.scrollThumb);
+
+    this.input.on('drag', (_, gameObject, __, dragY) => {
+      if (!this.scrollEnabled || gameObject !== this.scrollThumb) return;
+
+      const minY = barY;
+      const maxY = barY + barHeight - this.scrollThumb.height;
+      gameObject.y = Phaser.Math.Clamp(dragY, minY, maxY);
+
+      const ratio = (gameObject.y - minY) / (maxY - minY);
+      const maxScroll = Math.max(
+        0,
+        this.letterText.height - this.textArea.height
+      );
+
+      this.targetScrollY = ratio * maxScroll;
+    });
+  }
+
+  update() {
+    // Scroll suave
+    this.scrollY = Phaser.Math.Linear(this.scrollY, this.targetScrollY, 0.1);
+    this.letterText.y = -this.scrollY;
+
+    this.updateScrollbar();
+  }
+
+  updateScrollbar() {
+    if (!this.scrollEnabled) return;
+
+    const maxScroll = Math.max(
+      0,
+      this.letterText.height - this.textArea.height
+    );
+
+    if (maxScroll <= 0) {
+      this.scrollThumb.setVisible(false);
+      this.scrollTrack.setVisible(false);
+      return;
     }
 
-    this.before = text.slice(0, markerIndex);
-    this.after = text.slice(markerIndex + marker.length);
+    this.scrollThumb.setVisible(true);
+    this.scrollTrack.setVisible(true);
+
+    const ratio = this.scrollY / maxScroll;
+    const trackY = this.textArea.y;
+    const trackH = this.textArea.height;
+
+    this.scrollThumb.y =
+      trackY + ratio * (trackH - this.scrollThumb.height);
+  }
+
+  // ─────────────────────────────
+  // TEXTO
+  // ─────────────────────────────
+  typeUntilMarker(text, marker) {
+    const i = text.indexOf(marker);
+
+    if (i === -1) {
+      return this.typewriterEffect(text, () => {
+        this.scrollEnabled = true;
+        this.closeButton.setVisible(true);
+      });
+    }
+
+    this.before = text.slice(0, i);
+    this.after = text.slice(i + marker.length);
 
     this.typewriterEffect(this.before, () => {
-      // Al llegar al marcador, pedir nombre
       this.nameInput.setVisible(true);
       this.confirmText.setVisible(true);
       this.nameInput.node.focus();
@@ -74,16 +185,15 @@ this.load.image('letter', pergamino);}
   }
 
   onConfirmName() {
-    const playerName = this.nameInput.node.value?.trim() || "Jugador";
+    const name = this.nameInput.node.value?.trim() || "Jugador";
 
     this.nameInput.setVisible(false);
     this.confirmText.setVisible(false);
 
-    // Escribe el nombre de golpe (o también con typewriter si quieres)
-    this.letterText.text += playerName;
+    this.letterText.text += name;
 
-    // Continúa con el resto
     this.typewriterEffect(this.after, () => {
+      this.scrollEnabled = true;
       this.closeButton.setVisible(true);
     });
   }
@@ -92,34 +202,21 @@ this.load.image('letter', pergamino);}
     let index = 0;
 
     this.time.addEvent({
-      delay: 40,
+      delay: 20,
       repeat: text.length - 1,
       callback: () => {
         this.letterText.text += text[index];
         index++;
 
+        // Scroll automático progresivo
+        const maxScroll = Math.max(
+          0,
+          this.letterText.height - this.textArea.height
+        );
+        this.targetScrollY = maxScroll;
+
         if (index === text.length && onComplete) onComplete();
       }
     });
   }
-
-  startLetter() {
-
-    const playerName = this.nameInput.node.value || "Jugador";
-
-    this.nameInput.setVisible(false);
-    this.confirmText.setVisible(false);
-
-    const finalText = letterData.text.replace("{playerName}", playerName);
-
-    this.typewriterEffect(finalText);
-  }
-
-  closeLetter() {
-
-    // transición a la siguiente escena
-    this.scene.start("level");
-
-  }
-
 }
