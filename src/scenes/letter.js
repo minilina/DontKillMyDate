@@ -1,14 +1,14 @@
 import Phaser from "phaser";
 import letterData from "../dialogue/letter_intro.json";
-import pergamino from "../../assets/sprites/pergamino.png";
+import letter from "../../assets/sprites/carta.png";
 
-export default class LetterScene extends Phaser.Scene {
+export default class Letter extends Phaser.Scene {
   constructor() {
-    super("letterScene");
+    super("letter");
   }
 
   preload() {
-    this.load.image("letter", pergamino);
+    this.load.image("letter", letter);
   }
 
   create() {
@@ -20,25 +20,27 @@ export default class LetterScene extends Phaser.Scene {
 
     // Carta
     this.add
-      .image(this.scale.width / 2, this.scale.height / 2, "letter")
-      .setDisplaySize(1250, 700);
-
+      .image(0, 0, "letter")
+      .setOrigin(0, 0)
+      .setDisplaySize(this.scale.width, this.scale.height);
+      
     // Área visible del texto
     this.textArea = {
-      x: this.scale.width / 2 - 240,
-      y: this.scale.height / 2 - 140,
-      width: 500,
-      height: 300,
+      x: this.scale.width / 2 - 130,
+      y: this.scale.height / 2 - 160,
+      width: 260,
+      height: 350,
     };
 
     // Container del texto
     this.textContainer = this.add.container(this.textArea.x, this.textArea.y);
 
     this.letterText = this.add.text(0, 0, "", {
-      fontSize: "17px",
-      color: "#1a1a1a",
+      fontFamily: "Pixelify Sans",
+      fontSize: "15px",
+      color: "#4f342d",
       wordWrap: { width: this.textArea.width },
-      lineSpacing: 8,
+      lineSpacing: 5,
     });
 
     this.textContainer.add(this.letterText);
@@ -65,13 +67,13 @@ export default class LetterScene extends Phaser.Scene {
     this.scrollTrack.setVisible(false);
 
     const cx = this.scale.width / 2;
-    const inputY = this.scale.height / 2 + 170;
+    const inputY = this.scale.height / 2 + 140;
 
     // UI nombre
     this.nameInput = this.add
       .dom(cx, inputY, "input", {
-        fontSize: "24px",
-        padding: "10px",
+        fontSize: "15px",
+        padding: "5px",
       })
       .setVisible(false);
 
@@ -96,9 +98,12 @@ export default class LetterScene extends Phaser.Scene {
     });
 
     this.confirmText = this.add
-      .text(cx, inputY + 50, "Confirmar", {
-        fontSize: "24px",
-        color: "#000",
+      .text(cx, inputY + 40, "Confirmar", {
+        fontFamily: "Pixelify Sans",
+        fontSize: "15px",
+        backgroundColor: "#4f342d",
+        color: "#ffffff",
+        padding: { x: 15, y: 8 },
       })
       .setOrigin(0.5)
       .setInteractive()
@@ -108,10 +113,11 @@ export default class LetterScene extends Phaser.Scene {
 
     // Botón cerrar
     this.closeButton = this.add
-      .text(cx, inputY + 50, "Cerrar carta", {
-        fontSize: "26px",
-        backgroundColor: "#ffffff",
-        color: "#000",
+      .text(cx, inputY + 80, "Cerrar carta", {
+        fontFamily: "Pixelify Sans",
+        fontSize: "15px",
+        backgroundColor: "#4f342d",
+        color: "#ffffff",
         padding: { x: 15, y: 8 },
       })
       .setOrigin(0.5)

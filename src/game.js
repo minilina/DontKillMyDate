@@ -1,8 +1,9 @@
 import Boot from './scenes/boot.js';
-import LetterScene from './scenes/letterScene.js';
-import Level from './scenes/storeScene.js';
+import Letter from './scenes/letter.js';
+import Store from './scenes/store.js';
 import Phaser from 'phaser';
 import End from './scenes/end.js';
+import Kitchen from './scenes/kitchen.js';
 
 let config = {
   type: Phaser.AUTO,
@@ -23,7 +24,7 @@ let config = {
     autoCenter: Phaser.Scale.NO_CENTER
   },
   pixelArt: true,
-  scene: [Boot, LetterScene, Level, End], /*Carga las escenas en orden, pero no las inicia. El orden de inicio se controla desde cada escena con this.scene.start('nombreDeLaEscena')*/
+  scene: [Boot, Letter, Store, Kitchen], /*Carga las escenas en orden, pero no las inicia. El orden de inicio se controla desde cada escena con this.scene.start('nombreDeLaEscena')*/
   physics: {
     default: 'arcade',
     arcade: {
