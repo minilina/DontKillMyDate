@@ -4,7 +4,7 @@ import letter from "../../assets/sprites/carta.png";
 
 export default class Letter extends Phaser.Scene {
   constructor() {
-    super("letter");
+    super("Letter");
   }
 
   preload() {
@@ -14,7 +14,7 @@ export default class Letter extends Phaser.Scene {
   create() {
     // Fondo
     this.add
-      .image(0, 0, "background")
+      .image(0, 0, "fondo")
       .setOrigin(0, 0)
       .setDisplaySize(this.scale.width, this.scale.height);
 

@@ -16,7 +16,7 @@ export default class Store extends Phaser.Scene {
         // 1) La escena base
         // Fondo++
         this.add
-            .image(0, 0, "background")
+            .image(0, 0, "fondo")
             .setOrigin(0, 0)
             .setDisplaySize(this.scale.width, this.scale.height);
         // 2) Crear diálogo
