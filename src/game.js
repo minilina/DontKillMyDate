@@ -4,6 +4,7 @@ import Boot from './scenes/boot.js';
 import Letter from './scenes/letter.js';
 import Store from './scenes/store.js';
 import Kitchen from './scenes/kitchen.js';
+import House from './scenes/house.js';
 import End from './scenes/end.js';
 
 const config = {
@@ -15,7 +16,7 @@ const config = {
     scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.NO_CENTER },
     pixelArt: true,
     physics: { default: 'arcade', arcade: { gravity: { y: 400 }, debug: false } },
-    scene: [Start, Boot, Letter, Store, Kitchen, End] // Start primero
+    scene: [Start, Boot, Letter, Store, Kitchen, House, End] // Start primero
 };
 
 new Phaser.Game(config);
