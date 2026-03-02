@@ -23,7 +23,7 @@ import tilesetGrassSpring from '../../assets/tiled/tilesetGrassSpring.png';
 import tilesetGrassWaterSpring from '../../assets/tiled/tilesetGrassWaterSpring.png';
 import treeTrunks from '../../assets/tiled/treeTrunks.png';
 import waterGroundAnimationsTiles from '../../assets/tiled/waterGroundAnimationsTiles.png';
-import player from  '../../assets/tiled/run.png'
+import player from '../../assets/tiled/run.png';
 import casa from '../../assets/tiled/casa.json';
 
 export default class House extends Phaser.Scene {
@@ -32,9 +32,7 @@ export default class House extends Phaser.Scene {
     }
 
     preload() {
-        
         this.load.image('player', player);
-        
         this.load.image('allPropsSeasons', allPropsSeasons); 
         this.load.image('bestFishPoint', bestFishPoint);
         this.load.image('deepForestStones', deepForestStones);
@@ -91,8 +89,8 @@ export default class House extends Phaser.Scene {
             waterGroundAnimationsTiles, stoneStructuresWater, temple, tilesetGrassCliffTilesetSpring
         ];
 
+        // CREAR CAPAS (De abajo hacia arriba)
         const capaAgua = map.createLayer('Agua/Agua', tilesetsArray, 0, 0);
-        const capaAgua2 = map.createLayer('Agua/Agua 2', tilesetsArray, 0, 0);
         const capaDecoracionAgua = map.createLayer('Agua/Decoracion Agua', tilesetsArray, 0, 0);
         const capaDecoracionAgua2 = map.createLayer('Agua/Decoracion Agua 2', tilesetsArray, 0, 0);
         const capaTierra = map.createLayer('Suelo/Tierra', tilesetsArray, 0, 0);
@@ -100,7 +98,6 @@ export default class House extends Phaser.Scene {
         const capaCesped = map.createLayer('Suelo/Cesped', tilesetsArray, 0, 0);
         const capaFondo = map.createLayer('Suelo/Fondo', tilesetsArray, 0, 0);
         const capaDecoracionCesped = map.createLayer('Suelo/Decoracion Cesped', tilesetsArray, 0, 0);
-        const capaColision = map.createLayer('Colision', tilesetsArray, 0, 0);
         const capaVallas = map.createLayer('Delimitacion Mundo/Vallas', tilesetsArray, 0, 0);
         const capaMuro = map.createLayer('Delimitacion Mundo/Muro', tilesetsArray, 0, 0);
         const capaEscalera = map.createLayer('Delimitacion Mundo/Escalera', tilesetsArray, 0, 0);
@@ -109,54 +106,43 @@ export default class House extends Phaser.Scene {
         const capaArbolesEncima = map.createLayer('Arboles/Arboles Encima', tilesetsArray, 0, 0);
         const capaPilares = map.createLayer('Mas Colisiones/Pilares', tilesetsArray, 0, 0);
         const capaCasa = map.createLayer('Mas Colisiones/Casa', tilesetsArray, 0, 0);
-        const capaCasaColision = map.createLayer('Mas Colisiones/Casa Colision', tilesetsArray, 0, 0);
         const capaPiedras = map.createLayer('Mas Colisiones/Piedras', tilesetsArray, 0, 0);
-        const capaColisiones2 = map.createLayer('Mas Colisiones/Colisiones 2', tilesetsArray, 0, 0);
+        const capaPiedras2 = map.createLayer('Mas Colisiones/Piedras 2', tilesetsArray, 0, 0);
         const capaHierbaEncima = map.createLayer('Hierba Encima', tilesetsArray, 0, 0);
         const capaAnimales = map.createLayer('Animales', tilesetsArray, 0, 0);
-
-        // ACTIVAR COLISIONES EN LOS TILES
-        capaAgua.setCollisionByExclusion([-1]);
-        capaFondo.setCollisionByExclusion([-1]);
-        capaColision.setCollisionByExclusion([-1]);
-        capaVallas.setCollisionByExclusion([-1]);
-        capaMuro.setCollisionByExclusion([-1]);
-        capaPilares.setCollisionByExclusion([-1]);
-        capaCasaColision.setCollisionByExclusion([-1]); // CAMBIO APLICADO
-        capaPiedras.setCollisionByExclusion([-1]);
-        capaColisiones2.setCollisionByExclusion([-1]);
-        capaAnimales.setCollisionByExclusion([-1]);
-
-        // 3. CREAR AL JUGADOR
-        // Se instancia pasándole esta escena (this) y las coordenadas X e Y
-        this.player = new Player(this, 400, 300); 
-
-        // 4. CONFIGURAR PROFUNDIDADES (DEPTH / Z-INDEX)
-        // Hacemos que el jugador pase por DEBAJO de los techos y copas de los árboles
-        this.player.setDepth(10);
-        capaArbolesEncima.setDepth(15);
-        capaArbolesDelante.setDepth(15);
-        capaArboles.setDepth(15);
-        capaCasa.setDepth(15); 
-
-        // 5. CONFIGURAR CÁMARA Y LÍMITES
-        this.cameras.main.setZoom(2.5); // Nivel de Zoom estilo Stardew Valley
-        this.cameras.main.startFollow(this.player, true, 0.08, 0.08); // Seguimiento suave
         
-        // Evitamos que la cámara y el jugador salgan del mundo
+        // CAPA DE COLISIONES
+        const capaColisiones = map.createLayer('Colisiones', tilesetsArray, 0, 0);
+
+        // ACTIVAR LA COLISIÓN Y OCULTARLA
+        capaColisiones.setCollisionByExclusion([-1]);
+        capaColisiones.setVisible(false); // La hacemos invisible para no ver los cuadros rojos
+
+        // CREAR AL JUGADOR
+        this.player = new Player(this, 400, 300); 
+        
+        // CONFIGURAR PROFUNDIDADES (DEPTH / Z-INDEX)
+        this.player.setDepth(10);
+        
+        capaVallas.setDepth(15);
+        capaMuro.setDepth(15);
+        capaArboles.setDepth(15);
+        capaArbolesDelante.setDepth(15);
+        capaArbolesEncima.setDepth(15);
+        capaPilares.setDepth(15);
+        capaCasa.setDepth(15);
+        capaHierbaEncima.setDepth(15); 
+        capaPiedras.setDepth(15);
+        capaPiedras2.setDepth(15);
+
+        // CONFIGURAR CÁMARA Y LÍMITES
+        this.cameras.main.setZoom(2.5);
+        this.cameras.main.startFollow(this.player, true, 0.08, 0.08); 
+        
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-        // 6. AÑADIR COLISIONES FÍSICAS (JUGADOR vs CAPAS)
-        this.physics.add.collider(this.player, capaAgua);
-        this.physics.add.collider(this.player, capaFondo);
-        this.physics.add.collider(this.player, capaColision);
-        this.physics.add.collider(this.player, capaVallas);
-        this.physics.add.collider(this.player, capaMuro);
-        this.physics.add.collider(this.player, capaPilares);
-        this.physics.add.collider(this.player, capaCasaColision);
-        this.physics.add.collider(this.player, capaPiedras);
-        this.physics.add.collider(this.player, capaColisiones2);
-        this.physics.add.collider(this.player, capaAnimales);
+        // 6. AÑADIR COLISIÓN FÍSICA
+        this.physics.add.collider(this.player, capaColisiones);
     }
 }
