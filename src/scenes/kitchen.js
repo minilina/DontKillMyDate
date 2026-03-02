@@ -11,11 +11,16 @@ export default class Kitchen extends Phaser.Scene {
     }
 
     create() {
-        this.add.image(0, 0, 'kitchen').setOrigin(0, 0).setDisplaySize(this.scale.width, this.scale.height);
-        // Añadimos el evento para detectar el clic en cualquier lugar de la pantalla
-        this.input.on('pointerdown', () => {
-            // Cambiamos a la escena del mapa top-down
-            this.scene.start('house');
+        // Guardamos la imagen en una variable
+        const bg = this.add.image(0, 0, 'kitchen').setOrigin(0, 0).setDisplaySize(this.scale.width, this.scale.height);
+
+        // La hacemos interactiva (para que detecte el ratón)
+        bg.setInteractive();
+
+        // Le añadimos el evento de clic a la imagen
+        bg.on('pointerdown', () => {
+            console.log("Clic detectado, cambiando a house..."); // Esto nos avisará en la consola
+            this.scene.start('house'); 
         });
     }
 }
