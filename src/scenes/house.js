@@ -91,27 +91,27 @@ export default class House extends Phaser.Scene {
             waterGroundAnimationsTiles, stoneStructuresWater, temple, tilesetGrassCliffTilesetSpring
         ];
 
-        const capaAgua = map.createLayer('Agua', tilesetsArray, 0, 0);
-        const capaAgua2 = map.createLayer('Agua 2', tilesetsArray, 0, 0);
-        const capaDecoracionAgua = map.createLayer('Decoracion Agua', tilesetsArray, 0, 0);
-        const capaDecoracionAgua2 = map.createLayer('Decoracion Agua 2', tilesetsArray, 0, 0);
-        const capaTierra = map.createLayer('Tierra', tilesetsArray, 0, 0);
-        const capaCamino = map.createLayer('Camino', tilesetsArray, 0, 0);
-        const capaCesped = map.createLayer('Cesped', tilesetsArray, 0, 0);
-        const capaFondo = map.createLayer('Fondo', tilesetsArray, 0, 0);
-        const capaDecoracionCesped = map.createLayer('Decoracion Cesped', tilesetsArray, 0, 0);
+        const capaAgua = map.createLayer('Agua/Agua', tilesetsArray, 0, 0);
+        const capaAgua2 = map.createLayer('Agua/Agua 2', tilesetsArray, 0, 0);
+        const capaDecoracionAgua = map.createLayer('Agua/Decoracion Agua', tilesetsArray, 0, 0);
+        const capaDecoracionAgua2 = map.createLayer('Agua/Decoracion Agua 2', tilesetsArray, 0, 0);
+        const capaTierra = map.createLayer('Suelo/Tierra', tilesetsArray, 0, 0);
+        const capaCamino = map.createLayer('Suelo/Camino', tilesetsArray, 0, 0);
+        const capaCesped = map.createLayer('Suelo/Cesped', tilesetsArray, 0, 0);
+        const capaFondo = map.createLayer('Suelo/Fondo', tilesetsArray, 0, 0);
+        const capaDecoracionCesped = map.createLayer('Suelo/Decoracion Cesped', tilesetsArray, 0, 0);
         const capaColision = map.createLayer('Colision', tilesetsArray, 0, 0);
-        const capaVallas = map.createLayer('Vallas', tilesetsArray, 0, 0);
-        const capaMuro = map.createLayer('Muro', tilesetsArray, 0, 0);
-        const capaEscalera = map.createLayer('Escalera', tilesetsArray, 0, 0);
-        const capaArboles = map.createLayer('Arboles', tilesetsArray, 0, 0);
-        const capaArbolesDelante = map.createLayer('Arboles Delante', tilesetsArray, 0, 0);
-        const capaArbolesEncima = map.createLayer('Arboles Encima', tilesetsArray, 0, 0);
-        const capaPilares = map.createLayer('Pilares', tilesetsArray, 0, 0);
-        const capaCasa = map.createLayer('Casa', tilesetsArray, 0, 0);
-        const capaCasaColision = map.createLayer('Casa Colision', tilesetsArray, 0, 0);
-        const capaPiedras = map.createLayer('Piedras', tilesetsArray, 0, 0);
-        const capaColisiones2 = map.createLayer('Colisiones 2', tilesetsArray, 0, 0);
+        const capaVallas = map.createLayer('Delimitacion Mundo/Vallas', tilesetsArray, 0, 0);
+        const capaMuro = map.createLayer('Delimitacion Mundo/Muro', tilesetsArray, 0, 0);
+        const capaEscalera = map.createLayer('Delimitacion Mundo/Escalera', tilesetsArray, 0, 0);
+        const capaArboles = map.createLayer('Arboles/Arboles', tilesetsArray, 0, 0);
+        const capaArbolesDelante = map.createLayer('Arboles/Arboles Delante', tilesetsArray, 0, 0);
+        const capaArbolesEncima = map.createLayer('Arboles/Arboles Encima', tilesetsArray, 0, 0);
+        const capaPilares = map.createLayer('Mas Colisiones/Pilares', tilesetsArray, 0, 0);
+        const capaCasa = map.createLayer('Mas Colisiones/Casa', tilesetsArray, 0, 0);
+        const capaCasaColision = map.createLayer('Mas Colisiones/Casa Colision', tilesetsArray, 0, 0);
+        const capaPiedras = map.createLayer('Mas Colisiones/Piedras', tilesetsArray, 0, 0);
+        const capaColisiones2 = map.createLayer('Mas Colisiones/Colisiones 2', tilesetsArray, 0, 0);
         const capaHierbaEncima = map.createLayer('Hierba Encima', tilesetsArray, 0, 0);
         const capaAnimales = map.createLayer('Animales', tilesetsArray, 0, 0);
 
