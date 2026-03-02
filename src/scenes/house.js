@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 // IMPORTANTE: Asegúrate de que la ruta hacia tu Player.js es correcta
-import Player from './Player.js'; 
+import Player from './player.js'; 
 
 import allPropsSeasons from '../../assets/tiled/allPropsSeasons.png';
 import bestFishPoint from '../../assets/tiled/bestFishPoint.png';
