@@ -15,6 +15,9 @@ export default class Player extends Phaser.GameObjects.Sprite { // TODO HECHO PO
         // Queremos que el jugador no se salga de los límites del mundo
         this.body.setCollideWorldBounds(true);
 
+        //Al ser Top Down queremos que no tenga gravedad
+        this.body.setAllowGravity(false);
+
         // --- AQUÍ ESTÁ EL ARREGLO ---
         // 1. Hacemos la caja de colisión más pequeña (ej: 12 de ancho, 14 de alto)
         this.body.setSize(12, 12); 
