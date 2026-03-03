@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 
-// IMPORTANTE: Asegúrate de que la ruta hacia tu Player.js es correcta
 import Player from '../game-objects/player.js';
 
 import allPropsSeasons from '../../assets/tiled/allPropsSeasons.png';
@@ -114,7 +113,7 @@ export default class House extends Phaser.Scene {
         // CAPA DE COLISIONES
         const capaColisiones = map.createLayer('Colisiones', tilesetsArray, 0, 0);
 
-        // ACTIVAR LA COLISIÓN Y OCULTARLA
+        // ACTIVAR LA COLISION Y OCULTARLA
         capaColisiones.setCollisionByExclusion([-1]);
         capaColisiones.setVisible(false); // La hacemos invisible para no ver los cuadros rojos
 
@@ -135,14 +134,14 @@ export default class House extends Phaser.Scene {
         capaPiedras.setDepth(15);
         capaPiedras2.setDepth(15);
 
-        // CONFIGURAR CÁMARA Y LÍMITES
+        // CONFIGURAR CAMARA Y LIMITES
         this.cameras.main.setZoom(2.5);
         this.cameras.main.startFollow(this.player, true, 0.08, 0.08); 
         
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-        // 6. AÑADIR COLISIÓN FÍSICA
+        // AÑADIR COLISION FISICA
         this.physics.add.collider(this.player, capaColisiones);
     }
 }
