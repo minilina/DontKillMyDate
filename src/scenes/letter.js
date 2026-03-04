@@ -27,7 +27,7 @@ export default class Letter extends Phaser.Scene {
     // Área visible del texto
     this.textArea = {
       x: this.scale.width / 2 - 130,
-      y: this.scale.height / 2 - 170,
+      y: this.scale.height / 2 - 175,
       width: 260,
       height: 350,
     };
