@@ -22,9 +22,7 @@ export default class Start extends Phaser.Scene {
             .setOrigin(0, 0)
             .setDisplaySize(this.scale.width, this.scale.height);
 
-            this.add.image(0, 0, 'logo')
-            .setOrigin(0, 0)
-            .setDisplaySize(this.scale.width, this.scale.height);
+
 
         // Nubes con repetición y escala
         this.clouds = this.add.tileSprite(
@@ -37,18 +35,41 @@ export default class Start extends Phaser.Scene {
             .setOrigin(0, 0)
             .setScale(2);      // escala para hacerlas más grandes sin deformarlas
 
+        // Logo
+        this.add.image(-40, -60, 'logo')
+            .setOrigin(0, 0)
+            .setDisplaySize(this.scale.width, this.scale.height);
         // Botón
         const boton = this.add.image(this.scale.width / 2, this.scale.height / 2 + 100, 'button')
             .setInteractive({ useHandCursor: true })
-            .setOrigin(0.5).setScale(2);;
+            .setOrigin(0.5).setScale(3);
+
+        // Texto "Start game"
+        const botonTexto = this.add.text(
+            this.scale.width / 2,
+            this.scale.height / 2 + 97,
+            'START GAME',
+            {
+                fontFamily: 'Pixelify Sans, sans-serif',
+                fontSize: '25px',
+                fill: '#ffffff'
+            }
+        ).setOrigin(0.5);
 
         // Animación hover
-        boton.on('pointerover', () => boton.setScale(1.9));
-        boton.on('pointerout', () => boton.setScale(2));
+        boton.on('pointerover', () => {
+            boton.setScale(2.9);
+            botonTexto.setColor('#ffcc00'); // color en hover
+        });
+
+        boton.on('pointerout', () => {
+            boton.setScale(3);
+            botonTexto.setColor('#ffffff'); // color normal
+        });
 
         // Click → iniciar Boot
         boton.on('pointerdown', () => {
-            this.scene.start('Boot'); // va a la precarga
+            this.scene.start('Boot');
         });
     }
 

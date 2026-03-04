@@ -23,11 +23,11 @@ export default class Letter extends Phaser.Scene {
       .image(0, 0, "letter")
       .setOrigin(0, 0)
       .setDisplaySize(this.scale.width, this.scale.height);
-
+      
     // Área visible del texto
     this.textArea = {
       x: this.scale.width / 2 - 130,
-      y: this.scale.height / 2 - 170,
+      y: this.scale.height / 2 - 160,
       width: 260,
       height: 350,
     };
@@ -40,7 +40,7 @@ export default class Letter extends Phaser.Scene {
       fontSize: "20px",
       color: "#4f342d",
       wordWrap: { width: this.textArea.width },
-    
+      lineSpacing: 5,
     });
 
     this.textContainer.add(this.letterText);
@@ -55,6 +55,16 @@ export default class Letter extends Phaser.Scene {
       this.textArea.height
     );
     this.textContainer.setMask(maskGfx.createGeometryMask());
+
+    // Scroll state
+    this.scrollY = 0;
+    this.targetScrollY = 0;
+    this.scrollEnabled = false;
+
+    // Scrollbar
+    this.createScrollbar();
+    this.scrollThumb.setVisible(false);
+    this.scrollTrack.setVisible(false);
 
     const cx = this.scale.width / 2;
     const inputY = this.scale.height / 2 + 140;
@@ -81,7 +91,7 @@ export default class Letter extends Phaser.Scene {
       e.target.value = v;
     });
 
-    // Confirmar con Enter cuando el input está enfocado
+    // Confirmar con Enter
     this.nameInput.addListener("keydown");
     this.nameInput.on("keydown", (event) => {
       if (event.key === "Enter") this.onConfirmName();
@@ -116,33 +126,6 @@ export default class Letter extends Phaser.Scene {
 
     this.closeButton.on("pointerdown", () => this.scene.start("store"));
 
-    // ─────────────────────────────
-    // PAGINACIÓN (ENTER PARA CONTINUAR)
-    // ─────────────────────────────
-    this.pageText = "";
-    this.remainingText = "";
-    this.isPaging = false;
-    this.onPagedComplete = null;
-
-    this.nextPrompt = this.add
-      .text(
-        this.textArea.x + this.textArea.width / 2,
-        this.textArea.y + this.textArea.height + 18,
-        "Pulsa ENTER para continuar",
-        {
-          fontFamily: "Pixelify Sans",
-          fontSize: "14px",
-          color: "#4f342d",
-        }
-      )
-      .setOrigin(0.5)
-      .setVisible(false);
-
-    // Enter global para pasar página (cuando esté esperando)
-    this.input.keyboard.on("keydown-ENTER", () => {
-      if (this.isPaging) this.nextPage();
-    });
-
     // Texto
     this.fullText = letterData.text;
     this.marker = "{{NAME}}";
@@ -151,71 +134,76 @@ export default class Letter extends Phaser.Scene {
   }
 
   // ─────────────────────────────
-  // PAGINACIÓN
+  // SCROLLBAR
   // ─────────────────────────────
-  fitsInTextArea(candidateText) {
-    this.letterText.setText(candidateText);
-    return this.letterText.height <= this.textArea.height;
+  createScrollbar() {
+    const barX = this.textArea.x + this.textArea.width + 12;
+    const barY = this.textArea.y;
+    const barHeight = this.textArea.height;
+
+    this.scrollTrack = this.add
+      .rectangle(barX, barY, 6, barHeight, 0xcccccc)
+      .setOrigin(0, 0);
+
+    this.scrollThumb = this.add
+      .rectangle(barX - 2, barY, 10, 60, 0x888888)
+      .setOrigin(0, 0)
+      .setInteractive({ draggable: true });
+
+    this.input.setDraggable(this.scrollThumb);
+
+    this.input.on("drag", (_, gameObject, __, dragY) => {
+      if (!this.scrollEnabled || gameObject !== this.scrollThumb) return;
+
+      const minY = barY;
+      const maxY = barY + barHeight - this.scrollThumb.height;
+      gameObject.y = Phaser.Math.Clamp(dragY, minY, maxY);
+
+      const ratio = (gameObject.y - minY) / (maxY - minY);
+      const maxScroll = Math.max(0, this.letterText.height - this.textArea.height);
+
+      this.targetScrollY = ratio * maxScroll;
+    });
   }
 
-  typewriterPaged(text, onComplete) {
-    // Si ya estaba escribiendo algo, lo "pisamos" sin más (simple)
-    this.onPagedComplete = onComplete ?? null;
+  update() {
+    // Scroll suave
+    this.scrollY = Phaser.Math.Linear(this.scrollY, this.targetScrollY, 0.1);
+    this.letterText.y = -this.scrollY;
 
-    this.remainingText = text ?? "";
-    this.pageText = "";
-    this.isPaging = false;
-    this.nextPrompt.setVisible(false);
-    this.letterText.setText("");
-
-    const writeNextChar = () => {
-      if (this.isPaging) return;
-
-      if (!this.remainingText || this.remainingText.length === 0) {
-        if (this.onPagedComplete) this.onPagedComplete();
-        return;
-      }
-
-      const ch = this.remainingText[0];
-      const candidate = this.pageText + ch;
-
-      if (!this.fitsInTextArea(candidate)) {
-        this.isPaging = true;
-        this.nextPrompt.setVisible(true);
-        return;
-      }
-
-      this.pageText = candidate;
-      this.remainingText = this.remainingText.slice(1);
-      this.letterText.setText(this.pageText);
-
-      this.time.delayedCall(20, writeNextChar);
-    };
-
-    writeNextChar();
+    this.updateScrollbar();
   }
 
-  nextPage() {
-    this.isPaging = false;
-    this.nextPrompt.setVisible(false);
+  updateScrollbar() {
+    if (!this.scrollEnabled) return;
 
-    this.pageText = "";
-    this.letterText.setText("");
+    const maxScroll = Math.max(0, this.letterText.height - this.textArea.height);
 
-    // continuar con lo que quedaba
-    const rest = this.remainingText;
-    const onDone = this.onPagedComplete;
-    this.typewriterPaged(rest, onDone);
+    if (maxScroll <= 0) {
+      this.scrollThumb.setVisible(false);
+      this.scrollTrack.setVisible(false);
+      return;
+    }
+
+    this.scrollThumb.setVisible(true);
+    this.scrollTrack.setVisible(true);
+
+    const ratio = this.scrollY / maxScroll;
+    const trackY = this.textArea.y;
+    const trackH = this.textArea.height;
+
+    this.scrollThumb.y = trackY + ratio * (trackH - this.scrollThumb.height);
   }
 
   // ─────────────────────────────
-  // TEXTO CON MARCADOR {{NAME}}
+  // TEXTO
   // ─────────────────────────────
   typeUntilMarker(text, marker) {
     const i = text.indexOf(marker);
 
     if (i === -1) {
-      return this.typewriterPaged(text, () => {
+      return this.typewriterEffect(text, () => {
+        this.scrollEnabled = true;
         this.closeButton.setVisible(true);
       });
     }
@@ -223,7 +211,7 @@ export default class Letter extends Phaser.Scene {
     this.before = text.slice(0, i);
     this.after = text.slice(i + marker.length);
 
-    this.typewriterPaged(this.before, () => {
+    this.typewriterEffect(this.before, () => {
       this.nameInput.setVisible(true);
       this.confirmText.setVisible(true);
 
@@ -245,36 +233,36 @@ export default class Letter extends Phaser.Scene {
     this.nameInput.setVisible(false);
     this.confirmText.setVisible(false);
 
-    // Añadir el nombre inmediatamente (sin efecto), y continuar paginado con el resto
-    // Importante: lo metemos en la página actual si cabe; si no, forzamos "siguiente página".
-    const candidate = (this.pageText ?? "") + name;
+    this.letterText.text += name;
 
-    if (this.fitsInTextArea(candidate)) {
-      this.pageText = candidate;
-      this.letterText.setText(this.pageText);
-    } else {
-      // si no cabe el nombre, mostramos prompt para pasar página
-      this.isPaging = true;
-      this.nextPrompt.setVisible(true);
-      // guardamos el nombre para que sea lo primero de la siguiente página
-      this.remainingText = name + (this.after ?? "");
-      this.onPagedComplete = () => this.closeButton.setVisible(true);
-      return;
-    }
-
-    // Continuar con el resto del texto después del nombre
-    const rest = this.after ?? "";
-    // Seguimos escribiendo pero sin borrar la página actual:
-    // Truco: concatenamos el texto restante delante de remainingText, y seguimos el loop manualmente.
-    // Para mantenerlo simple, reiniciamos el paginado con el contenido ya escrito + resto.
-    const already = this.pageText;
-    this.typewriterPaged(rest, () => {
+    this.typewriterEffect(this.after, () => {
+      this.scrollEnabled = true;
       this.closeButton.setVisible(true);
     });
+  }
 
-    // Restaurar lo ya escrito en la página como punto de partida
-    // (typewriterPaged resetea pageText; lo ponemos y seguimos)
-    this.pageText = already;
-    this.letterText.setText(this.pageText);
+  typewriterEffect(text, onComplete) {
+    let index = 0;
+
+    this.time.addEvent({
+      delay: 20,
+      repeat: text.length - 1,
+      callback: () => {
+        this.letterText.text += text[index];
+        index++;
+
+        // Scroll automático progresivo
+        const maxScroll = Math.max(0, this.letterText.height - this.textArea.height);
+        this.targetScrollY = maxScroll;
+
+        if (index === text.length && onComplete) onComplete();
+      },
+    });
   }
 }
+
+
+
+
+
+
