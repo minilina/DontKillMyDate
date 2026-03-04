@@ -19,8 +19,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.body.setAllowGravity(false);
 
         // Hacemos la caja de colisión más pequeña. Bloque físico de tus pies.
-        this.body.setSize(14, 12);
-        this.body.setOffset(0, 7);
+        this.body.setSize(16, 12);
+        this.body.setOffset(8, 15);
         // Velocidad
         this.speed = 100;
         this.body.setVelocity(0);
@@ -103,30 +103,37 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         super.preUpdate(t, dt);
 
         let newAnim = '';
+        let moving=false;
 
         // Reset de velocidad en cada frame para evitar deslizamientos
         this.body.setVelocity(0);
 
         // --- LÓGICA DE MOVIMIENTO ---
+        if (this.wasd.up.isDown) {
+            this.body.setVelocityY(-this.speed);
+            this.lastDirection = 'up';
+            newAnim = 'runu';
+            moving = true;
+        } else if (this.wasd.down.isDown) {
+            this.body.setVelocityY(this.speed);
+            this.lastDirection = 'down';
+            newAnim = 'rund';
+            moving = true;
+        } 
         if (this.wasd.left.isDown) {
             this.body.setVelocityX(-this.speed);
             this.setFlipX(true);
             this.lastDirection = 'left';
             newAnim = 'runr';
+            moving = true;
         } else if (this.wasd.right.isDown) {
             this.body.setVelocityX(this.speed);
             this.setFlipX(false);
             this.lastDirection = 'right';
             newAnim = 'runr';
-        } else if (this.wasd.up.isDown) {
-            this.body.setVelocityY(-this.speed);
-            this.lastDirection = 'up';
-            newAnim = 'runu';
-        } else if (this.wasd.down.isDown) {
-            this.body.setVelocityY(this.speed);
-            this.lastDirection = 'down';
-            newAnim = 'rund';
-        } else {
+            moving = true;
+        } 
+        if(!moving) {
             // --- IDLE ---
             switch (this.lastDirection) {
                 case 'left': this.setFlipX(true); newAnim = 'idler'; break;
