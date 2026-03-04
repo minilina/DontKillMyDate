@@ -97,9 +97,11 @@ export default class House extends Phaser.Scene {
         const capaCesped = map.createLayer('Suelo/Cesped', tilesetsArray, 0, 0);
         const capaFondo = map.createLayer('Suelo/Fondo', tilesetsArray, 0, 0);
         const capaDecoracionCesped = map.createLayer('Suelo/Decoracion Cesped', tilesetsArray, 0, 0);
+        const capaHierbaEncima = map.createLayer('Suelo/Hierba Encima Agua', tilesetsArray, 0, 0);
         const capaVallas = map.createLayer('Delimitacion Mundo/Vallas', tilesetsArray, 0, 0);
         const capaMuro = map.createLayer('Delimitacion Mundo/Muro', tilesetsArray, 0, 0);
         const capaEscalera = map.createLayer('Delimitacion Mundo/Escalera', tilesetsArray, 0, 0);
+        const capaArbolesTapar= map.createLayer('Arboles/Arboles Tapar', tilesetsArray, 0, 0);
         const capaArboles = map.createLayer('Arboles/Arboles', tilesetsArray, 0, 0);
         const capaArbolesDelante = map.createLayer('Arboles/Arboles Delante', tilesetsArray, 0, 0);
         const capaArbolesEncima = map.createLayer('Arboles/Arboles Encima', tilesetsArray, 0, 0);
@@ -107,7 +109,8 @@ export default class House extends Phaser.Scene {
         const capaCasa = map.createLayer('Mas Colisiones/Casa', tilesetsArray, 0, 0);
         const capaPiedras = map.createLayer('Mas Colisiones/Piedras', tilesetsArray, 0, 0);
         const capaPiedras2 = map.createLayer('Mas Colisiones/Piedras 2', tilesetsArray, 0, 0);
-        const capaHierbaEncima = map.createLayer('Hierba Encima', tilesetsArray, 0, 0);
+        const capaHierbaCasa = map.createLayer('Mas Colisiones/Hierba Casa', tilesetsArray, 0, 0);
+        const capaTapar = map.createLayer('Mas Colisiones/Tapar', tilesetsArray, 0, 0);
         const capaAnimales = map.createLayer('Animales', tilesetsArray, 0, 0);
         
         // CAPA DE COLISIONES
@@ -123,19 +126,13 @@ export default class House extends Phaser.Scene {
         // CONFIGURAR PROFUNDIDADES (DEPTH / Z-INDEX)
         this.player.setDepth(10);
         
-        capaVallas.setDepth(15);
-        capaMuro.setDepth(15);
         capaArboles.setDepth(15);
         capaArbolesDelante.setDepth(15);
         capaArbolesEncima.setDepth(15);
-        capaPilares.setDepth(15);
-        capaCasa.setDepth(15);
-        capaHierbaEncima.setDepth(15); 
-        capaPiedras.setDepth(15);
-        capaPiedras2.setDepth(15);
+        capaTapar.setDepth(15);
 
         // CONFIGURAR CAMARA Y LIMITES
-        this.cameras.main.setZoom(2.5);
+        this.cameras.main.setZoom(2);
         this.cameras.main.startFollow(this.player, true, 0.08, 0.08); 
         
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
