@@ -1,8 +1,10 @@
 import Phaser from 'phaser';
 import customer from '../../assets/sprites/default.png';
 import fondo from '../../assets/sprites/fondo.jpg';
-import playerAnimJson from '../../assets/anims/player_atlas.json';
-import playerAnim from '../../assets/anims/player.png';
+
+//Esto ya lo descomentare mas tarde(LUCAS)
+//import playerAnimJson from '../../assets/anims/player_atlas.json';
+//import playerAnim from '../../assets/anims/player.png';
 
 
 export default class Boot extends Phaser.Scene {
@@ -13,7 +15,9 @@ export default class Boot extends Phaser.Scene {
     preload() {
         this.load.image('customer', customer);
         this.load.image('fondo', fondo);
-        this.load.atlas('player', playerAnim, playerAnimJson);
+
+        //Esto ya lo descomentare mas tarde(LUCAS)
+        //this.load.atlas('player', playerAnim, playerAnimJson);
 
         // Aquí puedes añadir barra de progreso si quieres
     }
