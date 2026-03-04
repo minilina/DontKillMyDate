@@ -4,6 +4,17 @@ import Phaser from 'phaser';
  * Clase que representa a un cliente/NPC en el juego.
  * @extends Phaser.GameObjects.Container
  */
+
+/*
+(ALBA) en este comentario se definen las profundiades de cada elemento del NPC para que se rendericen en el orden correcto. 
+Para cuando termine de implementar la generación de NPC y las capas (ojos, pelo, ropa, etc.)
+
+const LAYER_DEPTH = {
+  BASE: 10,
+  EYES: 20,
+  HAIR: 30, .... más capas
+};
+*/
 export default class NPC extends Phaser.GameObjects.Container {
     
     /**
@@ -19,16 +30,18 @@ export default class NPC extends Phaser.GameObjects.Container {
         // Llamamos al constructor del contenedor padre
         super(scene, x, y);
 
-        // 1. GUARDAMOS LOS REQUISITOS (¡Esta es la clave para la jugabilidad!)
-        // Aquí se guarda algo como: { sabor: 'picante', color: 'rojo', consistencia: 'molido', raza: 'elfos' }
+        // 1. GUARDAMOS LOS REQUISITOS 
+        // { sabor: 'picante', color: 'rojo', consistencia: 'molido', raza: 'elfos' }
         this.requirements = requirements;
 
         // 2. CREAMOS EL SPRITE DEL PERSONAJE
         this.sprite = scene.add.sprite(0, 0, spriteKey);
-        // Si el sprite es muy grande o pequeño, puedes ajustarlo aquí:
-        // this.sprite.setScale(1.5);
+        
 
         this.add(this.sprite); // Añadimos el sprite al contenedor
+
+        //PARA CUANDO QUITE EL PLACEHOLDER (ALBA)
+        //this.setScale(3); // Ajusta el tamaño del NPC según tu sprite 
 
         scene.add.existing(this); // Añadimos el contenedor a la escena
     }
