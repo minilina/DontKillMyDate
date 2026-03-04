@@ -21,11 +21,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         // Hacemos la caja de colisión más pequeña. Bloque físico de tus pies.
         this.body.setSize(14, 12);
         this.body.setOffset(0, 7);
-<<<<<<< Updated upstream
-        
-=======
-
->>>>>>> Stashed changes
         // Velocidad
         this.speed = 100;
         this.body.setVelocity(0);
