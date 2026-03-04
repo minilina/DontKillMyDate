@@ -32,15 +32,17 @@ export default class Letter extends Phaser.Scene {
       height: 350,
     };
 
+
     // Container del texto
     this.textContainer = this.add.container(this.textArea.x, this.textArea.y);
 
     this.letterText = this.add.text(0, 0, "", {
       fontFamily: "VT323, monospace",
-      fontSize: "20px",
+      fontSize: "23px",
       color: "#4f342d",
       wordWrap: { width: this.textArea.width },
-    
+
+
     });
 
     this.textContainer.add(this.letterText);
@@ -55,6 +57,8 @@ export default class Letter extends Phaser.Scene {
       this.textArea.height
     );
     this.textContainer.setMask(maskGfx.createGeometryMask());
+
+
 
     const cx = this.scale.width / 2;
     const inputY = this.scale.height / 2 + 140;
@@ -73,11 +77,19 @@ export default class Letter extends Phaser.Scene {
     this.nameInput.node.setAttribute("autocapitalize", "none");
     this.nameInput.node.setAttribute("spellcheck", "false");
 
-    // Filtrar en tiempo real: sin números, normalizar a minúsculas
+    // Filtrar en tiempo real: solo a-z, todo en minúsculas, máximo 20 caracteres
     this.nameInput.node.addEventListener("input", (e) => {
-      let v = e.target.value.replace(/\d+/g, "");
+      let v = e.target.value;
+
+      // 1) forzar minúsculas
       v = v.toLowerCase();
-      v = v.replace(/\s{2,}/g, " ");
+
+      // 2) eliminar cualquier cosa que no sea a-z
+      v = v.replace(/[^a-z]/g, "");
+
+      // 3) máximo 20 caracteres
+      v = v.substring(0, 20);
+
       e.target.value = v;
     });
 
@@ -115,6 +127,25 @@ export default class Letter extends Phaser.Scene {
       .setVisible(false);
 
     this.closeButton.on("pointerdown", () => this.scene.start("store"));
+
+    this.saltar = this.add
+      .text(cx, inputY + 80, "Saltar", {
+        fontFamily: "Pixelify Sans",
+        fontSize: "10px",
+        backgroundColor: "#00ee5fb7",
+        color: "#ffffff",
+        padding: { x: 15, y: 8 },
+      })
+      .setOrigin(0.5)   
+      .setInteractive()
+      .setVisible(true);
+
+    this.saltar.on("pointerdown", () => this.scene.start("store"));
+
+    // Permitir cerrar con Enter cuando el botón es visible
+    this.input.keyboard.on("keydown-ENTER", () => {
+      if (this.closeButton.visible) this.scene.start("store");
+    });
 
     // ─────────────────────────────
     // PAGINACIÓN (ENTER PARA CONTINUAR)
@@ -276,5 +307,9 @@ export default class Letter extends Phaser.Scene {
     // (typewriterPaged resetea pageText; lo ponemos y seguimos)
     this.pageText = already;
     this.letterText.setText(this.pageText);
+
+
   }
+
+
 }
