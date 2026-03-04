@@ -1,0 +1,320 @@
+{
+    "frames": [
+        {
+            "filename": "runu6",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 0,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "runu7",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 160,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "runu8",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 0,
+                "y": 160
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "rund1",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 160,
+                "y": 160
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "rund2",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 320,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "rund3",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 320,
+                "y": 160
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "rund4",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 0,
+                "y": 320
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "rund5",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 160,
+                "y": 320
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "rund6",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 320,
+                "y": 320
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "rund7",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 480,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "rund8",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 480,
+                "y": 160
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "runr1",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 480,
+                "y": 320
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "runr2",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 0,
+                "y": 480
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "runr3",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 160,
+                "y": 480
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "runr4",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 320,
+                "y": 480
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "runr5",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 480,
+                "y": 480
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "runr6",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 640,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "runr7",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 640,
+                "y": 160
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "runr8",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 640,
+                "y": 320
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "runu1",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 640,
+                "y": 480
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "runu2",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 0,
+                "y": 640
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "runu3",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 160,
+                "y": 640
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "runu4",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 320,
+                "y": 640
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "runu5",
+            "frame": {
+                "w": 160,
+                "h": 160,
+                "x": 480,
+                "y": 640
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        }
+    ],
+    "meta": {
+        "description": "Atlas generado con Atlas Packer Gamma V2",
+        "web": "https://gammafp.github.io/atlas-packer-phaser/"
+    }
+}
