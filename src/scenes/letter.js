@@ -37,7 +37,7 @@ export default class Letter extends Phaser.Scene {
 
     this.letterText = this.add.text(0, 0, "", {
       fontFamily: "VT323, monospace",
-      fontSize: "20px",
+      fontSize: "18px",
       color: "#4f342d",
       wordWrap: { width: this.textArea.width },
     
