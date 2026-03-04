@@ -36,9 +36,7 @@ export default class Start extends Phaser.Scene {
             .setScale(2);      // escala para hacerlas más grandes sin deformarlas
 
         // Logo
-        this.add.image(-40, -60, 'logo')
-            .setOrigin(0, 0)
-            .setDisplaySize(this.scale.width, this.scale.height);
+        this.add.image(this.scale.width / 2, this.scale.height / 2.5, 'logo');
         // Botón
         const boton = this.add.image(this.scale.width / 2, this.scale.height / 2 + 100, 'button')
             .setInteractive({ useHandCursor: true })
@@ -50,7 +48,7 @@ export default class Start extends Phaser.Scene {
             this.scale.height / 2 + 97,
             'START GAME',
             {
-                fontFamily: 'Pixelify Sans, sans-serif',
+                fontFamily: 'VT323, monospace',
                 fontSize: '25px',
                 fill: '#ffffff'
             }

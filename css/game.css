@@ -36,7 +36,7 @@ body {
 }
 
 .banner h1 {
-    font-family: 'Pixelify Sans', sans-serif;
+    font-family: 'VT323', monospace;
     font-size: 50px;
     font-weight: normal;
     text-align: center;
@@ -63,7 +63,7 @@ section {
 
 section h2 {
     margin-bottom: 10px;
-    font-family: 'Pixelify Sans', sans-serif;
+    font-family: 'VT323', monospace;
     font-size: 30px;
     font-weight: normal;
 }
