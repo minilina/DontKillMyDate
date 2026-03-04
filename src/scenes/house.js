@@ -122,7 +122,9 @@ export default class House extends Phaser.Scene {
 
         // CREAR AL JUGADOR
         this.player = new Player(this, 400, 300); 
-        
+        //TODO ver si esto funciona lo de seguir la camara
+        this.cameras.main.startFollow(this.player);
+
         // CONFIGURAR PROFUNDIDADES (DEPTH / Z-INDEX)
         this.player.setDepth(10);
         

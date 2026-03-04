@@ -15,7 +15,7 @@ const config = {
     dom: { createContainer: true },
     scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.NO_CENTER },
     pixelArt: true,
-    physics: { default: 'arcade', arcade: { gravity: { y: 400 }, debug: false } },
+    physics: { default: 'arcade', arcade: { gravity: { y: 400 }, debug: true } },
     scene: [Start, Boot, Letter, Store, Kitchen, House, End] // Start primero
 };
 
