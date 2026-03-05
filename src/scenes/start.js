@@ -46,7 +46,7 @@ export default class Start extends Phaser.Scene {
         const botonTexto = this.add.text(
             this.scale.width / 2,
             this.scale.height / 2 + 97,
-            'START GAME',
+            'JUGAR',
             {
                 fontFamily: 'VT323, monospace',
                 fontSize: '25px',

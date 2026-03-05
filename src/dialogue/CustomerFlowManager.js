@@ -44,7 +44,7 @@ export default class CustomerFlowManager {
 
         // 2. Crear NPC con requisitos y diálogo
         const spriteKey = "customer";
-        const x = this.scene.scale.width / 2;
+        const x = this.scene.scale.width / 4;
         const y = this.scene.scale.height / 2 + 7;
 
         this.currentCustomer = new NPC(

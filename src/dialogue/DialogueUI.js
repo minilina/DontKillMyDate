@@ -1,75 +1,126 @@
-import Phaser from "phaser";
-
 /**
- * UI del cuadro de diálogo (solo presentación).
- * No decide qué línea toca; eso lo hace DialogueManager.
+ * UI del cuadro de diálogo clientes
  */
 export default class DialogueUI {
-  /**
-   * @param {Phaser.Scene} scene
-   */
+  
   constructor(scene) {
-    this.scene = scene;
 
-    const w = scene.scale.width;
-    const h = scene.scale.height;
+    this.scene = scene;
 
     this.container = scene.add.container(0, 0).setDepth(1000);
     this.container.setVisible(false);
 
-    this.bg = scene.add
-      .rectangle(w / 2, h - 110, w - 40, 180, 0x000000, 0.75)
-      .setStrokeStyle(2, 0xffffff, 0.9);
+    this.dialog = scene.add.image(630, 185, "dialog").setScale(3).setInteractive();
+    this.dialogArrow = scene.add.image(870, 260, "dialogArrow").setScale(3);
 
-    this.nameText = scene.add.text(40, h - 185, "", {
-      fontFamily: "Arial",
-      fontSize: "20px",
-      color: "#ffd166",
+    // animacion flecha
+    this.arrowTween = scene.tweens.add({
+      targets: this.dialogArrow,
+      y: 265, // mueve la flecha 5 píxeles hacia abajo
+      duration: 600,
+      ease: 'Power1.easeInOut',
+      yoyo: true, // hace que vuelva a la posición original
+      repeat: -1 // se repite indefinidamente
+    });
+    this.arrowTween.pause();
+
+    // texto del dialogo
+    this.text = scene.add.text(380, 110, "", {
+      fontFamily: "VT323, monospace",
+      fontSize: "20px", 
+      color: "#000000",
+      wordWrap: { width: 480 },
+      align: "left"
     });
 
-    this.lineText = scene.add.text(40, h - 155, "", {
-      fontFamily: "Arial",
-      fontSize: "18px",
-      color: "#ffffff",
-      wordWrap: { width: w - 80 },
-    });
+    this.container.add([this.dialog, this.dialogArrow, this.text]);
 
-    this.continueText = scene.add
-      .text(w - 160, h - 60, "Continuar", {
-        fontFamily: "Arial",
-        fontSize: "18px",
-        color: "#ffffff",
-        backgroundColor: "#2b2d42",
-        padding: { left: 12, right: 12, top: 8, bottom: 8 },
-      })
-      .setInteractive({ useHandCursor: true });
-
-    this.container.add([this.bg, this.nameText, this.lineText, this.continueText]);
+    // variables para gestionar el texto letra a letra
+    this.fullText = ""; 
+    this.isTyping = false; 
+    this.typewriterTimer = null;
+    this.arrowTimer = null;
   }
 
+  // clics en cualquier parte de la pantalla para autocompletar o avanzar
   onContinue(handler) {
-    // borrar listeners previos si se reutiliza
-    this.continueText.removeAllListeners();
-    this.continueText.on("pointerdown", handler);
+    this.scene.input.removeListener("pointerdown");
+    
+    this.scene.input.on("pointerdown", () => {
+      if (!this.container.visible) return; // si el diálogo no está visible, no hace nada
+
+      if (this.isTyping) {
+        this.finishTyping(); // si está escribiendo, completa el texto
+      } else {
+        handler(); // si no, llama al handler para avanzar el diálogo
+      }
+    });
   }
 
+  // muestra el dialogo por pantalla
   show() {
     this.container.setVisible(true);
   }
 
+  // oculta todo, pausa la animacion y resetea la posicion de la flecha
   hide() {
     this.container.setVisible(false);
+    this.arrowTween.pause();
+    this.dialogArrow.y = 260;
   }
 
-  setSpeakerName(name) {
-    this.nameText.setText(name ?? "");
-  }
-
+  // escribe el texto letra a letra y al terminar muestra la flecha
   setLine(text) {
-    this.lineText.setText(text ?? "");
+    if (this.typewriterTimer) {
+      this.typewriterTimer.remove();
+    }
+
+    if (this.arrowTimer) {
+      this.arrowTimer.remove();
+    }
+
+    this.fullText = text ?? "";
+    this.text.setText("");
+    this.isTyping = true;
+
+    this.dialogArrow.setVisible(false);
+    this.arrowTween.pause();
+    this.dialogArrow.y = 260;
+
+    let index = 0;
+
+    this.typewriterTimer = this.scene.time.addEvent({
+      delay: 30, 
+      repeat: this.fullText.length - 1,
+      callback: () => {
+        this.text.text += this.fullText[index];
+        index++;
+        
+        if (index === this.fullText.length) {
+          this.isTyping = false;
+
+          this.arrowTimer = this.scene.time.delayedCall(300, () => {
+            this.dialogArrow.setVisible(true); 
+            this.arrowTween.play();
+          });
+        }
+      }
+    });
   }
 
-  setContinueLabel(label) {
-    this.continueText.setText(label ?? "Continuar");
+  // para el timer y escribe todo el texto de golpe
+  finishTyping() {
+    if (this.typewriterTimer) {
+      this.typewriterTimer.remove(); 
+    }
+
+    if (this.arrowTimer) {
+      this.arrowTimer.remove();
+    }
+
+    this.text.setText(this.fullText); 
+    this.isTyping = false;
+    this.dialogArrow.setVisible(true);
+    this.arrowTween.play();
   }
 }

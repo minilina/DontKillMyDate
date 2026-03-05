@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import CustomerFlowManager from "../dialogue/CustomerFlowManager.js";
+import dialog from "../../assets/sprites/dialog.png";
+import dialogArrow from "../../assets/sprites/dialog_arrow.png";
 
 export default class Store extends Phaser.Scene {
     /**
@@ -7,6 +9,11 @@ export default class Store extends Phaser.Scene {
      */
     constructor() {
         super({ key: 'store' });
+    }
+
+    preload() {
+        this.load.image("dialog", dialog);
+        this.load.image("dialogArrow", dialogArrow);
     }
 
     /**

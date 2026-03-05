@@ -134,7 +134,7 @@ export default class House extends Phaser.Scene {
         capaTapar.setDepth(15);
 
         // CONFIGURAR CAMARA Y LIMITES
-        this.cameras.main.setZoom(2);
+        this.cameras.main.setZoom(2.5);
         this.cameras.main.startFollow(this.player, true, 0.08, 0.08); 
         
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
