@@ -1,5 +1,10 @@
 
 {
-  "text": "Querida {{NAME}},\n\nSi estás leyendo esto, significa que por fin reuní el valor para marcharme.\n\nSabes que esta tienda es mi vida, pero el mundo es más grande que estas paredes y hay asuntos que debo resolver.\n\nNecesito que te quedes y la cuides   durante un tiempo. Los clientes vendrán como siempre, escúchalos bien. A veces, lo que buscan no es lo que dicen en voz alta.\n\nMi querido caldero te enseñará todo lo necesario para empezar.\n\nConfía en tu instinto y no olvides esto: cada decisión que tomes tendrá su consecuencia.\nVolveré cuando sea el momento.\n\nCon cariño,\n\nTu tía Agatha"
+  "pages": [
+    "Querida {{NAME}},\n\nSi estás leyendo esto,\nsignifica que por fin reuní\nel valor para marcharme.\n\nSabes que esta tienda es mi\nvida, pero el mundo es más\ngrande que estas paredes y\nhay asuntos que debo\nresolver.\n\nNecesito que te quedes y la\ncuides durante un tiempo.\n\n",
+    "Los clientes vendrán como\nsiempre, escúchalos bien:\nA veces, lo que buscan no\nes lo que dicen en voz alta.\n\nMi querido caldero te\nenseñará todo lo necesario\npara empezar.\n\nConfía en tu instinto y no\nolvides esto: cada decisión\nque tomes tendrá su consecuencia.\n\n\nVolveré cuando sea el\nmomento.\n\n",
+    "Con cariño,\n\nTu tía Agatha"
+
+  ] 
 
 }

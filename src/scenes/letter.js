@@ -32,7 +32,6 @@ export default class Letter extends Phaser.Scene {
       height: 350,
     };
 
-
     // Container del texto
     this.textContainer = this.add.container(this.textArea.x, this.textArea.y);
 
@@ -41,8 +40,6 @@ export default class Letter extends Phaser.Scene {
       fontSize: "23px",
       color: "#4f342d",
       wordWrap: { width: this.textArea.width },
-
-
     });
 
     this.textContainer.add(this.letterText);
@@ -58,17 +55,12 @@ export default class Letter extends Phaser.Scene {
     );
     this.textContainer.setMask(maskGfx.createGeometryMask());
 
-
-
     const cx = this.scale.width / 2;
     const inputY = this.scale.height / 2 + 140;
 
     // UI nombre
     this.nameInput = this.add
-      .dom(cx, inputY, "input", {
-        fontSize: "15px",
-        padding: "5px",
-      })
+      .dom(cx, inputY, "input", { fontSize: "15px", padding: "5px" })
       .setVisible(false);
 
     this.nameInput.node.placeholder = "Escribe tu nombre";
@@ -77,26 +69,21 @@ export default class Letter extends Phaser.Scene {
     this.nameInput.node.setAttribute("autocapitalize", "none");
     this.nameInput.node.setAttribute("spellcheck", "false");
 
-    // Filtrar en tiempo real: solo a-z, todo en minúsculas, máximo 20 caracteres
     this.nameInput.node.addEventListener("input", (e) => {
       let v = e.target.value;
-
-      // 1) forzar minúsculas
       v = v.toLowerCase();
-
-      // 2) eliminar cualquier cosa que no sea a-z
       v = v.replace(/[^a-z]/g, "");
-
-      // 3) máximo 20 caracteres
       v = v.substring(0, 20);
-
       e.target.value = v;
     });
 
-    // Confirmar con Enter cuando el input está enfocado
     this.nameInput.addListener("keydown");
     this.nameInput.on("keydown", (event) => {
-      if (event.key === "Enter") this.onConfirmName();
+      if (event.key === "Enter") {
+        event.preventDefault();
+        event.stopPropagation();
+        this.onConfirmName();
+      }
     });
 
     this.confirmText = this.add
@@ -128,188 +115,149 @@ export default class Letter extends Phaser.Scene {
 
     this.closeButton.on("pointerdown", () => this.scene.start("store"));
 
-    this.saltar = this.add
-      .text(cx, inputY + 80, "Saltar", {
-        fontFamily: "Pixelify Sans",
-        fontSize: "10px",
-        backgroundColor: "#00ee5fb7",
-        color: "#ffffff",
-        padding: { x: 15, y: 8 },
-      })
-      .setOrigin(0.5)   
-      .setInteractive()
-      .setVisible(true);
-
-    this.saltar.on("pointerdown", () => this.scene.start("store"));
-
-    // Permitir cerrar con Enter cuando el botón es visible
-    this.input.keyboard.on("keydown-ENTER", () => {
-      if (this.closeButton.visible) this.scene.start("store");
-    });
-
-    // ─────────────────────────────
-    // PAGINACIÓN (ENTER PARA CONTINUAR)
-    // ─────────────────────────────
-    this.pageText = "";
-    this.remainingText = "";
-    this.isPaging = false;
-    this.onPagedComplete = null;
-
+    // Prompt "ENTER para continuar"
     this.nextPrompt = this.add
       .text(
         this.textArea.x + this.textArea.width / 2,
         this.textArea.y + this.textArea.height + 18,
         "Pulsa ENTER para continuar",
-        {
-          fontFamily: "Pixelify Sans",
-          fontSize: "14px",
-          color: "#4f342d",
-        }
+        { fontFamily: "Pixelify Sans", fontSize: "14px", color: "#4f342d" }
       )
       .setOrigin(0.5)
       .setVisible(false);
 
-    // Enter global para pasar página (cuando esté esperando)
+    // ─────────────────────────────
+    // PAGINACIÓN MANUAL (3 páginas fijas)
+    // ─────────────────────────────
+    this.pages = letterData.pages ?? [];
+    this.pageIndex = 0;
+    this.marker = "{{NAME}}";
+    this.waitingName = false;
+
+    // Enter para siguiente página (solo si no estás en input de nombre)
     this.input.keyboard.on("keydown-ENTER", () => {
-      if (this.isPaging) this.nextPage();
+      // Si estamos esperando nombre, no pasar página
+      if (this.waitingName) return;
+
+      // Si el foco está en un input/textarea (extra seguridad)
+      const ae = document.activeElement?.tagName?.toLowerCase();
+      if (ae === "input" || ae === "textarea") return;
+
+      if (this.closeButton.visible) {
+        this.scene.start("store");
+        return;
+      }
+
+      this.nextManualPage();
     });
 
-    // Texto
-    this.fullText = letterData.text;
-    this.marker = "{{NAME}}";
-
-    this.typeUntilMarker(this.fullText, this.marker);
+    // Render inicial
+    this.renderPage(0);
   }
 
-  // ─────────────────────────────
-  // PAGINACIÓN
-  // ─────────────────────────────
-  fitsInTextArea(candidateText) {
-    this.letterText.setText(candidateText);
-    return this.letterText.height <= this.textArea.height;
-  }
+  // Escribe con efecto (sin cortar automáticamente)
+  typewriter(text, onComplete, opts) {
+    const append = opts?.append ?? false;
 
-  typewriterPaged(text, onComplete) {
-    // Si ya estaba escribiendo algo, lo "pisamos" sin más (simple)
-    this.onPagedComplete = onComplete ?? null;
+    const base = append ? (this.letterText.text ?? "") : "";
+    if (!append) this.letterText.setText("");
 
-    this.remainingText = text ?? "";
-    this.pageText = "";
-    this.isPaging = false;
-    this.nextPrompt.setVisible(false);
-    this.letterText.setText("");
+    let i = 0;
 
-    const writeNextChar = () => {
-      if (this.isPaging) return;
-
-      if (!this.remainingText || this.remainingText.length === 0) {
-        if (this.onPagedComplete) this.onPagedComplete();
+    const tick = () => {
+      if (i >= text.length) {
+        onComplete?.();
         return;
       }
-
-      const ch = this.remainingText[0];
-      const candidate = this.pageText + ch;
-
-      if (!this.fitsInTextArea(candidate)) {
-        this.isPaging = true;
-        this.nextPrompt.setVisible(true);
-        return;
-      }
-
-      this.pageText = candidate;
-      this.remainingText = this.remainingText.slice(1);
-      this.letterText.setText(this.pageText);
-
-      this.time.delayedCall(20, writeNextChar);
+      this.letterText.setText(base + text.slice(0, i + 1));
+      i++;
+      this.time.delayedCall(20, tick);
     };
 
-    writeNextChar();
+    tick();
   }
 
-  nextPage() {
-    this.isPaging = false;
-    this.nextPrompt.setVisible(false);
+  renderPage(index) {
+    const raw = this.pages[index] ?? "";
 
-    this.pageText = "";
-    this.letterText.setText("");
+    // última página => luego mostrar "Cerrar" en vez de prompt
+    const isLast = index >= this.pages.length - 1;
 
-    // continuar con lo que quedaba
-    const rest = this.remainingText;
-    const onDone = this.onPagedComplete;
-    this.typewriterPaged(rest, onDone);
-  }
+    // si en esta página está el marcador, paramos y pedimos nombre
+    const markerPos = raw.indexOf(this.marker);
+    if (markerPos !== -1) {
+      const before = raw.slice(0, markerPos);
+      const after = raw.slice(markerPos + this.marker.length);
 
-  // ─────────────────────────────
-  // TEXTO CON MARCADOR {{NAME}}
-  // ─────────────────────────────
-  typeUntilMarker(text, marker) {
-    const i = text.indexOf(marker);
+      this.waitingName = false;
+      this.nextPrompt.setVisible(false);
+      this.closeButton.setVisible(false);
 
-    if (i === -1) {
-      return this.typewriterPaged(text, () => {
-        this.closeButton.setVisible(true);
+      this.typewriter(before, () => {
+        this.waitingName = true;
+        this._afterNameInThisPage = after;
+
+        this.nameInput.setVisible(true);
+        this.confirmText.setVisible(true);
+
+        this.time.delayedCall(50, () => {
+          this.nameInput.node.focus();
+          this.nameInput.node.click();
+        });
       });
-    }
 
-    this.before = text.slice(0, i);
-    this.after = text.slice(i + marker.length);
-
-    this.typewriterPaged(this.before, () => {
-      this.nameInput.setVisible(true);
-      this.confirmText.setVisible(true);
-
-      // En algunos navegadores el focus inmediato falla: delay corto
-      this.time.delayedCall(50, () => {
-        this.nameInput.node.focus();
-        this.nameInput.node.click();
-      });
-    });
-  }
-
-  onConfirmName() {
-    const raw = this.nameInput.node.value ?? "";
-    const name = raw.replace(/\d+/g, "").trim().toLowerCase() || "jugador";
-
-    // Guardar para el resto del juego
-    this.registry.set("playerName", name);
-
-    this.nameInput.setVisible(false);
-    this.confirmText.setVisible(false);
-
-    // Añadir el nombre inmediatamente (sin efecto), y continuar paginado con el resto
-    // Importante: lo metemos en la página actual si cabe; si no, forzamos "siguiente página".
-    const candidate = (this.pageText ?? "") + name;
-
-    if (this.fitsInTextArea(candidate)) {
-      this.pageText = candidate;
-      this.letterText.setText(this.pageText);
-    } else {
-      // si no cabe el nombre, mostramos prompt para pasar página
-      this.isPaging = true;
-      this.nextPrompt.setVisible(true);
-      // guardamos el nombre para que sea lo primero de la siguiente página
-      this.remainingText = name + (this.after ?? "");
-      this.onPagedComplete = () => this.closeButton.setVisible(true);
       return;
     }
 
-    // Continuar con el resto del texto después del nombre
-    const rest = this.after ?? "";
-    // Seguimos escribiendo pero sin borrar la página actual:
-    // Truco: concatenamos el texto restante delante de remainingText, y seguimos el loop manualmente.
-    // Para mantenerlo simple, reiniciamos el paginado con el contenido ya escrito + resto.
-    const already = this.pageText;
-    this.typewriterPaged(rest, () => {
-      this.closeButton.setVisible(true);
+    // página normal
+    this.typewriter(raw, () => {
+      if (isLast) {
+        this.nextPrompt.setVisible(false);
+        this.closeButton.setVisible(true);
+      } else {
+        this.nextPrompt.setVisible(true);
+        this.closeButton.setVisible(false);
+      }
     });
-
-    // Restaurar lo ya escrito en la página como punto de partida
-    // (typewriterPaged resetea pageText; lo ponemos y seguimos)
-    this.pageText = already;
-    this.letterText.setText(this.pageText);
-
-
   }
 
+ onConfirmName() {
+  const raw = this.nameInput.node.value ?? "";
+  const name = raw.replace(/\d+/g, "").trim().toLowerCase() || "jugador";
 
+  this.registry.set("playerName", name);
+
+  this.nameInput.setVisible(false);
+  this.confirmText.setVisible(false);
+  this.waitingName = false;
+
+  const after = this._afterNameInThisPage ?? "";
+
+  // 1) pegar el nombre inmediatamente (sin reescribir "Querida ")
+  this.letterText.setText((this.letterText.text ?? "") + name);
+
+  // 2) continuar escribiendo el resto con append
+  const isLast = this.pageIndex >= this.pages.length - 1;
+  this.typewriter(after, () => {
+    if (isLast) {
+      this.nextPrompt.setVisible(false);
+      this.closeButton.setVisible(true);
+    } else {
+      this.nextPrompt.setVisible(true);
+    }
+  }, { append: true });
+}
+
+  nextManualPage() {
+    if (this.pageIndex >= this.pages.length - 1) {
+      // ya es la última; aquí podrías cerrar o no hacer nada
+      this.closeButton.setVisible(true);
+      this.nextPrompt.setVisible(false);
+      return;
+    }
+
+    this.pageIndex++;
+    this.nextPrompt.setVisible(false);
+    this.renderPage(this.pageIndex);
+  }
 }
