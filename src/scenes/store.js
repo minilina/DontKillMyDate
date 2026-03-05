@@ -21,7 +21,6 @@ export default class Store extends Phaser.Scene {
             .setDisplaySize(this.scale.width, this.scale.height);
         // 2) Crear diálogo
         this.flow = new CustomerFlowManager(this);
-
         // Metemos la cantidad de clientes n elegida a la cola
         let n = 1;
         this.flow.startShift(n);
