@@ -85,6 +85,10 @@ section p {
 #juego canvas {
     max-width: 100%;
     height: auto;
+    /* Para que el juego no se muestre borroso*/
+    image-rendering: pixelated; 
+    image-rendering: crisp-edges;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8); /* Un toque para que destaque del fondo */
 }
 
 .contenedor-titulo {

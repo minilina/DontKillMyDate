@@ -132,7 +132,7 @@ export default class House extends Phaser.Scene {
         this.player = new Player(this, 400, 300); 
 
         // CAMARA SIGUE AL JUGADOR
-        this.cameras.main.startFollow(this.player);
+        this.cameras.main.startFollow(this.player, true);
 
         // CONFIGURAR PROFUNDIDADES (DEPTH / Z-INDEX)
         this.player.setDepth(10);
@@ -143,8 +143,9 @@ export default class House extends Phaser.Scene {
         capaTapar.setDepth(15);
 
         // CONFIGURAR CAMARA Y LIMITES
-        this.cameras.main.setZoom(2.5);
-        this.cameras.main.startFollow(this.player, true, 0.08, 0.08); 
+        this.cameras.main.setZoom(3);
+        this.cameras.main.roundPixels = true;
+        this.cameras.main.startFollow(this.player, true); 
         
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
