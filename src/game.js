@@ -7,6 +7,8 @@ import Kitchen from './scenes/kitchen.js';
 import House from './scenes/house.js';
 import End from './scenes/end.js';
 
+import AnimatedTiles from 'phaser-animated-tiles/dist/AnimatedTiles.js';
+
 const config = {
     type: Phaser.AUTO,
     width: 960,
@@ -15,8 +17,10 @@ const config = {
     dom: { createContainer: true },
     scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.NO_CENTER },
     pixelArt: true,
-    physics: { default: 'arcade', arcade: { gravity: { y: 400 }, debug: true } },
-    scene: [Start, Boot, Letter, Store, Kitchen, House, End] // Start primero
+    physics: { default: 'arcade', arcade: { gravity: { y: 400 }, debug: false } },
+    scene: [Start, Boot, Letter, Store, Kitchen, House, End], // Start primero
+    // npm install phaser-animated-tiles tuve que hacer para la animacion de las tiles
+    plugins: { scene: [ { key: 'AnimatedTiles', plugin: AnimatedTiles, mapping: 'animatedTiles'} ] }
 };
 
 new Phaser.Game(config);

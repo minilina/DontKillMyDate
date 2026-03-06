@@ -22,7 +22,9 @@ import tilesetGrassSpring from '../../assets/tiled/tilesetGrassSpring.png';
 import tilesetGrassWaterSpring from '../../assets/tiled/tilesetGrassWaterSpring.png';
 import treeTrunks from '../../assets/tiled/treeTrunks.png';
 import waterGroundAnimationsTiles from '../../assets/tiled/waterGroundAnimationsTiles.png';
-import player from '../../assets/tiled/run.png';
+
+import playerRun from '../../assets/anims/run.png';
+import playerIdle from '../../assets/anims/idle.png';
 import casa from '../../assets/tiled/casa.json';
 
 export default class House extends Phaser.Scene {
@@ -31,7 +33,9 @@ export default class House extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('player', player);
+        this.load.spritesheet('player-run', playerRun, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('player-idle', playerIdle, { frameWidth: 32, frameHeight: 32 });
+
         this.load.image('allPropsSeasons', allPropsSeasons); 
         this.load.image('bestFishPoint', bestFishPoint);
         this.load.image('deepForestStones', deepForestStones);
@@ -120,9 +124,14 @@ export default class House extends Phaser.Scene {
         capaColisiones.setCollisionByExclusion([-1]);
         capaColisiones.setVisible(false); // La hacemos invisible para no ver los cuadros rojos
 
+        // ANIMACION DE LAS TILES
+        this.animatedTiles.init(map);
+        this.animatedTiles.setRate(0.5);
+        
         // CREAR AL JUGADOR
         this.player = new Player(this, 400, 300); 
-        //TODO ver si esto funciona lo de seguir la camara
+
+        // CAMARA SIGUE AL JUGADOR
         this.cameras.main.startFollow(this.player);
 
         // CONFIGURAR PROFUNDIDADES (DEPTH / Z-INDEX)
