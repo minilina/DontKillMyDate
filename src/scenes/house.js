@@ -141,6 +141,7 @@ export default class House extends Phaser.Scene {
         capaArbolesDelante.setDepth(15);
         capaArbolesEncima.setDepth(15);
         capaTapar.setDepth(15);
+        capaHierbaEncima.setDepth(15);
 
         // CONFIGURAR CAMARA Y LIMITES
         this.cameras.main.setZoom(3);
@@ -152,5 +153,114 @@ export default class House extends Phaser.Scene {
 
         // AÑADIR COLISION FISICA
         this.physics.add.collider(this.player, capaColisiones);
+
+        // HOVER PARA LAS VALLAS
+        this.input.on('pointermove', (pointer) => {
+            const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
+            const tileHover = capaVallas.getTileAtWorldXY(worldPoint.x, worldPoint.y);
+
+            const idValla = [1627, 1628, 1629, 1639, 1640, 1641]; 
+
+            if (tileHover && idValla.includes(tileHover.index)) {
+                this.game.canvas.style.cursor = 'pointer';
+            } else {
+                this.game.canvas.style.cursor = 'default';
+            }
+        });
+
+        // ABRIR y CERRAR VALLAS
+        this.input.on('pointerdown', (pointer) => {
+            // Convertir el clic de la pantalla a coordenadas
+            const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
+            const tileValla = capaVallas.getTileAtWorldXY(worldPoint.x, worldPoint.y);
+
+            // Si hacemos clic en una puerta de valla y estamos suficientemente cerca
+            if (tileValla) {
+                const distancia = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
+                const ID_COLISION = 1210;
+                const ID_posteIzquierdo = 1627;
+                const ID_Central = 1628;
+                const ID_posteDerecho = 1629;
+                const ID_posteIzquierdoAbierto = 1639;
+                const ID_CentralAbierto = 1640;
+                const ID_posteDerechoAbierto = 1641;
+                const ID_posteIzquierdoArriba = 1633;
+                const ID_posteDerechoArriba = 1635;
+
+                if (distancia < 60) { // Distancia para poder abrirla
+
+                    // ABRIR VALLA
+                    if (tileValla.index === ID_posteIzquierdo || tileValla.index === ID_Central || tileValla.index === ID_posteDerecho) {                  
+                        let startX;
+                        if (tileValla.index === ID_posteIzquierdo) startX = tileValla.x;         // Clic en el poste izquierdo
+                        else if (tileValla.index === ID_Central) startX = tileValla.x - 1;       // Clic en el centro
+                        else if (tileValla.index === ID_posteDerecho) startX = tileValla.x - 2;  // Clic en el poste derecho
+
+                        let startY = tileValla.y; // La fila de la puerta cerrada
+
+                        // DIBUJAR LA PUERTA ABIERTA
+                        // Fila de arriba (startY - 1)
+                        capaTapar.putTileAt(ID_posteIzquierdoArriba, startX, startY - 1);       // Poste izquierdo arriba
+                        capaTapar.putTileAt(ID_posteDerechoArriba, startX + 2, startY - 1);  // Poste derecho arriba
+
+                        // Fila de abajo (startY)
+                        capaVallas.putTileAt(ID_posteIzquierdoAbierto, startX, startY);          // Poste izquierdo abajo
+                        capaVallas.putTileAt(ID_CentralAbierto, startX + 1, startY);      // Hueco central abajo
+                        capaVallas.putTileAt(ID_posteDerechoAbierto, startX + 2, startY);      // Poste derecho abajo
+
+                        // CAMBIAR COLISIONES
+                        capaColisiones.removeTileAt(startX + 1, startY);
+                        capaColisiones.removeTileAt(startX + 1, startY - 1); // Por si la fila de arriba esta bloqueada
+                    }
+
+                    // CERRAR VALLA
+                    else if (tileValla.index === ID_posteIzquierdoAbierto || tileValla.index === ID_CentralAbierto || tileValla.index === ID_posteDerechoAbierto) {
+                        let startX;
+                        if (tileValla.index === ID_posteIzquierdoAbierto) startX = tileValla.x;           // Clic en el poste izquierdo
+                        else if (tileValla.index === ID_CentralAbierto) startX = tileValla.x - 1;  // Clic en el hueco transparente
+                        else if (tileValla.index === ID_posteDerechoAbierto) startX = tileValla.x - 2;  // Clic en el poste derecho
+
+                        let startY = tileValla.y;
+
+                        // SOLUCION GLITCH ENTRAR EN COLISIONES: Si el jugador esta pisando el hueco central de la puerta, le impedimos cerrarla
+                        const jugadorTileX = capaVallas.worldToTileX(this.player.x);
+                        const jugadorTileY = capaVallas.worldToTileY(this.player.y);
+                        if (jugadorTileX === startX + 1 && (jugadorTileY === startY)) {
+                            return;
+                        }
+
+                        // DIBUJAR LA PUERTA CERRADA
+                        // Borrar fila de arriba (startY - 1)
+                        capaTapar.removeTileAt(startX, startY - 1);
+                        capaTapar.removeTileAt(startX + 2, startY - 1);
+
+                        // Fila de abajo (startY)
+                        capaVallas.putTileAt(ID_posteIzquierdo, startX, startY);
+                        capaVallas.putTileAt(ID_Central, startX + 1, startY);
+                        capaVallas.putTileAt(ID_posteDerecho, startX + 2, startY);
+
+                        //RESTAURAR COLISIONES
+                        capaColisiones.putTileAt(ID_COLISION, startX + 1, startY);     // Volvemos a bloquear el centro para no pasar
+                    }
+                }
+            }
+        });
+
+        /* VER QUE IDS TIENE LA VALLA Y EL BLOQUE DE COLISION
+        this.input.on('pointerdown', (pointer) => {
+            const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
+            
+            // Vallas
+            const tileValla = capaVallas.getTileAtWorldXY(worldPoint.x, worldPoint.y);
+            if (tileValla) {
+                console.log("VALLA - ID:", tileValla.index);
+            }
+
+            // Colisiones
+            const tileColision = capaColisiones.getTileAtWorldXY(worldPoint.x, worldPoint.y);
+            if (tileColision) {
+                console.log("COLISION - ID:", tileColision.index);
+            }
+        });*/
     }
 }

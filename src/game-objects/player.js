@@ -19,8 +19,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.body.setAllowGravity(false);
 
         // Hacemos la caja de colisión más pequeña. Bloque físico de tus pies.
-        this.body.setSize(16, 12);
-        this.body.setOffset(8, 15);
+        this.body.setSize(16, 15);
+        this.body.setOffset(8, 14);
 
         // Velocidad
         this.speed = 100;
