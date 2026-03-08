@@ -9,19 +9,28 @@ import duckMallad from '../../assets/tiled/duckMallad.png';
 import extraVillageTilesets from '../../assets/tiled/extraVillageTilesets.png';
 import fenceWood from '../../assets/tiled/fenceWood.png';
 import halloweenContent from '../../assets/tiled/halloweenContent.png';
-import mushroomTree from '../../assets/tiled/mushroomTree.png';
 import pathTiles from '../../assets/tiled/pathTiles.png';
-import pineTree from '../../assets/tiled/pineTree.png';
 import propsWater from '../../assets/tiled/propsWater.png';
 import road from '../../assets/tiled/road.png';
 import stoneStructures from '../../assets/tiled/stoneStructures.png';
 import stoneStructuresWater from '../../assets/tiled/stoneStructuresWater.png';
-import temple from '../../assets/tiled/temple.png';
 import tilesetGrassCliffTilesetSpring from '../../assets/tiled/tilesetGrassCliffTilesetSpring.png';
 import tilesetGrassSpring from '../../assets/tiled/tilesetGrassSpring.png';
 import tilesetGrassWaterSpring from '../../assets/tiled/tilesetGrassWaterSpring.png';
 import treeTrunks from '../../assets/tiled/treeTrunks.png';
 import waterGroundAnimationsTiles from '../../assets/tiled/waterGroundAnimationsTiles.png';
+
+import pine from '../../assets/tiled/pine.png';
+import pine2 from '../../assets/tiled/pine2.png';
+import pine3 from '../../assets/tiled/pine3.png';
+import mushroom1 from '../../assets/tiled/mushroom1.png';
+import mushroom2 from '../../assets/tiled/mushroom2.png';
+import mushroom3 from '../../assets/tiled/mushroom3.png';
+import templo from '../../assets/tiled/templo.png';
+import pilar1 from '../../assets/tiled/pilar1.png';
+import pilar2 from '../../assets/tiled/pilar2.png';
+import roca from '../../assets/tiled/roca.png';
+import estatua from '../../assets/tiled/estatua.png';
 
 import playerRun from '../../assets/anims/run.png';
 import playerIdle from '../../assets/anims/idle.png';
@@ -43,20 +52,29 @@ export default class House extends Phaser.Scene {
         this.load.image('extraVillageTilesets', extraVillageTilesets);
         this.load.image('fenceWood', fenceWood);
         this.load.image('halloweenContent', halloweenContent);
-        this.load.image('mushroomTree', mushroomTree);
         this.load.image('pathTiles', pathTiles);
-        this.load.image('pineTree', pineTree);
         this.load.image('propsWater', propsWater);
         this.load.image('road', road);
         this.load.image('stoneStructures', stoneStructures);
         this.load.image('stoneStructuresWater', stoneStructuresWater);
-        this.load.image('temple', temple);
         this.load.image('tilesetGrassCliffTilesetSpring', tilesetGrassCliffTilesetSpring);
         this.load.image('tilesetGrassSpring', tilesetGrassSpring);
         this.load.image('tilesetGrassWaterSpring', tilesetGrassWaterSpring);
         this.load.image('treeTrunks', treeTrunks);
         this.load.image('waterGroundAnimationsTiles', waterGroundAnimationsTiles);
-        
+
+        this.load.image('arbol_grande', pine);
+        this.load.image('arbol_mediano', pine2);
+        this.load.image('arbol_peque', pine3);
+        this.load.image('seta_azul', mushroom1);
+        this.load.image('seta_cyan', mushroom2);
+        this.load.image('seta_rosa', mushroom3);
+        this.load.image('templo', templo);
+        this.load.image('pilar1', pilar1);
+        this.load.image('pilar2', pilar2);
+        this.load.image('roca', roca);
+        this.load.image('estatua', estatua);
+
         this.load.tilemapTiledJSON('map', casa);
     }
 
@@ -70,14 +88,11 @@ export default class House extends Phaser.Scene {
         var extraVillageTilesets = map.addTilesetImage('Extra Village Tilesets', 'extraVillageTilesets');
         var fenceWood = map.addTilesetImage('Fence Wood', 'fenceWood');
         var halloweenContent = map.addTilesetImage('Halloween Content', 'halloweenContent');
-        var mushroomTree = map.addTilesetImage('Mushroom Tree', 'mushroomTree');
         var pathTiles = map.addTilesetImage('Path tiles', 'pathTiles');
-        var pineTree = map.addTilesetImage('Pine Tree copiar', 'pineTree');
         var propsWater = map.addTilesetImage('props water', 'propsWater');
         var road = map.addTilesetImage('Road', 'road');
         var stoneStructures = map.addTilesetImage('Stone structures', 'stoneStructures');
         var stoneStructuresWater = map.addTilesetImage('Stone structures Water', 'stoneStructuresWater');
-        var temple = map.addTilesetImage('temple', 'temple');
         var tilesetGrassCliffTilesetSpring = map.addTilesetImage('Tileset Grass Cliff Tileset Spring', 'tilesetGrassCliffTilesetSpring');
         var tilesetGrassSpring = map.addTilesetImage('Tileset Grass Spring', 'tilesetGrassSpring');
         var tilesetGrassWaterSpring = map.addTilesetImage('Tileset Grass Water Spring', 'tilesetGrassWaterSpring');
@@ -86,10 +101,10 @@ export default class House extends Phaser.Scene {
 
         const tilesetsArray = [
             allPropsSeasons, bestFishPoint, deepForestStones, duckMallad, 
-            extraVillageTilesets, fenceWood, halloweenContent, mushroomTree, 
-            pathTiles, pineTree, propsWater, road, stoneStructures, 
+            extraVillageTilesets, fenceWood, halloweenContent, 
+            pathTiles, propsWater, road, stoneStructures, 
             tilesetGrassSpring, tilesetGrassWaterSpring, treeTrunks, 
-            waterGroundAnimationsTiles, stoneStructuresWater, temple, tilesetGrassCliffTilesetSpring
+            waterGroundAnimationsTiles, stoneStructuresWater, tilesetGrassCliffTilesetSpring
         ];
 
         // CREAR CAPAS (De abajo hacia arriba)
@@ -105,12 +120,7 @@ export default class House extends Phaser.Scene {
         const capaVallas = map.createLayer('Delimitacion Mundo/Vallas', tilesetsArray, 0, 0);
         const capaMuro = map.createLayer('Delimitacion Mundo/Muro', tilesetsArray, 0, 0);
         const capaEscalera = map.createLayer('Delimitacion Mundo/Escalera', tilesetsArray, 0, 0);
-        const capaArbolesTapar= map.createLayer('Arboles/Arboles Tapar', tilesetsArray, 0, 0);
-        const capaArboles = map.createLayer('Arboles/Arboles', tilesetsArray, 0, 0);
-        const capaArbolesDelante = map.createLayer('Arboles/Arboles Delante', tilesetsArray, 0, 0);
-        const capaArbolesEncima = map.createLayer('Arboles/Arboles Encima', tilesetsArray, 0, 0);
         const capaPilares = map.createLayer('Mas Colisiones/Pilares', tilesetsArray, 0, 0);
-        const capaCasa = map.createLayer('Mas Colisiones/Casa', tilesetsArray, 0, 0);
         const capaPiedras = map.createLayer('Mas Colisiones/Piedras', tilesetsArray, 0, 0);
         const capaPiedras2 = map.createLayer('Mas Colisiones/Piedras 2', tilesetsArray, 0, 0);
         const capaHierbaCasa = map.createLayer('Mas Colisiones/Hierba Casa', tilesetsArray, 0, 0);
@@ -135,13 +145,8 @@ export default class House extends Phaser.Scene {
         this.cameras.main.startFollow(this.player, true);
 
         // CONFIGURAR PROFUNDIDADES (DEPTH / Z-INDEX)
-        this.player.setDepth(10);
-        
-        capaArboles.setDepth(15);
-        capaArbolesDelante.setDepth(15);
-        capaArbolesEncima.setDepth(15);
-        capaTapar.setDepth(15);
-        capaHierbaEncima.setDepth(15);
+        capaTapar.setDepth(9999);
+        capaHierbaEncima.setDepth(9998);
 
         // CONFIGURAR CAMARA Y LIMITES
         this.cameras.main.setZoom(3);
@@ -159,7 +164,7 @@ export default class House extends Phaser.Scene {
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
             const tileHover = capaVallas.getTileAtWorldXY(worldPoint.x, worldPoint.y);
 
-            const idValla = [1627, 1628, 1629, 1639, 1640, 1641]; 
+            const idValla = [1393, 1394, 1395, 1405, 1406, 1407]; 
 
             if (tileHover && idValla.includes(tileHover.index)) {
                 this.game.canvas.style.cursor = 'pointer';
@@ -178,14 +183,14 @@ export default class House extends Phaser.Scene {
             if (tileValla) {
                 const distancia = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
                 const ID_COLISION = 1210;
-                const ID_posteIzquierdo = 1627;
-                const ID_Central = 1628;
-                const ID_posteDerecho = 1629;
-                const ID_posteIzquierdoAbierto = 1639;
-                const ID_CentralAbierto = 1640;
-                const ID_posteDerechoAbierto = 1641;
-                const ID_posteIzquierdoArriba = 1633;
-                const ID_posteDerechoArriba = 1635;
+                const ID_posteIzquierdo = 1393;
+                const ID_Central = 1394;
+                const ID_posteDerecho = 1395;
+                const ID_posteIzquierdoAbierto = 1405;
+                const ID_CentralAbierto = 1406;
+                const ID_posteDerechoAbierto = 1407;
+                const ID_posteIzquierdoArriba = 1399;
+                const ID_posteDerechoArriba = 1401;
 
                 if (distancia < 60) { // Distancia para poder abrirla
 
@@ -246,7 +251,180 @@ export default class House extends Phaser.Scene {
             }
         });
 
-        /* VER QUE IDS TIENE LA VALLA Y EL BLOQUE DE COLISION
+        // CREACION DE ARBOLES DINAMICOS
+        // Creamos un grupo fisico estatico para todos los arboles
+        this.grupoArboles = this.physics.add.staticGroup();
+        const capaSpawn = map.getObjectLayer('SpawnArboles');
+
+        if (capaSpawn) {
+            // Miramos el nombre en Tiled (grande, mediano o peque)
+            const imagenesArboles = {
+                'grande': 'arbol_grande',
+                'mediano': 'arbol_mediano',
+                'peque': 'arbol_peque',
+                'mushroom1': 'seta_azul',
+                'mushroom2': 'seta_cyan',
+                'mushroom3': 'seta_rosa'
+            };
+
+            capaSpawn.objects.forEach(obj => {
+                const nombre = obj.name || 'grande'; // Si no tiene nombre, sera un pino grande por defecto
+                
+                // Si el nombre existe en nuestro diccionario, creamos el árbol
+                if (imagenesArboles[nombre]) {
+                    const imagenKey = imagenesArboles[nombre];
+
+                    // Origin (0.5, 1): para centrar el tronco
+                    const arbol = this.grupoArboles.create(obj.x + 8, obj.y, imagenKey);
+                    arbol.setOrigin(0.5, 1);
+                    arbol.setDepth(arbol.y);
+                    arbol.tipoArbol = nombre;
+
+                    // FLIP (Giro Horizontal)
+                    if (obj.properties) {
+                        const propFlip = obj.properties.find(p => p.name === 'flipX');
+                        if (propFlip && propFlip.value === true) {
+                            arbol.setFlipX(true);
+                        }
+                    }
+
+                    arbol.refreshBody();
+
+                    // AJUSTE DE COLISIONES
+                    if (nombre === 'peque') {
+                        arbol.body.setSize(12, 10);
+                        arbol.body.setOffset(arbol.width / 2 - 6, arbol.height - 10);
+                    } else if (nombre === 'mediano') {
+                        arbol.body.setSize(16, 12);
+                        arbol.body.setOffset(arbol.width / 2 - 8, arbol.height - 12);
+                    } else if (nombre === 'grande') {
+                        arbol.body.setSize(16, 14);
+                        arbol.body.setOffset(arbol.width / 2 - 8, arbol.height - 14);
+                    } else { 
+                        // Colisión por defecto para cualquier seta
+                        arbol.body.setSize(12, 10);
+                        arbol.body.setOffset(arbol.width / 2 - 6, arbol.height - 10);
+                    }
+                }
+            });
+        }
+
+        // Añadimos la colision entre el jugador y los troncos
+        this.physics.add.collider(this.player, this.grupoArboles);
+
+        // CREACION DE ESTRUCTURAS 
+        this.grupoEstructuras = this.physics.add.staticGroup();
+        const capaEstructuras = map.getObjectLayer('SpawnEstructuras');
+
+        if (capaEstructuras) {
+            capaEstructuras.objects.forEach(obj => {
+                const nombre = obj.name;
+               
+                if (['templo', 'pilar1', 'pilar2', 'roca', 'estatua'].includes(nombre)) {
+                    // Origin (0, 1): El punto de Tiled es la esquina Abajo-Izquierda
+                    const estructura = this.grupoEstructuras.create(obj.x, obj.y, nombre);
+                    estructura.setOrigin(0, 1);
+                    estructura.setDepth(estructura.y);
+                    estructura.tipoEstructura = nombre;
+
+                    estructura.refreshBody();
+
+                    // AJUSTE DE COLISIONES
+                    if (nombre === 'pilar1' || nombre === 'pilar2') {
+                        estructura.body.setSize(19, 15);
+                        estructura.body.setOffset(7, estructura.height - 17);
+                    } else if (nombre === 'roca') {
+                        estructura.body.setSize(24, 14);
+                        estructura.body.setOffset(6, estructura.height - 16);
+                    } else if (nombre === 'estatua') {
+                        estructura.body.setSize(29, 20);
+                        estructura.body.setOffset(1, estructura.height - 24);
+                    } else if (nombre === 'templo') {
+                        estructura.body.setSize(estructura.width - 16, 80); 
+                        estructura.body.setOffset(8, estructura.height - 80);
+                    }
+                }
+            });
+        }
+
+        // Añadimos las colisiones contra el jugador
+        this.physics.add.collider(this.player, this.grupoEstructuras);
+        
+        // DIFUMINAR ARBOLES Y TECHOS SI PASAS DEBAJO
+        const capaZonasCasa = map.getObjectLayer('TransparenciaCasa');
+        const zonasCasa = capaZonasCasa ? capaZonasCasa.objects : [];
+
+        let tilesTransparentes = [];
+
+        this.events.on('update', () => {
+            // El jugador tiene una profundidad que varia depende de su posicion Y
+            this.player.setDepth(this.player.y);
+            // Restaurar la opacidad de los tiles
+            tilesTransparentes.forEach(tile => { tile.alpha = 1; });
+            tilesTransparentes = []; // Vaciamos la lista
+
+            // TRANSPARENCIA DE ARBOLES (Sprites)
+            this.grupoArboles.getChildren().forEach(arbol => {
+                // Calculamos la distancia entre el jugador y el arbol
+                const distX = Math.abs(this.player.x - arbol.x);
+                const distY = arbol.y - this.player.y;
+
+                // Si es un pino
+                if (!arbol.tipoArbol.includes('mushroom')) {
+                    // Limites de transparencia segun el tamaño del arbol
+                    let altoArbol = 65;
+                    let mitadBase = 28;
+
+                    if (arbol.tipoArbol === 'mediano') { altoArbol = 45; mitadBase = 20; }
+                    if (arbol.tipoArbol === 'peque') {altoArbol = 30; mitadBase = 14;}
+
+                    // distY > 5 asegura que no se difumine si solo le pisas un poco
+                    if (distY > 5 && distY < altoArbol) {
+                        // Calculamos el % de altura al que estas (0 = base, 1 = punta)
+                        const porcentajeAltura = distY / altoArbol;
+                        // El ancho permitido se encoge cuanto mas alto estas
+                        const anchoPermitidoAEstaAltura = mitadBase * (1 - porcentajeAltura);
+                        if (distX < anchoPermitidoAEstaAltura) {
+                            arbol.alpha = 0.4;
+                        } else {
+                            arbol.alpha = 1; // Estas rozando las hojas por fuera
+                        }
+                    } else {
+                        arbol.alpha = 1; // Estas por delante o muy por encima
+                    }
+                }
+                // Si es una seta
+                else {
+                    let inicioSombrero = 20; // Tallo
+                    let altoSeta = 45;       // Altura total
+                    let mitadSombrero = 25;  // Ancho del sombrero
+                    if (distY > inicioSombrero && distY < altoSeta && distX < mitadSombrero) {
+                        arbol.alpha = 0.4;
+                    } else {
+                        arbol.alpha = 1;
+                    }
+                }
+            });
+
+            // TRANSPARENCIA DE ESTRUCTURAS
+            this.grupoEstructuras.getChildren().forEach(estructura => {
+                // Comprobamos si las coordenadas del jugador caen DENTRO del rectangulo de la imagen
+                // Como el origen es 0,1, la imagen va desde estructura.x hasta estructura.x + width
+                // y en altura va desde estructura.y hasta estructura.y - height
+                
+                const dentroX = this.player.x > estructura.x && this.player.x < (estructura.x + estructura.width);
+                const dentroY = this.player.y < estructura.y && this.player.y > (estructura.y - estructura.height);
+
+                // Solo hacemos transparente si estás "detras" del edificio (tu Y es menor) y dentro de su area
+                if (dentroX && dentroY && this.player.y < estructura.y) {
+                    estructura.alpha = 0.4;
+                } else {
+                    estructura.alpha = 1;
+                }
+            });
+        });
+
+        // VER QUE IDS TIENE LA VALLA Y EL BLOQUE DE COLISION
         this.input.on('pointerdown', (pointer) => {
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
             
@@ -261,6 +439,6 @@ export default class House extends Phaser.Scene {
             if (tileColision) {
                 console.log("COLISION - ID:", tileColision.index);
             }
-        });*/
+        });
     }
 }
