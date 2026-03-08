@@ -25,9 +25,9 @@ export default class DialogueUI {
     this.arrowTween.pause();
 
     // texto del dialogo
-    this.text = scene.add.text(380, 110, "", {
+    this.text = scene.add.text(380, 105, "", {
       fontFamily: "VT323, monospace",
-      fontSize: "20px", 
+      fontSize: "23px", 
       color: "#000000",
       wordWrap: { width: 480 },
       align: "left"
@@ -79,6 +79,8 @@ export default class DialogueUI {
       this.arrowTimer.remove();
     }
 
+    this.scene.input.setDefaultCursor('default');
+
     this.fullText = text ?? "";
     this.text.setText("");
     this.isTyping = true;
@@ -102,6 +104,7 @@ export default class DialogueUI {
           this.arrowTimer = this.scene.time.delayedCall(300, () => {
             this.dialogArrow.setVisible(true); 
             this.arrowTween.play();
+            this.scene.input.setDefaultCursor('pointer');
           });
         }
       }
@@ -122,5 +125,6 @@ export default class DialogueUI {
     this.isTyping = false;
     this.dialogArrow.setVisible(true);
     this.arrowTween.play();
+    this.scene.input.setDefaultCursor('pointer');
   }
 }
