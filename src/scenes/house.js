@@ -189,7 +189,7 @@ export default class House extends Phaser.Scene {
                 const ID_posteIzquierdoAbierto = 1405;
                 const ID_CentralAbierto = 1406;
                 const ID_posteDerechoAbierto = 1407;
-                const ID_posteIzquierdoArriba = 1399;
+                const ID_posteIzquierdoArriba = 1399 ;
                 const ID_posteDerechoArriba = 1401;
 
                 if (distancia < 60) { // Distancia para poder abrirla
@@ -350,7 +350,7 @@ export default class House extends Phaser.Scene {
         // Añadimos las colisiones contra el jugador
         this.physics.add.collider(this.player, this.grupoEstructuras);
         
-        // DIFUMINAR ARBOLES Y TECHOS SI PASAS DEBAJO
+        // DIFUMINAR ARBOLES Y ESTRUCTURAS SI PASAS DEBAJO
         const capaZonasCasa = map.getObjectLayer('TransparenciaCasa');
         const zonasCasa = capaZonasCasa ? capaZonasCasa.objects : [];
 
@@ -358,65 +358,114 @@ export default class House extends Phaser.Scene {
 
         this.events.on('update', () => {
             // El jugador tiene una profundidad que varia depende de su posicion Y
-            this.player.setDepth(this.player.y);
-            // Restaurar la opacidad de los tiles
-            tilesTransparentes.forEach(tile => { tile.alpha = 1; });
-            tilesTransparentes = []; // Vaciamos la lista
+            this.player.setDepth(this.player.y + 4); // + 4 porque hay calculos raros para los objetos y a veces te pone debajo si te pegas mucho
 
             // TRANSPARENCIA DE ARBOLES (Sprites)
             this.grupoArboles.getChildren().forEach(arbol => {
                 // Calculamos la distancia entre el jugador y el arbol
                 const distX = Math.abs(this.player.x - arbol.x);
                 const distY = arbol.y - this.player.y;
+                let difuminar = false;
 
                 // Si es un pino
                 if (!arbol.tipoArbol.includes('mushroom')) {
                     // Limites de transparencia segun el tamaño del arbol
-                    let altoArbol = 65;
-                    let mitadBase = 28;
+                    let altoArbol = 67;
+                    let mitadBase = 30;
 
-                    if (arbol.tipoArbol === 'mediano') { altoArbol = 45; mitadBase = 20; }
-                    if (arbol.tipoArbol === 'peque') {altoArbol = 30; mitadBase = 14;}
+                    if (arbol.tipoArbol === 'mediano') { altoArbol = 47; mitadBase = 22; }
+                    if (arbol.tipoArbol === 'peque') {altoArbol = 32; mitadBase = 14;}
 
-                    // distY > 5 asegura que no se difumine si solo le pisas un poco
                     if (distY > 5 && distY < altoArbol) {
-                        // Calculamos el % de altura al que estas (0 = base, 1 = punta)
+                         // Calculamos el % de altura al que estas (0 = base, 1 = punta)
                         const porcentajeAltura = distY / altoArbol;
                         // El ancho permitido se encoge cuanto mas alto estas
                         const anchoPermitidoAEstaAltura = mitadBase * (1 - porcentajeAltura);
+                        
                         if (distX < anchoPermitidoAEstaAltura) {
-                            arbol.alpha = 0.4;
-                        } else {
-                            arbol.alpha = 1; // Estas rozando las hojas por fuera
+                            difuminar = true;
                         }
-                    } else {
-                        arbol.alpha = 1; // Estas por delante o muy por encima
                     }
                 }
                 // Si es una seta
                 else {
-                    let inicioSombrero = 20; // Tallo
+                    let inicioSombrero = 18; // Tallo
                     let altoSeta = 45;       // Altura total
-                    let mitadSombrero = 25;  // Ancho del sombrero
+                    let mitadSombrero = 18;  // Ancho del sombrero
+
                     if (distY > inicioSombrero && distY < altoSeta && distX < mitadSombrero) {
-                        arbol.alpha = 0.4;
-                    } else {
-                        arbol.alpha = 1;
+                        difuminar = true;
                     }
+                }
+
+                // Aplicar transparencia
+                if (difuminar) {
+                    arbol.alpha = 0.4;
+                } else {
+                    arbol.alpha = 1;
                 }
             });
 
             // TRANSPARENCIA DE ESTRUCTURAS
             this.grupoEstructuras.getChildren().forEach(estructura => {
-                // Comprobamos si las coordenadas del jugador caen DENTRO del rectangulo de la imagen
-                // Como el origen es 0,1, la imagen va desde estructura.x hasta estructura.x + width
-                // y en altura va desde estructura.y hasta estructura.y - height
-                
-                const dentroX = this.player.x > estructura.x && this.player.x < (estructura.x + estructura.width);
-                const dentroY = this.player.y < estructura.y && this.player.y > (estructura.y - estructura.height);
+                // Calculamos la distancia entre el jugador y las estructuras
+                const centroX = estructura.x + (estructura.width / 2);
+                const distX = Math.abs(this.player.x - centroX);
+                const distY = estructura.y - this.player.y;
+                let difuminar = false;
 
-                // Solo hacemos transparente si estás "detras" del edificio (tu Y es menor) y dentro de su area
-                if (dentroX && dentroY && this.player.y < estructura.y) {
+                // Si es la casa (Pentagono)
+                if (estructura.tipoEstructura === 'templo') {
+                    let inicioPared = 15;        // Altura desde el suelo te empieza a tapar
+                    let limiteTejado = 150;      // Altura donde deja de taparte
+                    let altoPared = 80;          // Donde empieza el triangulo
+                    let mitadAnchoCasa = 62;     // Ancho desde donde te empieza a tapar
+
+                    if (distY > inicioPared && distY < limiteTejado) {
+                        // tejado (Triángulo)
+                        if (distY > altoPared) {
+                            let alturaTriangulo = estructura.height - altoPared; // Altura del triangulo
+                            let distYTejado = distY - altoPared;                 // Cuanto has subido por el tejado
+                            
+                            const porcentajeAltura = distYTejado / alturaTriangulo;
+                            const anchoPermitidoAEstaAltura = mitadAnchoCasa * (1 - porcentajeAltura);
+                            
+                            if (distX < anchoPermitidoAEstaAltura) {
+                                difuminar = true;
+                            }
+                        }
+                    }
+                }
+
+                // si es un pilar, roca o estatua (rectangulo)
+                else {
+                    let inicioBase = 15; // Altura donde empieza a tapar
+                    let altoFinal = 45;  // Altura total donde deja de tapar
+                    let mitadAncho = 20; // Ancho maximo hacia los lados
+
+                    if (estructura.tipoEstructura === 'pilar1' || estructura.tipoEstructura === 'pilar2') {
+                        inicioBase = 10;
+                        altoFinal = 55;
+                        mitadAncho = 12;
+                    } 
+                    else if (estructura.tipoEstructura === 'roca') {
+                        inicioBase = 5;
+                        altoFinal = 32;
+                        mitadAncho = 10;
+                    } 
+                    else if (estructura.tipoEstructura === 'estatua') {
+                        inicioBase = 20;
+                        altoFinal = 50;
+                        mitadAncho = 16;
+                    }
+
+                    if (distY > inicioBase && distY < altoFinal && distX < mitadAncho) {
+                        difuminar = true;
+                    }
+                }
+
+                // APLICAR TRANSPARENCIA
+                if (difuminar) {
                     estructura.alpha = 0.4;
                 } else {
                     estructura.alpha = 1;
@@ -424,7 +473,7 @@ export default class House extends Phaser.Scene {
             });
         });
 
-        // VER QUE IDS TIENE LA VALLA Y EL BLOQUE DE COLISION
+        /*// VER QUE IDS TIENE LA VALLA Y EL BLOQUE DE COLISION
         this.input.on('pointerdown', (pointer) => {
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
             
@@ -439,6 +488,6 @@ export default class House extends Phaser.Scene {
             if (tileColision) {
                 console.log("COLISION - ID:", tileColision.index);
             }
-        });
+        });*/
     }
 }
