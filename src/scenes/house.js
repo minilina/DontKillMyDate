@@ -399,11 +399,8 @@ export default class House extends Phaser.Scene {
                 }
 
                 // Aplicar transparencia
-                if (difuminar) {
-                    arbol.alpha = 0.4;
-                } else {
-                    arbol.alpha = 1;
-                }
+                let targetAlpha = difuminar ? 0.4 : 1;
+                arbol.alpha += (targetAlpha - arbol.alpha) * 0.10; // Transicion suave
             });
 
             // TRANSPARENCIA DE ESTRUCTURAS
@@ -465,11 +462,8 @@ export default class House extends Phaser.Scene {
                 }
 
                 // APLICAR TRANSPARENCIA
-                if (difuminar) {
-                    estructura.alpha = 0.4;
-                } else {
-                    estructura.alpha = 1;
-                }
+                let targetAlpha = difuminar ? 0.4 : 1;
+                estructura.alpha += (targetAlpha - estructura.alpha) * 0.10;
             });
         });
 
