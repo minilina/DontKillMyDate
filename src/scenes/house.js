@@ -86,29 +86,70 @@ export default class House extends Phaser.Scene {
         // AÑADIR COLISION FISICA
         this.physics.add.collider(this.player, capaColisiones);
 
-        // HOVER PARA LAS VALLAS
+        // HOVER PARA LAS VALLAS Y LA PIEDRA
         this.input.on('pointermove', (pointer) => {
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
-            const tileHover = capaVallas.getTileAtWorldXY(worldPoint.x, worldPoint.y);
+            const tileHoverValla = capaVallas.getTileAtWorldXY(worldPoint.x, worldPoint.y);
+            const tileHoverPiedra = capaPilares.getTileAtWorldXY(worldPoint.x, worldPoint.y);
 
             const idValla = [1393, 1394, 1395, 1405, 1406, 1407]; 
+            const idPiedra = [3868, 3870];
 
-            if (tileHover && idValla.includes(tileHover.index)) {
+            if (tileHoverValla && idValla.includes(tileHoverValla.index)) {
+                this.game.canvas.style.cursor = 'pointer';
+            } else if (tileHoverPiedra && idPiedra.includes(tileHoverPiedra.index)) {
                 this.game.canvas.style.cursor = 'pointer';
             } else {
                 this.game.canvas.style.cursor = 'default';
             }
         });
 
-        // ABRIR y CERRAR VALLAS
+        this.cuevaAbierta = false;
+
+        // ABRIR y CERRAR VALLAS Y ABRIR CUEVA
         this.input.on('pointerdown', (pointer) => {
             // Convertir el clic de la pantalla a coordenadas
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
             const tileValla = capaVallas.getTileAtWorldXY(worldPoint.x, worldPoint.y);
+            const tilePiedra = capaPilares.getTileAtWorldXY(worldPoint.x, worldPoint.y);
+            const distancia = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
+
+            if (tilePiedra) {
+                const ID_CUEVA_ARRIBA = 2121;
+                const ID_CUEVA_ABAJO = 2146;
+                const ID_PIEDRA_RUNICA_ARRIBA = 3868;
+                const ID_PIEDRA_RUNICA_ABAJO = 3870;
+
+                // Si hacemos clic en la piedra, estamos cerca y la cueva esta cerrada
+                if ((tilePiedra.index === ID_PIEDRA_RUNICA_ARRIBA || tilePiedra.index === ID_PIEDRA_RUNICA_ABAJO) && distancia < 80 && !this.cuevaAbierta) {
+                    const cuevaTileX = tilePiedra.x - 1; 
+                    const cuevaTileY = tilePiedra.y - 1; 
+                    this.cuevaAbierta = true;
+
+                    // DIBUJAR LA CUEVA ABIERTA (quitamos de otra capa porque sino no ponia la animacion del agua)
+                    capaTapar.putTileAt(-1, cuevaTileX, cuevaTileY - 1);
+                    capaTapar.putTileAt(-1, cuevaTileX, cuevaTileY);
+
+                    // Creamos una zona invisible justo en la entrada de la cueva para entrar en ella
+                    const pixelsX = map.tileToWorldX(cuevaTileX);
+                    const pixelsY = map.tileToWorldY(cuevaTileY);
+                    const zonaEntrada = this.add.zone(pixelsX, pixelsY, 16, 17).setOrigin(0, 0); 
+                    this.physics.add.existing(zonaEntrada, true);
+                    
+                    // ENTRAR A LA CUEVA SI TOCAS LA ZONA Y PULSAS ARRIBA
+                    this.physics.add.overlap(this.player, zonaEntrada, () => {
+                        if (this.player.wasd.up.isDown) {
+                            this.scene.start('Cueva'); 
+                        }
+                    });
+
+                    // TEMBLOR DE CAMARA
+                    this.cameras.main.shake(200, 0.010);
+                }
+            }
 
             // Si hacemos clic en una puerta de valla y estamos suficientemente cerca
             if (tileValla) {
-                const distancia = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
                 const ID_COLISION = 1210;
                 const ID_posteIzquierdo = 1393;
                 const ID_Central = 1394;
@@ -133,24 +174,24 @@ export default class House extends Phaser.Scene {
                         // DIBUJAR LA PUERTA ABIERTA
                         // Fila de arriba (startY - 1)
                         capaTapar.putTileAt(ID_posteIzquierdoArriba, startX, startY - 1);       // Poste izquierdo arriba
-                        capaTapar.putTileAt(ID_posteDerechoArriba, startX + 2, startY - 1);  // Poste derecho arriba
+                        capaTapar.putTileAt(ID_posteDerechoArriba, startX + 2, startY - 1);     // Poste derecho arriba
 
                         // Fila de abajo (startY)
                         capaVallas.putTileAt(ID_posteIzquierdoAbierto, startX, startY);          // Poste izquierdo abajo
-                        capaVallas.putTileAt(ID_CentralAbierto, startX + 1, startY);      // Hueco central abajo
-                        capaVallas.putTileAt(ID_posteDerechoAbierto, startX + 2, startY);      // Poste derecho abajo
+                        capaVallas.putTileAt(ID_CentralAbierto, startX + 1, startY);                            // Hueco central abajo
+                        capaVallas.putTileAt(ID_posteDerechoAbierto, startX + 2, startY);        // Poste derecho abajo
 
                         // CAMBIAR COLISIONES
-                        capaColisiones.removeTileAt(startX + 1, startY);
-                        capaColisiones.removeTileAt(startX + 1, startY - 1); // Por si la fila de arriba esta bloqueada
+                        capaColisiones.putTileAt(-1, startX + 1, startY);
+                        capaColisiones.putTileAt(-1, startX + 1, startY - 1); // Por si la fila de arriba esta bloqueada
                     }
 
                     // CERRAR VALLA
                     else if (tileValla.index === ID_posteIzquierdoAbierto || tileValla.index === ID_CentralAbierto || tileValla.index === ID_posteDerechoAbierto) {
                         let startX;
                         if (tileValla.index === ID_posteIzquierdoAbierto) startX = tileValla.x;           // Clic en el poste izquierdo
-                        else if (tileValla.index === ID_CentralAbierto) startX = tileValla.x - 1;  // Clic en el hueco transparente
-                        else if (tileValla.index === ID_posteDerechoAbierto) startX = tileValla.x - 2;  // Clic en el poste derecho
+                        else if (tileValla.index === ID_CentralAbierto) startX = tileValla.x - 1;         // Clic en el hueco transparente
+                        else if (tileValla.index === ID_posteDerechoAbierto) startX = tileValla.x - 2;    // Clic en el poste derecho
 
                         let startY = tileValla.y;
 
@@ -163,8 +204,8 @@ export default class House extends Phaser.Scene {
 
                         // DIBUJAR LA PUERTA CERRADA
                         // Borrar fila de arriba (startY - 1)
-                        capaTapar.removeTileAt(startX, startY - 1);
-                        capaTapar.removeTileAt(startX + 2, startY - 1);
+                        capaTapar.putTileAt(-1, startX, startY - 1);
+                        capaTapar.putTileAt(-1, startX + 2, startY - 1);
 
                         // Fila de abajo (startY)
                         capaVallas.putTileAt(ID_posteIzquierdo, startX, startY);
@@ -394,7 +435,7 @@ export default class House extends Phaser.Scene {
             });
         });
 
-        /*// VER QUE IDS TIENE LA VALLA Y EL BLOQUE DE COLISION
+        // VER QUE IDS TIENE LA VALLA, EL MURO, LA PIEDRA Y EL BLOQUE DE COLISION
         this.input.on('pointerdown', (pointer) => {
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
             
@@ -404,11 +445,23 @@ export default class House extends Phaser.Scene {
                 console.log("VALLA - ID:", tileValla.index);
             }
 
+            // Muro
+            const tileMuro = capaFondo.getTileAtWorldXY(worldPoint.x, worldPoint.y);
+            if (tileMuro) {
+                console.log("MURO - ID:", tileMuro.index);
+            }
+
+            // Piedra
+            const tilePiedraAgua = capaPilares.getTileAtWorldXY(worldPoint.x, worldPoint.y);
+            if (tilePiedraAgua) {
+                console.log("PIEDRA AGUA - ID:", tilePiedraAgua.index);
+            }
+
             // Colisiones
             const tileColision = capaColisiones.getTileAtWorldXY(worldPoint.x, worldPoint.y);
             if (tileColision) {
                 console.log("COLISION - ID:", tileColision.index);
             }
-        });*/
+        });
     }
 }
