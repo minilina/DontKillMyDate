@@ -1,82 +1,12 @@
 import Phaser from 'phaser';
-
 import Player from '../game-objects/player.js';
-
-import allPropsSeasons from '../../assets/tiled/allPropsSeasons.png';
-import bestFishPoint from '../../assets/tiled/bestFishPoint.png';
-import deepForestStones from '../../assets/tiled/deepForestStones.png';
-import duckMallad from '../../assets/tiled/duckMallad.png';
-import extraVillageTilesets from '../../assets/tiled/extraVillageTilesets.png';
-import fenceWood from '../../assets/tiled/fenceWood.png';
-import halloweenContent from '../../assets/tiled/halloweenContent.png';
-import pathTiles from '../../assets/tiled/pathTiles.png';
-import propsWater from '../../assets/tiled/propsWater.png';
-import road from '../../assets/tiled/road.png';
-import stoneStructures from '../../assets/tiled/stoneStructures.png';
-import stoneStructuresWater from '../../assets/tiled/stoneStructuresWater.png';
-import tilesetGrassCliffTilesetSpring from '../../assets/tiled/tilesetGrassCliffTilesetSpring.png';
-import tilesetGrassSpring from '../../assets/tiled/tilesetGrassSpring.png';
-import tilesetGrassWaterSpring from '../../assets/tiled/tilesetGrassWaterSpring.png';
-import treeTrunks from '../../assets/tiled/treeTrunks.png';
-import waterGroundAnimationsTiles from '../../assets/tiled/waterGroundAnimationsTiles.png';
-
-import pine from '../../assets/tiled/pine.png';
-import pine2 from '../../assets/tiled/pine2.png';
-import pine3 from '../../assets/tiled/pine3.png';
-import mushroom1 from '../../assets/tiled/mushroom1.png';
-import mushroom2 from '../../assets/tiled/mushroom2.png';
-import mushroom3 from '../../assets/tiled/mushroom3.png';
-import templo from '../../assets/tiled/templo.png';
-import pilar1 from '../../assets/tiled/pilar1.png';
-import pilar2 from '../../assets/tiled/pilar2.png';
-import roca from '../../assets/tiled/roca.png';
-import estatua from '../../assets/tiled/estatua.png';
-
-import playerRun from '../../assets/anims/run.png';
-import playerIdle from '../../assets/anims/idle.png';
-import casa from '../../assets/tiled/casa.json';
 
 export default class House extends Phaser.Scene {
     constructor() {
         super({ key: 'house' }); 
     }
 
-    preload() {
-        this.load.spritesheet('player-run', playerRun, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet('player-idle', playerIdle, { frameWidth: 32, frameHeight: 32 });
-
-        this.load.image('allPropsSeasons', allPropsSeasons); 
-        this.load.image('bestFishPoint', bestFishPoint);
-        this.load.image('deepForestStones', deepForestStones);
-        this.load.image('duckMallad', duckMallad);
-        this.load.image('extraVillageTilesets', extraVillageTilesets);
-        this.load.image('fenceWood', fenceWood);
-        this.load.image('halloweenContent', halloweenContent);
-        this.load.image('pathTiles', pathTiles);
-        this.load.image('propsWater', propsWater);
-        this.load.image('road', road);
-        this.load.image('stoneStructures', stoneStructures);
-        this.load.image('stoneStructuresWater', stoneStructuresWater);
-        this.load.image('tilesetGrassCliffTilesetSpring', tilesetGrassCliffTilesetSpring);
-        this.load.image('tilesetGrassSpring', tilesetGrassSpring);
-        this.load.image('tilesetGrassWaterSpring', tilesetGrassWaterSpring);
-        this.load.image('treeTrunks', treeTrunks);
-        this.load.image('waterGroundAnimationsTiles', waterGroundAnimationsTiles);
-
-        this.load.image('arbol_grande', pine);
-        this.load.image('arbol_mediano', pine2);
-        this.load.image('arbol_peque', pine3);
-        this.load.image('seta_azul', mushroom1);
-        this.load.image('seta_cyan', mushroom2);
-        this.load.image('seta_rosa', mushroom3);
-        this.load.image('templo', templo);
-        this.load.image('pilar1', pilar1);
-        this.load.image('pilar2', pilar2);
-        this.load.image('roca', roca);
-        this.load.image('estatua', estatua);
-
-        this.load.tilemapTiledJSON('map', casa);
-    }
+    preload() {}
 
     create() {
         var map = this.make.tilemap({ key: 'map' });
@@ -141,9 +71,6 @@ export default class House extends Phaser.Scene {
         // CREAR AL JUGADOR
         this.player = new Player(this, 400, 300); 
 
-        // CAMARA SIGUE AL JUGADOR
-        this.cameras.main.startFollow(this.player, true);
-
         // CONFIGURAR PROFUNDIDADES (DEPTH / Z-INDEX)
         capaTapar.setDepth(9999);
         capaHierbaEncima.setDepth(9998);
@@ -151,7 +78,7 @@ export default class House extends Phaser.Scene {
         // CONFIGURAR CAMARA Y LIMITES
         this.cameras.main.setZoom(3);
         this.cameras.main.roundPixels = true;
-        this.cameras.main.startFollow(this.player, true); 
+        this.cameras.main.startFollow(this.player, true);
         
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
