@@ -45,6 +45,7 @@ export default class House extends Phaser.Scene {
         const capaCamino = map.createLayer('Suelo/Camino', tilesetsArray, 0, 0);
         const capaCesped = map.createLayer('Suelo/Cesped', tilesetsArray, 0, 0);
         const capaFondo = map.createLayer('Suelo/Fondo', tilesetsArray, 0, 0);
+        const capaFondoFalso = map.createLayer('Suelo/Fondo Falso', tilesetsArray, 0, 0);
         const capaDecoracionCesped = map.createLayer('Suelo/Decoracion Cesped', tilesetsArray, 0, 0);
         const capaHierbaEncima = map.createLayer('Suelo/Hierba Encima Agua', tilesetsArray, 0, 0);
         const capaVallas = map.createLayer('Delimitacion Mundo/Vallas', tilesetsArray, 0, 0);
@@ -127,8 +128,8 @@ export default class House extends Phaser.Scene {
                     this.cuevaAbierta = true;
 
                     // DIBUJAR LA CUEVA ABIERTA (quitamos de otra capa porque sino no ponia la animacion del agua)
-                    capaTapar.putTileAt(-1, cuevaTileX, cuevaTileY - 1);
-                    capaTapar.putTileAt(-1, cuevaTileX, cuevaTileY);
+                    capaFondoFalso.putTileAt(-1, cuevaTileX, cuevaTileY - 1);
+                    capaFondoFalso.putTileAt(-1, cuevaTileX, cuevaTileY);
 
                     // Creamos una zona invisible justo en la entrada de la cueva para entrar en ella
                     const pixelsX = map.tileToWorldX(cuevaTileX);
