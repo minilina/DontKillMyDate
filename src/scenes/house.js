@@ -3,10 +3,10 @@ import Player from '../game-objects/player.js';
 
 export default class House extends Phaser.Scene {
     constructor() {
-        super({ key: 'house' }); 
+        super({ key: 'house' });
     }
 
-    preload() {}
+    preload() { }
 
     create() {
         var map = this.make.tilemap({ key: 'casa' });
@@ -30,10 +30,10 @@ export default class House extends Phaser.Scene {
         var waterGroundAnimationsTiles = map.addTilesetImage('Water Ground animations tiles', 'waterGroundAnimationsTiles');
 
         const tilesetsArray = [
-            allPropsSeasons, bestFishPoint, deepForestStones, duckMallad, 
-            extraVillageTilesets, fenceWood, halloweenContent, 
-            pathTiles, propsWater, road, stoneStructures, 
-            tilesetGrassSpring, tilesetGrassWaterSpring, treeTrunks, 
+            allPropsSeasons, bestFishPoint, deepForestStones, duckMallad,
+            extraVillageTilesets, fenceWood, halloweenContent,
+            pathTiles, propsWater, road, stoneStructures,
+            tilesetGrassSpring, tilesetGrassWaterSpring, treeTrunks,
             waterGroundAnimationsTiles, stoneStructuresWater, tilesetGrassCliffTilesetSpring
         ];
 
@@ -57,7 +57,7 @@ export default class House extends Phaser.Scene {
         const capaHierbaCasa = map.createLayer('Mas Colisiones/Hierba Casa', tilesetsArray, 0, 0);
         const capaTapar = map.createLayer('Mas Colisiones/Tapar', tilesetsArray, 0, 0);
         const capaAnimales = map.createLayer('Animales', tilesetsArray, 0, 0);
-        
+
         // CAPA DE COLISIONES
         const capaColisiones = map.createLayer('Colisiones', tilesetsArray, 0, 0);
 
@@ -68,9 +68,9 @@ export default class House extends Phaser.Scene {
         // ANIMACION DE LAS TILES
         this.animatedTiles.init(map);
         this.animatedTiles.setRate(0.5);
-        
+
         // CREAR AL JUGADOR
-        this.player = new Player(this, 400, 300); 
+        this.player = new Player(this, 400, 300);
 
         // CONFIGURAR PROFUNDIDADES (DEPTH / Z-INDEX)
         capaTapar.setDepth(9999);
@@ -79,8 +79,8 @@ export default class House extends Phaser.Scene {
         // CONFIGURAR CAMARA Y LIMITES
         this.cameras.main.setZoom(3);
         this.cameras.main.roundPixels = true;
-        this.cameras.main.startFollow(this.player, true);
-        
+        this.cameras.main.startFollow(this.player);
+
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
@@ -93,7 +93,7 @@ export default class House extends Phaser.Scene {
             const tileHoverValla = capaVallas.getTileAtWorldXY(worldPoint.x, worldPoint.y);
             const tileHoverPiedra = capaPilares.getTileAtWorldXY(worldPoint.x, worldPoint.y);
 
-            const idValla = [1393, 1394, 1395, 1405, 1406, 1407]; 
+            const idValla = [1393, 1394, 1395, 1405, 1406, 1407];
             const idPiedra = [3868, 3870];
 
             if (tileHoverValla && idValla.includes(tileHoverValla.index)) {
@@ -123,8 +123,8 @@ export default class House extends Phaser.Scene {
 
                 // Si hacemos clic en la piedra, estamos cerca y la cueva esta cerrada
                 if ((tilePiedra.index === ID_PIEDRA_RUNICA_ARRIBA || tilePiedra.index === ID_PIEDRA_RUNICA_ABAJO) && distancia < 80 && !this.cuevaAbierta) {
-                    const cuevaTileX = tilePiedra.x - 1; 
-                    const cuevaTileY = tilePiedra.y - 1; 
+                    const cuevaTileX = tilePiedra.x - 1;
+                    const cuevaTileY = tilePiedra.y - 1;
                     this.cuevaAbierta = true;
 
                     // DIBUJAR LA CUEVA ABIERTA (quitamos de otra capa porque sino no ponia la animacion del agua)
@@ -134,13 +134,13 @@ export default class House extends Phaser.Scene {
                     // Creamos una zona invisible justo en la entrada de la cueva para entrar en ella
                     const pixelsX = map.tileToWorldX(cuevaTileX);
                     const pixelsY = map.tileToWorldY(cuevaTileY);
-                    const zonaEntrada = this.add.zone(pixelsX, pixelsY, 16, 17).setOrigin(0, 0); 
+                    const zonaEntrada = this.add.zone(pixelsX, pixelsY, 16, 17).setOrigin(0, 0);
                     this.physics.add.existing(zonaEntrada, true);
-                    
+
                     // ENTRAR A LA CUEVA SI TOCAS LA ZONA Y PULSAS ARRIBA
                     this.physics.add.overlap(this.player, zonaEntrada, () => {
                         if (this.player.wasd.up.isDown) {
-                            this.scene.start('cueva'); 
+                            this.scene.start('cueva');
                         }
                     });
 
@@ -158,13 +158,13 @@ export default class House extends Phaser.Scene {
                 const ID_posteIzquierdoAbierto = 1405;
                 const ID_CentralAbierto = 1406;
                 const ID_posteDerechoAbierto = 1407;
-                const ID_posteIzquierdoArriba = 1399 ;
+                const ID_posteIzquierdoArriba = 1399;
                 const ID_posteDerechoArriba = 1401;
 
                 if (distancia < 60) { // Distancia para poder abrirla
 
                     // ABRIR VALLA
-                    if (tileValla.index === ID_posteIzquierdo || tileValla.index === ID_Central || tileValla.index === ID_posteDerecho) {                  
+                    if (tileValla.index === ID_posteIzquierdo || tileValla.index === ID_Central || tileValla.index === ID_posteDerecho) {
                         let startX;
                         if (tileValla.index === ID_posteIzquierdo) startX = tileValla.x;         // Clic en el poste izquierdo
                         else if (tileValla.index === ID_Central) startX = tileValla.x - 1;       // Clic en el centro
@@ -238,7 +238,7 @@ export default class House extends Phaser.Scene {
 
             capaSpawn.objects.forEach(obj => {
                 const nombre = obj.name || 'grande'; // Si no tiene nombre, sera un pino grande por defecto
-                
+
                 // Si el nombre existe en nuestro diccionario, creamos el árbol
                 if (imagenesArboles[nombre]) {
                     const imagenKey = imagenesArboles[nombre];
@@ -269,7 +269,7 @@ export default class House extends Phaser.Scene {
                     } else if (nombre === 'grande') {
                         arbol.body.setSize(16, 14);
                         arbol.body.setOffset(arbol.width / 2 - 8, arbol.height - 14);
-                    } else { 
+                    } else {
                         // Colisión por defecto para cualquier seta
                         arbol.body.setSize(12, 10);
                         arbol.body.setOffset(arbol.width / 2 - 6, arbol.height - 10);
@@ -288,7 +288,7 @@ export default class House extends Phaser.Scene {
         if (capaEstructuras) {
             capaEstructuras.objects.forEach(obj => {
                 const nombre = obj.name;
-               
+
                 if (['templo', 'pilar1', 'pilar2', 'roca', 'estatua', 'letrero'].includes(nombre)) {
                     // Origin (0, 1): El punto de Tiled es la esquina Abajo-Izquierda
                     const estructura = this.grupoEstructuras.create(obj.x, obj.y, nombre);
@@ -309,7 +309,7 @@ export default class House extends Phaser.Scene {
                         estructura.body.setSize(29, 20);
                         estructura.body.setOffset(1, estructura.height - 24);
                     } else if (nombre === 'templo') {
-                        estructura.body.setSize(estructura.width - 16, 80); 
+                        estructura.body.setSize(estructura.width - 16, 80);
                         estructura.body.setOffset(8, estructura.height - 80);
                     }
                     else if (nombre === 'letrero') {
@@ -323,7 +323,7 @@ export default class House extends Phaser.Scene {
 
         // Añadimos las colisiones contra el jugador
         this.physics.add.collider(this.player, this.grupoEstructuras);
-        
+
         // DIFUMINAR ARBOLES Y ESTRUCTURAS SI PASAS DEBAJO
         const capaZonasCasa = map.getObjectLayer('TransparenciaCasa');
         const zonasCasa = capaZonasCasa ? capaZonasCasa.objects : [];
@@ -348,14 +348,14 @@ export default class House extends Phaser.Scene {
                     let mitadBase = 30;
 
                     if (arbol.tipoArbol === 'mediano') { altoArbol = 47; mitadBase = 22; }
-                    if (arbol.tipoArbol === 'peque') {altoArbol = 32; mitadBase = 14;}
+                    if (arbol.tipoArbol === 'peque') { altoArbol = 32; mitadBase = 14; }
 
                     if (distY > 5 && distY < altoArbol) {
-                         // Calculamos el % de altura al que estas (0 = base, 1 = punta)
+                        // Calculamos el % de altura al que estas (0 = base, 1 = punta)
                         const porcentajeAltura = distY / altoArbol;
                         // El ancho permitido se encoge cuanto mas alto estas
                         const anchoPermitidoAEstaAltura = mitadBase * (1 - porcentajeAltura);
-                        
+
                         if (distX < anchoPermitidoAEstaAltura) {
                             difuminar = true;
                         }
@@ -397,10 +397,10 @@ export default class House extends Phaser.Scene {
                         if (distY > altoPared) {
                             let alturaTriangulo = estructura.height - altoPared; // Altura del triangulo
                             let distYTejado = distY - altoPared;                 // Cuanto has subido por el tejado
-                            
+
                             const porcentajeAltura = distYTejado / alturaTriangulo;
                             const anchoPermitidoAEstaAltura = mitadAnchoCasa * (1 - porcentajeAltura);
-                            
+
                             if (distX < anchoPermitidoAEstaAltura) {
                                 difuminar = true;
                             }
@@ -418,12 +418,12 @@ export default class House extends Phaser.Scene {
                         inicioBase = 10;
                         altoFinal = 55;
                         mitadAncho = 12;
-                    } 
+                    }
                     else if (estructura.tipoEstructura === 'roca') {
                         inicioBase = 5;
                         altoFinal = 32;
                         mitadAncho = 10;
-                    } 
+                    }
                     else if (estructura.tipoEstructura === 'estatua') {
                         inicioBase = 20;
                         altoFinal = 50;
@@ -448,7 +448,7 @@ export default class House extends Phaser.Scene {
         // VER QUE IDS TIENE LA VALLA, EL MURO, LA PIEDRA Y EL BLOQUE DE COLISION
         this.input.on('pointerdown', (pointer) => {
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
-            
+
             // Vallas
             const tileValla = capaVallas.getTileAtWorldXY(worldPoint.x, worldPoint.y);
             if (tileValla) {
