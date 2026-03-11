@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import Book from '../game-objects/book.js';
+import Cauldron from '../game-objects/cauldron.js';
 
 // sprites cocina
 import kitchen from '../../assets/sprites/kitchen/cocina.png';
@@ -33,6 +34,9 @@ import greenTestTube from '../../assets/sprites/kitchen/probeta_verde.png';
 import greenTestTubeB from '../../assets/sprites/kitchen/probeta_verde_b.png';
 import grayTestTube from '../../assets/sprites/kitchen/probeta_gris.png';
 import grayTestTubeB from '../../assets/sprites/kitchen/probeta_gris_b.png';
+
+import hotFireAnim from '../../assets/anims/fuego_caliente.png';
+import hotFireAnimJson from '../../assets/anims/fuego_caliente_atlas.json';
 
 // sprites libro abierto
 import openBook from '../../assets/sprites/libro.png';
@@ -84,6 +88,7 @@ export default class Kitchen extends Phaser.Scene {
         this.load.image('greenTestTubeB', greenTestTubeB);
         this.load.image('grayTestTube', grayTestTube);
         this.load.image('grayTestTubeB', grayTestTubeB);
+        this.load.atlas('hotFire', hotFireAnim, hotFireAnimJson);
 
         this.load.image('openBook', openBook);
         this.load.image('humanos', normal);
@@ -130,6 +135,8 @@ export default class Kitchen extends Phaser.Scene {
         bookButton.on('pointerdown', () => {
             this.book.open();
         });
+
+        this.cauldron = new Cauldron(this, cauldron);
 
     }
 
