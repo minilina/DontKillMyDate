@@ -15,11 +15,11 @@ export default class Book extends Phaser.GameObjects.Container {
         // Título del libro
         document.fonts.ready.then(() => {
             const title = scene.add.text(
-                scene.scale.width / 2,
+                318,
                 100,
                 "Afinidad",
                 {
-                     fontFamily: "VT323, monospace",
+                    fontFamily: "VT323, monospace",
                     fontSize: "48px",
                     color: "#4f342d",
                     fontStyle: "bold"
@@ -45,13 +45,34 @@ export default class Book extends Phaser.GameObjects.Container {
             y: positions.reduce((sum, p) => sum + p.y, 0) / positions.length
         };
 
-        // Diccionario de combinaciones → imagen resultante
         this.afinidadDict = {
-            "elfos-gnomos": "afin",
-            "hadas-ninfas": "afin",
-            "humanos-kitsunes": "afin",
-        };
+            "humanos-humanos": "afin",
+            "hadas-hadas": "afin",
+            "ninfas-ninfas": "afin",
+            "kitsunes-kitsunes": "afin",
+            "elfos-elfos": "afin",
+            "gnomos-gnomos": "afin",
 
+            "hadas-humanos": "afin",
+            "humanos-ninfas": "igual",
+            "humanos-kitsunes": "igual",
+            "elfos-humanos": "hostil",
+            "gnomos-humanos": "hostil",
+
+            "hadas-ninfas": "hostil",
+            "hadas-kitsunes": "igual",
+            "elfos-hadas": "igual",
+            "gnomos-hadas": "hostil",
+
+            "kitsunes-ninfas": "hostil",
+            "elfos-ninfas": "afin",
+            "gnomos-ninfas": "igual",
+
+            "elfos-kitsunes": "hostil",
+            "gnomos-kitsunes": "afin",
+
+            "elfos-gnomos": "igual"
+        };
         this.selections = [];
 
         elements.forEach((element, index) => {
@@ -61,8 +82,8 @@ export default class Book extends Phaser.GameObjects.Container {
                 positions[index].y,
                 element
             )
-            .setScale(3)
-            .setInteractive({ useHandCursor: true });
+                .setScale(3)
+                .setInteractive({ useHandCursor: true });
 
             const label = scene.add.text(
                 positions[index].x,
@@ -76,12 +97,10 @@ export default class Book extends Phaser.GameObjects.Container {
             ).setOrigin(0.5);
 
             icon.on('pointerdown', () => {
-                if (!this.selections.includes(element)) {
-                    this.selections.push(element);
-                }
+                this.selections.push(element);
 
                 if (this.selections.length === 2) {
-                    const key = this.selections.sort().join('-');
+                    const key = this.getKey(this.selections[0], this.selections[1]);
                     const resultImage = this.afinidadDict[key];
 
                     if (resultImage) {
@@ -122,6 +141,10 @@ export default class Book extends Phaser.GameObjects.Container {
         });
 
         this.setVisible(false);
+    }
+
+    getKey(a, b) {
+        return [a, b].sort().join("-");
     }
 
     open() { this.setVisible(true); }

@@ -12,6 +12,8 @@ import aire from '../../assets/sprites/aire.png';
 import planta from '../../assets/sprites/planta.png';
 
 import afin from '../../assets/sprites/afin.png';
+import igual from '../../assets/sprites/igual.png';
+import hostil from '../../assets/sprites/hostil.png';
 
 export default class Kitchen extends Phaser.Scene {
     constructor() {
@@ -29,6 +31,8 @@ export default class Kitchen extends Phaser.Scene {
         this.load.image('hadas', aire);
         this.load.image('elfos', planta);
         this.load.image('afin', afin);
+        this.load.image('igual', igual);
+        this.load.image('hostil', hostil);  
 
     }
 
