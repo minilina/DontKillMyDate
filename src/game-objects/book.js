@@ -7,7 +7,7 @@ export default class Book extends Phaser.GameObjects.Container {
         scene.add.existing(this);
 
         // Fondo del libro
-        const libroImg = scene.add.image(0, 0, 'libro')
+        const libroImg = scene.add.image(0, 0, 'openBook')
             .setOrigin(0, 0)
             .setDisplaySize(scene.scale.width, scene.scale.height);
         this.add(libroImg);
