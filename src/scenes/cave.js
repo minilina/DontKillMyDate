@@ -63,11 +63,11 @@ export default class Cueva extends Phaser.Scene {
         this.player = new Player(this, 168, 305); 
         //Descomentar esto cuando queramos mirar la posición del jugador para colocar cosas
         //window.player = this.player;
-        
+
         // CONFIGURAR CAMARA Y LIMITES
         this.cameras.main.setZoom(3);
         this.cameras.main.roundPixels = true;
-        this.cameras.main.startFollow(this.player, true);
+        this.cameras.main.startFollow(this.player);
         
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
