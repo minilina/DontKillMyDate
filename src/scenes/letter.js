@@ -102,7 +102,7 @@ export default class Letter extends Phaser.Scene {
 
     // Botón cerrar
     this.closeButton = this.add
-      .text(cx, inputY + 80, "Cerrar carta", {
+      .text(cx, inputY + 50, "Cerrar", {
         fontFamily: "Pixelify Sans",
         fontSize: "15px",
         backgroundColor: "#4f342d",
@@ -127,12 +127,23 @@ export default class Letter extends Phaser.Scene {
       .setVisible(false);
 
     // ─────────────────────────────
-    // PAGINACIÓN MANUAL (3 páginas fijas)
+    // PAGINACIÓN MANUAL
     // ─────────────────────────────
     this.pages = letterData.pages ?? [];
     this.pageIndex = 0;
     this.marker = "{{NAME}}";
     this.waitingName = false;
+
+    // ─────────────────────────────
+    // Estado typewriter + control click-to-skip
+    // ─────────────────────────────
+    this.isTyping = false;
+    this._typeEvent = null;
+    this._fullTargetText = "";
+    this._baseText = "";
+    this._onTypeComplete = null;
+    this._typeIndex = 0;
+    this._afterNameInThisPage = "";
 
     // Enter para siguiente página (solo si no estás en input de nombre)
     this.input.keyboard.on("keydown-ENTER", () => {
@@ -148,6 +159,21 @@ export default class Letter extends Phaser.Scene {
         return;
       }
 
+      // Si está escribiendo, completar (mismo comportamiento que click)
+      if (this.isTyping) {
+        this.finishTyping();
+        return;
+      }
+
+      this.nextManualPage();
+    });
+
+    // Click en cualquier parte: completar si está escribiendo / avanzar si ya está completo
+    this.onContinue(() => {
+      if (this.closeButton.visible) {
+        this.scene.start("store");
+        return;
+      }
       this.nextManualPage();
     });
 
@@ -155,26 +181,90 @@ export default class Letter extends Phaser.Scene {
     this.renderPage(0);
   }
 
-  // Escribe con efecto (sin cortar automáticamente)
+  // Click en cualquier parte: completar o avanzar
+  onContinue(handler) {
+    this.input.off("pointerdown");
+
+    this.input.on("pointerdown", () => {
+      // si está esperando nombre, no interceptar (deja al usuario escribir)
+      if (this.waitingName) return;
+
+      // si el foco está en input/textarea, no avanzar
+      const ae = document.activeElement?.tagName?.toLowerCase();
+      if (ae === "input" || ae === "textarea") return;
+
+      // si está escribiendo: completar
+      if (this.isTyping) {
+        this.finishTyping();
+        return;
+      }
+
+      // si no: avanzar
+      handler?.();
+    });
+  }
+
+  // Escribe con efecto (controlable)
   typewriter(text, onComplete, opts) {
     const append = opts?.append ?? false;
+    const speed = opts?.speed ?? 20;
 
     const base = append ? (this.letterText.text ?? "") : "";
     if (!append) this.letterText.setText("");
 
-    let i = 0;
+    // Guardar estado para poder "finishTyping"
+    this._baseText = base;
+    this._fullTargetText = text ?? "";
+    this._onTypeComplete = onComplete;
+    this._typeIndex = 0;
+
+    this.isTyping = true;
+
+    // cancelar cualquier timer anterior
+    if (this._typeEvent) {
+      this._typeEvent.remove(false);
+      this._typeEvent = null;
+    }
 
     const tick = () => {
-      if (i >= text.length) {
-        onComplete?.();
+      if (!this.isTyping) return;
+
+      if (this._typeIndex >= this._fullTargetText.length) {
+        this.isTyping = false;
+        this._typeEvent = null;
+        const cb = this._onTypeComplete;
+        this._onTypeComplete = null;
+        cb?.();
         return;
       }
-      this.letterText.setText(base + text.slice(0, i + 1));
-      i++;
-      this.time.delayedCall(20, tick);
+
+      this.letterText.setText(
+        this._baseText + this._fullTargetText.slice(0, this._typeIndex + 1)
+      );
+      this._typeIndex++;
+
+      this._typeEvent = this.time.delayedCall(speed, tick);
     };
 
     tick();
+  }
+
+  // Completa instantáneamente el texto que queda por escribir
+  finishTyping() {
+    if (!this.isTyping) return;
+
+    if (this._typeEvent) {
+      this._typeEvent.remove(false);
+      this._typeEvent = null;
+    }
+
+    this.letterText.setText(this._baseText + this._fullTargetText);
+
+    this.isTyping = false;
+
+    const cb = this._onTypeComplete;
+    this._onTypeComplete = null;
+    cb?.();
   }
 
   renderPage(index) {
@@ -221,32 +311,36 @@ export default class Letter extends Phaser.Scene {
     });
   }
 
- onConfirmName() {
-  const raw = this.nameInput.node.value ?? "";
-  const name = raw.replace(/\d+/g, "").trim().toLowerCase() || "jugador";
+  onConfirmName() {
+    const raw = this.nameInput.node.value ?? "";
+    const name = raw.replace(/\d+/g, "").trim().toLowerCase() || "jugador";
 
-  this.registry.set("playerName", name);
+    this.registry.set("playerName", name);
 
-  this.nameInput.setVisible(false);
-  this.confirmText.setVisible(false);
-  this.waitingName = false;
+    this.nameInput.setVisible(false);
+    this.confirmText.setVisible(false);
+    this.waitingName = false;
 
-  const after = this._afterNameInThisPage ?? "";
+    const after = this._afterNameInThisPage ?? "";
 
-  // 1) pegar el nombre inmediatamente (sin reescribir "Querida ")
-  this.letterText.setText((this.letterText.text ?? "") + name);
+    // 1) pegar el nombre inmediatamente (sin reescribir "Querida ")
+    this.letterText.setText((this.letterText.text ?? "") + name);
 
-  // 2) continuar escribiendo el resto con append
-  const isLast = this.pageIndex >= this.pages.length - 1;
-  this.typewriter(after, () => {
-    if (isLast) {
-      this.nextPrompt.setVisible(false);
-      this.closeButton.setVisible(true);
-    } else {
-      this.nextPrompt.setVisible(true);
-    }
-  }, { append: true });
-}
+    // 2) continuar escribiendo el resto con append
+    const isLast = this.pageIndex >= this.pages.length - 1;
+    this.typewriter(
+      after,
+      () => {
+        if (isLast) {
+          this.nextPrompt.setVisible(false);
+          this.closeButton.setVisible(true);
+        } else {
+          this.nextPrompt.setVisible(true);
+        }
+      },
+      { append: true }
+    );
+  }
 
   nextManualPage() {
     if (this.pageIndex >= this.pages.length - 1) {
