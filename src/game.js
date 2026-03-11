@@ -5,6 +5,7 @@ import Letter from './scenes/letter.js';
 import Store from './scenes/store.js';
 import Kitchen from './scenes/kitchen.js';
 import House from './scenes/house.js';
+import Cave from './scenes/cave.js';
 import End from './scenes/end.js';
 
 import AnimatedTiles from 'phaser-animated-tiles/dist/AnimatedTiles.js';
@@ -19,7 +20,7 @@ const config = {
     pixelArt: true,
     roundPixels: true,
     physics: { default: 'arcade', arcade: { gravity: { y: 400 }, debug: true } }, // la gravedad no debe estar en 0?
-    scene: [Start, Boot, Letter, Store, Kitchen, House, End], // Start primero
+    scene: [Start, Boot, Letter, Store, Kitchen, House, Cave, End], // Start primero
     // npm install phaser-animated-tiles tuve que hacer para la animacion de las tiles
     plugins: { scene: [ { key: 'AnimatedTiles', plugin: AnimatedTiles, mapping: 'animatedTiles'} ] }
 };

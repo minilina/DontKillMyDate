@@ -1630,6 +1630,18 @@
                  "width":0,
                  "x":720,
                  "y":448
+                }, 
+                {
+                 "height":0,
+                 "id":336,
+                 "name":"letrero",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":464,
+                 "y":416
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -2005,7 +2017,7 @@
          "y":0
         }],
  "nextlayerid":49,
- "nextobjectid":333,
+ "nextobjectid":337,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

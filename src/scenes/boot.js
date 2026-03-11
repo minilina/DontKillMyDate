@@ -18,6 +18,22 @@ import tilesetGrassWaterSpring from '../../assets/tiled/tilesetGrassWaterSpring.
 import treeTrunks from '../../assets/tiled/treeTrunks.png';
 import waterGroundAnimationsTiles from '../../assets/tiled/waterGroundAnimationsTiles.png';
 
+import letrero from '../../assets/tiled/letrero.png';
+import bonfireFish from '../../assets/tiled/bonfireFish.png';
+import caveWaterGroundAnimationsTiles from '../../assets/tiled/caveWaterGroundAnimationsTiles.png';
+import caves from '../../assets/tiled/caves.png';
+import chest from '../../assets/tiled/chest.png';
+import dogBathtub from '../../assets/tiled/dogBathtub.png';
+import entering from '../../assets/tiled/entering.png';
+import exteriorBeach from '../../assets/tiled/exteriorBeach.png';
+import exterior from '../../assets/tiled/exterior.png';
+import lamp from '../../assets/tiled/lamp.png';
+import lightEffect from '../../assets/tiled/lightEffect.png';
+import mineProps from '../../assets/tiled/mineProps.png';
+import propsMine from '../../assets/tiled/propsMine.png';
+import stoneWithMinerals from '../../assets/tiled/stoneWithMinerals.png';
+import tilesetGrassCaves from '../../assets/tiled/tilesetGrassCaves.png';
+
 import pine from '../../assets/tiled/pine.png';
 import pine2 from '../../assets/tiled/pine2.png';
 import pine3 from '../../assets/tiled/pine3.png';
@@ -33,6 +49,7 @@ import estatua from '../../assets/tiled/estatua.png';
 import playerRun from '../../assets/anims/run.png';
 import playerIdle from '../../assets/anims/idle.png';
 import casa from '../../assets/tiled/casa.json';
+import cueva from '../../assets/tiled/cueva.json';
 
 import customer from '../../assets/sprites/default.png';// (ALBA) esto se cambiará para que los clientes tengan sprites únicos, pero por ahora es un placeholder.
 // Ejemplos de futuras capas para generar los NPCS (ALBA):
@@ -80,8 +97,26 @@ export default class Boot extends Phaser.Scene {
         this.load.image('pilar2', pilar2);
         this.load.image('roca', roca);
         this.load.image('estatua', estatua);
+        this.load.image('letrero', letrero);
 
-        this.load.tilemapTiledJSON('map', casa);
+        this.load.tilemapTiledJSON('casa', casa);
+
+        this.load.image('bonfireFish', bonfireFish);
+        this.load.image('caveWaterGroundAnimationsTiles', caveWaterGroundAnimationsTiles);
+        this.load.image('caves', caves);
+        this.load.image('chest', chest);
+        this.load.image('dogBathtub', dogBathtub);
+        this.load.image('entering', entering);
+        this.load.image('exteriorBeach', exteriorBeach);
+        this.load.image('exterior', exterior);
+        this.load.image('lamp', lamp);
+        this.load.image('lightEffect', lightEffect);
+        this.load.image('mineProps', mineProps);
+        this.load.image('propsMine', propsMine);
+        this.load.image('stoneWithMinerals', stoneWithMinerals);
+        this.load.image('tilesetGrassCaves', tilesetGrassCaves);
+
+        this.load.tilemapTiledJSON('cueva', cueva);
 
         this.load.image('customer', customer);
         this.load.image('fondo', fondo);

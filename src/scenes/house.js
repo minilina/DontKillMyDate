@@ -9,7 +9,7 @@ export default class House extends Phaser.Scene {
     preload() {}
 
     create() {
-        var map = this.make.tilemap({ key: 'map' });
+        var map = this.make.tilemap({ key: 'casa' });
 
         var allPropsSeasons = map.addTilesetImage('ALL props seasons', 'allPropsSeasons');
         var bestFishPoint = map.addTilesetImage('best fish point 2', 'bestFishPoint');
@@ -107,7 +107,7 @@ export default class House extends Phaser.Scene {
 
         this.cuevaAbierta = false;
 
-        // ABRIR y CERRAR VALLAS Y ABRIR CUEVA
+        // ABRIR y CERRAR VALLAS y ABRIR CUEVA
         this.input.on('pointerdown', (pointer) => {
             // Convertir el clic de la pantalla a coordenadas
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
@@ -140,7 +140,7 @@ export default class House extends Phaser.Scene {
                     // ENTRAR A LA CUEVA SI TOCAS LA ZONA Y PULSAS ARRIBA
                     this.physics.add.overlap(this.player, zonaEntrada, () => {
                         if (this.player.wasd.up.isDown) {
-                            this.scene.start('Cueva'); 
+                            this.scene.start('cueva'); 
                         }
                     });
 
@@ -289,7 +289,7 @@ export default class House extends Phaser.Scene {
             capaEstructuras.objects.forEach(obj => {
                 const nombre = obj.name;
                
-                if (['templo', 'pilar1', 'pilar2', 'roca', 'estatua'].includes(nombre)) {
+                if (['templo', 'pilar1', 'pilar2', 'roca', 'estatua', 'letrero'].includes(nombre)) {
                     // Origin (0, 1): El punto de Tiled es la esquina Abajo-Izquierda
                     const estructura = this.grupoEstructuras.create(obj.x, obj.y, nombre);
                     estructura.setOrigin(0, 1);
@@ -311,6 +311,11 @@ export default class House extends Phaser.Scene {
                     } else if (nombre === 'templo') {
                         estructura.body.setSize(estructura.width - 16, 80); 
                         estructura.body.setOffset(8, estructura.height - 80);
+                    }
+                    else if (nombre === 'letrero') {
+                        // Colisión ajustada a la base del palito
+                        estructura.body.setSize(16, 10);
+                        estructura.body.setOffset(7, estructura.height - 10);
                     }
                 }
             });
@@ -423,6 +428,10 @@ export default class House extends Phaser.Scene {
                         inicioBase = 20;
                         altoFinal = 50;
                         mitadAncho = 16;
+                    }
+                    else if (estructura.tipoEstructura === 'letrero') {
+                        altoFinal = 30;
+                        mitadAncho = 15;
                     }
 
                     if (distY > inicioBase && distY < altoFinal && distX < mitadAncho) {
