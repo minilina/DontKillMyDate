@@ -102,7 +102,7 @@ export default class Letter extends Phaser.Scene {
 
     // Botón cerrar
     this.closeButton = this.add
-      .text(cx, inputY + 50, "Cerrar", {
+      .text(cx, inputY + 80, "Cerrar carta", {
         fontFamily: "Pixelify Sans",
         fontSize: "15px",
         backgroundColor: "#4f342d",
@@ -115,16 +115,8 @@ export default class Letter extends Phaser.Scene {
 
     this.closeButton.on("pointerdown", () => this.scene.start("store"));
 
-    // Prompt "ENTER para continuar"
-    this.nextPrompt = this.add
-      .text(
-        this.textArea.x + this.textArea.width / 2,
-        this.textArea.y + this.textArea.height + 18,
-        "Pulsa ENTER para continuar",
-        { fontFamily: "Pixelify Sans", fontSize: "14px", color: "#4f342d" }
-      )
-      .setOrigin(0.5)
-      .setVisible(false);
+    // (Quitado) Prompt "ENTER para continuar"
+    // Ya no se crea nextPrompt
 
     // ─────────────────────────────
     // PAGINACIÓN MANUAL
@@ -135,7 +127,7 @@ export default class Letter extends Phaser.Scene {
     this.waitingName = false;
 
     // ─────────────────────────────
-    // Estado typewriter + control click-to-skip
+    // Estado typewriter + skip con Enter o Click
     // ─────────────────────────────
     this.isTyping = false;
     this._typeEvent = null;
@@ -145,63 +137,51 @@ export default class Letter extends Phaser.Scene {
     this._typeIndex = 0;
     this._afterNameInThisPage = "";
 
-    // Enter para siguiente página (solo si no estás en input de nombre)
-    this.input.keyboard.on("keydown-ENTER", () => {
-      // Si estamos esperando nombre, no pasar página
+    // Acción unificada: si escribe -> completa; si no -> avanza/cierra
+    this.advanceOrFinish = () => {
+      // Si estamos esperando nombre, no avanzar
       if (this.waitingName) return;
 
-      // Si el foco está en un input/textarea (extra seguridad)
+      // Si el foco está en un input/textarea, no avanzar
       const ae = document.activeElement?.tagName?.toLowerCase();
       if (ae === "input" || ae === "textarea") return;
 
-      if (this.closeButton.visible) {
-        this.scene.start("store");
-        return;
-      }
-
-      // Si está escribiendo, completar (mismo comportamiento que click)
+      // Si está escribiendo: completar
       if (this.isTyping) {
         this.finishTyping();
         return;
       }
 
-      this.nextManualPage();
-    });
-
-    // Click en cualquier parte: completar si está escribiendo / avanzar si ya está completo
-    this.onContinue(() => {
+      // Si está el botón de cerrar (última página)
       if (this.closeButton.visible) {
         this.scene.start("store");
         return;
       }
+
+      // Si no: siguiente página
       this.nextManualPage();
+    };
+
+    // Enter: misma lógica que click
+    this.input.keyboard.on("keydown-ENTER", () => {
+      this.advanceOrFinish();
+    });
+
+    // Click en cualquier parte: misma lógica que enter
+    this.input.off("pointerdown");
+    this.input.on("pointerdown", () => {
+      this.advanceOrFinish();
     });
 
     // Render inicial
     this.renderPage(0);
   }
 
-  // Click en cualquier parte: completar o avanzar
-  onContinue(handler) {
-    this.input.off("pointerdown");
-
-    this.input.on("pointerdown", () => {
-      // si está esperando nombre, no interceptar (deja al usuario escribir)
-      if (this.waitingName) return;
-
-      // si el foco está en input/textarea, no avanzar
-      const ae = document.activeElement?.tagName?.toLowerCase();
-      if (ae === "input" || ae === "textarea") return;
-
-      // si está escribiendo: completar
-      if (this.isTyping) {
-        this.finishTyping();
-        return;
-      }
-
-      // si no: avanzar
-      handler?.();
-    });
+  // Utilidad: capitalizar primera letra
+  capitalizeFirstLetter(s) {
+    const str = (s ?? "").toString();
+    if (!str) return str;
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
   // Escribe con efecto (controlable)
@@ -270,7 +250,7 @@ export default class Letter extends Phaser.Scene {
   renderPage(index) {
     const raw = this.pages[index] ?? "";
 
-    // última página => luego mostrar "Cerrar" en vez de prompt
+    // última página => luego mostrar "Cerrar carta"
     const isLast = index >= this.pages.length - 1;
 
     // si en esta página está el marcador, paramos y pedimos nombre
@@ -280,7 +260,6 @@ export default class Letter extends Phaser.Scene {
       const after = raw.slice(markerPos + this.marker.length);
 
       this.waitingName = false;
-      this.nextPrompt.setVisible(false);
       this.closeButton.setVisible(false);
 
       this.typewriter(before, () => {
@@ -302,10 +281,8 @@ export default class Letter extends Phaser.Scene {
     // página normal
     this.typewriter(raw, () => {
       if (isLast) {
-        this.nextPrompt.setVisible(false);
         this.closeButton.setVisible(true);
       } else {
-        this.nextPrompt.setVisible(true);
         this.closeButton.setVisible(false);
       }
     });
@@ -313,9 +290,11 @@ export default class Letter extends Phaser.Scene {
 
   onConfirmName() {
     const raw = this.nameInput.node.value ?? "";
-    const name = raw.replace(/\d+/g, "").trim().toLowerCase() || "jugador";
 
-    this.registry.set("playerName", name);
+    const cleanLower = raw.replace(/\d+/g, "").trim().toLowerCase() || "jugador";
+    const nameForLetter = this.capitalizeFirstLetter(cleanLower);
+
+    this.registry.set("playerName", nameForLetter);
 
     this.nameInput.setVisible(false);
     this.confirmText.setVisible(false);
@@ -323,8 +302,8 @@ export default class Letter extends Phaser.Scene {
 
     const after = this._afterNameInThisPage ?? "";
 
-    // 1) pegar el nombre inmediatamente (sin reescribir "Querida ")
-    this.letterText.setText((this.letterText.text ?? "") + name);
+    // 1) pegar el nombre inmediatamente
+    this.letterText.setText((this.letterText.text ?? "") + nameForLetter);
 
     // 2) continuar escribiendo el resto con append
     const isLast = this.pageIndex >= this.pages.length - 1;
@@ -332,10 +311,7 @@ export default class Letter extends Phaser.Scene {
       after,
       () => {
         if (isLast) {
-          this.nextPrompt.setVisible(false);
           this.closeButton.setVisible(true);
-        } else {
-          this.nextPrompt.setVisible(true);
         }
       },
       { append: true }
@@ -344,14 +320,11 @@ export default class Letter extends Phaser.Scene {
 
   nextManualPage() {
     if (this.pageIndex >= this.pages.length - 1) {
-      // ya es la última; aquí podrías cerrar o no hacer nada
       this.closeButton.setVisible(true);
-      this.nextPrompt.setVisible(false);
       return;
     }
 
     this.pageIndex++;
-    this.nextPrompt.setVisible(false);
     this.renderPage(this.pageIndex);
   }
 }
