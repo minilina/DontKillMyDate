@@ -60,8 +60,10 @@ export default class Cueva extends Phaser.Scene {
         this.animatedTiles.setRate(0.5);
 
         // CREAR AL JUGADOR
-        this.player = new Player(this, 400, 300); 
-
+        this.player = new Player(this, 168, 305); 
+        //Descomentar esto cuando queramos mirar la posición del jugador para colocar cosas
+        //window.player = this.player;
+        
         // CONFIGURAR CAMARA Y LIMITES
         this.cameras.main.setZoom(3);
         this.cameras.main.roundPixels = true;

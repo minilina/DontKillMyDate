@@ -71,6 +71,8 @@ export default class House extends Phaser.Scene {
 
         // CREAR AL JUGADOR
         this.player = new Player(this, 400, 300);
+        //Descomentar esto cuando queramos mirar la posición del jugador para colocar cosas
+        //window.player = this.player;
 
         // CONFIGURAR PROFUNDIDADES (DEPTH / Z-INDEX)
         capaTapar.setDepth(9999);
