@@ -19,7 +19,7 @@ const config = {
     scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
     pixelArt: true,
     roundPixels: true,
-    physics: { default: 'arcade', arcade: { gravity: { y: 0 }, debug: false } },
+    physics: { default: 'arcade', arcade: { gravity: { y: 0 }, debug: true } },
     scene: [Start, Boot, Letter, Store, Kitchen, House, Cave, End], // Start primero
     // npm install phaser-animated-tiles tuve que hacer para la animacion de las tiles
     plugins: { scene: [ { key: 'AnimatedTiles', plugin: AnimatedTiles, mapping: 'animatedTiles'} ] }
