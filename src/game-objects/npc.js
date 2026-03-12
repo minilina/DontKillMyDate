@@ -35,7 +35,7 @@ export default class NPC extends Phaser.GameObjects.Container {
         this.requirements = requirements;
 
         // 2. CREAMOS EL SPRITE DEL PERSONAJE
-        this.sprite = scene.add.sprite(0, 0, spriteKey);
+        this.sprite = scene.add.sprite(0, 0, spriteKey).setScale(3);
         
 
         this.add(this.sprite); // Añadimos el sprite al contenedor
