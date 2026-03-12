@@ -272,7 +272,7 @@ export default class House extends Phaser.Scene {
                         arbol.body.setSize(16, 14);
                         arbol.body.setOffset(arbol.width / 2 - 8, arbol.height - 14);
                     } else {
-                        // Colisión por defecto para cualquier seta
+                        // Colision por defecto para cualquier seta
                         arbol.body.setSize(12, 10);
                         arbol.body.setOffset(arbol.width / 2 - 6, arbol.height - 10);
                     }

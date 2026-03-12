@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.10" tiledversion="1.11.2" name="Mine props" tilewidth="16" tileheight="16" tilecount="60" columns="4">
- <image source="../../Farm RPG - Tiny Asset Pack - (All in One)/Farm/Props/Mine/Mine props.png" width="64" height="240"/>
+ <image source="mineProps.png" width="64" height="240"/>
  <tile id="20">
   <animation>
    <frame tileid="20" duration="150"/>

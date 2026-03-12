@@ -37,7 +37,7 @@ export default class Letter extends Phaser.Scene {
 
     this.letterText = this.add.text(0, 0, "", {
       fontFamily: "VT323, monospace",
-      fontSize: "21px",
+      fontSize: "25px",
       color: "#4f342d",
       wordWrap: { width: this.textArea.width },
     });
@@ -55,12 +55,20 @@ export default class Letter extends Phaser.Scene {
     );
     this.textContainer.setMask(maskGfx.createGeometryMask());
 
-    const cx = this.scale.width / 2;
-    const inputY = this.scale.height / 2 + 140;
+    // ─────────────────────────────
+    // OPCIÓN B: centrar input respecto al textArea
+    // ─────────────────────────────
+    const uiCx = this.textArea.x + this.textArea.width / 2;
+    const uiCy = this.textArea.y + this.textArea.height / 2;
+
+
+    const inputY = uiCy; // centro vertical del área
+    const confirmY = uiCy + 180;
+    const closeY = uiCy + 180;
 
     // UI nombre
     this.nameInput = this.add
-      .dom(cx, inputY, "input", { fontSize: "15px", padding: "5px" })
+      .dom(uiCx, inputY+130, "input", { fontSize: "15px", padding: "5px" })
       .setVisible(false);
 
     this.nameInput.node.placeholder = "Escribe tu nombre";
@@ -73,7 +81,7 @@ export default class Letter extends Phaser.Scene {
       let v = e.target.value;
       v = v.toLowerCase();
       v = v.replace(/[^a-z]/g, "");
-      v = v.substring(0, 20);
+      v = v.substring(0, 16);
       e.target.value = v;
     });
 
@@ -87,7 +95,7 @@ export default class Letter extends Phaser.Scene {
     });
 
     this.confirmText = this.add
-      .text(cx, inputY + 40, "Confirmar", {
+      .text(uiCx, confirmY, "Confirmar", {
         fontFamily: "VT323, monospace",
         fontSize: "21px",
         backgroundColor: "#4f342d",
@@ -102,7 +110,7 @@ export default class Letter extends Phaser.Scene {
 
     // Botón cerrar
     this.closeButton = this.add
-      .text(cx, inputY + 80, "Cerrar carta", {
+      .text(uiCx, closeY, "Cerrar carta", {
         fontFamily: "VT323, monospace",
         fontSize: "21px",
         backgroundColor: "#4f342d",
