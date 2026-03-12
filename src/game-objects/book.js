@@ -6,15 +6,36 @@ export default class Book extends Phaser.GameObjects.Container {
         super(scene, 0, 0);
         scene.add.existing(this);
 
-        // Fondo del libro
-        const libroImg = scene.add.image(0, 0, 'openBook')
+        const width = scene.scale.width;
+        const height = scene.scale.height;
+
+        // Fondo
+        const libroImg = scene.add.image(0, 0, 'libro')
             .setOrigin(0, 0)
-            .setDisplaySize(scene.scale.width, scene.scale.height);
+            .setDisplaySize(width, height);
+
         this.add(libroImg);
 
-        // Título del libro
-        document.fonts.ready.then(() => {
-            const title = scene.add.text(
+        // SISTEMA DE PÁGINAS
+        this.pages = [];
+        this.currentPage = 0;
+
+        const page1 = scene.add.container(0, 0);
+        const page2 = scene.add.container(0, 0);
+
+        this.pages.push(page1);
+        this.pages.push(page2);
+
+        this.add(page1);
+        this.add(page2);
+
+        page2.setVisible(false);
+
+        // =========================
+        // PAGINA 1 (AFINIDADES)
+        // =========================
+
+         const title1 = scene.add.text(
                 318,
                 100,
                 "Afinidad",
@@ -25,11 +46,9 @@ export default class Book extends Phaser.GameObjects.Container {
                     fontStyle: "bold"
                 }
             ).setOrigin(0.5);
-            this.add(title);
-        });
 
-        // Botones
         const elements = ['humanos', 'kitsunes', 'ninfas', 'hadas', 'elfos', 'gnomos'];
+
         const positions = [
             { x: 318, y: 165 },
             { x: 423, y: 225 },
@@ -39,13 +58,13 @@ export default class Book extends Phaser.GameObjects.Container {
             { x: 213, y: 225 }
         ];
 
-        // Calculamos el centro del hexágono
         const center = {
             x: positions.reduce((sum, p) => sum + p.x, 0) / positions.length,
             y: positions.reduce((sum, p) => sum + p.y, 0) / positions.length
         };
 
         this.afinidadDict = {
+
             "humanos-humanos": "afin",
             "hadas-hadas": "afin",
             "ninfas-ninfas": "afin",
@@ -73,6 +92,7 @@ export default class Book extends Phaser.GameObjects.Container {
 
             "elfos-gnomos": "igual"
         };
+
         this.selections = [];
 
         elements.forEach((element, index) => {
@@ -82,36 +102,46 @@ export default class Book extends Phaser.GameObjects.Container {
                 positions[index].y,
                 element
             )
-                .setScale(3)
-                .setInteractive({ useHandCursor: true });
+            .setScale(3)
+            .setInteractive({ useHandCursor: true });
 
             const label = scene.add.text(
                 positions[index].x,
                 positions[index].y + 40,
                 element,
                 {
-                    fontFamily: "VT323, monospace",
+                    fontFamily: "VT323",
                     fontSize: "20px",
                     color: "#4f342d"
                 }
             ).setOrigin(0.5);
 
             icon.on('pointerdown', () => {
+
                 this.selections.push(element);
 
                 if (this.selections.length === 2) {
-                    const key = this.getKey(this.selections[0], this.selections[1]);
+
+                    const key = this.getKey(
+                        this.selections[0],
+                        this.selections[1]
+                    );
+
                     const resultImage = this.afinidadDict[key];
 
                     if (resultImage) {
-                        // Crear imagen en el centro con alpha=0 y escala pequeña
-                        const res = scene.add.image(center.x, center.y, resultImage)
-                            .setOrigin(0.5)
-                            .setAlpha(0)
-                            .setScale(4);
-                        this.add(res);
 
-                        // Tween de pop + fade-in
+                        const res = scene.add.image(
+                            center.x,
+                            center.y,
+                            resultImage
+                        )
+                        .setOrigin(0.5)
+                        .setAlpha(0)
+                        .setScale(4);
+
+                        page1.add(res);
+
                         scene.tweens.add({
                             targets: res,
                             alpha: 1,
@@ -119,7 +149,7 @@ export default class Book extends Phaser.GameObjects.Container {
                             duration: 1200,
                             ease: 'Power2',
                             onComplete: () => {
-                                // Después de 1.2s, fade-out
+
                                 scene.tweens.add({
                                     targets: res,
                                     alpha: 0,
@@ -127,17 +157,69 @@ export default class Book extends Phaser.GameObjects.Container {
                                     ease: 'Power2',
                                     onComplete: () => res.destroy()
                                 });
+
                             }
                         });
                     }
 
-                    // Limpiar selección para la siguiente combinación
                     this.selections = [];
                 }
+
             });
 
-            this.add(icon);
-            this.add(label);
+            page1.add(icon);
+            page1.add(label);
+            page1.add(title1);
+
+        });
+
+        // =========================
+        // PAGINA 2 (EJEMPLO)
+        // =========================
+
+        const page2Text = scene.add.text(
+            318,
+            260,
+            "Bestiario\n(Proximamente)",
+            {
+                fontFamily: "VT323",
+                fontSize: "42px",
+                color: "#4f342d",
+                align: "center"
+            }
+        ).setOrigin(0.5);
+
+        page2.add(page2Text);
+
+        // =========================
+        // BOTONES DE PAGINA
+        // =========================
+
+        const nextButton = scene.add.image(
+            755,
+            400,
+            'next'
+        )
+        .setInteractive({ useHandCursor: true })
+        .setScale(3);
+
+        const prevButton = scene.add.image(
+            200,
+            400,
+            'prev'
+        )
+        .setInteractive({ useHandCursor: true })
+        .setScale(3);
+
+        this.add(nextButton);
+        this.add(prevButton);
+
+        nextButton.on("pointerdown", () => {
+            this.showPage(this.currentPage + 1);
+        });
+
+        prevButton.on("pointerdown", () => {
+            this.showPage(this.currentPage - 1);
         });
 
         this.setVisible(false);
@@ -147,6 +229,18 @@ export default class Book extends Phaser.GameObjects.Container {
         return [a, b].sort().join("-");
     }
 
+    showPage(index) {
+
+        if (index < 0 || index >= this.pages.length) return;
+
+        this.pages[this.currentPage].setVisible(false);
+
+        this.currentPage = index;
+
+        this.pages[this.currentPage].setVisible(true);
+    }
+
     open() { this.setVisible(true); }
     close() { this.setVisible(false); }
+
 }
