@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import CustomerFlowManager from "../dialogue/CustomerFlowManager.js";
+import CustomerFlowManager from "../dialogue/customerFlowManager.js";
 import dialog from "../../assets/sprites/dialog.png";
 import dialogArrow from "../../assets/sprites/dialog_arrow.png";
 
@@ -29,11 +29,11 @@ export default class Store extends Phaser.Scene {
         // 2) Crear diálogo
         this.flow = new CustomerFlowManager(this);
         // Metemos la cantidad de clientes n elegida a la cola
-        let n = 1;
+        let n = 2;
         this.flow.startShift(n);
 
-        this.events.on("wake", () => {
-            this.flow.continueShift();
+         this.events.on("shift:finished", () => {
+            this.scene.start("house");
         });
     }
 

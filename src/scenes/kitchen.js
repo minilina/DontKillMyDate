@@ -108,10 +108,10 @@ export default class Kitchen extends Phaser.Scene {
             .setOrigin(0, 0)
             .setScale(3)
             .setInteractive(); // PROVISIONAL
-        
+
         // PROVISIONAL: para pasar a top-down cuando se haga click en la cocina
         bg.on('pointerdown', () => {
-            this.scene.start('house');
+            this.finishKitchen();
         });
 
         const bookButton = this.createKitchenItem(262, 119, 'bookOnTable', 'bookOnTableB');
@@ -131,13 +131,37 @@ export default class Kitchen extends Phaser.Scene {
         const grayTestTube = this.createKitchenItem(225, 121, 'grayTestTube', 'grayTestTubeB');
 
         this.book = new Book(this);
-        
+
         bookButton.on('pointerdown', () => {
             this.book.open();
         });
 
         this.cauldron = new Cauldron(this, cauldron);
 
+    }
+
+    finishKitchen() {
+        // 1) cerrar cocina
+        this.scene.stop("kitchen");
+        this.scene.wake("store");
+
+        // 2) continuar turno (nuevo cliente / nuevo diálogo)
+        const storeScene = this.scene.get("store");
+
+        // Si por lo que sea no existe la tienda, fallback
+        if (!storeScene) {
+            this.scene.start("house");
+            return;
+        }
+
+        // Si el flow existe, seguimos el turno.
+        // Si no existe, fallback.
+        if (storeScene.flow && typeof storeScene.flow.continueShift === "function") {
+            storeScene.flow.continueShift();
+            return;
+        }
+
+        this.scene.start("house");
     }
 
     //  crea un item interactivo de la cocina
@@ -148,16 +172,16 @@ export default class Kitchen extends Phaser.Scene {
         const item = this.add.image(x * scale, y * scale, normalKey)
             .setOrigin(0, 0)
             .setScale(scale)
-            .setInteractive({ 
+            .setInteractive({
                 useHandCursor: true,
                 pixelPerfect: true
             });
-        
+
         // efecto ratón encima del objeto
         item.on('pointerover', () => {
             item.setTexture(borderKey);
         });
-        
+
         // efecto ratón fuera del objeto
         item.on('pointerout', () => {
             item.setTexture(normalKey);

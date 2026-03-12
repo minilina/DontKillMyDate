@@ -42,24 +42,34 @@ export default class DialogueUI {
     this.arrowTimer = null;
   }
 
-  // clics en cualquier parte de la pantalla o pulsar tecla ENTER para autocompletar o avanzar
-  onContinue(handler) {
-    this.scene.input.off("pointerdown");
-    this.scene.input.keyboard.off("keydown-ENTER");
-    
-    const advanceDialog = () => {
-      if (!this.container.visible) return; // si el diálogo no está visible, no hace nada
+ onContinue(handler) {
+  // Limpia listeners previos (evita duplicados)
+  this.scene.input.off("pointerdown");
+  this.scene.input.keyboard?.off("keydown-ENTER");
 
-      if (this.isTyping) {
-        this.finishTyping(); // si está escribiendo, completa el texto
-      } else {
-        handler(); // si no, llama al handler para avanzar el diálogo
-      }
-    };
+  const advanceOrFinish = () => {
+    if (!this.container.visible) return; // si el diálogo no está visible, no hace nada
 
-    this.scene.input.on("pointerdown", advanceDialog);
-    this.scene.input.keyboard.on("keydown-ENTER", advanceDialog);
-  }  
+    if (this.isTyping) {
+      this.finishTyping(); // si está escribiendo, completa el texto
+    } else {
+      handler?.(); // si no, llama al handler para avanzar el diálogo
+    }
+  };
+
+  // Click
+  this.scene.input.on("pointerdown", advanceOrFinish);
+
+  // Enter
+  this.scene.input.keyboard.on("keydown-ENTER", (event) => {
+    // opcional: evita que Enter haga cosas raras si hay un input en foco
+    const ae = document.activeElement?.tagName?.toLowerCase();
+    if (ae === "input" || ae === "textarea") return;
+
+    event?.preventDefault?.();
+    advanceOrFinish();
+  });
+}
 
   // muestra el dialogo por pantalla
   show() {

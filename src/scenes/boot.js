@@ -52,6 +52,7 @@ import casa from '../../assets/tiled/casa.json';
 import cueva from '../../assets/tiled/cueva.json';
 
 import customer from '../../assets/sprites/default.png';// (ALBA) esto se cambiará para que los clientes tengan sprites únicos, pero por ahora es un placeholder.
+import customer2 from '../../assets/sprites/modelo_prueba_2.png';
 // Ejemplos de futuras capas para generar los NPCS (ALBA):
 // import npc_eyes_1 from '../../assets/sprites/ojos_1.png';
 // import npc_hair_1 from '../../assets/sprites/pelo_1.png';
@@ -119,6 +120,7 @@ export default class Boot extends Phaser.Scene {
         this.load.tilemapTiledJSON('cueva', cueva);
 
         this.load.image('customer', customer);
+        this.load.image('customer2', customer2);
         this.load.image('fondo', fondo);
          // Aquí puedes añadir barra de progreso si quieres
     }

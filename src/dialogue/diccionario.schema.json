@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "sabores",
+    "colores",
+    "consistencias",
+    "razas",
+    "saludos",
+    "despedidas",
+    "templates"
+  ],
+  "properties": {
+    "sabores": { "type": "object", "additionalProperties": { "type": "array", "items": { "type": "string" } } },
+    "colores": { "type": "object", "additionalProperties": { "type": "array", "items": { "type": "string" } } },
+    "consistencias": { "type": "object", "additionalProperties": { "type": "array", "items": { "type": "string" } } },
+    "razas": { "type": "object", "additionalProperties": { "type": "array", "items": { "type": "string" } } },
+    "saludos": { "type": "object", "additionalProperties": { "type": "array", "items": { "type": "string" } } },
+    "despedidas": { "type": "array", "items": { "type": "string" } },
+    "templates": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+  }
+}
