@@ -3,6 +3,8 @@ import background from '../../assets/sprites/background.png';
 import clouds from '../../assets/sprites/nubes.png';
 import button from '../../assets/sprites/button.png';
 import logo from '../../assets/sprites/logo.png';
+import startMusic from '../../assets/sound/startmusic.mp3';
+import buttonSound from '../../assets/sound/button.mp3';
 
 export default class Start extends Phaser.Scene {
     constructor() {
@@ -14,10 +16,20 @@ export default class Start extends Phaser.Scene {
         this.load.image('clouds', clouds);
         this.load.image('button', button);
         this.load.image('logo', logo);
+        this.load.audio('startMusic', startMusic);
+        this.load.audio('buttonSound', buttonSound);
     }
 
     create() {
         // Fondo
+
+        this.game.bgMusic = this.sound.add('startMusic', {
+            loop: true,
+            volume: 0.1
+        });
+
+        this.game.bgMusic.play();
+
         this.add.image(0, 0, 'background')
             .setOrigin(0, 0)
             .setDisplaySize(this.scale.width, this.scale.height);
@@ -68,6 +80,7 @@ export default class Start extends Phaser.Scene {
         // Click → iniciar Boot
         boton.on('pointerdown', () => {
             this.scene.start('Boot');
+            this.sound.play('buttonSound', { volume: 0.2 });
         });
     }
 
