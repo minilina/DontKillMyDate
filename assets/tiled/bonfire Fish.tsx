@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.10" tiledversion="1.11.2" name="bonfire Fish" tilewidth="16" tileheight="16" tilecount="36" columns="18">
- <image source="../../Farm RPG - Tiny Asset Pack - (All in One)/Exterior/bonfire Fish.png" width="288" height="32"/>
+ <image source="bonfireFish.png" width="288" height="32"/>
  <tile id="0">
   <animation>
    <frame tileid="0" duration="300"/>

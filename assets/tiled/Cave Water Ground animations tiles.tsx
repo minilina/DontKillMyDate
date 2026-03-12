@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.10" tiledversion="1.11.2" name="Cave Water Ground animations tiles" tilewidth="16" tileheight="16" tilecount="384" columns="24">
- <image source="../../Farm RPG - Tiny Asset Pack - (All in One)/Farm/Tileset/Modular/Cave Water Ground animations tiles.png" width="384" height="256"/>
+ <image source="caveWaterGroundAnimationsTiles.png" width="384" height="256"/>
  <tile id="8">
   <animation>
    <frame tileid="8" duration="150"/>

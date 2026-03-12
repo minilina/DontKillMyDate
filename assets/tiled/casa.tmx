@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="49" nextobjectid="339">
  <tileset firstgid="1" name="Tileset Grass Spring" tilewidth="16" tileheight="16" tilecount="960" columns="24">
-  <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Farm/Tileset/Modular/Tileset Grass Spring.png" width="384" height="640"/>
+  <image source="tilesetGrassSpring.png" width="384" height="640"/>
  </tileset>
  <tileset firstgid="961" name="Path tiles" tilewidth="16" tileheight="16" tilecount="384" columns="24">
-  <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Farm/Tileset/Modular/Path tiles.png" width="384" height="256"/>
+  <image source="pathTiles.png" width="384" height="256"/>
  </tileset>
  <tileset firstgid="1345" name="Extra Village Tilesets" tilewidth="16" tileheight="16" tilecount="45" columns="9">
   <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Farm/Tileset/Modular/Extra Village Tilesets.png" width="144" height="80"/>
  </tileset>
  <tileset firstgid="1390" name="Fence Wood" tilewidth="16" tileheight="16" tilecount="60" columns="6">
-  <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Exterior/Fence and Bridge/Fence Wood.png" width="96" height="160"/>
+  <image source="fenceWood.png" width="96" height="160"/>
  </tileset>
  <tileset firstgid="1450" name="Stone structures" tilewidth="16" tileheight="16" tilecount="120" columns="10">
-  <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Farm/Props/Deep Forest/Stone structures.png" width="160" height="192"/>
+  <image source="stoneStructures.png" width="160" height="192"/>
  </tileset>
  <tileset firstgid="1570" name="deep forest stones" tilewidth="16" tileheight="16" tilecount="16" columns="8">
-  <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Farm/Props/Deep Forest/deep forest stones.png" width="128" height="32"/>
+  <image source="deepForestStones.png" width="128" height="32"/>
  </tileset>
  <tileset firstgid="1586" name="Road" tilewidth="16" tileheight="16" tilecount="108" columns="9">
   <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Exterior/Road.png" width="144" height="192"/>
  </tileset>
  <tileset firstgid="1694" name="ALL props seasons" tilewidth="16" tileheight="16" tilecount="264" columns="22">
-  <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Farm/Tileset/Modular/ALL props seasons.png" width="352" height="192"/>
+  <image source="allPropsSeasons.png" width="352" height="192"/>
  </tileset>
  <tileset firstgid="1958" name="Halloween Content" tilewidth="16" tileheight="16" tilecount="150" columns="15">
-  <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Exterior/Halloween Content.png" width="240" height="160"/>
+  <image source="halloweenContent.png" width="240" height="160"/>
  </tileset>
  <tileset firstgid="2108" name="Tileset Grass Cliff Tileset Spring" tilewidth="16" tileheight="16" tilecount="480" columns="24">
-  <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Farm/Tileset/Modular/Tileset Grass Cliff Tileset Spring.png" width="384" height="320"/>
+  <image source="tilesetGrassCliffTilesetSpring.png" width="384" height="320"/>
   <tile id="37">
    <animation>
     <frame tileid="37" duration="150"/>
@@ -267,10 +267,10 @@
   </tile>
  </tileset>
  <tileset firstgid="2588" name="Water Ground animations tiles" tilewidth="16" tileheight="16" tilecount="384" columns="24">
-  <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Farm/Tileset/Modular/Water Ground animations tiles.png" width="384" height="256"/>
+  <image source="waterGroundAnimationsTiles.png" width="384" height="256"/>
  </tileset>
  <tileset firstgid="2972" name="Tileset Grass Water Spring" tilewidth="16" tileheight="16" tilecount="768" columns="48">
-  <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Farm/Tileset/Modular/Tileset Grass Water Spring.png" width="768" height="256"/>
+  <image source="tilesetGrassWaterSpring.png" width="768" height="256"/>
   <tile id="8">
    <animation>
     <frame tileid="8" duration="150"/>
@@ -357,7 +357,7 @@
   </tile>
  </tileset>
  <tileset firstgid="3740" name="props water" tilewidth="16" tileheight="16" tilecount="80" columns="10">
-  <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Farm/Props/Spring/props water.png" width="160" height="128"/>
+  <image source="propsWater.png" width="160" height="128"/>
   <tile id="0">
    <animation>
     <frame tileid="0" duration="600"/>
@@ -516,7 +516,7 @@
   </tile>
  </tileset>
  <tileset firstgid="3820" name="Stone structures Water" tilewidth="16" tileheight="16" tilecount="224" columns="16">
-  <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Farm/Props/Deep Forest/Stone structures Water.png" width="256" height="224"/>
+  <image source="stoneStructuresWater.png" width="256" height="224"/>
   <tile id="24">
    <animation>
     <frame tileid="24" duration="150"/>
@@ -683,7 +683,7 @@
   </tile>
  </tileset>
  <tileset firstgid="4044" name="Duck Mallad" tilewidth="16" tileheight="16" tilecount="56" columns="4">
-  <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Farm Animals/Ducks/Duck Mallad.png" width="64" height="224"/>
+  <image source="duckMallad.png" width="64" height="224"/>
   <tile id="16">
    <animation>
     <frame tileid="16" duration="600"/>
@@ -714,7 +714,7 @@
   </tile>
  </tileset>
  <tileset firstgid="4100" name="best fish point 2" tilewidth="16" tileheight="16" tilecount="5" columns="5">
-  <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Forest Animals/Beach/Fish/best fish point 2.png" width="80" height="16"/>
+  <image source="bestFishPoint.png" width="80" height="16"/>
   <tile id="0">
    <animation>
     <frame tileid="0" duration="300"/>
@@ -726,7 +726,7 @@
   </tile>
  </tileset>
  <tileset firstgid="4105" name="TREE TRUNKS copiar" tilewidth="16" tileheight="16" tilecount="16" columns="8">
-  <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Farm/Tree/TREE TRUNKS copiar.png" width="128" height="32"/>
+  <image source="treeTrunks.png" width="128" height="32"/>
  </tileset>
  <group id="28" name="Agua" locked="1">
   <layer id="21" name="Agua" width="50" height="40">
