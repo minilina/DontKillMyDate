@@ -37,7 +37,7 @@ export default class Letter extends Phaser.Scene {
 
     this.letterText = this.add.text(0, 0, "", {
       fontFamily: "VT323, monospace",
-      fontSize: "23px",
+      fontSize: "21px",
       color: "#4f342d",
       wordWrap: { width: this.textArea.width },
     });
@@ -88,8 +88,8 @@ export default class Letter extends Phaser.Scene {
 
     this.confirmText = this.add
       .text(cx, inputY + 40, "Confirmar", {
-        fontFamily: "Pixelify Sans",
-        fontSize: "15px",
+        fontFamily: "VT323, monospace",
+        fontSize: "21px",
         backgroundColor: "#4f342d",
         color: "#ffffff",
         padding: { x: 15, y: 8 },
@@ -103,8 +103,8 @@ export default class Letter extends Phaser.Scene {
     // Botón cerrar
     this.closeButton = this.add
       .text(cx, inputY + 80, "Cerrar carta", {
-        fontFamily: "Pixelify Sans",
-        fontSize: "15px",
+        fontFamily: "VT323, monospace",
+        fontSize: "21px",
         backgroundColor: "#4f342d",
         color: "#ffffff",
         padding: { x: 15, y: 8 },
