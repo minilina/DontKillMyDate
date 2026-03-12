@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import DialogueUI from "./DialogueUI.js";
+import DialogueUI from "./dialogueUI.js";
 
 /**
  * Controlador del flujo del diálogo (líneas + avanzar + eventos).

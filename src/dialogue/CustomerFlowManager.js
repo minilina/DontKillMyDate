@@ -1,6 +1,6 @@
 import NPC from '../game-objects/npc.js';
-import DialogueManager from './DialogueManager.js';
-import { generateRandomRequest } from "./RequestGenerator.js";
+import DialogueManager from './dialogueManager.js';
+import { generateRandomRequest } from "./requestGenerator.js";
 import { buildDialogueFromRequest } from "./DialogueScripts.js";
 
 export default class CustomerFlowManager {
