@@ -495,7 +495,7 @@
 </data>
   </layer>
  </group>
- <layer id="5" name="Topo" width="20" height="20">
+ <layer id="5" name="Animales" width="20" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
