@@ -14,7 +14,7 @@ export default class Letter extends Phaser.Scene {
   create() {
     // Fondo
     this.add
-      .image(0, 0, "fondo")
+      .image(0, 0, "store")
       .setOrigin(0, 0)
       .setDisplaySize(this.scale.width, this.scale.height);
 
