@@ -46,7 +46,7 @@ export default class Cueva extends Phaser.Scene {
         const capaDecoracionVallas = map.createLayer('Decoracion/Decoracion Vallas', tilesetsArray, 0, 0);
         const capaLamparas = map.createLayer('Decoracion/Lamparas', tilesetsArray, 0, 0);
         const capaEfectos = map.createLayer('Decoracion/Efectos', tilesetsArray, 0, 0);
-        const capaAnimales = map.createLayer('Animales', tilesetsArray, 0, 0);
+        const capaTopo = map.createLayer('Topo', tilesetsArray, 0, 0);
 
         // CAPA DE COLISIONES
         const capaColisiones = map.createLayer('Colisiones', tilesetsArray, 0, 0);

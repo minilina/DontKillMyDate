@@ -115,10 +115,6 @@ import hostil from '../../assets/sprites/hostil.png';
 import next from '../../assets/sprites/next.png';
 import prev from '../../assets/sprites/prev.png';
 
-//sonidos
-import fireSound from '../../assets/sound/fire.mp3';
-import bookSound from '../../assets/sound/book.mp3';
-
 
 export default class Boot extends Phaser.Scene {
     constructor() {
@@ -230,9 +226,6 @@ export default class Boot extends Phaser.Scene {
         this.load.image('hostil', hostil);     
         this.load.image('next', next);
         this.load.image('prev', prev);  
-
-        this.load.audio('fireSound', fireSound);
-        this.load.audio('bookSound', bookSound);
     }
 
     create() {
