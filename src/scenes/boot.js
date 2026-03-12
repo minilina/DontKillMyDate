@@ -60,6 +60,9 @@ import customer2 from '../../assets/sprites/modelo_prueba_2.png';
 // Ejemplos de futuras capas para generar los NPCS (ALBA):
 // import npc_eyes_1 from '../../assets/sprites/ojos_1.png';
 // import npc_hair_1 from '../../assets/sprites/pelo_1.png';
+import dialog from "../../assets/sprites/dialog.png";
+import dialogArrow from "../../assets/sprites/dialog_arrow.png";
+
 
 
 // sprites escena cocina
@@ -109,6 +112,8 @@ import planta from '../../assets/sprites/planta.png';
 import afin from '../../assets/sprites/afin.png';
 import igual from '../../assets/sprites/igual.png';
 import hostil from '../../assets/sprites/hostil.png';
+import next from '../../assets/sprites/next.png';
+import prev from '../../assets/sprites/prev.png';
 
 
 export default class Boot extends Phaser.Scene {
@@ -173,6 +178,8 @@ export default class Boot extends Phaser.Scene {
         this.load.image('customer', customer);
         this.load.image('customer2', customer2);
         this.load.image('store', store);
+         this.load.image("dialog", dialog);
+        this.load.image("dialogArrow", dialogArrow);
 
         this.load.image('kitchen', kitchen);
         this.load.image('bookOnTable', bookOnTable);
@@ -216,7 +223,9 @@ export default class Boot extends Phaser.Scene {
         this.load.image('elfos', planta);
         this.load.image('afin', afin);
         this.load.image('igual', igual);
-        this.load.image('hostil', hostil);       
+        this.load.image('hostil', hostil);     
+        this.load.image('next', next);
+        this.load.image('prev', prev);  
     }
 
     create() {
