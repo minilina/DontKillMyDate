@@ -7,7 +7,7 @@
   <image source="pathTiles.png" width="384" height="256"/>
  </tileset>
  <tileset firstgid="1345" name="Extra Village Tilesets" tilewidth="16" tileheight="16" tilecount="45" columns="9">
-  <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Farm/Tileset/Modular/Extra Village Tilesets.png" width="144" height="80"/>
+  <image source="extraVillageTilesets.png" width="144" height="80"/>
  </tileset>
  <tileset firstgid="1390" name="Fence Wood" tilewidth="16" tileheight="16" tilecount="60" columns="6">
   <image source="fenceWood.png" width="96" height="160"/>
@@ -19,7 +19,7 @@
   <image source="deepForestStones.png" width="128" height="32"/>
  </tileset>
  <tileset firstgid="1586" name="Road" tilewidth="16" tileheight="16" tilecount="108" columns="9">
-  <image source="../../../../../Escritorio/UNI/3/DVI/Farm RPG - Tiny Asset Pack - (All in One)/Exterior/Road.png" width="144" height="192"/>
+  <image source="road.png" width="144" height="192"/>
  </tileset>
  <tileset firstgid="1694" name="ALL props seasons" tilewidth="16" tileheight="16" tilecount="264" columns="22">
   <image source="allPropsSeasons.png" width="352" height="192"/>
