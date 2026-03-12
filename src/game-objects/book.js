@@ -8,11 +8,19 @@ export default class Book extends Phaser.GameObjects.Container {
 
         const width = scene.scale.width;
         const height = scene.scale.height;
+        const scale = 3;
 
-        // Fondo
-        const libroImg = scene.add.image(0, 0, 'openBook')
-            .setOrigin(0, 0)
-            .setDisplaySize(width, height);
+        // Capa de fondo para cerrar libro al hacer click fuera de él
+        const overlay = scene.add.rectangle(width / 2, height / 2, width, height, 0x4d322c, 0.3).setInteractive();
+
+        overlay.on('pointerdown', () => {
+            this.close();
+        });
+
+        this.add(overlay);
+
+        // Libro
+        const libroImg = scene.add.image(width / 2, height / 2, 'openBook').setInteractive().setScale(scale);
 
         this.add(libroImg);
 
@@ -191,36 +199,103 @@ export default class Book extends Phaser.GameObjects.Container {
 
         page2.add(page2Text);
 
+
+        // =========================
+        // ETIQUETAS DE PAGINA
+        // =========================
+        
+        const redTagButton = scene.add.image(279 * scale, 50 * scale, 'redTag2')
+        .setInteractive({
+            useHandCursor: true,
+            pixelPerfect: true
+        })
+        .setScale(scale);
+
+        const blueTagButton = scene.add.image(279 * scale, 74 * scale, 'blueTag1')
+        .setInteractive({
+            useHandCursor: true,
+            pixelPerfect: true 
+        })
+        .setScale(scale);
+
+        const greenTagButton = scene.add.image(279 * scale, 98 * scale, 'greenTag1')
+        .setInteractive({ 
+            useHandCursor: true,
+            pixelPerfect: true
+        })
+        .setScale(scale);
+
+        const purpleTagButton = scene.add.image(279 * scale, 122 * scale, 'purpleTag1')
+        .setInteractive({ 
+            useHandCursor: true,
+            pixelPerfect: true
+        })
+        .setScale(scale);
+
+        this.add(redTagButton);
+        this.add(blueTagButton);
+        this.add(greenTagButton);
+        this.add(purpleTagButton);
+
+        redTagButton.on("pointerdown", () => {
+            this.showPage(0);
+            redTagButton.setTexture('redTag2');
+            blueTagButton.setTexture('blueTag1');
+            greenTagButton.setTexture('greenTag1');
+            purpleTagButton.setTexture('purpleTag1');
+        });
+
+        redTagButton.on("pointerover", () => {
+            redTagButton.setTexture('redTag2');
+        });
+
+        redTagButton.on("pointerout", () => {
+            if (this.currentPage !== 0) {
+                redTagButton.setTexture('redTag1');
+            }
+        });
+
+        blueTagButton.on("pointerdown", () => {
+            this.showPage(1);
+            blueTagButton.setTexture('blueTag2');
+            redTagButton.setTexture('redTag1');
+            greenTagButton.setTexture('greenTag1');
+            purpleTagButton.setTexture('purpleTag1');
+        });
+
+        blueTagButton.on("pointerover", () => {
+            blueTagButton.setTexture('blueTag2');
+        });
+
+        blueTagButton.on("pointerout", () => {
+            if (this.currentPage !== 1) {
+                blueTagButton.setTexture('blueTag1');
+            }
+        });
+
+
         // =========================
         // BOTONES DE PAGINA
         // =========================
 
-        const nextButton = scene.add.image(
-            755,
-            400,
-            'next'
-        )
-        .setInteractive({ useHandCursor: true })
-        .setScale(3);
+        // const nextButton = scene.add.image(755, 400, 'next')
+        // .setInteractive({ useHandCursor: true })
+        // .setScale(scale);
 
-        const prevButton = scene.add.image(
-            200,
-            400,
-            'prev'
-        )
-        .setInteractive({ useHandCursor: true })
-        .setScale(3);
+        // const prevButton = scene.add.image(200, 400, 'prev')
+        // .setInteractive({ useHandCursor: true })
+        // .setScale(scale);
 
-        this.add(nextButton);
-        this.add(prevButton);
+        // this.add(nextButton);
+        // this.add(prevButton);
 
-        nextButton.on("pointerdown", () => {
-            this.showPage(this.currentPage + 1);
-        });
+        // nextButton.on("pointerdown", () => {
+        //     // this.showPage(this.currentPage + 1);
+        // });
 
-        prevButton.on("pointerdown", () => {
-            this.showPage(this.currentPage - 1);
-        });
+        // prevButton.on("pointerdown", () => {
+            // this.showPage(this.currentPage - 1);
+        // });
 
         this.setVisible(false);
     }

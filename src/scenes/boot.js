@@ -112,8 +112,16 @@ import planta from '../../assets/sprites/planta.png';
 import afin from '../../assets/sprites/afin.png';
 import igual from '../../assets/sprites/igual.png';
 import hostil from '../../assets/sprites/hostil.png';
-import next from '../../assets/sprites/next.png';
-import prev from '../../assets/sprites/prev.png';
+import next from '../../assets/sprites/next_1.png';
+import prev from '../../assets/sprites/prev_1.png';
+import redTag1 from '../../assets/sprites/etiqueta_roja_1.png';
+import redTag2 from '../../assets/sprites/etiqueta_roja_2.png';
+import purpleTag1 from '../../assets/sprites/etiqueta_morada_1.png';
+import purpleTag2 from '../../assets/sprites/etiqueta_morada_2.png';
+import greenTag1 from '../../assets/sprites/etiqueta_verde_1.png';
+import greenTag2 from '../../assets/sprites/etiqueta_verde_2.png';
+import blueTag1 from '../../assets/sprites/etiqueta_azul_1.png';
+import blueTag2 from '../../assets/sprites/etiqueta_azul_2.png';
 
 //sonidos
 import fireSound from '../../assets/sound/fire.mp3';
@@ -229,7 +237,15 @@ export default class Boot extends Phaser.Scene {
         this.load.image('igual', igual);
         this.load.image('hostil', hostil);     
         this.load.image('next', next);
-        this.load.image('prev', prev);  
+        this.load.image('prev', prev); 
+        this.load.image('redTag1', redTag1);
+        this.load.image('redTag2', redTag2);
+        this.load.image('purpleTag1', purpleTag1);
+        this.load.image('purpleTag2', purpleTag2);
+        this.load.image('greenTag1', greenTag1);
+        this.load.image('greenTag2', greenTag2);
+        this.load.image('blueTag1', blueTag1);
+        this.load.image('blueTag2', blueTag2);
 
         this.load.audio('fireSound', fireSound);
         this.load.audio('bookSound', bookSound);
