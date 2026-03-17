@@ -89,6 +89,11 @@ export default class House extends Phaser.Scene {
         // AÑADIR COLISION FISICA
         this.physics.add.collider(this.player, capaColisiones);
 
+        // PAUSA
+        this.pauseKey = this.input.keyboard.addKey(
+            Phaser.Input.Keyboard.KeyCodes.ESC
+        );
+
         // HOVER PARA LAS VALLAS Y LA PIEDRA
         this.input.on('pointermove', (pointer) => {
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
@@ -475,5 +480,14 @@ export default class House extends Phaser.Scene {
                 console.log("COLISION - ID:", tileColision.index);
             }
         });
+    }
+    update() {
+        if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
+            this.openPauseMenu();
+        }
+    }
+    openPauseMenu() {
+        this.scene.launch('Menu', { parentScene: this.scene.key });
+        this.scene.pause();
     }
 }

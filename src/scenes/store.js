@@ -10,7 +10,7 @@ export default class Store extends Phaser.Scene {
     }
 
     preload() {
-       
+
     }
 
     /**
@@ -29,13 +29,25 @@ export default class Store extends Phaser.Scene {
         let n = 2;
         this.flow.startShift(n);
 
-         this.events.on("shift:finished", () => {
+        this.events.on("shift:finished", () => {
             this.scene.start("house");
         });
+        //Pausa
+        this.pauseKey = this.input.keyboard.addKey(
+            Phaser.Input.Keyboard.KeyCodes.ESC
+        );
     }
 
     update(time, delta) {
         this.flow?.update(time, delta);
+        if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
+            this.openPauseMenu();
+        }
+    }
+
+    openPauseMenu() {
+        this.scene.launch('Menu', { parentScene: this.scene.key });
+        this.scene.pause();
     }
 }
 

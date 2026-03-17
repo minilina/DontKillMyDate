@@ -44,6 +44,20 @@ export default class Kitchen extends Phaser.Scene {
 
         this.cauldron = new Cauldron(this, cauldron);
 
+        //Pausa
+        this.pauseKey = this.input.keyboard.addKey(
+            Phaser.Input.Keyboard.KeyCodes.ESC
+        );
+
+    }
+    update() {
+        if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
+            this.openPauseMenu();
+        }
+    }
+    openPauseMenu() {
+        this.scene.launch('Menu', { parentScene: this.scene.key });
+        this.scene.pause();
     }
 
     finishKitchen() {

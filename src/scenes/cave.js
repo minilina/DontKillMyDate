@@ -3,10 +3,10 @@ import Player from '../game-objects/player.js';
 
 export default class Cueva extends Phaser.Scene {
     constructor() {
-        super({ key: 'cueva' }); 
+        super({ key: 'cueva' });
     }
 
-    preload() {}
+    preload() { }
 
     create() {
         var map = this.make.tilemap({ key: 'cueva' });
@@ -25,13 +25,18 @@ export default class Cueva extends Phaser.Scene {
         var propsMine = map.addTilesetImage('Props Mine', 'propsMine');
         var stoneWithMinerals = map.addTilesetImage('stone with minerals', 'stoneWithMinerals');
         var tilesetGrassCaves = map.addTilesetImage('Tileset Grass Caves', 'tilesetGrassCaves');
-        
+
         const tilesetsArray = [
             bonfireFish, caveWaterGroundAnimationsTiles, caves,
             chest, dogBathtub, entering, exteriorBeach, exterior,
             lamp, lightEffect, mineProps, propsMine,
             stoneWithMinerals, tilesetGrassCaves
         ];
+
+        //Pausa
+        this.pauseKey = this.input.keyboard.addKey(
+            Phaser.Input.Keyboard.KeyCodes.ESC
+        );
 
         // CREAR CAPAS (De abajo hacia arriba)
         const capaAgua = map.createLayer('Agua/Agua', tilesetsArray, 0, 0);
@@ -60,7 +65,7 @@ export default class Cueva extends Phaser.Scene {
         this.animatedTiles.setRate(0.5);
 
         // CREAR AL JUGADOR
-        this.player = new Player(this, 168, 305); 
+        this.player = new Player(this, 168, 305);
         //Descomentar esto cuando queramos mirar la posición del jugador para colocar cosas
         //window.player = this.player;
 
@@ -68,7 +73,7 @@ export default class Cueva extends Phaser.Scene {
         this.cameras.main.setZoom(3);
         this.cameras.main.roundPixels = true;
         this.cameras.main.startFollow(this.player);
-        
+
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
@@ -81,5 +86,13 @@ export default class Cueva extends Phaser.Scene {
 
     update() {
         this.player.setDepth(this.player.y + 4);
+
+        if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
+            this.openPauseMenu();
+        }
+    }
+    openPauseMenu() {
+        this.scene.launch('Menu', { parentScene: this.scene.key });
+        this.scene.pause();
     }
 }
