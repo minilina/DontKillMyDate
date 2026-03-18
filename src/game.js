@@ -10,6 +10,8 @@ import Cave from './scenes/cave.js';
 import End from './scenes/end.js';
 
 import AnimatedTiles from 'phaser-animated-tiles/dist/AnimatedTiles.js';
+import { PhaserNavMeshPlugin } from "phaser-navmesh";
+
 
 const config = {
     type: Phaser.AUTO,
@@ -23,7 +25,22 @@ const config = {
     physics: { default: 'arcade', arcade: { gravity: { y: 0 }, debug: true } },
     scene: [Start, Boot, Letter, Store, Kitchen, Menu, House, Cave, End], // Start primero
     // npm install phaser-animated-tiles tuve que hacer para la animacion de las tiles
-    plugins: { scene: [{ key: 'AnimatedTiles', plugin: AnimatedTiles, mapping: 'animatedTiles' }] }
+    // npm install phaser-navmesh tuve que hacer para el point and go del jugador
+    plugins: {
+        scene: [
+            {
+                key: 'AnimatedTiles',
+                plugin: AnimatedTiles,
+                mapping: 'animatedTiles'
+            },
+            {
+                key: 'NavMeshPlugin',
+                plugin: PhaserNavMeshPlugin,
+                mapping: 'navMeshPlugin',
+                start: true
+            }
+        ]
+    }
 };
 
 new Phaser.Game(config);

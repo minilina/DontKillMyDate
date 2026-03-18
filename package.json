@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "phaser": "3.85.2",
-    "phaser-animated-tiles": "^2.0.2"
+    "phaser-animated-tiles": "^2.0.2",
+    "phaser-navmesh": "^2.3.1"
   }
 }
