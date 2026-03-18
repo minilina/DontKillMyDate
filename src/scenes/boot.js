@@ -67,6 +67,7 @@ import dialogArrow from "../../assets/sprites/dialog_arrow.png";
 
 // sprites escena cocina
 import kitchen from '../../assets/sprites/kitchen/cocina.png';
+import indicator from '../../assets/sprites/kitchen/indicador.png';
 import bookOnTable from '../../assets/sprites/kitchen/libro_mesa.png';
 import bookOnTableB from '../../assets/sprites/kitchen/libro_mesa_b.png';
 import mortar from '../../assets/sprites/kitchen/mortero.png';
@@ -102,6 +103,7 @@ import hotFireAnim from '../../assets/anims/fuego_caliente.png';
 import hotFireAnimJson from '../../assets/anims/fuego_caliente_atlas.json';
 
 import mushroom from '../../assets/sprites/kitchen/seta.png';
+import berry from '../../assets/sprites/kitchen/baya.png';
 
 // sprites libro abierto cocina
 import openBook from '../../assets/sprites/libro.png';
@@ -196,6 +198,7 @@ export default class Boot extends Phaser.Scene {
         this.load.image("dialogArrow", dialogArrow);
 
         this.load.image('kitchen', kitchen);
+        this.load.image('indicator', indicator);
         this.load.image('bookOnTable', bookOnTable);
         this.load.image('bookOnTableB', bookOnTableB);
         this.load.image('mortar', mortar);
@@ -228,6 +231,7 @@ export default class Boot extends Phaser.Scene {
         this.load.image('grayTestTubeB', grayTestTubeB);
         this.load.atlas('hotFire', hotFireAnim, hotFireAnimJson);
         this.load.image('mushroom', mushroom);
+        this.load.image('berry', berry);
  
         this.load.image('openBook', openBook);
         this.load.image('humanos', normal);

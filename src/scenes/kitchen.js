@@ -10,6 +10,8 @@ export default class Kitchen extends Phaser.Scene {
 
     create() {
 
+        this.isDraggingItem = false;
+
         const bg = this.add.image(0, 0, 'kitchen')
             .setOrigin(0, 0)
             .setScale(3)
@@ -22,9 +24,9 @@ export default class Kitchen extends Phaser.Scene {
 
         // crear elementos interactivos de la cocina
         const bookButton = this.createKitchenItem(262, 119, 'bookOnTable', 'bookOnTableB');
-        this.mortar = this.createKitchenItem(9, 106, 'mortar', 'mortarB');
+        this.mortar = this.createKitchenItem(9, 106, 'mortar', 'mortarB', false);
         this.cauldronImg = this.createKitchenItem(133, 86, 'cauldron', 'cauldronB');
-        this.cuttingBoard = this.createKitchenItem(10, 129, 'cuttingBoard', 'cuttingBoardB');
+        this.cuttingBoard = this.createKitchenItem(10, 129, 'cuttingBoard', 'cuttingBoardB', false);
         const crystalJar = this.createKitchenItem(57, 54, 'crystalJar', 'crystalJarB');
         const algaeJar = this.createKitchenItem(33, 54, 'algaeJar', 'algaeJarB');
         const mushroomJar = this.createKitchenItem(22, 21, 'mushroomJar', 'mushroomJarB');
@@ -46,6 +48,7 @@ export default class Kitchen extends Phaser.Scene {
         this.cauldron = new Cauldron(this, this.cauldronImg);
 
         this.grabFromJar(mushroomJar, 'mushrooms', 'mushroom');
+        this.grabFromJar(berriesJar, 'berries', 'berry');
 
         // pausa
         this.pauseKey = this.input.keyboard.addKey(
@@ -94,7 +97,7 @@ export default class Kitchen extends Phaser.Scene {
 
 
     // crea un item interactivo de la cocina
-    createKitchenItem(x, y, normalKey, borderKey) {
+    createKitchenItem(x, y, normalKey, borderKey, border = true) {
         const scale = 3;
 
         // añadir imagen
@@ -102,19 +105,23 @@ export default class Kitchen extends Phaser.Scene {
             .setOrigin(0, 0)
             .setScale(scale)
             .setInteractive({
-                useHandCursor: true,
+                useHandCursor: border,
                 pixelPerfect: true
             });
+        
+        if (border) {
+            // efecto ratón encima del objeto
+            item.on('pointerover', () => {
+                if (!this.isDraggingItem) {
+                    item.setTexture(borderKey);
+                }
+            });
 
-        // efecto ratón encima del objeto
-        item.on('pointerover', () => {
-            item.setTexture(borderKey);
-        });
-
-        // efecto ratón fuera del objeto
-        item.on('pointerout', () => {
-            item.setTexture(normalKey);
-        });
+            // efecto ratón fuera del objeto
+            item.on('pointerout', () => {
+                item.setTexture(normalKey);
+            });
+        }
 
         return item;
     }
@@ -125,26 +132,44 @@ export default class Kitchen extends Phaser.Scene {
         
         jarSprite.on('pointerdown', (pointer) => {
             
+            this.isDraggingItem = true;
+            this.showIndicators();
+
             // crear el sprite que sigue al cursor
             const dragItem = this.add.image(pointer.x, pointer.y, dragItemKey)
                 .setScale(3)
                 .setDepth(100);
 
-            let isDragging = true;
-            
-            // el sprite sigue al cursor mientras se arrastra
+            // lógica para mover el sprite con el cursor mientras se arrastra
             const moveItem = (ptr) => {
-                if (isDragging) {
-                    dragItem.x = ptr.x;
-                    dragItem.y = ptr.y;
-                }
+                if (!this.isDraggingItem) return;
+
+                // el sprite sigue al cursor mientras se arrastra
+                dragItem.x = ptr.x;
+                dragItem.y = ptr.y;
+
+                // lista de objetos debajo del cursor mientras se arrastra el ingrediente
+                const objectsUnderMouse = this.input.hitTestPointer(ptr);
+
+                // poner borde a los objetos debajo del cursor
+                this.cuttingBoard.setTexture(objectsUnderMouse.includes(this.cuttingBoard) ? 'cuttingBoardB' : 'cuttingBoard');
+                this.mortar.setTexture(objectsUnderMouse.includes(this.mortar) ? 'mortarB' : 'mortar');
+                this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
+
             };
+
             this.input.on('pointermove', moveItem);
 
-            // al soltar el ingrediente, comprobamos dónde (tabla, mortero, caldero o fuera) y qué acción tomar
+            // lógica para soltar el ingrediente al soltar el botón del ratón
             const dropItem = (ptr) => {
-                isDragging = false;
+                this.isDraggingItem = false;
+                this.hideIndicators();
                 this.input.off('pointermove', moveItem);
+                
+                // quitar borde a los objetos al soltar el ingrediente
+                this.cuttingBoard.setTexture('cuttingBoard');
+                this.mortar.setTexture('mortar');
+                this.cauldronImg.setTexture('cauldron');
 
                 // lista de objetos debajo del cursor al soltar el ingrediente
                 const objectsUnderMouse = this.input.hitTestPointer(ptr);
@@ -168,6 +193,38 @@ export default class Kitchen extends Phaser.Scene {
 
             this.input.once('pointerup', dropItem);
         });
+    }
+
+    // muestra indicadores sobre las estaciones de la cocina
+    showIndicators() {
+        const arrow1 = this.add.sprite(this.mortar.x + 36, this.mortar.y - 15, 'indicator').setDepth(100).setScale(3);
+        const arrow2 = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
+        const arrow3 = this.add.sprite(this.cuttingBoard.x + 99, this.cuttingBoard.y - 15, 'indicator').setDepth(100).setScale(3);
+
+        this.indicatorArrows = [arrow1, arrow2, arrow3];
+
+        // animación flechas
+        this.indicatorTween = this.tweens.add({
+            targets: this.indicatorArrows,
+            y: '-=10',
+            duration: 600,
+            yoyo: true,
+            repeat: -1,
+            ease: 'Sine.easeInOut'
+        });
+
+    }
+
+    // quita los indicadores
+    hideIndicators() {
+        if (this.indicatorArrows) {
+            this.indicatorArrows.forEach(arrow => arrow.destroy());
+            this.indicatorArrows = [];
+        }
+        
+        if (this.indicatorTween) {
+            this.indicatorTween.remove();
+        }
     }
 
 }
