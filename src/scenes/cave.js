@@ -88,11 +88,12 @@ export default class Cueva extends Phaser.Scene {
         if (capaSpawn) {
             const imagenesCueva = {
                 'barril': 'barril',
-                'lampara': 'lamp', 
-                'topo': 'caves', // Le ponemos una imagen cualquiera, luego lo hacemos invisible
-                'cesto': 'chest',         
-                'tendedero': 'dogBathtub', 
-                'fuego': 'caves' // Le ponemos una imagen cualquiera, luego lo hacemos invisible
+                'lampara': 'lamp',
+                'topo': 'dogBathtub', // Le ponemos una imagen cualquiera, luego lo hacemos invisible
+                'cesto': 'dogBathtub',
+                'tendedero': 'tendedero',
+                'fuego': 'dogBathtub', // Le ponemos una imagen cualquiera, luego lo hacemos invisible
+                'pilaBarriles': 'pilaBarriles'
             };
 
             capaSpawn.objects.forEach(obj => {
@@ -101,7 +102,14 @@ export default class Cueva extends Phaser.Scene {
                 if (imagenesCueva[nombre]) {
                     const imagenKey = imagenesCueva[nombre];
                     
-                    const objeto = this.grupoCosas.create(obj.x + 8, obj.y, imagenKey);
+                    const objeto = this.grupoCosas.create(obj.x, obj.y, imagenKey);
+
+                    // Para los invisibles forzamos el 16
+                    let anchoReal = objeto.width;
+                    if (nombre === 'fuego' || nombre === 'topo') anchoReal = 16;
+                    // Lo desplazamos a la derecha la mitad
+                    objeto.x = obj.x + (anchoReal / 2);
+
                     objeto.setOrigin(0.5, 1);
                     objeto.setDepth(objeto.y);
                     objeto.tipoObjeto = nombre;
@@ -114,24 +122,32 @@ export default class Cueva extends Phaser.Scene {
 
                     // AJUSTE DE COLISIONES (¡Todo usa 'objeto' ahora!)
                     if (nombre === 'lampara') {
-                        objeto.body.setSize(10, 10);
-                        objeto.body.setOffset((objeto.width / 2) - 5, objeto.height - 10);
+                        objeto.body.setSize(9, 8);
+                        objeto.body.setOffset(objeto.width / 2 - 5, objeto.height - 10);
                     } 
-                    else if (nombre === 'barril' || nombre === 'cesto') {
-                        objeto.body.setSize(14, 10);
-                        objeto.body.setOffset((objeto.width / 2) - 7, objeto.height - 10);
-                    } 
+                    else if (nombre === 'barril') {
+                        objeto.body.setSize(16, 10);
+                        objeto.body.setOffset(objeto.width / 2 - 8, objeto.height - 13);
+                    }
+                    else if (nombre === 'cesto') {
+                        objeto.body.setSize(20, 12);
+                        objeto.body.setOffset(objeto.width / 2 - 10, objeto.height - 14);
+                    }
                     else if (nombre === 'fuego') {
-                        objeto.body.setSize(20, 16);
-                        objeto.body.setOffset((objeto.width / 2) - 10, objeto.height - 16);
+                        objeto.body.setSize(24, 16);
+                        objeto.body.setOffset(objeto.width / 2, objeto.height - 16);
                     }
                     else if (nombre === 'tendedero') {
-                        objeto.body.setSize(30, 10);
-                        objeto.body.setOffset((objeto.width / 2) - 15, objeto.height - 10);
+                        objeto.body.setSize(36, 10);
+                        objeto.body.setOffset(objeto.width / 2 - 18, objeto.height - 10);
                     }
                     else if (nombre === 'topo') {
-                        objeto.body.setSize(16, 12);
-                        objeto.body.setOffset((objeto.width / 2) - 8, objeto.height - 12);
+                        objeto.body.setSize(18, 12);
+                        objeto.body.setOffset(objeto.width / 2, objeto.height - 16);
+                    }
+                    else if (nombre === 'pilaBarriles') {
+                        objeto.body.setSize(44, 12);
+                        objeto.body.setOffset(objeto.width / 2 - 22, objeto.height - 15);
                     }
                 }
             });

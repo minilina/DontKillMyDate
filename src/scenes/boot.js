@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-// sprites mapa top-down
+// sprites mapa top-down (casa)
 import allPropsSeasons from '../../assets/tiled/allPropsSeasons.png';
 import bestFishPoint from '../../assets/tiled/bestFishPoint.png';
 import deepForestStones from '../../assets/tiled/deepForestStones.png';
@@ -19,6 +19,7 @@ import tilesetGrassWaterSpring from '../../assets/tiled/tilesetGrassWaterSpring.
 import treeTrunks from '../../assets/tiled/treeTrunks.png';
 import waterGroundAnimationsTiles from '../../assets/tiled/waterGroundAnimationsTiles.png';
 
+// sprites mapa top-down (cueva)
 import letrero from '../../assets/tiled/letrero.png';
 import bonfireFish from '../../assets/tiled/bonfireFish.png';
 import caveWaterGroundAnimationsTiles from '../../assets/tiled/caveWaterGroundAnimationsTiles.png';
@@ -51,6 +52,7 @@ import barril from '../../assets/tiled/barril.png';
 import tendedero from '../../assets/tiled/tendedero.png';
 import lamp from '../../assets/tiled/lamp.png';
 import dogBathtub from '../../assets/tiled/dogBathtub.png';
+import pilaBarriles from '../../assets/tiled/pilaBarriles.png';
 
 import playerRun from '../../assets/anims/run.png';
 import playerIdle from '../../assets/anims/idle.png';
@@ -183,16 +185,20 @@ export default class Boot extends Phaser.Scene {
         this.load.image('caveWaterGroundAnimationsTiles', caveWaterGroundAnimationsTiles);
         this.load.image('caves', caves);
         this.load.image('chest', chest);
-        this.load.image('dogBathtub', dogBathtub);
         this.load.image('entering', entering);
         this.load.image('exteriorBeach', exteriorBeach);
         this.load.image('exterior', exterior);
-        this.load.image('lamp', lamp);
         this.load.image('lightEffect', lightEffect);
         this.load.image('mineProps', mineProps);
         this.load.image('propsMine', propsMine);
         this.load.image('stoneWithMinerals', stoneWithMinerals);
         this.load.image('tilesetGrassCaves', tilesetGrassCaves);
+
+        this.load.image('dogBathtub', dogBathtub);
+        this.load.image('lamp', lamp);
+        this.load.image('barril', barril);
+        this.load.image('tendedero', tendedero);
+        this.load.image('pilaBarriles', pilaBarriles);
 
         this.load.tilemapTiledJSON('cueva', cueva);
 
