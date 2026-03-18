@@ -72,8 +72,8 @@ export default class Cueva extends Phaser.Scene {
 
         // CREAR AL JUGADOR
         this.player = new Player(this, 168, 305, this.navMesh);
-        //Descomentar esto cuando queramos mirar la posición del jugador para colocar cosas
-        //window.player = this.player;
+        // Descomentar esto cuando queramos mirar la posición del jugador para colocar cosas
+        // window.player = this.player;
 
         //NAVMESH
         this.input.on('pointerdown', (pointer) => {
