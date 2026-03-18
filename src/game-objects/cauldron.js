@@ -31,7 +31,7 @@ export default class Cauldron {
         } else {
             this.fire.setVisible(true);
             this.fire.play('heat');
-            this.scene.sound.play('fireSound', { volume: 0.5 });
+            this.scene.sound.play('fireSound', { volume: 0.5, loop: true });
         }
     }
 }
