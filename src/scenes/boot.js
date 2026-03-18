@@ -101,6 +101,8 @@ import grayTestTubeB from '../../assets/sprites/kitchen/probeta_gris_b.png';
 import hotFireAnim from '../../assets/anims/fuego_caliente.png';
 import hotFireAnimJson from '../../assets/anims/fuego_caliente_atlas.json';
 
+import mushroom from '../../assets/sprites/kitchen/seta.png';
+
 // sprites libro abierto cocina
 import openBook from '../../assets/sprites/libro.png';
 import normal from '../../assets/sprites/normal.png';
@@ -225,6 +227,7 @@ export default class Boot extends Phaser.Scene {
         this.load.image('grayTestTube', grayTestTube);
         this.load.image('grayTestTubeB', grayTestTubeB);
         this.load.atlas('hotFire', hotFireAnim, hotFireAnimJson);
+        this.load.image('mushroom', mushroom);
  
         this.load.image('openBook', openBook);
         this.load.image('humanos', normal);
