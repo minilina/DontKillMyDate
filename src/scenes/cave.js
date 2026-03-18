@@ -56,16 +56,46 @@ export default class Cueva extends Phaser.Scene {
         // CAPA DE COLISIONES
         const capaColisiones = map.createLayer('Colisiones', tilesetsArray, 0, 0);
 
+
+
         // ACTIVAR LA COLISION Y OCULTARLA
         capaColisiones.setCollisionByExclusion([-1]);
         capaColisiones.setVisible(false); // La hacemos invisible para no ver los cuadros rojos
+
+        //NAVMESH
+        this.game.plugins.add(phaserNavmesh);
+
+        // Register the plugin with Phaser
+        const navMeshPlugin = this.game.plugins.add(phaserNavmesh);
+
+        // Load the navMesh from the tilemap object layer "navmesh." The navMesh was created with 12.5
+        // pixels of space around obstacles.
+        //const navMesh = navMeshPlugin.buildMeshFromTiled(tilemap, "navmesh", 12.5);
+        this.navMesh = this.navMeshPlugin.buildMeshFromTiled(
+            "mesh",
+            map,
+            "Colisiones" // nombre de la capa en Tiled
+        );
+
+        this.input.on('pointerdown', (pointer) => {
+            const worldPoint = pointer.positionToCamera(this.cameras.main);
+
+            const path = player.navMesh.findPath(
+                { x: player.x, y: player.y },
+                { x: worldPoint.x, y: worldPoint.y }
+            );
+
+            if (path && path.length > 0) {
+                player.setPath(path);
+            }
+        });
 
         // ANIMACION DE LAS TILES
         this.animatedTiles.init(map);
         this.animatedTiles.setRate(0.5);
 
         // CREAR AL JUGADOR
-        this.player = new Player(this, 168, 305);
+        this.player = new Player(this, 168, 305, this.navMesh);
         //Descomentar esto cuando queramos mirar la posición del jugador para colocar cosas
         //window.player = this.player;
 

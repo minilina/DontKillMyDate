@@ -61,18 +61,43 @@ export default class House extends Phaser.Scene {
         // CAPA DE COLISIONES
         const capaColisiones = map.createLayer('Colisiones', tilesetsArray, 0, 0);
 
+
+
         // ACTIVAR LA COLISION Y OCULTARLA
         capaColisiones.setCollisionByExclusion([-1]);
         capaColisiones.setVisible(false); // La hacemos invisible para no ver los cuadros rojos
+
+
+        //NAVMESH
+
+
+        this.navMesh = this.navMeshPlugin.buildMeshFromTilemap("mesh", map, [capaColisiones]);
+
+
+
 
         // ANIMACION DE LAS TILES
         this.animatedTiles.init(map);
         this.animatedTiles.setRate(0.5);
 
         // CREAR AL JUGADOR
-        this.player = new Player(this, 400, 300);
+        this.player = new Player(this, 400, 300, this.navMesh);
         //Descomentar esto cuando queramos mirar la posición del jugador para colocar cosas
         //window.player = this.player;
+
+        //NAVMESH
+        this.input.on('pointerdown', (pointer) => {
+            const worldPoint = pointer.positionToCamera(this.cameras.main);
+
+            const path = this.player.navMesh.findPath(
+                { x: this.player.x, y: this.player.y },
+                { x: worldPoint.x, y: worldPoint.y }
+            );
+
+            if (path && path.length > 0) {
+                this.player.setPath(path);
+            }
+        });
 
         // CONFIGURAR PROFUNDIDADES (DEPTH / Z-INDEX)
         capaTapar.setDepth(9999);
@@ -93,6 +118,8 @@ export default class House extends Phaser.Scene {
         this.pauseKey = this.input.keyboard.addKey(
             Phaser.Input.Keyboard.KeyCodes.ESC
         );
+
+
 
         // HOVER PARA LAS VALLAS Y LA PIEDRA
         this.input.on('pointermove', (pointer) => {
