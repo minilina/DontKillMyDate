@@ -24,17 +24,16 @@ import bonfireFish from '../../assets/tiled/bonfireFish.png';
 import caveWaterGroundAnimationsTiles from '../../assets/tiled/caveWaterGroundAnimationsTiles.png';
 import caves from '../../assets/tiled/caves.png';
 import chest from '../../assets/tiled/chest.png';
-import dogBathtub from '../../assets/tiled/dogBathtub.png';
 import entering from '../../assets/tiled/entering.png';
 import exteriorBeach from '../../assets/tiled/exteriorBeach.png';
 import exterior from '../../assets/tiled/exterior.png';
-import lamp from '../../assets/tiled/lamp.png';
 import lightEffect from '../../assets/tiled/lightEffect.png';
 import mineProps from '../../assets/tiled/mineProps.png';
 import propsMine from '../../assets/tiled/propsMine.png';
 import stoneWithMinerals from '../../assets/tiled/stoneWithMinerals.png';
 import tilesetGrassCaves from '../../assets/tiled/tilesetGrassCaves.png';
 
+// objetos casa
 import pine from '../../assets/tiled/pine.png';
 import pine2 from '../../assets/tiled/pine2.png';
 import pine3 from '../../assets/tiled/pine3.png';
@@ -46,6 +45,12 @@ import pilar1 from '../../assets/tiled/pilar1.png';
 import pilar2 from '../../assets/tiled/pilar2.png';
 import roca from '../../assets/tiled/roca.png';
 import estatua from '../../assets/tiled/estatua.png';
+
+// objetos cueva
+import barril from '../../assets/tiled/barril.png';
+import tendedero from '../../assets/tiled/tendedero.png';
+import lamp from '../../assets/tiled/lamp.png';
+import dogBathtub from '../../assets/tiled/dogBathtub.png';
 
 import playerRun from '../../assets/anims/run.png';
 import playerIdle from '../../assets/anims/idle.png';
