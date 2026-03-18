@@ -62,11 +62,57 @@ export default class Player extends Phaser.GameObjects.Sprite {
         if (this.wasd.left.isDown || this.wasd.right.isDown ||
             this.wasd.up.isDown || this.wasd.down.isDown) {
             this.isFollowingPath = false;
+
+            // MOVIMIENTO CON TECLADO WASD
+
+            // MOVIMIENTO HORIZONTAL
+            if (this.wasd.left.isDown) {
+                this.body.setVelocityX(-this.speed);
+                this.setFlipX(true);
+                this.anims.play('run-right', true);
+                this.lastDirection = 'left';
+                isMoving = true;
+            }
+            else if (this.wasd.right.isDown) {
+                this.body.setVelocityX(this.speed);
+                this.setFlipX(false);
+                this.anims.play('run-right', true);
+                this.lastDirection = 'right';
+                isMoving = true;
+            }
+
+            // MOVIMIENTO VERTICAL
+            if (this.wasd.up.isDown) {
+                this.body.setVelocityY(-this.speed);
+                if (!this.wasd.left.isDown && !this.wasd.right.isDown) {
+                    this.setFlipX(false);
+                    this.anims.play('run-up', true);
+                    this.lastDirection = 'up';
+                }
+                isMoving = true;
+            }
+            else if (this.wasd.down.isDown) {
+                this.body.setVelocityY(this.speed);
+                if (!this.wasd.left.isDown && !this.wasd.right.isDown) {
+                    this.setFlipX(false);
+                    this.anims.play('run-down', true);
+                    this.lastDirection = 'down';
+                }
+                isMoving = true;
+            }
+
+            // NORMALIZAR VELOCIDAD (IR SIEMPRE A LA MISMA VELOCIDAD AUNQUE ESTES EN DIAGONAL)
+            if (this.body.velocity.length() > 0) {
+                this.body.velocity.normalize().scale(this.speed);
+            }
+
+
         }
 
 
         //Navmesh
         if (this.isFollowingPath && this.path.length > 0) {
+            isMoving = true;
 
             const target = this.path[this.targetIndex];
 
@@ -107,46 +153,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
             }
         }
 
-        // MOVIMIENTO HORIZONTAL
-        if (this.wasd.left.isDown) {
-            this.body.setVelocityX(-this.speed);
-            this.setFlipX(true);
-            this.anims.play('run-right', true);
-            this.lastDirection = 'left';
-            isMoving = true;
-        }
-        else if (this.wasd.right.isDown) {
-            this.body.setVelocityX(this.speed);
-            this.setFlipX(false);
-            this.anims.play('run-right', true);
-            this.lastDirection = 'right';
-            isMoving = true;
-        }
 
-        // MOVIMIENTO VERTICAL
-        if (this.wasd.up.isDown) {
-            this.body.setVelocityY(-this.speed);
-            if (!this.wasd.left.isDown && !this.wasd.right.isDown) {
-                this.setFlipX(false);
-                this.anims.play('run-up', true);
-                this.lastDirection = 'up';
-            }
-            isMoving = true;
-        }
-        else if (this.wasd.down.isDown) {
-            this.body.setVelocityY(this.speed);
-            if (!this.wasd.left.isDown && !this.wasd.right.isDown) {
-                this.setFlipX(false);
-                this.anims.play('run-down', true);
-                this.lastDirection = 'down';
-            }
-            isMoving = true;
-        }
-
-        // NORMALIZAR VELOCIDAD (IR SIEMPRE A LA MISMA VELOCIDAD AUNQUE ESTES EN DIAGONAL)
-        if (this.body.velocity.length() > 0) {
-            this.body.velocity.normalize().scale(this.speed);
-        }
 
         // IDLE
         if (!isMoving) {
@@ -163,10 +170,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
         }
     }
 
-    setNavmesh(navMesh){
+    setNavmesh(navMesh) {
         this.navMesh = navMesh;
     }
-   
+
 
     setPath(path) {
         this.path = path;
