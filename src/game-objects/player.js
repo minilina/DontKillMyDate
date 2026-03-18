@@ -162,6 +162,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
             }
         }
     }
+
+    setNavmesh(navMesh){
+        this.navMesh = navMesh;
+    }
    
 
     setPath(path) {

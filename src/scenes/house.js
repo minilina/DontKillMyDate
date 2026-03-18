@@ -219,6 +219,7 @@ export default class House extends Phaser.Scene {
                         // CAMBIAR COLISIONES
                         capaColisiones.putTileAt(-1, startX + 1, startY);
                         capaColisiones.putTileAt(-1, startX + 1, startY - 1); // Por si la fila de arriba esta bloqueada
+                        this.player.setNavmesh(this.navMeshPlugin.buildMeshFromTilemap("mesh", map, [capaColisiones]));//cambiamos las colisiones del Navmesh para que el jugador pueda pasar por el hueco
                     }
 
                     // CERRAR VALLA
@@ -249,6 +250,7 @@ export default class House extends Phaser.Scene {
 
                         //RESTAURAR COLISIONES
                         capaColisiones.putTileAt(ID_COLISION, startX + 1, startY);     // Volvemos a bloquear el centro para no pasar
+                        this.player.setNavmesh(this.navMeshPlugin.buildMeshFromTilemap("mesh", map, [capaColisiones])); //cambiamos las colisiones del Navmesh para que el jugador no pueda pasar por el hueco
                     }
                 }
             }
