@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 import Book from '../game-objects/book.js';
 import Cauldron from '../game-objects/cauldron.js';
+import MortarMinigame from './mortarminigame.js';
 
 export default class Kitchen extends Phaser.Scene {
     constructor() {
@@ -108,7 +109,7 @@ export default class Kitchen extends Phaser.Scene {
                 useHandCursor: border,
                 pixelPerfect: true
             });
-        
+
         if (border) {
             // efecto ratón encima del objeto
             item.on('pointerover', () => {
@@ -129,9 +130,9 @@ export default class Kitchen extends Phaser.Scene {
 
     // lógica para coger un ingrediente de un tarro y arrastrarlo a una herramienta
     grabFromJar(jarSprite, ingredientId, dragItemKey) {
-        
+
         jarSprite.on('pointerdown', (pointer) => {
-            
+
             this.isDraggingItem = true;
             this.showIndicators();
 
@@ -165,7 +166,7 @@ export default class Kitchen extends Phaser.Scene {
                 this.isDraggingItem = false;
                 this.hideIndicators();
                 this.input.off('pointermove', moveItem);
-                
+
                 // quitar borde a los objetos al soltar el ingrediente
                 this.cuttingBoard.setTexture('cuttingBoard');
                 this.mortar.setTexture('mortar');
@@ -173,19 +174,23 @@ export default class Kitchen extends Phaser.Scene {
 
                 // lista de objetos debajo del cursor al soltar el ingrediente
                 const objectsUnderMouse = this.input.hitTestPointer(ptr);
-                
+
                 if (objectsUnderMouse.includes(this.cuttingBoard)) {
                     // minijuego cortar
                     dragItem.destroy();
-                    
+
                 } else if (objectsUnderMouse.includes(this.mortar)) {
-                    // minijuego machacar
+                    this.scene.launch('mortarminigame', {
+                        parentScene: this
+                    });
+
+                    this.scene.pause();
                     dragItem.destroy();
-                    
+
                 } else if (objectsUnderMouse.includes(this.cauldronImg)) {
                     // añadir al caldero
                     dragItem.destroy();
-                    
+
                 } else {
                     dragItem.destroy();
                 }
@@ -221,10 +226,24 @@ export default class Kitchen extends Phaser.Scene {
             this.indicatorArrows.forEach(arrow => arrow.destroy());
             this.indicatorArrows = [];
         }
-        
+
         if (this.indicatorTween) {
             this.indicatorTween.remove();
         }
     }
+
+    returnFromMinigame(success) {
+    // Reactivar la cocina
+    this.scene.resume();
+
+    // Lógica según resultado
+    if (success) {
+        // ingrediente procesado correctamente
+        // aquí podrías, por ejemplo, cambiar sprite o marcar ingrediente listo
+    } else {
+        // fallaste el minijuego
+        // puedes poner alguna penalización o efecto visual
+    }
+}
 
 }
