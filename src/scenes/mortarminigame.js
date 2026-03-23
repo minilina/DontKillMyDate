@@ -3,11 +3,11 @@ import Phaser from 'phaser';
 export default class MortarMinigame extends Phaser.Scene {
 
     constructor() {
-        super({ key: 'mortarminigame' });
+        super({ key: 'mortarMinigame' });
     }
 
     init(data) {
-        this.parentScene = data.parentScene;
+        this.ingredientId = data.ingredient; 
     }
 
     create() {
@@ -143,8 +143,7 @@ export default class MortarMinigame extends Phaser.Scene {
             }).setOrigin(0.5);
 
         this.time.delayedCall(1000, () => {
-            this.parentScene.returnFromMinigame(success);
-            this.parentScene.scene.resume();
+            this.scene.resume('kitchen');
             this.scene.stop();
         });
     }

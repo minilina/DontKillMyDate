@@ -104,9 +104,20 @@ import greenTestTube from '../../assets/sprites/kitchen/probeta_verde.png';
 import greenTestTubeB from '../../assets/sprites/kitchen/probeta_verde_b.png';
 import grayTestTube from '../../assets/sprites/kitchen/probeta_gris.png';
 import grayTestTubeB from '../../assets/sprites/kitchen/probeta_gris_b.png';
+import mushroom from '../../assets/sprites/kitchen/seta.png';
+import mushroomB from '../../assets/sprites/kitchen/seta_b.png';
+import berry from '../../assets/sprites/kitchen/baya.png';
+import berryB from '../../assets/sprites/kitchen/baya_b.png';
+import indicator from '../../assets/sprites/kitchen/indicador.png';
 
 import hotFireAnim from '../../assets/anims/fuego_caliente.png';
 import hotFireAnimJson from '../../assets/anims/fuego_caliente_atlas.json';
+
+import cuttingBg from '../../assets/sprites/kitchen/tabla_bg.png';
+import bar from '../../assets/sprites/kitchen/barra.png';
+import cutArrow from '../../assets/sprites/kitchen/flecha_barra.png';
+import cutAnim from '../../assets/anims/cuchillo_anim.png';
+import cutAnimJson from '../../assets/anims/cuchillo_anim_atlas.json';
 
 // sprites libro abierto cocina
 import openBook from '../../assets/sprites/libro.png';
@@ -201,8 +212,8 @@ export default class Boot extends Phaser.Scene {
         this.load.image('customer', customer);
         this.load.image('customer2', customer2);
         this.load.image('store', store);
-         this.load.image("dialog", dialog);
-        this.load.image("dialogArrow", dialogArrow);
+         this.load.image('dialog', dialog);
+        this.load.image('dialogArrow', dialogArrow);
 
         this.load.image('kitchen', kitchen);
         this.load.image('bookOnTable', bookOnTable);
@@ -236,6 +247,11 @@ export default class Boot extends Phaser.Scene {
         this.load.image('grayTestTube', grayTestTube);
         this.load.image('grayTestTubeB', grayTestTubeB);
         this.load.atlas('hotFire', hotFireAnim, hotFireAnimJson);
+        this.load.image('mushroom', mushroom);
+        this.load.image('mushroomB', mushroomB);
+        this.load.image('berry', berry);
+        this.load.image('berryB', berryB);
+        this.load.image('indicator', indicator);
  
         this.load.image('openBook', openBook);
         this.load.image('humanos', normal);
@@ -257,6 +273,11 @@ export default class Boot extends Phaser.Scene {
         this.load.image('greenTag2', greenTag2);
         this.load.image('blueTag1', blueTag1);
         this.load.image('blueTag2', blueTag2);
+
+        this.load.image('cuttingBg', cuttingBg);
+        this.load.image('bar', bar);
+        this.load.image('cutArrow', cutArrow);
+        this.load.atlas('knife', cutAnim, cutAnimJson);
 
         this.load.audio('fireSound', fireSound);
         this.load.audio('bookSound', bookSound);

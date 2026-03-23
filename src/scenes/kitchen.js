@@ -2,7 +2,6 @@ import Phaser from 'phaser';
 
 import Book from '../game-objects/book.js';
 import Cauldron from '../game-objects/cauldron.js';
-import MortarMinigame from './mortarminigame.js';
 
 export default class Kitchen extends Phaser.Scene {
     constructor() {
@@ -48,8 +47,8 @@ export default class Kitchen extends Phaser.Scene {
 
         this.cauldron = new Cauldron(this, this.cauldronImg);
 
-        this.grabFromJar(mushroomJar, 'mushrooms', 'mushroom');
-        this.grabFromJar(berriesJar, 'berries', 'berry');
+        this.grabFromJar(mushroomJar, 'mushroom', 'mushroomB');
+        this.grabFromJar(berriesJar, 'berry', 'berryB');
 
         // pausa
         this.pauseKey = this.input.keyboard.addKey(
@@ -177,14 +176,14 @@ export default class Kitchen extends Phaser.Scene {
 
                 if (objectsUnderMouse.includes(this.cuttingBoard)) {
                     // minijuego cortar
+                    this.scene.pause();
+                    this.scene.launch('cuttingMinigame', { ingredient: ingredientId });
                     dragItem.destroy();
 
                 } else if (objectsUnderMouse.includes(this.mortar)) {
-                    this.scene.launch('mortarminigame', {
-                        parentScene: this
-                    });
-
+                    // minijuego machacar
                     this.scene.pause();
+                    this.scene.launch('mortarMinigame', { ingredient: ingredientId });
                     dragItem.destroy();
 
                 } else if (objectsUnderMouse.includes(this.cauldronImg)) {
@@ -231,19 +230,4 @@ export default class Kitchen extends Phaser.Scene {
             this.indicatorTween.remove();
         }
     }
-
-    returnFromMinigame(success) {
-    // Reactivar la cocina
-    this.scene.resume();
-
-    // Lógica según resultado
-    if (success) {
-        // ingrediente procesado correctamente
-        // aquí podrías, por ejemplo, cambiar sprite o marcar ingrediente listo
-    } else {
-        // fallaste el minijuego
-        // puedes poner alguna penalización o efecto visual
-    }
-}
-
 }
