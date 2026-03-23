@@ -108,6 +108,13 @@ import mushroom from '../../assets/sprites/kitchen/seta.png';
 import mushroomB from '../../assets/sprites/kitchen/seta_b.png';
 import berry from '../../assets/sprites/kitchen/baya.png';
 import berryB from '../../assets/sprites/kitchen/baya_b.png';
+import root from '../../assets/sprites/kitchen/raiz.png';
+import rootB from '../../assets/sprites/kitchen/raiz_b.png';
+import algae from '../../assets/sprites/kitchen/alga.png';
+import algaeB from '../../assets/sprites/kitchen/alga_b.png';
+import crystal from '../../assets/sprites/kitchen/cristal.png';
+import crystalB from '../../assets/sprites/kitchen/cristal_b.png';
+
 import indicator from '../../assets/sprites/kitchen/indicador.png';
 
 import hotFireAnim from '../../assets/anims/fuego_caliente.png';
@@ -251,6 +258,13 @@ export default class Boot extends Phaser.Scene {
         this.load.image('mushroomB', mushroomB);
         this.load.image('berry', berry);
         this.load.image('berryB', berryB);
+        this.load.image('root', root);
+        this.load.image('rootB', rootB);
+        this.load.image('algae', algae);
+        this.load.image('algaeB', algaeB);
+        this.load.image('crystal', crystal);
+        this.load.image('crystalB', crystalB);
+
         this.load.image('indicator', indicator);
  
         this.load.image('openBook', openBook);

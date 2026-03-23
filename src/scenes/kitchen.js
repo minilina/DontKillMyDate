@@ -49,6 +49,9 @@ export default class Kitchen extends Phaser.Scene {
 
         this.grabFromJar(mushroomJar, 'mushroom', 'mushroomB');
         this.grabFromJar(berriesJar, 'berry', 'berryB');
+        this.grabFromJar(rootsJar, 'root', 'rootB');
+        this.grabFromJar(algaeJar, 'algae', 'algaeB');
+        this.grabFromJar(crystalJar, 'crystal', 'crystalB');
 
         // pausa
         this.pauseKey = this.input.keyboard.addKey(
