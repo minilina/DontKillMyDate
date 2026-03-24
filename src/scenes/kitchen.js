@@ -17,7 +17,7 @@ export default class Kitchen extends Phaser.Scene {
             .setScale(3)
             .setInteractive(); // PROVISIONAL
 
-        // PROVISIONAL: para pasar a top-down cuando se haga click en la cocina
+        // PROVISIONAL: para pasar a siguiente escena con click en fondo
         bg.on('pointerdown', () => {
             this.finishKitchen();
         });
@@ -75,27 +75,8 @@ export default class Kitchen extends Phaser.Scene {
 
 
     finishKitchen() {
-        // 1) cerrar cocina
         this.scene.stop("kitchen");
-        this.scene.wake("store");
-
-        // 2) continuar turno (nuevo cliente / nuevo diálogo)
-        const storeScene = this.scene.get("store");
-
-        // Si por lo que sea no existe la tienda, fallback
-        if (!storeScene) {
-            this.scene.start("house");
-            return;
-        }
-
-        // Si el flow existe, seguimos el turno.
-        // Si no existe, fallback.
-        if (storeScene.flow && typeof storeScene.flow.continueShift === "function") {
-            storeScene.flow.continueShift();
-            return;
-        }
-
-        this.scene.start("house");
+        this.scene.start("potionScore");
     }
 
 

@@ -31,13 +31,21 @@ const GameState = {
     },
 
     deliverPotion() { 
-        if (this.currentPotion.quality >= 80) {
+        if (this.currentPotion.quality > 50) {
             this.reputation += 5;
-        } else if (this.currentPotion.quality <= 40) {
+        } else if (this.currentPotion.quality < 50) {
             this.reputation -= 10;
         }
         
         this.currentCustomer++;
+    },
+
+    reducePotionQuality(penalty) {
+        this.currentPotion.quality -= penalty;
+
+        if (this.currentPotion.quality < 0) {
+            this.currentPotion.quality = 0;
+        }
     }
 };
 

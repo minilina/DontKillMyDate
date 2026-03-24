@@ -119,6 +119,11 @@ export default class House extends Phaser.Scene {
             Phaser.Input.Keyboard.KeyCodes.ESC
         );
 
+        // PROVISIONAL hasta que esté implementado entrar a la casa
+        this.enterKey = this.input.keyboard.addKey(
+            Phaser.Input.Keyboard.KeyCodes.ENTER
+        );
+
 
 
         // HOVER PARA LAS VALLAS Y LA PIEDRA
@@ -514,6 +519,11 @@ export default class House extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
             this.openPauseMenu();
         }
+        
+        if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
+            this.scene.start('store');
+        }
+
     }
     openPauseMenu() {
         this.scene.launch('Menu', { parentScene: this.scene.key });

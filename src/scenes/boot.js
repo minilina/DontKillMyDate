@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import GameState from '../state/gameState.js';
+import GameState from '../state/GameState.js';
 
 // configuración días
 import daysConfig from "../../assets/json/daysConfig.json";
@@ -402,8 +402,7 @@ export default class Boot extends Phaser.Scene {
     }
 
     create() {
-        const jsonData = this.cache.json.get('daysConfig');
-        GameState.initData(jsonData);
+        GameState.initData(daysConfig);
         
         this.scene.start('Letter');
     }

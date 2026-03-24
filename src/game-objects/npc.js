@@ -19,14 +19,12 @@ export default class NPC extends Phaser.GameObjects.Container {
    * @param {number} x - Posición en X (Mitad de la pantalla)
    * @param {number} y - Posición en Y (Línea del mostrador verde)
    * @param {Object} looks - Objeto generado por NPCGenerator.generateLooks()
-   * @param {string} dialogText - El texto que el NPC dirá luego
    * @param {Object} requirements - Las variables para ganar/perder
    */
-  constructor(scene, x, y, looks, dialogText, requirements) {
+  constructor(scene, x, y, looks, requirements) {
     super(scene, x, y);
 
     this.requirements = requirements;
-    this.dialogText = dialogText; // Lo guardamos para leerlo después
 
     // 1. Construir las capas visuales
     this.buildCharacter(scene, looks);

@@ -17,29 +17,23 @@ export default class Store extends Phaser.Scene {
      * Creación de los elementos de la escena principal de juego
      */
     create() {
-        // 1) La escena base
-        // Fondo++
+        
         this.add
             .image(0, 0, "store")
             .setOrigin(0, 0)
             .setDisplaySize(this.scale.width, this.scale.height);
-        // 2) Crear diálogo
-        this.flow = new CustomerFlowManager(this);
-        // Metemos la cantidad de clientes n elegida a la cola
-        let n = 2;
-        this.flow.startShift(n);
+        
+        this.flowManager = new CustomerFlowManager(this);
+        this.flowManager.startShift();
 
-        this.events.on("shift:finished", () => {
-            this.scene.start("house");
-        });
-        //Pausa
+        // Pausa
         this.pauseKey = this.input.keyboard.addKey(
             Phaser.Input.Keyboard.KeyCodes.ESC
         );
     }
 
     update(time, delta) {
-        this.flow?.update(time, delta);
+        this.flowManager?.update(time, delta);
         if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
             this.openPauseMenu();
         }
@@ -50,5 +44,3 @@ export default class Store extends Phaser.Scene {
         this.scene.pause();
     }
 }
-
-/* EN PRINCIPIO ESTO SE QUEDA ASÍ*/ 

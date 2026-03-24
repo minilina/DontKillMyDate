@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import GameState from '../state/GameState.js';
 
 export default class CuttingMinigame extends Phaser.Scene {
     constructor() {
@@ -166,6 +167,8 @@ export default class CuttingMinigame extends Phaser.Scene {
         } else {
             this.misses++;
             this.cameras.main.flash(200, 102, 14, 14); // flash rojo
+            // penalización por fallo
+            GameState.reducePotionQuality(10);
         }
 
         // máximo 3 clicks !!
@@ -179,6 +182,13 @@ export default class CuttingMinigame extends Phaser.Scene {
     // terminar minijuego
     evaluateCut() {
         this.input.off('pointerdown');
+
+        // penalización por cortes no realizados
+        const unmadeCuts = 3 - this.cutsMade;
+        if (unmadeCuts > 0) {
+            GameState.reducePotionQuality(unmadeCuts * 10);
+        }
+        
         this.time.delayedCall(1500, () => {
             this.scene.resume('kitchen');
             this.scene.stop();
