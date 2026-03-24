@@ -1,4 +1,8 @@
 import Phaser from 'phaser';
+import GameState from '../state/gameState.js';
+
+// configuración días
+import daysConfig from "../../assets/json/daysConfig.json";
 
 // sprites mapa top-down (casa)
 import allPropsSeasons from '../../assets/tiled/allPropsSeasons.png';
@@ -398,6 +402,9 @@ export default class Boot extends Phaser.Scene {
     }
 
     create() {
+        const jsonData = this.cache.json.get('daysConfig');
+        GameState.initData(jsonData);
+        
         this.scene.start('Letter');
     }
 }

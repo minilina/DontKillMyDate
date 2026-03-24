@@ -1,0 +1,14 @@
+[
+  {
+    "day": 1,
+    "customers": ["elf", "npc"]
+  },
+  {
+    "day": 2,
+    "customers": ["npc", "npc", "npc"]
+  },
+  {
+    "day": 3,
+    "customers": ["npc", "nymph", "npc"]
+  }
+]
