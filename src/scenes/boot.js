@@ -62,8 +62,6 @@ import cueva from '../../assets/tiled/cueva.json';
 
 // sprites escena tienda
 import store from '../../assets/sprites/store.jpg';
-import customer from '../../assets/sprites/modelo_prueba_1.png'; // (ALBA) esto se cambiará para que los clientes tengan sprites únicos, pero por ahora es un placeholder.
-import customer2 from '../../assets/sprites/modelo_prueba_2.png';
 
 // --- IMPORTACIONES DE CAPAS DE NPCs ---
 import npcBocaNormal1 from '../../assets/sprites/npcs/boca_normal_1.png';
@@ -267,8 +265,6 @@ export default class Boot extends Phaser.Scene {
 
         this.load.tilemapTiledJSON('cueva', cueva);
 
-        this.load.image('customer', customer);
-        this.load.image('customer2', customer2);
         this.load.image('store', store);
          this.load.image('dialog', dialog);
         this.load.image('dialogArrow', dialogArrow);
