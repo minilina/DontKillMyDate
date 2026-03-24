@@ -3,6 +3,9 @@ import DialogueManager from "./dialogueManager.js";
 import { generateRandomRequest } from "./requestGenerator.js";
 import { buildDialogueFromRequest } from "./dialogueScripts.js";
 
+// 1. IMPORTAMOS EL GENERADOR VISUAL QUE CREAMOS
+import NPCGenerator from "../utils/npcGenerator.js"; 
+
 export default class CustomerFlowManager {
   constructor(scene) {
     this.scene = scene;
@@ -14,100 +17,85 @@ export default class CustomerFlowManager {
     this.currentCustomer = null;
     this.currentRequest = null;
 
-    // Lista de sprites (tú pones las keys que tengas cargadas en preload)
-    // Ej: this.load.image("customer_1", ...), this.load.image("customer_2", ...)
-    this.customerSpriteKeys = ["customer", "customer2"];
-
-    // Evitar listeners duplicados si reinicias el turno
     this._onDialogueFinished = this._onDialogueFinished.bind(this);
     this.scene.events.on("dialogue:finished", this._onDialogueFinished);
   }
 
-  // INICIO DEL TURNO
   startShift(numCustomers) {
     this.totalCustomers = numCustomers;
     this.currentIndex = 0;
     this.spawnNextCustomer();
   }
 
-  // Elegir sprite del cliente (cambia cada cliente)
-  _getNextCustomerSpriteKey() {
-    return this.customerSpriteKeys[this.currentIndex % this.customerSpriteKeys.length];
-  }
-
-  // SPAWNEAR SIGUIENTE CLIENTE
   spawnNextCustomer() {
-    // Si ya no hay más clientes, fin del turno
     if (this.currentIndex >= this.totalCustomers) {
       this._finishShift();
       return;
     }
 
-    // limpiar cliente anterior
     if (this.currentCustomer) {
       this.currentCustomer.destroy();
       this.currentCustomer = null;
     }
 
-    // 1. Generar pedido aleatorio (nuevo cada cliente)
+    // 1. Generar pedido aleatorio 
     this.currentRequest = generateRandomRequest();
 
-    // 2. Crear NPC con requisitos y sprite distinto
-    const spriteKey = this._getNextCustomerSpriteKey();
-    const x = this.scene.scale.width / 4;
-    const y = this.scene.scale.height / 2 + 7;
+    
+    // Extraemos la raza que el diccionario acaba de elegir (ej: "elfos", "kitsunes")
+    const razaElegida = this.currentRequest.requirements.raza;
 
+    // Generamos el aspecto visual basado EXCLUSIVAMENTE en esa raza
+    const aspectoVisual = NPCGenerator.generateLooks(razaElegida);
+
+    // 3. Calcular posición
+  
+    const x = this.scene.scale.width / 4;
+
+
+    const y = this.scene.scale.height * 0.85;
+
+    // 4. Crear NPC con el sistema de capas
     this.currentCustomer = new NPC(
       this.scene,
       x,
       y,
-      spriteKey,
-      "",
-      this.currentRequest.requirements
+      aspectoVisual, // Pasamos las capas generadas en lugar del spriteKey ("customer")
+      "", // El texto se lo pasas al dialogueManager, así que aquí va vacío
+      this.currentRequest.requirements,
     );
 
-    // 3. Generar diálogo nuevo a partir del pedido
+    // 5. Generar y lanzar el diálogo
     const dialogueData = buildDialogueFromRequest(this.currentRequest);
     this.dialogueManager.start(dialogueData);
   }
 
-  /**
-   * Se llama cuando el diálogo termina.
-   * Aquí guardas el pedido y mandas a cocina.
-   */
   _onDialogueFinished() {
     if (!this.currentRequest) return;
-
     this.scene.registry.set("currentOrder", this.currentRequest);
-
-    // duerme la tienda y lanza cocina encima
     this.scene.scene.sleep("store");
     this.scene.scene.launch("kitchen");
   }
 
-  /**
-   * Llama a esto cuando la cocina termine (pedido entregado) para volver a tienda
-   * y pasar al siguiente cliente.
-   */
   continueShift() {
-  // destruir el sprite anterior antes de perder la referencia
-  if (this.currentCustomer) {
-    this.currentCustomer.destroy();
-    //this.currentCustomer = null;
+    if (this.currentCustomer) {
+      // Usamos el método leave() que le pusimos a la clase NPC para que haga el fade out
+      this.currentCustomer.leave(() => {
+        this.currentCustomer = null;
+      });
+    }
+
+    this.currentRequest = null;
+    this.currentIndex += 1;
+    this.scene.scene.wake("store");
+    this.spawnNextCustomer();
   }
 
-  this.currentRequest = null;
-
-  this.currentIndex += 1;
-
-  // IMPORTANTE: reanudar tienda si estaba dormida
-  this.scene.scene.wake("store");
-
-  this.spawnNextCustomer();
-}
-
   _finishShift() {
-    console.log("Turno terminado. Total clientes atendidos:", this.totalCustomers);
+    console.log(
+      "Turno terminado. Total clientes atendidos:",
+      this.totalCustomers,
+    );
     this.scene.events.emit("shift:finished");
   }
 
