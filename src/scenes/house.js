@@ -71,7 +71,7 @@ export default class House extends Phaser.Scene {
         //NAVMESH
 
 
-        this.navMesh = this.navMeshPlugin.buildMeshFromTilemap("mesh", map, [capaColisiones]);
+        this.navMesh = this.navMeshPlugin.buildMeshFromTilemap("mesh", map, [capaColisiones],null,4.5);
 
 
 
