@@ -1,9 +1,19 @@
 
 export default class Cauldron {
+
     constructor(scene, cauldronSprite) {
         this.scene = scene;
         this.cauldronSprite = cauldronSprite;
         
+        // requisitos poción
+        this.currentPotion = {
+            color: null,
+            smell: null,
+            taste: null,
+            consistency: null,
+            temperature: 0
+        };
+
         if (!this.scene.anims.exists('heat')) {
             this.scene.anims.create({
                 key: 'heat',
@@ -23,6 +33,7 @@ export default class Cauldron {
         });
     }
 
+    // activar/desactivar fuego
     toggleFire() {
         if (this.fire.visible) {
             this.fire.setVisible(false);
@@ -32,6 +43,36 @@ export default class Cauldron {
             this.fire.setVisible(true);
             this.fire.play('heat');
             this.scene.sound.play('fireSound', { volume: 0.5, loop: true });
+        }
+    }
+
+    // añadir un ingrediente a la poción
+    addIngredient(ingredientCategory, ingredientValue) {
+        // ingredientCategory puede ser: 'color', 'smell', 'taste'...
+        this.currentPotion[ingredientCategory] = ingredientValue;
+
+        // cambiar color poción caldero
+        if (ingredientCategory === 'color') {
+            this.cauldronSprite.setTint(ingredientValue);
+        }
+
+        console.log('Ingredientes actuales dentro caldero:', this.currentPotion);
+    }
+
+    // resetear el caldero para el siguiente cliente
+    resetCauldron() {
+        this.currentPotion = {
+            color: null,
+            smell: null,
+            taste: null,
+            consistency: null,
+            temperature: 0
+        };
+        
+        this.cauldronSprite.clearTint();
+        
+        if (this.fire.visible) {
+            this.toggleFire();
         }
     }
 }
