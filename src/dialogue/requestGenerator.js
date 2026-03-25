@@ -16,7 +16,6 @@ export function generateRandomRequest() {
     Object.keys(Diccionario.temperaturas),
   );
 
-  // Ojo aquí: Una es la raza del que habla, y otra a la que quiere conquistar
   const reqRazaCliente = Phaser.Utils.Array.GetRandom(
     Object.keys(Diccionario.razas_cliente),
   );
@@ -26,6 +25,10 @@ export function generateRandomRequest() {
 
   const reqSaludo = Phaser.Utils.Array.GetRandom(
     Object.keys(Diccionario.saludos),
+  );
+
+  const reqFrasco = Phaser.Utils.Array.GetRandom(
+    Object.keys(Diccionario.formas_frasco),
   );
 
   // 2. Extraemos los TEXTOS literarios basados en esas claves
@@ -40,6 +43,11 @@ export function generateRandomRequest() {
   const txtRazaObjetivo = Phaser.Utils.Array.GetRandom(
     Diccionario.razas_objetivo[reqRazaObjetivo],
   );
+
+  const txtFrasco = Phaser.Utils.Array.GetRandom(
+    Diccionario.formas_frasco[reqFrasco],
+  );
+
   const txtSaludo = Phaser.Utils.Array.GetRandom(
     Diccionario.saludos[reqSaludo],
   );
@@ -55,6 +63,7 @@ export function generateRandomRequest() {
     .replace("{sabor}", txtSabor)
     .replace("{consistencia}", txtConsist)
     .replace("{temperatura}", txtTemp)
+    .replace("{forma_frasco}", txtFrasco)
     .replace("{saludo}", txtSaludo)
     .replace("{despedida}", txtDespedida);
 
@@ -68,6 +77,7 @@ export function generateRandomRequest() {
       color: reqColor,
       consistencia: reqConsist,
       temperatura: reqTemp,
+      forma_frasco: reqFrasco,
     },
   };
 }

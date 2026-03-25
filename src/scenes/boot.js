@@ -4,6 +4,9 @@ import GameState from '../state/GameState.js';
 // configuración días
 import daysConfig from "../../assets/json/daysConfig.json";
 
+// script de los npcs especiales
+import scriptedNpcs from "../../assets/json/scriptedNpcs.json";
+
 // sprites mapa top-down (casa)
 import allPropsSeasons from '../../assets/tiled/allPropsSeasons.png';
 import bestFishPoint from '../../assets/tiled/bestFishPoint.png';
@@ -399,10 +402,11 @@ export default class Boot extends Phaser.Scene {
 
         this.load.audio('fireSound', fireSound);
         this.load.audio('bookSound', bookSound);
+        
     }
 
     create() {
-        GameState.initData(daysConfig);
+        GameState.initData(daysConfig, scriptedNpcs);
         
         this.scene.start('Letter');
     }

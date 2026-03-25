@@ -1,28 +1,96 @@
 {
   "sabores": {
-    "dulce": ["un regusto dulce", "un toque afrutado y dulce", "sabor a frutas dulces", "que empalague", "dulce como la miel"],
-    "amargo": ["amargo como la hiel", "con un sabor fuerte y amargo", "nada de dulzuras, lo quiero amargo", "que deje un regusto rudo"],
-    "salado": ["con un toque de sal", "bien salado", "que sepa a mar", "con ese gusto salobre"],
-    "picante": ["que queme al tragar", "bien picante", "con fuego en su sabor", "especiado y ardiente"],
-    "acido": ["con un toque ácido", "que haga fruncir el ceño", "avinagrado", "cítrico y punzante"]
+    "dulce": [
+      "un regusto dulce",
+      "un toque afrutado y dulce",
+      "sabor a frutas dulces",
+      "que empalague",
+      "dulce como la miel"
+    ],
+    "amargo": [
+      "amargo como la hiel",
+      "con un sabor fuerte y amargo",
+      "nada de dulzuras, lo quiero amargo",
+      "que deje un regusto rudo"
+    ],
+    "salado": [
+      "con un toque de sal",
+      "bien salado",
+      "que sepa a mar",
+      "con ese gusto salobre"
+    ],
+    "picante": [
+      "que queme al tragar",
+      "bien picante",
+      "con fuego en su sabor",
+      "especiado y ardiente"
+    ],
+    "acido": [
+      "con un toque ácido",
+      "que haga fruncir el ceño",
+      "avinagrado",
+      "cítrico y punzante"
+    ]
   },
   "colores": {
     "rojo": ["color sangre", "carmesí", "de un tono rojizo", "rojo pasión"],
-    "azul": ["azul como el cielo", "de un tono zafiro", "celeste", "azul profundo"],
+    "azul": [
+      "azul como el cielo",
+      "de un tono zafiro",
+      "celeste",
+      "azul profundo"
+    ],
     "amarillo": ["amarillo brillante", "color oro", "como la luz del sol"],
     "verde": ["color esmeralda", "verde como el bosque", "de un tono verdoso"],
     "naranja": ["color atardecer", "de un tono anaranjado", "naranja vibrante"],
     "morado": ["púrpura real", "color amatista", "de un tono violáceo"]
   },
   "consistencias": {
-    "entera": ["entera, ni se te ocurra cortarla", "de una sola pieza", "intacta"],
-    "cortada": ["bien cortada", "cortada en trozos", "en daditos", "troceada con cuidado"],
-    "machacada": ["bien machacada", "completamente triturada en el mortero", "machacada hasta hacerla pasta"]
+    "entera": [
+      "entera, ni se te ocurra cortarla",
+      "de una sola pieza",
+      "intacta"
+    ],
+    "cortada": [
+      "bien cortada",
+      "cortada en trozos",
+      "en daditos",
+      "troceada con cuidado"
+    ],
+    "machacada": [
+      "bien machacada",
+      "completamente triturada en el mortero",
+      "machacada hasta hacerla pasta"
+    ]
   },
   "temperaturas": {
     "frio": ["bien helada", "que enfríe el aliento", "fría como el hielo"],
     "calor": ["hirviendo", "muy caliente", "que queme al tocar el frasco"],
-    "tiempo": ["del tiempo", "a temperatura ambiente", "ni muy fría ni caliente"]
+    "tiempo": [
+      "del tiempo",
+      "a temperatura ambiente",
+      "ni muy fría ni caliente"
+    ]
+  },
+  "formas_frasco": {
+    "estrella": [
+      "en un recipiente que recuerde a los astros",
+      "guardado en cristal de cinco puntas",
+      "en un frasco que brille como el cielo nocturno",
+      "en un envase con forma de estrella"
+    ],
+    "corazon": [
+      "en un cristal que represente mis sentimientos",
+      "en un envase que lata de pasión",
+      "guardado en la forma del amor",
+      "en un frasco tallado como un corazón"
+    ],
+    "normal": [
+      "en un frasco corriente",
+      "no te compliques con el envase",
+      "un recipiente estándar bastará",
+      "en cristal liso y normal"
+    ]
   },
   "razas_cliente": {
     "ninfas": ["las ninfas", "la gente del río", "nosotras"],
@@ -41,11 +109,41 @@
     "elfos": ["un alto elfo", "un guardián del bosque"]
   },
   "saludos": {
-    "neutro": ["Buenas.", "Hola.", "Saludos.", "Disculpa.", "Buenas, ¿tienes un momento?"],
-    "educado": ["Buenos días, alquimista.", "Mis respetos. ¿Podrías ayudarme?", "Perdona que te interrumpa.", "Gracias por atenderme."],
-    "borde": ["Eh...", "Oye, necesito algo ya.", "Escucha bien, alquimista. No tengo todo el día.", "Vengo con prisa, así que escucha bien.", ""],
-    "nervioso": ["Shh... ¿podemos hablar en voz baja?", "Perdón, perdón... es importante.", "No sé si debería estar aquí, pero...", "Estoy un poco nervioso, disculpa.", "¡Por favor, rápido!"],
-    "misterioso": ["Que las sombras no te confundan.", "Los astros me han traído hasta aquí.", "La noche susurra tu nombre, alquimista.", "He seguido señales para encontrarte.", "He viajado mucho para encontrar esto.", "Los astros se alinean y requiero de tu arte."]
+    "neutro": [
+      "Buenas.",
+      "Hola.",
+      "Saludos.",
+      "Disculpa.",
+      "Buenas, ¿tienes un momento?"
+    ],
+    "educado": [
+      "Buenos días, alquimista.",
+      "Mis respetos. ¿Podrías ayudarme?",
+      "Perdona que te interrumpa.",
+      "Gracias por atenderme."
+    ],
+    "borde": [
+      "Eh...",
+      "Oye, necesito algo ya.",
+      "Escucha bien, alquimista. No tengo todo el día.",
+      "Vengo con prisa, así que escucha bien.",
+      ""
+    ],
+    "nervioso": [
+      "Shh... ¿podemos hablar en voz baja?",
+      "Perdón, perdón... es importante.",
+      "No sé si debería estar aquí, pero...",
+      "Estoy un poco nervioso, disculpa.",
+      "¡Por favor, rápido!"
+    ],
+    "misterioso": [
+      "Que las sombras no te confundan.",
+      "Los astros me han traído hasta aquí.",
+      "La noche susurra tu nombre, alquimista.",
+      "He seguido señales para encontrarte.",
+      "He viajado mucho para encontrar esto.",
+      "Los astros se alinean y requiero de tu arte."
+    ]
   },
   "despedidas": [
     "No me falles.",
@@ -67,8 +165,8 @@
     "¿Podrás hacerlo?"
   ],
   "templates": [
-    "{saludo} Quiero preparar un filtro de amor para conquistar a {raza_objetivo}. Dicen que les atrae el color {color} y {sabor}. Prepáralo {temperatura} y con los ingredientes {consistencia}. {despedida}",
-    "{saludo} Necesito enamorar a {raza_objetivo}. Hazme una poción {color} y sírvela {temperatura}. Ponle {sabor} y, sobre todo, que la mezcla esté {consistencia}. {despedida}",
-    "{saludo} Ayúdame, alquimista. He perdido la cabeza por alguien del reino de {raza_objetivo}. Requiero un elixir {temperatura}, de aspecto {color} y {sabor}. Los componentes deben ir {consistencia}. {despedida}"
+    "{saludo} Quiero preparar un filtro de amor para conquistar a {raza_objetivo}. Dicen que les atrae el color {color} y {sabor}. Prepáralo {temperatura} y con los ingredientes {consistencia}. Dámelo {forma_frasco}. {despedida}",
+    "{saludo} Necesito enamorar a {raza_objetivo}. Hazme una poción {color} y sírvela {temperatura} {forma_frasco}. Ponle {sabor} y, sobre todo, que la mezcla esté {consistencia}. {despedida}",
+    "{saludo} Ayúdame, alquimista. He perdido la cabeza por alguien del reino de {raza_objetivo}. Requiero un elixir {temperatura}, de aspecto {color} y {sabor}. Los componentes deben ir {consistencia} y guárdalo {forma_frasco}. {despedida}"
   ]
 }

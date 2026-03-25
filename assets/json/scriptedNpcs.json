@@ -1,0 +1,54 @@
+{
+  "elf": {
+    "name": "Joker Persona 5",
+    "looks": {
+      "base": "cuerpo_1",
+      "boca": "boca_normal_1",
+      "nariz": "nariz_1",
+      "ojos": "ojos_verdes",
+      "pelo": "pelo_1_rubiol",
+      "orejas": "orejas_1_ninfa_elfo_hada",
+      "rasgoFrente": null,
+      "rasgoDetras": null
+    },
+    "requirements": {
+      "raza": "elfos",
+      "raza_objetivo": "elfos",
+      "sabor": "dulce",
+      "color": "rojo",
+      "consistencia": "entera",
+      "temperatura": "frio",
+      "forma_frasco": "estrella"
+    },
+    "dialogue": [
+      "Saludos, alquimista. Vengo de las profundidades del bosque.",
+      "Necesito una esencia dulce y roja, y la necesito entera. Que esté bien fría y guárdala en un recipiente que recuerde a los astros de la noche."
+    ]
+  },
+  "nymph": {
+    "name": "Heeseung El Traidor",
+    "looks": {
+      "base": "cuerpo_2",
+      "boca": "boca_normal_2",
+      "nariz": "nariz_2",
+      "ojos": "ojos_azules",
+      "pelo": "pelo_2_azul",
+      "orejas": "orejas_2_ninfa_elfo_hada",
+      "rasgoFrente": "ninfa_feautures",
+      "rasgoDetras": null
+    },
+    "requirements": {
+      "raza": "ninfas",
+      "raza_objetivo": "humanos",
+      "sabor": "salado",
+      "color": "azul",
+      "consistencia": "cortada",
+      "temperatura": "tiempo",
+      "forma_frasco": "corazon"
+    },
+    "dialogue": [
+      "El agua está turbia hoy...",
+      "Tráeme algo azul y salado. Es para un humano, así que dásmelo a temperatura ambiente. Asegúrate de que los ingredientes estén bien cortados y ponlo en un cristal que demuestre puro afecto."
+    ]
+  }
+}

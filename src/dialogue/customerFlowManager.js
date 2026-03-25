@@ -26,32 +26,48 @@ export default class CustomerFlowManager {
       return;
     }
 
-    if (this.currentCustomer) {
-      this.currentCustomer.destroy();
-    }
+ if (this.currentCustomer) {
+   this.currentCustomer.destroy();
+ }
 
-    // preparamos variables globales y generamos el pedido aleatorio
-    GameState.prepareNewCustomer();
-    this.currentRequest = generateRandomRequest();
+ GameState.prepareNewCustomer();
 
-    // extraemos la raza que el diccionario acaba de elegir (ej: "elfos", "kitsunes")
-    const chosenRace = this.currentRequest.requirements.raza;
+ // 1. Averiguamos quién entra
+ const customerType = GameState.getCurrentCustomerType();
 
-    // generamos el aspecto visual basado EXCLUSIVAMENTE en esa raza
-    const looksNPC = NPCGenerator.generateLooks(chosenRace);
+ let looksNPC;
+ let dialogueData;
 
-    // creamos NPC
-    this.currentCustomer = new NPC(
-      this.scene,
-      this.scene.scale.width / 4,
-      this.scene.scale.height * 0.85,
-      looksNPC,
-      this.currentRequest.requirements,
-    );
+ // 2. Comprobamos si es genérico o especial
+ if (customerType === "npc") {
+   // --- ES UN CLIENTE GENÉRICO ---
+   this.currentRequest = generateRandomRequest();
+   const chosenRace = this.currentRequest.requirements.raza;
+   looksNPC = NPCGenerator.generateLooks(chosenRace);
+   dialogueData = buildDialogueFromRequest(this.currentRequest);
+ } else {
+   // --- ES UN PERSONAJE CON HISTORIA ---
+   const specialData = GameState.getSpecialNPC(customerType);
 
-    // generamos y lanzamos el diálogo
-    const dialogueData = buildDialogueFromRequest(this.currentRequest);
-    this.dialogueManager.start(dialogueData);
+   this.currentRequest = { requirements: specialData.requirements };
+   looksNPC = specialData.looks;
+   dialogueData = {
+     speakerName: specialData.name,
+     lines: specialData.dialogue,
+   };
+ }
+
+ // 3. Creamos NPC
+ this.currentCustomer = new NPC(
+   this.scene,
+   this.scene.scale.width / 4,
+   this.scene.scale.height * 0.85,
+   looksNPC,
+   this.currentRequest.requirements,
+ );
+
+ // 4. Lanzamos el diálogo
+ this.dialogueManager.start(dialogueData);
   }
 
   _onDialogueFinished() {
