@@ -20,18 +20,18 @@ export default class Menu extends Phaser.Scene {
 
     const { width, height } = this.scale;
 
-    // 🟤 Fondo tipo pergamino centrado
+    //  Fondo tipo pergamino centrado
     this.add.image(width / 2, height / 2, 'fondoMenu')
       .setDisplaySize(width, height);
 
-    // 📝 Texto PAUSED
+    //  Texto PAUSED
     this.add.text(width / 2, height / 2 - 120, 'PAUSED', {
       fontFamily: 'VT323, monospace',
       fontSize: '50px',
       fill: '#ffffff'
     }).setOrigin(0.5);
 
-    // 🔘 BOTÓN RESUME
+    //  BOTÓN RESUME
     this.createStyledButton(
       width / 2,
       height / 2 - 20,
@@ -39,7 +39,7 @@ export default class Menu extends Phaser.Scene {
       () => this.resumeGame()
     );
 
-    // 🔘 BOTÓN MENU
+    //  BOTÓN MENU
     this.createStyledButton(
       width / 2,
       height / 2 + 80,
@@ -93,7 +93,7 @@ export default class Menu extends Phaser.Scene {
   }
 
   goToMainMenu() {
-    // 🔴 parar música si existe
+    //  parar música si existe
     if (this.game.bgMusic) {
       this.game.bgMusic.stop();
       this.game.bgMusic.destroy(); // importante para evitar leaks

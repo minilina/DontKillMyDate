@@ -62,15 +62,16 @@ export default class CustomerFlowManager {
   }
 
   continueShift() {
-    if (this.currentCustomer) {
+
+if (this.currentCustomer) {
       this.currentCustomer.leave(() => {
         this.currentCustomer = null;
       });
     }
-
     this.currentRequest = null;
     this.scene.scene.wake("store");
     this.spawnNextCustomer();
+
   }
 
   _finishShift() {

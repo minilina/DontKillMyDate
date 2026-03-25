@@ -1,7 +1,7 @@
 // npc.js
 import Phaser from "phaser";
 
-// Definimos la profundidad de cada capa para que el pelo no quede bajo la cara
+// Definimos la profundidad de cada capa 
 const LAYER_DEPTH = {
   RASGO_DETRAS: 5,
   BASE: 10,
@@ -9,7 +9,7 @@ const LAYER_DEPTH = {
   NARIZ: 16,
   OJOS: 20,
   PELO: 30,
-  OREJAS: 35, // <--- NUEVA CAPA: Orejas (encima del pelo)
+  OREJAS: 35, 
   RASGO_FRENTE: 40,
 };
 
@@ -29,7 +29,7 @@ export default class NPC extends Phaser.GameObjects.Container {
     // 1. Construir las capas visuales
     this.buildCharacter(scene, looks);
 
-    // 2. Escalar el personaje (Como cuerpo_1.png es pequeñito, lo hacemos x4)
+    // 2. Escalar el personaje
     this.setScale(3);
 
     // 3. Añadirlo a la escena principal
@@ -70,19 +70,8 @@ export default class NPC extends Phaser.GameObjects.Container {
     addPart(looks.rasgoFrente, LAYER_DEPTH.RASGO_FRENTE);
   }
 
-  /**
-   * Anima al NPC para que desaparezca y luego se destruye
-   */
+  
   leave(onComplete) {
-    this.scene.tweens.add({
-      targets: this,
-      alpha: 0,
-      duration: 400,
-      ease: "Linear",
-      onComplete: () => {
-        this.destroy(); // Limpiamos la memoria
-        if (onComplete) onComplete();
-      },
-    });
+    this.destroy(); // Limpiamos la memoria
   }
 }
