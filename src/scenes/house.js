@@ -81,7 +81,8 @@ export default class House extends Phaser.Scene {
         this.animatedTiles.setRate(0.5);
 
         // CREAR AL JUGADOR
-        this.player = new Player(this, 400, 300, this.navMesh);
+        this.player = new Player(this, 400, 300);
+        this.player.setNavmesh(this.navMesh); // Asignamos el navmesh al jugador para que pueda usarlo
         //Descomentar esto cuando queramos mirar la posición del jugador para colocar cosas
         //window.player = this.player;
 
@@ -173,9 +174,8 @@ export default class House extends Phaser.Scene {
 
                     // ENTRAR A LA CUEVA SI TOCAS LA ZONA Y PULSAS ARRIBA
                     this.physics.add.overlap(this.player, zonaEntrada, () => {
-                        if (this.player.wasd.up.isDown) {
-                            this.scene.start('cueva');
-                        }
+                        this.scene.start('cueva');
+
                     });
 
                     // TEMBLOR DE CAMARA

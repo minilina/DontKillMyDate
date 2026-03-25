@@ -5,7 +5,7 @@ import Phaser from 'phaser';
  */
 export default class Player extends Phaser.GameObjects.Sprite {
 
-    constructor(scene, x, y, navMesh) {
+    constructor(scene, x, y) {
         super(scene, x, y, 'player-idle');
 
         this.scene.add.existing(this);
@@ -21,7 +21,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.lastDirection = 'down';
 
         // 👉 NAVMESH
-        this.navMesh = navMesh;
+        this.navMesh = null;
         this.path = [];
         this.targetIndex = 0;
         this.isFollowingPath = false;
