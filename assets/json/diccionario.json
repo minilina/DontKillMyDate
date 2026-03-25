@@ -1,0 +1,74 @@
+{
+  "sabores": {
+    "dulce": ["un regusto dulce", "un toque afrutado y dulce", "sabor a frutas dulces", "que empalague", "dulce como la miel"],
+    "amargo": ["amargo como la hiel", "con un sabor fuerte y amargo", "nada de dulzuras, lo quiero amargo", "que deje un regusto rudo"],
+    "salado": ["con un toque de sal", "bien salado", "que sepa a mar", "con ese gusto salobre"],
+    "picante": ["que queme al tragar", "bien picante", "con fuego en su sabor", "especiado y ardiente"],
+    "acido": ["con un toque ácido", "que haga fruncir el ceño", "avinagrado", "cítrico y punzante"]
+  },
+  "colores": {
+    "rojo": ["color sangre", "carmesí", "de un tono rojizo", "rojo pasión"],
+    "azul": ["azul como el cielo", "de un tono zafiro", "celeste", "azul profundo"],
+    "amarillo": ["amarillo brillante", "color oro", "como la luz del sol"],
+    "verde": ["color esmeralda", "verde como el bosque", "de un tono verdoso"],
+    "naranja": ["color atardecer", "de un tono anaranjado", "naranja vibrante"],
+    "morado": ["púrpura real", "color amatista", "de un tono violáceo"]
+  },
+  "consistencias": {
+    "entera": ["entera, ni se te ocurra cortarla", "de una sola pieza", "intacta"],
+    "cortada": ["bien cortada", "cortada en trozos", "en daditos", "troceada con cuidado"],
+    "machacada": ["bien machacada", "completamente triturada en el mortero", "machacada hasta hacerla pasta"]
+  },
+  "temperaturas": {
+    "frio": ["bien helada", "que enfríe el aliento", "fría como el hielo"],
+    "calor": ["hirviendo", "muy caliente", "que queme al tocar el frasco"],
+    "tiempo": ["del tiempo", "a temperatura ambiente", "ni muy fría ni caliente"]
+  },
+  "razas_cliente": {
+    "ninfas": ["las ninfas", "la gente del río", "nosotras"],
+    "humanos": ["los simples mortales", "la gente del pueblo", "los humanos"],
+    "kitsunes": ["los espíritus zorro", "los kitsunes"],
+    "hadas": ["las hadas del claro", "el pueblo feérico"],
+    "gnomos": ["los gnomos de las minas", "los míos"],
+    "elfos": ["los altos elfos", "mi gente del bosque"]
+  },
+  "razas_objetivo": {
+    "ninfas": ["una ninfa del río", "alguien del pueblo del agua"],
+    "humanos": ["un pueblerino", "un humano de la capital"],
+    "kitsunes": ["un kitsune", "un espíritu zorro muy escurridizo"],
+    "hadas": ["un hada del bosque", "una criatura feérica"],
+    "gnomos": ["un gnomo de las profundidades", "un minero gnomo"],
+    "elfos": ["un alto elfo", "un guardián del bosque"]
+  },
+  "saludos": {
+    "neutro": ["Buenas.", "Hola.", "Saludos.", "Disculpa.", "Buenas, ¿tienes un momento?"],
+    "educado": ["Buenos días, alquimista.", "Mis respetos. ¿Podrías ayudarme?", "Perdona que te interrumpa.", "Gracias por atenderme."],
+    "borde": ["Eh...", "Oye, necesito algo ya.", "Escucha bien, alquimista. No tengo todo el día.", "Vengo con prisa, así que escucha bien.", ""],
+    "nervioso": ["Shh... ¿podemos hablar en voz baja?", "Perdón, perdón... es importante.", "No sé si debería estar aquí, pero...", "Estoy un poco nervioso, disculpa.", "¡Por favor, rápido!"],
+    "misterioso": ["Que las sombras no te confundan.", "Los astros me han traído hasta aquí.", "La noche susurra tu nombre, alquimista.", "He seguido señales para encontrarte.", "He viajado mucho para encontrar esto.", "Los astros se alinean y requiero de tu arte."]
+  },
+  "despedidas": [
+    "No me falles.",
+    "Confío en tu mano.",
+    "Que la fortuna te acompañe.",
+    "Que te vaya bien.",
+    "No me hagas esperar.",
+    "Será mejor que salga bien.",
+    "No me decepciones.",
+    "Estoy en tus manos.",
+    "Te lo pagaré bien si sale perfecto.",
+    "¡Suerte!",
+    "Que tu pulso no tiemble.",
+    "Que tu mezcla sea precisa.",
+    "No cometas errores.",
+    "Hazlo con cuidado.",
+    "Ponle dedicación.",
+    "Que salga perfecto.",
+    "¿Podrás hacerlo?"
+  ],
+  "templates": [
+    "{saludo} Quiero preparar un filtro de amor para conquistar a {raza_objetivo}. Dicen que les atrae el color {color} y {sabor}. Prepáralo {temperatura} y con los ingredientes {consistencia}. {despedida}",
+    "{saludo} Necesito enamorar a {raza_objetivo}. Hazme una poción {color} y sírvela {temperatura}. Ponle {sabor} y, sobre todo, que la mezcla esté {consistencia}. {despedida}",
+    "{saludo} Ayúdame, alquimista. He perdido la cabeza por alguien del reino de {raza_objetivo}. Requiero un elixir {temperatura}, de aspecto {color} y {sabor}. Los componentes deben ir {consistencia}. {despedida}"
+  ]
+}

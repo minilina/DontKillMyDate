@@ -1,50 +1,77 @@
-import Phaser from 'phaser';
+// npc.js
+import Phaser from "phaser";
 
-/**
- * Clase que representa a un cliente/NPC en el juego.
- * @extends Phaser.GameObjects.Container
- */
-
-/*
-(ALBA) en este comentario se definen las profundiades de cada elemento del NPC para que se rendericen en el orden correcto. 
-Para cuando termine de implementar la generación de NPC y las capas (ojos, pelo, ropa, etc.)
-
+// Definimos la profundidad de cada capa 
 const LAYER_DEPTH = {
+  RASGO_DETRAS: 5,
   BASE: 10,
-  EYES: 20,
-  HAIR: 30, .... más capas
+  BOCA: 15,
+  NARIZ: 16,
+  OJOS: 20,
+  PELO: 30,
+  OREJAS: 35, 
+  RASGO_FRENTE: 40,
 };
-*/
+
 export default class NPC extends Phaser.GameObjects.Container {
-    
-    /**
-     * Constructor del NPC
-     * @param {Phaser.Scene} scene - La escena actual (tu Level)
-     * @param {number} x - Posición en X
-     * @param {number} y - Posición en Y
-     * @param {string} spriteKey - El nombre de la imagen del personaje cargada en preload
-     * @param {string} dialogText - El texto generado proceduralmente que el NPC dirá
-     * @param {Object} requirements - Las variables lógicas (color, sabor, consistencia, raza)
-     */
-    constructor(scene, x, y, spriteKey, dialogText, requirements) {
-        // Llamamos al constructor del contenedor padre
-        super(scene, x, y);
+  /**
+   * @param {Phaser.Scene} scene - La escena actual (ej. PotionShopScene)
+   * @param {number} x - Posición en X (Mitad de la pantalla)
+   * @param {number} y - Posición en Y (Línea del mostrador verde)
+   * @param {Object} looks - Objeto generado por NPCGenerator.generateLooks()
+   * @param {Object} requirements - Las variables para ganar/perder
+   */
+  constructor(scene, x, y, looks, requirements) {
+    super(scene, x, y);
 
-        // 1. GUARDAMOS LOS REQUISITOS 
-        // { sabor: 'picante', color: 'rojo', consistencia: 'molido', raza: 'elfos' }
-        this.requirements = requirements;
+    this.requirements = requirements;
 
-        // 2. CREAMOS EL SPRITE DEL PERSONAJE
-        this.sprite = scene.add.sprite(0, 0, spriteKey).setScale(3);
-        
+    // 1. Construir las capas visuales
+    this.buildCharacter(scene, looks);
 
-        this.add(this.sprite); // Añadimos el sprite al contenedor
+    // 2. Escalar el personaje
+    this.setScale(3);
 
-        //PARA CUANDO QUITE EL PLACEHOLDER (ALBA)
-        //this.setScale(3); // Ajusta el tamaño del NPC según tu sprite 
+    // 3. Añadirlo a la escena principal
+    scene.add.existing(this);
 
-        scene.add.existing(this); // Añadimos el contenedor a la escena
-    }
+    // 4. Animación de entrada suave
+    this.alpha = 0;
+    scene.tweens.add({
+      targets: this,
+      alpha: 1,
+      duration: 400,
+      ease: "Linear",
+    });
+  }
+
+  buildCharacter(scene, looks) {
+    // Función auxiliar para añadir cada capa sin repetir código
+    const addPart = (textureKey, depth) => {
+      if (!textureKey) return; // Si viene null (ej. calvo), no hacemos nada
+
+      let sprite = scene.add.sprite(0, 0, textureKey);
+
+      // ¡CLAVE! Anclamos la base de la imagen al (0,0) del contenedor
+      sprite.setOrigin(0.5, 1);
+      sprite.setDepth(depth);
+
+      this.add(sprite); // Lo metemos dentro del contenedor NPC
+    };
+
+    // Montamos el "Paper Doll" en orden
+    addPart(looks.rasgoDetras, LAYER_DEPTH.RASGO_DETRAS);
+    addPart(looks.base, LAYER_DEPTH.BASE);
+    addPart(looks.boca, LAYER_DEPTH.BOCA); 
+    addPart(looks.nariz, LAYER_DEPTH.NARIZ);
+    addPart(looks.ojos, LAYER_DEPTH.OJOS);
+    addPart(looks.pelo, LAYER_DEPTH.PELO);
+    addPart(looks.orejas, LAYER_DEPTH.OREJAS);
+    addPart(looks.rasgoFrente, LAYER_DEPTH.RASGO_FRENTE);
+  }
+
+  
+  leave(onComplete) {
+    this.destroy(); // Limpiamos la memoria
+  }
 }
-
-
