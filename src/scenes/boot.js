@@ -67,7 +67,7 @@ import cueva from '../../assets/tiled/cueva.json';
 // sprites escena tienda
 import store from '../../assets/sprites/store.jpg';
 
-// --- IMPORTACIONES DE CAPAS DE NPCs ---
+// sprites escena diálogo
 import npcBocaNormal1 from '../../assets/sprites/npcs/boca_normal_1.png';
 import npcBocaNormal2 from '../../assets/sprites/npcs/boca_normal_2.png';
 import npcBocaNormal3 from '../../assets/sprites/npcs/boca_normal_3.png';

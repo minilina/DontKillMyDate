@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import letterData from "../dialogue/letter_intro.json";
+import letterData from "../../assets/json/letter_intro.json";
 import letter from "../../assets/sprites/carta.png";
 
 export default class Letter extends Phaser.Scene {
