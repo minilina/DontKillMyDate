@@ -4,6 +4,7 @@ export default class Cauldron {
     constructor(scene, cauldronSprite) {
         this.scene = scene;
         this.cauldronSprite = cauldronSprite;
+        this.liquidSprite = this.scene.add.image(144 * 3, 96 * 3, 'redLiquid').setOrigin(0, 0).setScale(3).setVisible(false).setDepth(1);
         
         // requisitos poción
         this.currentPotion = {
@@ -53,7 +54,8 @@ export default class Cauldron {
 
         // cambiar color poción caldero
         if (ingredientCategory === 'color') {
-            this.cauldronSprite.setTint(ingredientValue);
+            this.liquidSprite.setTexture(ingredientValue);
+            this.liquidSprite.setVisible(true);
         }
 
         console.log('Ingredientes actuales dentro caldero:', this.currentPotion);
@@ -69,7 +71,7 @@ export default class Cauldron {
             temperature: 0
         };
         
-        this.cauldronSprite.clearTint();
+        this.liquidSprite.setVisible(false);
         
         if (this.fire.visible) {
             this.toggleFire();

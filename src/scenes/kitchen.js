@@ -27,15 +27,17 @@ export default class Kitchen extends Phaser.Scene {
         const redBowl = this.createKitchenItem(87, 113, 'redBowl', 'redBowlB');
         const blueBowl = this.createKitchenItem(107, 113, 'blueBowl', 'blueBowlB');
         const yellowBowl = this.createKitchenItem(97, 125, 'yellowBowl', 'yellowBowlB');
-        const plate = this.createKitchenItem(94, 141, 'plate', 'plateB', false);
+        
+        this.mixPlate = this.createKitchenItem(94, 141, 'plate', 'plateB', false);
+        this.mixPlateColor = this.add.image(99 * 3, 146 * 3, 'redPlate').setOrigin(0, 0).setScale(3).setVisible(false).setDepth(1);
 
         const redTestTube = this.createKitchenItem(233, 98, 'redTestTube', 'redTestTubeB');
         const greenTestTube = this.createKitchenItem(253, 98, 'greenTestTube', 'greenTestTubeB');
         const grayTestTube = this.createKitchenItem(243, 98, 'grayTestTube', 'grayTestTubeB');
         this.createKitchenItem(231, 102, 'testTubeRack', 'testTubeRackB', false);
 
-        const trash = this.createKitchenItem(294, 113, 'trash', 'trashB');
-        const delivery = this.createKitchenItem(281, 133, 'delivery', 'deliveryB');
+        const trash = this.createKitchenItem(294, 113, 'trash', 'trashB', false);
+        const delivery = this.createKitchenItem(281, 133, 'delivery', 'deliveryB', false);
 
         this.cauldronImg = this.createKitchenItem(133, 86, 'cauldron', 'cauldronB');
         const bookImg = this.createKitchenItem(205, 125, 'bookOnTable', 'bookOnTableB');
@@ -53,15 +55,13 @@ export default class Kitchen extends Phaser.Scene {
         this.currentMixedColor = null;
 
         this.colorRecipes = {
-            'red': 0x7c1c1c,
-            'blue': 0x376482,
-            'yellow': 0xbfb25c,
-            'blue,red': 0x800080,
-            'red,yellow': 0xff8800,
-            'blue,yellow': 0x00ff00
+            'red': 'red',
+            'blue': 'blue',
+            'yellow': 'yellow',
+            'blue,red': 'purple',
+            'red,yellow': 'orange',
+            'blue,yellow': 'green'
         };
-
-        this.mixPlate = this.add.rectangle(300, 450, 10 * 3, 10 * 3, 0xffffff).setDepth(2).setInteractive({ useHandCursor: true });
 
         // ingredientes (sabor)
         this.grab(mushroomJar, 'mushroomB', 'taste', 'mushroom');
@@ -71,10 +71,10 @@ export default class Kitchen extends Phaser.Scene {
         this.grab(crystalJar, 'crystalB', 'taste', 'crystal');
 
         // polvos (color)
-        this.grab(redBowl, 'redBowlB', 'color', 'red');
-        this.grab(blueBowl, 'blueBowlB', 'color', 'blue');
-        this.grab(yellowBowl, 'yellowBowlB', 'color', 'yellow');
-        this.grab(this.mixPlate, 'redBowlB', 'color', null);
+        this.grab(redBowl, 'redPowder', 'color', 'red');
+        this.grab(blueBowl, 'bluePowder', 'color', 'blue');
+        this.grab(yellowBowl, 'yellowPowder', 'color', 'yellow');
+        this.grab(this.mixPlate, 'dynamic', 'color', null); // dynamic porque el sprite que arrastra depende de lo que haya mezclado el jugador
 
         // compatibilidad (olor)
         this.grab(redTestTube, 'redTestTubeB', 'smell', 'redTestTube');
@@ -152,6 +152,7 @@ export default class Kitchen extends Phaser.Scene {
         sourceSprite.on('pointerdown', (pointer) => {
 
             let currentDropData = itemData;
+            let currentDragItemKey = dragItemKey;
 
             // platito de mezclas
             if (itemType === 'color' && !itemData) {
@@ -159,20 +160,26 @@ export default class Kitchen extends Phaser.Scene {
                 if (this.selectedColors.size === 0) return;
                 
                 // coger polvos y quitar color platito
-                currentDropData = this.currentMixedColor;
+                currentDropData = this.currentMixedColor; 
+                currentDragItemKey = this.currentMixedColor + 'Powder'; // ej. 'purplePowder'
+                
                 this.selectedColors.clear();
                 this.currentMixedColor = null;
-                this.mixPlate.setFillStyle(0xffffff);
+                this.mixPlateColor.setVisible(false);
             }
 
             this.isDraggingItem = true;
+
+            if (itemType === 'smell') {
+                sourceSprite.setVisible(false);
+            }
             
             if (itemType === 'taste') {
                 this.showIndicators();
             }
 
             // crear el sprite que sigue al cursor
-            const dragItem = this.add.image(pointer.x, pointer.y, dragItemKey)
+            const dragItem = this.add.image(pointer.x, pointer.y, currentDragItemKey)
                 .setScale(3)
                 .setDepth(100);
 
@@ -210,7 +217,7 @@ export default class Kitchen extends Phaser.Scene {
             this.mortar.setTexture(objectsUnderMouse.includes(this.mortar) ? 'mortarB' : 'mortar');
             this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
         } else if (itemType === 'color') {
-            if (objectsUnderMouse.includes(this.mixPlate)) this.mixPlate.setStrokeStyle(4, 0xffffff);
+            this.mixPlate.setTexture(objectsUnderMouse.includes(this.mixPlate) ? 'plateB' : 'plate');
             this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
         }
     }
@@ -221,7 +228,7 @@ export default class Kitchen extends Phaser.Scene {
         this.cuttingBoard.setTexture('cuttingBoard');
         this.mortar.setTexture('mortar');
         this.cauldronImg.setTexture('cauldron');
-        if (this.mixPlate) this.mixPlate.setStrokeStyle(0);
+        this.mixPlate.setTexture('plate');
     }
 
 
@@ -243,20 +250,14 @@ export default class Kitchen extends Phaser.Scene {
             }
         }
         else if (itemType === 'color') {
-            // si dropData es un texto (ej: 'red'), es un polvo sacado directo del cuenco
-            if (typeof dropData === 'string') {
-                if (objectsUnderMouse.includes(this.mixPlate)) { // si el jugador lo suelta en el platito
-                    this.addPowderToPlate(dropData);
-                } else if (objectsUnderMouse.includes(this.cauldronImg)) { // si el jugador lo suelta en el caldero
-                    const hexColor = this.colorRecipes[dropData];
-                    this.cauldron.addIngredient('color', hexColor);
-                }
-            }
-            // si dropData es un número (ej: 0x800080), es la mezcla que sacamos del plato
-            else if (typeof dropData === 'number') {
-                if (objectsUnderMouse.includes(this.cauldronImg)) {
-                    this.cauldron.addIngredient('color', dropData);
-                }
+            // si dropData es un color base ('red', 'blue', 'yellow'), es un polvo sacado directo del cuenco
+            // si lo soltamos en el plato
+            if (['red', 'blue', 'yellow'].includes(dropData) && objectsUnderMouse.includes(this.mixPlate)) { 
+                this.addPowderToPlate(dropData);
+            } 
+            // si soltamos algo de color al caldero (ya sea base o mezclado)
+            else if (objectsUnderMouse.includes(this.cauldronImg)) { 
+                this.cauldron.addIngredient('color', dropData + 'Liquid');
             }
         }
         else if (itemType == 'smell'){
@@ -309,9 +310,9 @@ export default class Kitchen extends Phaser.Scene {
             this.currentMixedColor = this.colorRecipes[recipeKey];
             
             if (this.currentMixedColor !== undefined) {
-                this.mixPlate.setFillStyle(this.currentMixedColor);
+                this.mixPlateColor.setTexture(this.currentMixedColor + 'Plate');
+                this.mixPlateColor.setVisible(true);
             }
         }
     }
-
 }
