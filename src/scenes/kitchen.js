@@ -27,13 +27,18 @@ export default class Kitchen extends Phaser.Scene {
         const redBowl = this.createKitchenItem(87, 113, 'redBowl', 'redBowlB');
         const blueBowl = this.createKitchenItem(107, 113, 'blueBowl', 'blueBowlB');
         const yellowBowl = this.createKitchenItem(97, 125, 'yellowBowl', 'yellowBowlB');
+        const plate = this.createKitchenItem(94, 141, 'plate', 'plateB', false);
 
-        const redTestTube = this.createKitchenItem(214, 121, 'redTestTube', 'redTestTubeB');
-        const greenTestTube = this.createKitchenItem(236, 121, 'greenTestTube', 'greenTestTubeB');
-        const grayTestTube = this.createKitchenItem(225, 121, 'grayTestTube', 'grayTestTubeB');
+        const redTestTube = this.createKitchenItem(233, 98, 'redTestTube', 'redTestTubeB');
+        const greenTestTube = this.createKitchenItem(253, 98, 'greenTestTube', 'greenTestTubeB');
+        const grayTestTube = this.createKitchenItem(243, 98, 'grayTestTube', 'grayTestTubeB');
+        this.createKitchenItem(231, 102, 'testTubeRack', 'testTubeRackB', false);
+
+        const trash = this.createKitchenItem(294, 113, 'trash', 'trashB');
+        const delivery = this.createKitchenItem(281, 133, 'delivery', 'deliveryB');
 
         this.cauldronImg = this.createKitchenItem(133, 86, 'cauldron', 'cauldronB');
-        const bookImg = this.createKitchenItem(262, 119, 'bookOnTable', 'bookOnTableB');
+        const bookImg = this.createKitchenItem(205, 125, 'bookOnTable', 'bookOnTableB');
 
         this.cauldron = new Cauldron(this, this.cauldronImg);
         this.book = new Book(this);
