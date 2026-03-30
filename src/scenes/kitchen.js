@@ -12,24 +12,29 @@ export default class Kitchen extends Phaser.Scene {
 
         this.isDraggingItem = false;
 
-        const bg = this.add.image(0, 0, 'kitchen').setOrigin(0, 0).setScale(3);
+        this.bg = this.add.image(0, 0, 'kitchen').setOrigin(0, 0).setScale(3);
+        this.lightOverlay = this.add.image(0, 0, 'lightOverlay').setOrigin(0, 0).setScale(3).setDepth(200);
 
         // crear elementos interactivos de la cocina
         this.mortar = this.createKitchenItem(9, 106, 'mortar', 'mortarB', false);
         this.cuttingBoard = this.createKitchenItem(10, 129, 'cuttingBoard', 'cuttingBoardB', false);
 
-        const crystalJar = this.createKitchenItem(57, 54, 'crystalJar', 'crystalJarB');
-        const algaeJar = this.createKitchenItem(33, 54, 'algaeJar', 'algaeJarB');
-        const mushroomJar = this.createKitchenItem(22, 21, 'mushroomJar', 'mushroomJarB');
-        const rootsJar = this.createKitchenItem(68, 21, 'rootsJar', 'rootsJarB');
-        const berriesJar = this.createKitchenItem(45, 21, 'berriesJar', 'berriesJarB');
+        const crystalJar = this.createKitchenItem(62, 54, 'crystalJar', 'crystalJarB');
+        const algaeJar = this.createKitchenItem(38, 54, 'algaeJar', 'algaeJarB');
+        const mushroomJar = this.createKitchenItem(27, 21, 'mushroomJar', 'mushroomJarB');
+        const rootsJar = this.createKitchenItem(73, 21, 'rootsJar', 'rootsJarB');
+        const berriesJar = this.createKitchenItem(50, 21, 'berriesJar', 'berriesJarB');
         
-        const redBowl = this.createKitchenItem(87, 113, 'redBowl', 'redBowlB');
-        const blueBowl = this.createKitchenItem(107, 113, 'blueBowl', 'blueBowlB');
-        const yellowBowl = this.createKitchenItem(97, 125, 'yellowBowl', 'yellowBowlB');
+        const redBowl = this.createKitchenItem(81, 113, 'redBowl', 'redBowlB');
+        const blueBowl = this.createKitchenItem(101, 113, 'blueBowl', 'blueBowlB');
+        const yellowBowl = this.createKitchenItem(91, 125, 'yellowBowl', 'yellowBowlB');
+
+        const emptyNormalPotion = this.createKitchenItem(130, 12, 'emptyNormalPotion', 'emptyNormalPotionB');
+        const emptyHeartPotion = this.createKitchenItem(174, 12, 'emptyHeartPotion', 'emptyHeartPotionB');
+        const emptyStarPotion = this.createKitchenItem(151, 12, 'emptyStarPotion', 'emptyStarPotionB');
         
-        this.mixPlate = this.createKitchenItem(94, 141, 'plate', 'plateB', false);
-        this.mixPlateColor = this.add.image(99 * 3, 146 * 3, 'redPlate').setOrigin(0, 0).setScale(3).setVisible(false).setDepth(1);
+        this.mixPlate = this.createKitchenItem(88, 141, 'plate', 'plateB', false);
+        this.mixPlateColor = this.add.image(93 * 3, 146 * 3, 'redPlate').setOrigin(0, 0).setScale(3).setVisible(false).setDepth(1);
 
         const redTestTube = this.createKitchenItem(233, 98, 'redTestTube', 'redTestTubeB');
         const greenTestTube = this.createKitchenItem(253, 98, 'greenTestTube', 'greenTestTubeB');
@@ -39,7 +44,9 @@ export default class Kitchen extends Phaser.Scene {
         const trash = this.createKitchenItem(294, 113, 'trash', 'trashB', false);
         const delivery = this.createKitchenItem(281, 133, 'delivery', 'deliveryB', false);
 
-        this.cauldronImg = this.createKitchenItem(133, 86, 'cauldron', 'cauldronB');
+        const note = this.createKitchenItem(150, 44, 'note', 'noteB');
+
+        this.cauldronImg = this.createKitchenItem(129, 86, 'cauldron', 'cauldronB');
         const bookImg = this.createKitchenItem(205, 125, 'bookOnTable', 'bookOnTableB');
 
         this.cauldron = new Cauldron(this, this.cauldronImg);

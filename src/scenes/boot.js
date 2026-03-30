@@ -195,8 +195,17 @@ import greenPowder from '../../assets/sprites/kitchen/polvo_verde.png';
 import purplePowder from '../../assets/sprites/kitchen/polvo_morado.png';
 import orangePowder from '../../assets/sprites/kitchen/polvo_naranja.png';
 import testTubeRack from '../../assets/sprites/kitchen/soporte_probetas.png';
+import note from '../../assets/sprites/kitchen/nota.png';
+import noteB from '../../assets/sprites/kitchen/nota_b.png';
+import emptyNormalPotion from '../../assets/sprites/kitchen/pocion_normal_vacia.png';
+import emptyNormalPotionB from '../../assets/sprites/kitchen/pocion_normal_vacia_b.png';
+import emptyHeartPotion from '../../assets/sprites/kitchen/pocion_corazon_vacia.png';
+import emptyHeartPotionB from '../../assets/sprites/kitchen/pocion_corazon_vacia_b.png';
+import emptyStarPotion from '../../assets/sprites/kitchen/pocion_estrella_vacia.png';
+import emptyStarPotionB from '../../assets/sprites/kitchen/pocion_estrella_vacia_b.png';
 
 import indicator from '../../assets/sprites/kitchen/indicador.png';
+import lightOverlay from '../../assets/sprites/kitchen/capa_luz.png';
 
 import hotFireAnim from '../../assets/anims/fuego_caliente.png';
 import hotFireAnimJson from '../../assets/anims/fuego_caliente_atlas.json';
@@ -421,8 +430,17 @@ export default class Boot extends Phaser.Scene {
         this.load.image('purplePowder', purplePowder);
         this.load.image('orangePowder', orangePowder);
         this.load.image('testTubeRack', testTubeRack);
+        this.load.image('note', note);
+        this.load.image('noteB', noteB);
+        this.load.image('emptyNormalPotion', emptyNormalPotion);
+        this.load.image('emptyNormalPotionB', emptyNormalPotionB);
+        this.load.image('emptyHeartPotion', emptyHeartPotion);
+        this.load.image('emptyHeartPotionB', emptyHeartPotionB);
+        this.load.image('emptyStarPotion', emptyStarPotion);
+        this.load.image('emptyStarPotionB', emptyStarPotionB);
 
         this.load.image('indicator', indicator);
+        this.load.image('lightOverlay', lightOverlay);
  
         this.load.image('openBook', openBook);
         this.load.image('humanos', normal);

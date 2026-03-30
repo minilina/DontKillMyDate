@@ -4,7 +4,7 @@ export default class Cauldron {
     constructor(scene, cauldronSprite) {
         this.scene = scene;
         this.cauldronSprite = cauldronSprite;
-        this.liquidSprite = this.scene.add.image(144 * 3, 96 * 3, 'redLiquid').setOrigin(0, 0).setScale(3).setVisible(false).setDepth(1);
+        this.liquidSprite = this.scene.add.image(140 * 3, 96 * 3, 'redLiquid').setOrigin(0, 0).setScale(3).setVisible(false);
         
         // requisitos poción
         this.currentPotion = {
@@ -24,7 +24,7 @@ export default class Cauldron {
             });
         }
 
-        this.fire = this.scene.add.sprite(130 * 3, 115 * 3, 'hotFire')
+        this.fire = this.scene.add.sprite(126 * 3, 115 * 3, 'hotFire')
             .setOrigin(0, 0)
             .setScale(3)
             .setVisible(false);

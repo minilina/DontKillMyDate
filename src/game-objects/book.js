@@ -6,6 +6,8 @@ export default class Book extends Phaser.GameObjects.Container {
         super(scene, 0, 0);
         scene.add.existing(this);
 
+        this.setDepth(300);
+
         const width = scene.scale.width;
         const height = scene.scale.height;
         const scale = 3;
