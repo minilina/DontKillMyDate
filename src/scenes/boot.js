@@ -229,6 +229,11 @@ import hotFireAnimJson from '../../assets/anims/fuego_caliente_atlas.json';
 import cuttingBg from '../../assets/sprites/kitchen/tabla_bg.png';
 import cuttingBar from '../../assets/sprites/kitchen/barra.png';
 import cutArrow from '../../assets/sprites/kitchen/flecha_barra.png';
+import cutMushroom from '../../assets/sprites/kitchen/seta_cortar.png';
+import cutBerry from '../../assets/sprites/kitchen/baya_cortar.png';
+import cutRoot from '../../assets/sprites/kitchen/raiz_cortar.png';
+import cutAlgae from '../../assets/sprites/kitchen/alga_cortar.png';
+import cutCrystal from '../../assets/sprites/kitchen/cristal_cortar.png';
 import cutAnim from '../../assets/anims/cuchillo_anim.png';
 import cutAnimJson from '../../assets/anims/cuchillo_anim_atlas.json';
 
@@ -497,6 +502,11 @@ export default class Boot extends Phaser.Scene {
 
         this.load.image('cuttingBg', cuttingBg);
         this.load.image('cuttingBar', cuttingBar);
+        this.load.image('cutMushroom', cutMushroom);
+        this.load.image('cutBerry', cutBerry);
+        this.load.image('cutRoot', cutRoot);
+        this.load.image('cutAlgae', cutAlgae);
+        this.load.image('cutCrystal', cutCrystal);
         this.load.image('cutArrow', cutArrow);
         this.load.atlas('knife', cutAnim, cutAnimJson);
 

@@ -188,8 +188,14 @@ export default class CuttingMinigame extends Phaser.Scene {
         if (unmadeCuts > 0) {
             GameState.reducePotionQuality(unmadeCuts * 10);
         }
+
+        const cutsArray = this.zones.map(z => z.isCut);
         
         this.time.delayedCall(1500, () => {
+
+            let kitchenScene = this.scene.get('kitchen');
+            kitchenScene.returnFromMinigame(this.ingredientId, 'cut', cutsArray);
+
             this.scene.resume('kitchen');
             this.scene.stop();
         });

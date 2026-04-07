@@ -15,6 +15,15 @@ export default class Kitchen extends Phaser.Scene {
         this.bg = this.add.image(0, 0, 'kitchen').setOrigin(0, 0).setScale(3);
         this.lightOverlay = this.add.image(0, 0, 'lightOverlay').setOrigin(0, 0).setScale(3).setDepth(200);
 
+        // sabores ingredientes
+        this.tasteDict = {
+            'mushroom': 'umami',
+            'berry': 'sour',     // ácido
+            'root': 'bitter',    // amargo
+            'algae': 'sweet',    // dulce
+            'crystal': 'salty'   // salado
+        };
+
         // crear elementos interactivos de la cocina
         this.mortar = this.createKitchenItem(9, 106, 'mortar', 'mortarB', false);
         this.cuttingBoard = this.createKitchenItem(10, 129, 'cuttingBoard', 'cuttingBoardB', false);
@@ -71,11 +80,11 @@ export default class Kitchen extends Phaser.Scene {
         };
 
         // ingredientes (sabor)
-        this.grab(mushroomJar, 'mushroomB', 'taste', 'mushroom');
-        this.grab(berriesJar, 'berryB', 'taste', 'berry');
-        this.grab(rootsJar, 'rootB', 'taste', 'root');
-        this.grab(algaeJar, 'algaeB', 'taste', 'algae');
-        this.grab(crystalJar, 'crystalB', 'taste', 'crystal');
+        this.grab(mushroomJar, 'mushroomB', 'taste', 'cutMushroom');
+        this.grab(berriesJar, 'berryB', 'taste', 'cutBerry');
+        this.grab(rootsJar, 'rootB', 'taste', 'cutRoot');
+        this.grab(algaeJar, 'algaeB', 'taste', 'cutAlgae');
+        this.grab(crystalJar, 'crystalB', 'taste', 'cutCrystal');
 
         // polvos (color)
         this.grab(redBowl, 'redPowder', 'color', 'red');
@@ -181,18 +190,30 @@ export default class Kitchen extends Phaser.Scene {
 
             this.isDraggingItem = true;
 
-            if (itemType === 'smell') {
+            if (itemType === 'smell' || itemType === 'processedTaste') {
                 sourceSprite.setVisible(false);
             }
             
-            if (itemType === 'taste') {
-                this.showIndicators();
-            }
+            this.showIndicators(itemType);
 
             // crear el sprite que sigue al cursor
-            const dragItem = this.add.image(pointer.x, pointer.y, currentDragItemKey)
-                .setScale(3)
-                .setDepth(100);
+            let dragItem;
+            if (itemType === 'processedTaste' && currentDropData.cuts) {
+                const borderKey = currentDragItemKey + 'B';
+                
+                dragItem = this.createChoppedContainer(
+                    pointer.x, 
+                    pointer.y, 
+                    borderKey, 
+                    currentDropData.cuts
+                );
+                dragItem.setDepth(100);
+
+            }
+            else {
+                // para el resto de objetos (jarra, botes, etc.)
+                dragItem = this.add.image(pointer.x, pointer.y, currentDragItemKey).setScale(3).setDepth(100);
+            }
 
             // arrastar
             const onPointerMove = (ptr) => {
@@ -208,8 +229,16 @@ export default class Kitchen extends Phaser.Scene {
                 this.hideIndicators();
                 this.input.off('pointermove', onPointerMove);
                 this.resetBorders();
-                this.handleItemDrop(ptr, itemType, currentDropData); // mirar dónde ha caído
+
+                const success = this.handleItemDrop(ptr, itemType, currentDropData); // mirar dónde ha caído
                 dragItem.destroy();
+
+                // lógica de desaparición según el éxito
+                if ((itemType === 'smell' || itemType === 'processedTaste') && !success) {
+                    sourceSprite.setVisible(true);
+                } else if (itemType === 'processedTaste' && success) {
+                    sourceSprite.destroy(); 
+                }
             };
 
             this.input.on('pointermove', onPointerMove);
@@ -227,10 +256,18 @@ export default class Kitchen extends Phaser.Scene {
             this.cuttingBoard.setTexture(objectsUnderMouse.includes(this.cuttingBoard) ? 'cuttingBoardB' : 'cuttingBoard');
             this.mortar.setTexture(objectsUnderMouse.includes(this.mortar) ? 'mortarB' : 'mortar');
             this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
-        } else if (itemType === 'color') {
+        }
+        else if (itemType === 'processedTaste') {
+            this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
+        }
+        else if (itemType === 'color') {
             this.mixPlate.setTexture(objectsUnderMouse.includes(this.mixPlate) ? 'plateB' : 'plate');
             this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
         }
+        else if (itemType === 'smell') {
+            this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
+        }
+
     }
 
 
@@ -246,18 +283,33 @@ export default class Kitchen extends Phaser.Scene {
     // mirar dónde ha soltado el jugador el item y qué pasa en cada caso
     handleItemDrop(ptr, itemType, dropData) {
         const objectsUnderMouse = this.input.hitTestPointer(ptr);
+        let isDroppedSuccessfully = false;
 
         if (itemType === 'taste') {
             if (objectsUnderMouse.includes(this.cuttingBoard)) {
                 // minijuego cortar
                 this.scene.pause();
                 this.scene.launch('cuttingMinigame', { ingredient: dropData });
-            } else if (objectsUnderMouse.includes(this.mortar)) {
+                isDroppedSuccessfully = true;
+            }
+            else if (objectsUnderMouse.includes(this.mortar)) {
                 // minijuego machacar
                 this.scene.pause();
                 this.scene.launch('mortarMinigame', { ingredient: dropData });
-            } else if (objectsUnderMouse.includes(this.cauldronImg)) {
+                isDroppedSuccessfully = true;
+            }
+            else if (objectsUnderMouse.includes(this.cauldronImg)) {
                 // añadir al caldero
+                this.cauldron.addIngredient('taste', this.tasteDict[dropData.replace('cut', '').toLowerCase()]);
+                this.cauldron.addIngredient('consistency', 'whole');
+                isDroppedSuccessfully = true;
+            }
+        }
+        else if (itemType === 'processedTaste') {
+            if (objectsUnderMouse.includes(this.cauldronImg)) {; 
+                this.cauldron.addIngredient('taste', this.tasteDict[dropData.name]);
+                this.cauldron.addIngredient('consistency', dropData.consistency);
+                isDroppedSuccessfully = true;
             }
         }
         else if (itemType === 'color') {
@@ -265,27 +317,50 @@ export default class Kitchen extends Phaser.Scene {
             // si lo soltamos en el plato
             if (['red', 'blue', 'yellow'].includes(dropData) && objectsUnderMouse.includes(this.mixPlate)) { 
                 this.addPowderToPlate(dropData);
+                isDroppedSuccessfully = true;
             } 
             // si soltamos algo de color al caldero (ya sea base o mezclado)
             else if (objectsUnderMouse.includes(this.cauldronImg)) { 
                 this.cauldron.addIngredient('color', dropData + 'Liquid');
+                isDroppedSuccessfully = true;
             }
         }
         else if (itemType == 'smell'){
             if (objectsUnderMouse.includes(this.cauldronImg)) {
                 this.cauldron.addIngredient('smell', dropData);
+                isDroppedSuccessfully = true;
             }
         }
+        return isDroppedSuccessfully;
     }
 
 
     // muestra indicadores sobre las estaciones de la cocina
-    showIndicators() {
-        const arrow1 = this.add.sprite(this.mortar.x + 36, this.mortar.y - 15, 'indicator').setDepth(100).setScale(3);
-        const arrow2 = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
-        const arrow3 = this.add.sprite(this.cuttingBoard.x + 99, this.cuttingBoard.y - 15, 'indicator').setDepth(100).setScale(3);
-
-        this.indicatorArrows = [arrow1, arrow2, arrow3];
+    showIndicators(itemType) {
+        this.indicatorArrows = [];
+        // si es un SABOR: flechas en mortero, caldero y tabla
+        if (itemType === 'taste') {
+            const arrow1 = this.add.sprite(this.mortar.x + 36, this.mortar.y - 15, 'indicator').setDepth(100).setScale(3);
+            const arrow2 = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
+            const arrow3 = this.add.sprite(this.cuttingBoard.x + 99, this.cuttingBoard.y - 15, 'indicator').setDepth(100).setScale(3);
+            this.indicatorArrows.push(arrow1, arrow2, arrow3);
+        }
+        // si es un SABOR PROCESADO: flecha en caldero
+        else if (itemType === 'processedTaste') {
+            const arrow1 = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
+            this.indicatorArrows.push(arrow1);
+        }
+        // si es un COLOR: flechas en platito y caldero
+        else if (itemType === 'color') {
+            const arrow1 = this.add.sprite(this.mixPlate.x + 30, this.mixPlate.y - 15, 'indicator').setDepth(100).setScale(3);
+            const arrow2 = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
+            this.indicatorArrows.push(arrow1, arrow2);
+        }
+        // si es un OLOR: flecha en caldero
+        else if (itemType === 'smell') {
+            const arrow1 = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
+            this.indicatorArrows.push(arrow1);
+        }
 
         // animación flechas
         this.indicatorTween = this.tweens.add({
@@ -325,5 +400,75 @@ export default class Kitchen extends Phaser.Scene {
                 this.mixPlateColor.setVisible(true);
             }
         }
+    }
+
+
+    // devolver el ingrediente procesado a la cocina después del minijuego
+    returnFromMinigame(ingredient, processType, cutsArray = []) {
+        if (processType === 'cut') {
+
+            const baseName = ingredient.replace('cut', '').toLowerCase();
+            const normalKey = baseName;       // ej: 'mushroom'
+            const borderKey = baseName + 'B'; // ej: 'mushroomB'
+            
+            // crear el contenedor con los trozos cortados y hacerlo interactivo
+            const ingredientContainer = this.createChoppedContainer(
+                this.cuttingBoard.x + 54, 
+                this.cuttingBoard.y + 15, 
+                normalKey, 
+                cutsArray
+            );
+            ingredientContainer.input.cursor = 'pointer';
+
+            ingredientContainer.on('pointerover', () => {
+                if (!this.isDraggingItem) {
+                    ingredientContainer.iterate(child => child.setTexture(borderKey));
+                }
+            });
+
+            ingredientContainer.on('pointerout', () => {
+                ingredientContainer.iterate(child => child.setTexture(normalKey));
+            });
+
+            // pasar la configuración a grab
+            this.grab(ingredientContainer, normalKey, 'processedTaste', { 
+                name: baseName, 
+                consistency: 'chopped',
+                cuts: cutsArray 
+            });
+        }
+    }
+
+    // crear un contenedor con los trozos cortados de un ingrediente para echarlos al caldero
+    createChoppedContainer(x, y, spriteKey, cutsArray) {
+        const tex = this.textures.getFrame(spriteKey);
+        const pieceW = tex.width / 4;
+        const container = this.add.container(x, y).setScale(3);
+        
+        let start = 0; // índice del primer segmento del bloque actual
+        let xPos = 0;  // posición x dentro del contenedor
+
+        for (let i = 0; i < 4; i++) {
+            // dibujar solo si el corte i es true o es el último trozo
+            if (cutsArray[i] || i === 3) {
+                // calcular ancho: si es el final, usar lo que sobre de la imagen
+                const width = (i === 3) ? (tex.width - start * pieceW) : (i - start + 1) * pieceW;
+                const piece = this.add.sprite(xPos, 0, spriteKey).setOrigin(0, 0);
+                
+                // recortar la sección acumulada de la textura
+                piece.setCrop(start * pieceW, 0, width, tex.height);
+                container.add(piece);
+
+                // avanzar x sumando el ancho
+                xPos += width; 
+                start = i + 1;
+            }
+        }
+
+        // configurar el tamaño y el área de clic de una sola vez
+        return container.setSize(xPos, tex.height).setInteractive(
+            new Phaser.Geom.Rectangle(xPos / 2, tex.height / 2, xPos, tex.height),
+            Phaser.Geom.Rectangle.Contains
+        );
     }
 }
