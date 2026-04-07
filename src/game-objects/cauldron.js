@@ -1,3 +1,4 @@
+import Phaser from 'phaser';
 
 export default class Cauldron {
 
@@ -5,16 +6,17 @@ export default class Cauldron {
         this.scene = scene;
         this.cauldronSprite = cauldronSprite;
         this.liquidSprite = this.scene.add.image(140 * 3, 96 * 3, 'redLiquid').setOrigin(0, 0).setScale(3).setVisible(false);
-        
+
         // requisitos poción
         this.currentPotion = {
             color: null,
             smell: null,
             taste: null,
             consistency: null,
-            temperature: 0
+            temperature: 'cold' 
         };
 
+        // animación fuego
         if (!this.scene.anims.exists('heat')) {
             this.scene.anims.create({
                 key: 'heat',
@@ -24,10 +26,15 @@ export default class Cauldron {
             });
         }
 
-        this.fire = this.scene.add.sprite(126 * 3, 115 * 3, 'hotFire')
-            .setOrigin(0, 0)
-            .setScale(3)
-            .setVisible(false);
+        this.fire = this.scene.add.sprite(126 * 3, 115 * 3, 'hotFire').setOrigin(0, 0).setScale(3).setVisible(false);
+        
+        // barra de temperatura
+        this.borderOffset = 3;
+        this.heatBar = this.scene.add.image(133 * 3, 151 * 3, 'heatBar').setOrigin(0, 0).setScale(3).setVisible(false);
+        this.heatArrow = this.scene.add.image((133 * 3) + this.borderOffset, (151 * 3) + 18, 'heatArrow').setOrigin(0.5, 0).setScale(3).setVisible(false);
+        this.temperatureValue = 0;
+        
+        this.scene.events.on('update', this.updateTemperature, this);
 
         this.cauldronSprite.on('pointerdown', () => {
             this.toggleFire();
@@ -44,6 +51,34 @@ export default class Cauldron {
             this.fire.setVisible(true);
             this.fire.play('heat');
             this.scene.sound.play('fireSound', { volume: 0.5, loop: true });
+            
+            // mostrar barra de temperatura al encender el fuego
+            this.heatBar.setVisible(true);
+            this.heatArrow.setVisible(true);
+        }
+    }
+
+    // actualizar movimiento de la flecha y temperatura
+    updateTemperature(time, delta) {
+        // solo calienta si el fuego está encendido y no ha llegado al máximo (100)
+        if (this.fire.visible && this.temperatureValue < 100) {
+            
+             // la temperatura incrementa con el tiempo
+            this.temperatureValue += 0.005 * delta;
+            this.temperatureValue = Phaser.Math.Clamp(this.temperatureValue, 0, 100); // para evitar que supere 100
+
+            const innerWidth = this.heatBar.displayWidth - (this.borderOffset * 2);
+
+            // mover flecha proporcionalmente al valor de temperatura
+            this.heatArrow.x = this.heatBar.x + this.borderOffset + (innerWidth * (this.temperatureValue / 100));
+
+            if (this.temperatureValue < 33.3) {
+                this.currentPotion.temperature = 'cold';
+            } else if (this.temperatureValue < 66.6) {
+                this.currentPotion.temperature = 'warm';
+            } else {
+                this.currentPotion.temperature = 'hot';
+            }
         }
     }
 
@@ -68,10 +103,15 @@ export default class Cauldron {
             smell: null,
             taste: null,
             consistency: null,
-            temperature: 0
+            temperature: 'cold'
         };
         
         this.liquidSprite.setVisible(false);
+        
+        this.heatBar.setVisible(false);
+        this.heatArrow.setVisible(false);
+        this.temperatureValue = 0;
+        this.heatArrow.x = this.heatBar.x + this.borderOffset;
         
         if (this.fire.visible) {
             this.toggleFire();

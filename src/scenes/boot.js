@@ -203,6 +203,8 @@ import emptyHeartPotion from '../../assets/sprites/kitchen/pocion_corazon_vacia.
 import emptyHeartPotionB from '../../assets/sprites/kitchen/pocion_corazon_vacia_b.png';
 import emptyStarPotion from '../../assets/sprites/kitchen/pocion_estrella_vacia.png';
 import emptyStarPotionB from '../../assets/sprites/kitchen/pocion_estrella_vacia_b.png';
+import heatBar from '../../assets/sprites/kitchen/barra_calor.png';
+import heatArrow from '../../assets/sprites/kitchen/flecha_barra_calor.png';
 
 import indicator from '../../assets/sprites/kitchen/indicador.png';
 import lightOverlay from '../../assets/sprites/kitchen/capa_luz.png';
@@ -211,7 +213,7 @@ import hotFireAnim from '../../assets/anims/fuego_caliente.png';
 import hotFireAnimJson from '../../assets/anims/fuego_caliente_atlas.json';
 
 import cuttingBg from '../../assets/sprites/kitchen/tabla_bg.png';
-import bar from '../../assets/sprites/kitchen/barra.png';
+import cuttingBar from '../../assets/sprites/kitchen/barra.png';
 import cutArrow from '../../assets/sprites/kitchen/flecha_barra.png';
 import cutAnim from '../../assets/anims/cuchillo_anim.png';
 import cutAnimJson from '../../assets/anims/cuchillo_anim_atlas.json';
@@ -438,6 +440,8 @@ export default class Boot extends Phaser.Scene {
         this.load.image('emptyHeartPotionB', emptyHeartPotionB);
         this.load.image('emptyStarPotion', emptyStarPotion);
         this.load.image('emptyStarPotionB', emptyStarPotionB);
+        this.load.image('heatBar', heatBar);
+        this.load.image('heatArrow', heatArrow);
 
         this.load.image('indicator', indicator);
         this.load.image('lightOverlay', lightOverlay);
@@ -464,7 +468,7 @@ export default class Boot extends Phaser.Scene {
         this.load.image('blueTag2', blueTag2);
 
         this.load.image('cuttingBg', cuttingBg);
-        this.load.image('bar', bar);
+        this.load.image('cuttingBar', cuttingBar);
         this.load.image('cutArrow', cutArrow);
         this.load.atlas('knife', cutAnim, cutAnimJson);
 

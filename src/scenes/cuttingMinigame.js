@@ -93,7 +93,7 @@ export default class CuttingMinigame extends Phaser.Scene {
 
     // crear zonas de la barra
     createBar(x, y) {
-        this.bar = this.add.image(x, y, 'bar').setOrigin(0).setDepth(2).setScale(this.sc);
+        this.bar = this.add.image(x, y, 'cuttingBar').setOrigin(0).setDepth(2).setScale(this.sc);
 
         const barW = this.bar.displayWidth;
         const barH = this.bar.displayHeight;
