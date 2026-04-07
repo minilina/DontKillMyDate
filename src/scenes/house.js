@@ -71,8 +71,21 @@ export default class House extends Phaser.Scene {
         //NAVMESH
 
 
-        this.navMesh = this.navMeshPlugin.buildMeshFromTilemap("mesh", map, [capaColisiones],null,4.5);
+        this.navMesh = this.navMeshPlugin.buildMeshFromTilemap("mesh", map, [capaColisiones], null, 4.5);
 
+
+
+        //Descomentar esto para debuggear navmesh---------------------------------------------
+        this.navMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen
+        this.navMesh.debugDrawClear(); // Clears the overlay
+        // Visualize the underlying navmesh
+        this.navMesh.debugDrawMesh({
+            drawCentroid: true,
+            drawBounds: false,
+            drawNeighbors: true,
+            drawPortals: true
+        });
+        //-------------------------------------------------------------------------------------
 
 
 
@@ -519,7 +532,7 @@ export default class House extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
             this.openPauseMenu();
         }
-        
+
         if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
             this.scene.start('store');
         }
