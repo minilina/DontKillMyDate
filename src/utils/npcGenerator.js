@@ -122,7 +122,7 @@ export default class NPCGenerator {
         break;
       case "gnomos":
         aspecto.ropa = "ropa_gnomo"; 
-        aspecto.rasgoFrente = "gnomo_feautures"; 
+        aspecto.rasgoFrente = "gnomo_features"; 
         break;
     }
 

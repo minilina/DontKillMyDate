@@ -47,33 +47,70 @@ export default class NPC extends Phaser.GameObjects.Container {
   }
 
   buildCharacter(scene, looks) {
-    // Función auxiliar para añadir cada capa sin repetir código
-    const addPart = (textureKey, depth) => {
-      if (!textureKey) return; // Si viene null (ej. calvo), no hacemos nada
+    // 1. Añadimos el parámetro opcional partName
+    const addPart = (textureKey, depth, partName = null) => {
+      if (!textureKey) return;
 
       let sprite = scene.add.sprite(0, 0, textureKey);
-
-      // ¡CLAVE! Anclamos la base de la imagen al (0,0) del contenedor
       sprite.setOrigin(0.5, 1);
       sprite.setDepth(depth);
 
-      this.add(sprite); // Lo metemos dentro del contenedor NPC
+      this.add(sprite);
+
+      // Si le ponemos un nombre, lo guarda en la clase
+      if (partName) {
+        this[partName] = sprite;
+      }
     };
 
-    // Montamos el "Paper Doll" en orden
     addPart(looks.rasgoDetras, LAYER_DEPTH.RASGO_DETRAS);
     addPart(looks.base, LAYER_DEPTH.BASE);
     addPart(looks.ropa, LAYER_DEPTH.ROPA);
-    addPart(looks.boca, LAYER_DEPTH.BOCA); 
+
+    // 2. Guardamos la BOCA y los OJOS
+    addPart(looks.boca, LAYER_DEPTH.BOCA, "spriteBoca");
     addPart(looks.nariz, LAYER_DEPTH.NARIZ);
-    addPart(looks.ojos, LAYER_DEPTH.OJOS);
+    addPart(looks.ojos, LAYER_DEPTH.OJOS, "spriteOjos");
+
     addPart(looks.pelo, LAYER_DEPTH.PELO);
     addPart(looks.orejas, LAYER_DEPTH.OREJAS);
     addPart(looks.rasgoFrente, LAYER_DEPTH.RASGO_FRENTE);
   }
 
-  
+  // 3. Método para cambiar la cara
+  reaccionar(calidad) {
+    if (calidad >= 70) {
+      this.spriteOjos.setTexture("ojos_felices"); 
+      this.spriteBoca.setTexture("boca_feliz");
+      this.scene.tweens.add({
+        targets: this,
+        y: this.y - 20,
+        yoyo: true,
+        duration: 250,
+      });
+    } else if (calidad < 50) {
+      this.spriteOjos.setTexture("ojos_enfadados"); 
+      this.spriteBoca.setTexture("boca_enfadada");
+      this.scene.tweens.add({
+        targets: this,
+        x: this.x + 10,
+        yoyo: true,
+        repeat: 3,
+        duration: 50,
+      });
+    }
+  }
+
+  // 4. Salida con desvanecimiento
   leave(onComplete) {
-    this.destroy(); // Limpiamos la memoria
+    this.scene.tweens.add({
+      targets: this,
+      alpha: 0,
+      duration: 400,
+      onComplete: () => {
+        this.destroy();
+        if (onComplete) onComplete();
+      },
+    });
   }
 }
