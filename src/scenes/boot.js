@@ -88,6 +88,7 @@ import npcRopaHada from '../../assets/sprites/npcs/ropa_hada.png';
 import npcRopaNinfa from '../../assets/sprites/npcs/ropa_ninfa.png';
 import npcRopaKitsune from '../../assets/sprites/npcs/ropa_kitsune.png';
 import npcRopaHumano from '../../assets/sprites/npcs/ropa_humano.png';
+import npcRopaGnomo from '../../assets/sprites/npcs/ropa_gnomo.png';
 import npcHadaFeautures from '../../assets/sprites/npcs/hada_feautures.png';
 import npcKitsuneFeauturesAzul from '../../assets/sprites/npcs/kitsune_feautures_azul.png';
 import npcKitsuneFeauturesNegro from '../../assets/sprites/npcs/kitsune_feautures_negro.png';
@@ -95,6 +96,7 @@ import npcKitsuneFeauturesRojol from '../../assets/sprites/npcs/kitsune_feauture
 import npcKitsuneFeauturesRosa from '../../assets/sprites/npcs/kitsune_feautures_rosa.png';
 import npcKitsuneFeauturesRubiol from '../../assets/sprites/npcs/kitsune_feautures_rubiol.png';
 import npcKitsuneFeauturesVerde from '../../assets/sprites/npcs/kitsune_feautures_verde.png';
+import npcGnomoFeatures from '../../assets/sprites/npcs/gnomo_features.png';
 import npcNariz from '../../assets/sprites/npcs/nariz.png';
 import npcNariz1 from '../../assets/sprites/npcs/nariz_1.png';
 import npcNariz2 from '../../assets/sprites/npcs/nariz_2.png';
@@ -337,7 +339,9 @@ export default class Boot extends Phaser.Scene {
         this.load.image('ropa_ninfa', npcRopaNinfa);
         this.load.image('ropa_kitsune', npcRopaKitsune);
         this.load.image('ropa_humano', npcRopaHumano);
+        this.load.image('ropa_gnomo', npcRopaGnomo);
         this.load.image('hada_feautures', npcHadaFeautures);
+        this.load.image('gnomo_features', npcGnomoFeatures);
         this.load.image('kitsune_feautures_azul', npcKitsuneFeauturesAzul);
         this.load.image('kitsune_feautures_negro', npcKitsuneFeauturesNegro);
         this.load.image('kitsune_feautures_rojol', npcKitsuneFeauturesRojol);

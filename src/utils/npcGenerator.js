@@ -67,6 +67,7 @@ const OUTFITS =[
   "ropa_ninfa", 
   "ropa_kitsune",
   "ropa_humano",
+  "ropa_gnomo",
 ];
 
 export default class NPCGenerator {
@@ -120,7 +121,8 @@ export default class NPCGenerator {
         aspecto.ropa = "ropa_hada";
         break;
       case "gnomos":
-        aspecto.ropa = "ropa_humano"; // por ahora asi para que no salga desnudo! :)
+        aspecto.ropa = "ropa_gnomo"; 
+        aspecto.rasgoFrente = "gnomo_feautures"; 
         break;
     }
 
