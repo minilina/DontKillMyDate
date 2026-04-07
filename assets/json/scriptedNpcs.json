@@ -7,7 +7,8 @@
       "nariz": "nariz_1",
       "ojos": "ojos_verdes",
       "pelo": "pelo_1_rubiol",
-      "orejas": "orejas_1_ninfa_elfo_hada",
+      "ropa": "ropa_elfo",
+      "orejas": "orejas_1_elfo_hada",
       "rasgoFrente": null,
       "rasgoDetras": null
     },
@@ -33,7 +34,8 @@
       "nariz": "nariz_2",
       "ojos": "ojos_azules",
       "pelo": "pelo_2_azul",
-      "orejas": "orejas_2_ninfa_elfo_hada",
+      "ropa": "ropa_ninfa",
+      "orejas": "orejas_ninfa_2",
       "rasgoFrente": "ninfa_feautures",
       "rasgoDetras": null
     },

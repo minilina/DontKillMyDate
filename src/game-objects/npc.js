@@ -8,6 +8,7 @@ const LAYER_DEPTH = {
   BOCA: 15,
   NARIZ: 16,
   OJOS: 20,
+  ROPA: 25,
   PELO: 30,
   OREJAS: 35, 
   RASGO_FRENTE: 40,
@@ -62,6 +63,7 @@ export default class NPC extends Phaser.GameObjects.Container {
     // Montamos el "Paper Doll" en orden
     addPart(looks.rasgoDetras, LAYER_DEPTH.RASGO_DETRAS);
     addPart(looks.base, LAYER_DEPTH.BASE);
+    addPart(looks.ropa, LAYER_DEPTH.ROPA);
     addPart(looks.boca, LAYER_DEPTH.BOCA); 
     addPart(looks.nariz, LAYER_DEPTH.NARIZ);
     addPart(looks.ojos, LAYER_DEPTH.OJOS);
