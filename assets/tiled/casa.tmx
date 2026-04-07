@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="49" nextobjectid="339">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="52" nextobjectid="405">
+ <editorsettings>
+  <export target="casa.json" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" name="Tileset Grass Spring" tilewidth="16" tileheight="16" tilecount="960" columns="24">
   <image source="tilesetGrassSpring.png" width="384" height="640"/>
  </tileset>
@@ -1854,4 +1857,17 @@
 0,0,1210,1210,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1210,1210,1210,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1210,1210
 </data>
  </layer>
+ <objectgroup id="51" name="Walkable">
+  <object id="394" x="494" y="63.3333" width="50" height="399.333"/>
+  <object id="395" x="544" y="416" width="160" height="33.3333"/>
+  <object id="396" x="366.667" y="271.333" width="126.667" height="48.6667"/>
+  <object id="397" x="382" y="164" width="18.6667" height="108"/>
+  <object id="398" x="400" y="96" width="30.6667" height="128"/>
+  <object id="399" x="320" y="32" width="15.3333" height="78"/>
+  <object id="400" x="336" y="95.3333" width="64" height="15.3333"/>
+  <object id="401" x="335.333" y="78.6667" width="16" height="16.6667"/>
+  <object id="402" x="319.333" y="288.667" width="48" height="190.667"/>
+  <object id="403" x="367.333" y="319.333" width="126.667" height="142"/>
+  <object id="404" x="367.333" y="461.333" width="16.6667" height="17.3333"/>
+ </objectgroup>
 </map>

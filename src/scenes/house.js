@@ -69,10 +69,15 @@ export default class House extends Phaser.Scene {
 
 
         //NAVMESH
+        /* const walkableLayer = map.getObjectLayer('Walkable');
+        
+        this.navMesh = this.navMeshPlugin.buildMeshFromTiled(
+            "mesh",
+            walkableLayer//,5 //shrink amount (opcional)
+        ); */
 
 
         this.navMesh = this.navMeshPlugin.buildMeshFromTilemap("mesh", map, [capaColisiones], null, 4.5);
-
 
 
         //Descomentar esto para debuggear navmesh---------------------------------------------
