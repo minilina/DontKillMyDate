@@ -76,7 +76,7 @@ export default class House extends Phaser.Scene {
 
 
         //Descomentar esto para debuggear navmesh---------------------------------------------
-        this.navMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen
+        /* this.navMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen
         this.navMesh.debugDrawClear(); // Clears the overlay
         // Visualize the underlying navmesh
         this.navMesh.debugDrawMesh({
@@ -84,7 +84,7 @@ export default class House extends Phaser.Scene {
             drawBounds: false,
             drawNeighbors: true,
             drawPortals: true
-        });
+        }); */
         //-------------------------------------------------------------------------------------
 
 
