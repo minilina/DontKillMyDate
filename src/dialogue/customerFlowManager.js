@@ -26,48 +26,48 @@ export default class CustomerFlowManager {
       return;
     }
 
- if (this.currentCustomer) {
-   this.currentCustomer.destroy();
- }
+    if (this.currentCustomer) {
+      this.currentCustomer.destroy();
+    }
 
- GameState.prepareNewCustomer();
+    GameState.prepareNewCustomer();
 
- // 1. Averiguamos quién entra
- const customerType = GameState.getCurrentCustomerType();
+    // Obtenemos si toca "npc" u otra cosa ("elf", "nymph")
+    const customerType = GameState.getCurrentCustomerType();
+    let looksNPC;
+    let dialogueData;
 
- let looksNPC;
- let dialogueData;
+    if (customerType === "npc") {
+      this.currentRequest = generateRandomRequest();
+      const chosenRace = this.currentRequest.requirements.raza;
+      looksNPC = NPCGenerator.generateLooks(chosenRace);
+      dialogueData = buildDialogueFromRequest(this.currentRequest);
+    } else {
+      const specialData = GameState.getSpecialNPC(customerType);
 
- // 2. Comprobamos si es genérico o especial
- if (customerType === "npc") {
-   // --- ES UN CLIENTE GENÉRICO ---
-   this.currentRequest = generateRandomRequest();
-   const chosenRace = this.currentRequest.requirements.raza;
-   looksNPC = NPCGenerator.generateLooks(chosenRace);
-   dialogueData = buildDialogueFromRequest(this.currentRequest);
- } else {
-   // --- ES UN PERSONAJE CON HISTORIA ---
-   const specialData = GameState.getSpecialNPC(customerType);
+      // Mantenemos requirements y literalWords
+      this.currentRequest = {
+        requirements: specialData.requirements,
+        literalWords: specialData.literalWords,
+      };
 
-   this.currentRequest = { requirements: specialData.requirements };
-   looksNPC = specialData.looks;
-   dialogueData = {
-     speakerName: specialData.name,
-     lines: specialData.dialogue,
-   };
- }
+      looksNPC = specialData.looks;
+      dialogueData = {
+        speakerName: specialData.name,
+        lines: specialData.dialogue,
+      };
+    }
 
- // 3. Creamos NPC
- this.currentCustomer = new NPC(
-   this.scene,
-   this.scene.scale.width / 4,
-   this.scene.scale.height * 0.85,
-   looksNPC,
-   this.currentRequest.requirements,
- );
+    // creamos NPC
+    this.currentCustomer = new NPC(
+      this.scene,
+      this.scene.scale.width / 4,
+      this.scene.scale.height * 0.85,
+      looksNPC,
+      this.currentRequest.requirements,
+    );
 
- // 4. Lanzamos el diálogo
- this.dialogueManager.start(dialogueData);
+    this.dialogueManager.start(dialogueData);
   }
 
   _onDialogueFinished() {
@@ -77,11 +77,8 @@ export default class CustomerFlowManager {
     this.scene.scene.launch("kitchen");
   }
 
-  
-
-continueShift() {
+  continueShift() {
     if (this.currentCustomer) {
-      // Usamos el callback que programamos en npc.js
       this.currentCustomer.leave(() => {
         this.currentCustomer = null;
         this.currentRequest = null;
@@ -93,10 +90,9 @@ continueShift() {
     }
   }
 
-
   _finishShift() {
     GameState.advanceDay();
-    this.scene.scene.stop("store"); 
+    this.scene.scene.stop("store");
     this.scene.scene.start("house");
   }
 

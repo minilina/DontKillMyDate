@@ -21,9 +21,17 @@
       "temperatura": "frio",
       "forma_frasco": "estrella"
     },
+    "literalWords": {
+      "raza_objetivo": "elfos",
+      "sabor": "dulce",
+      "color": "roja",
+      "consistencia": "entera",
+      "temperatura": "bien fría",
+      "forma_frasco": "recipiente que recuerde a los astros"
+    },
     "dialogue": [
       "Saludos, alquimista. Vengo de las profundidades del bosque.",
-      "Necesito una esencia dulce y roja, y la necesito entera. Que esté bien fría y guárdala en un recipiente que recuerde a los astros de la noche."
+      "Necesito una esencia *dulce* y *roja*, y la necesito *entera*. Que esté *bien fría* y guárdala en un *recipiente que recuerde a los astros* de la noche."
     ]
   },
   "nymph": {
@@ -48,9 +56,17 @@
       "temperatura": "tiempo",
       "forma_frasco": "corazon"
     },
+    "literalWords": {
+      "raza_objetivo": "humano",
+      "sabor": "salado",
+      "color": "azul",
+      "consistencia": "bien cortados",
+      "temperatura": "temperatura ambiente",
+      "forma_frasco": "cristal que demuestre puro afecto"
+    },
     "dialogue": [
       "El agua está turbia hoy...",
-      "Tráeme algo azul y salado. Es para un humano, así que dásmelo a temperatura ambiente. Asegúrate de que los ingredientes estén bien cortados y ponlo en un cristal que demuestre puro afecto."
+      "Tráeme algo *azul* y *salado*. Es para un *humano*, así que dásmelo a *temperatura ambiente*. Asegúrate de que los ingredientes estén *bien cortados* y ponlo en un *cristal que demuestre puro afecto*."
     ]
   },
   "gnomo_1": {
@@ -75,9 +91,17 @@
       "temperatura": "frio",
       "forma_frasco": "estrella"
     },
+    "literalWords": {
+      "raza_objetivo": "elfos",
+      "sabor": "dulce",
+      "color": "roja",
+      "consistencia": "entera",
+      "temperatura": "bien fría",
+      "forma_frasco": "recipiente que recuerde a los astros"
+    },
     "dialogue": [
       "Saludos, alquimista. Vengo de las profundidades del bosque.",
-      "Necesito una esencia dulce y roja, y la necesito entera. Que esté bien fría y guárdala en un recipiente que recuerde a los astros de la noche."
+      "Necesito una esencia *dulce* y *roja*, y la necesito *entera*. Que esté *bien fría* y guárdala en un *recipiente que recuerde a los astros* de la noche."
     ]
   }
 }
