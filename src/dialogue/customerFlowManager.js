@@ -77,18 +77,22 @@ export default class CustomerFlowManager {
     this.scene.scene.launch("kitchen");
   }
 
-  continueShift() {
+  
 
-if (this.currentCustomer) {
+continueShift() {
+    if (this.currentCustomer) {
+      // Usamos el callback que programamos en npc.js
       this.currentCustomer.leave(() => {
         this.currentCustomer = null;
+        this.currentRequest = null;
+        this.spawnNextCustomer();
       });
+    } else {
+      this.currentRequest = null;
+      this.spawnNextCustomer();
     }
-    this.currentRequest = null;
-    this.scene.scene.wake("store");
-    this.spawnNextCustomer();
-
   }
+
 
   _finishShift() {
     GameState.advanceDay();

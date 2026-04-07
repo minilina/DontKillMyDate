@@ -118,10 +118,14 @@ export default class Kitchen extends Phaser.Scene {
 
 
     finishKitchen() {
-        this.scene.stop("kitchen");
-        this.scene.start("potionScore");
+        this.scene.sleep("kitchen"); 
+        
+        let storeScene = this.scene.get("store");
+        storeScene.scene.wake(); 
+        
+        storeScene.showPotionResult(); 
     }
-
+    
 
     // crea un item interactivo de la cocina
     createKitchenItem(x, y, normalKey, borderKey, border = true) {

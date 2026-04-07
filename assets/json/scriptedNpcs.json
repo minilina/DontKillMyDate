@@ -7,7 +7,8 @@
       "nariz": "nariz_1",
       "ojos": "ojos_verdes",
       "pelo": "pelo_1_rubiol",
-      "orejas": "orejas_1_ninfa_elfo_hada",
+      "ropa": "ropa_elfo",
+      "orejas": "orejas_1_elfo_hada",
       "rasgoFrente": null,
       "rasgoDetras": null
     },
@@ -33,7 +34,8 @@
       "nariz": "nariz_2",
       "ojos": "ojos_azules",
       "pelo": "pelo_2_azul",
-      "orejas": "orejas_2_ninfa_elfo_hada",
+      "ropa": "ropa_ninfa",
+      "orejas": "orejas_ninfa_2",
       "rasgoFrente": "ninfa_feautures",
       "rasgoDetras": null
     },
@@ -49,6 +51,33 @@
     "dialogue": [
       "El agua está turbia hoy...",
       "Tráeme algo azul y salado. Es para un humano, así que dásmelo a temperatura ambiente. Asegúrate de que los ingredientes estén bien cortados y ponlo en un cristal que demuestre puro afecto."
+    ]
+  },
+  "gnomo_1": {
+    "name": "No se Ya",
+    "looks": {
+      "base": "cuerpo_3",
+      "boca": "boca_normal_3",
+      "nariz": "nariz_3",
+      "ojos": "ojos_verdes",
+      "pelo": "pelo_3_rubio",
+      "ropa": "ropa_gnomo",
+      "orejas": null,
+      "rasgoFrente": "gnomo_features",
+      "rasgoDetras": null
+    },
+    "requirements": {
+      "raza": "gnomos",
+      "raza_objetivo": "elfos",
+      "sabor": "dulce",
+      "color": "rojo",
+      "consistencia": "entera",
+      "temperatura": "frio",
+      "forma_frasco": "estrella"
+    },
+    "dialogue": [
+      "Saludos, alquimista. Vengo de las profundidades del bosque.",
+      "Necesito una esencia dulce y roja, y la necesito entera. Que esté bien fría y guárdala en un recipiente que recuerde a los astros de la noche."
     ]
   }
 }

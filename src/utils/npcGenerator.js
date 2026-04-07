@@ -2,19 +2,22 @@
 const TONOS_PIEL = [
   {
     base: "cuerpo_1",
-    orejas: "orejas_1_ninfa_elfo_hada",
+    orejas_elfo_hada: "orejas_1_elfo_hada",
+    orejas_ninfa: "orejas_ninfa_1",
     boca: "boca_normal_1",
     nariz: "nariz_1",
   },
   {
     base: "cuerpo_2",
-    orejas: "orejas_2_ninfa_elfo_hada",
+    orejas_elfo_hada: "orejas_2_elfo_hada",
+    orejas_ninfa: "orejas_ninfa_2",
     boca: "boca_normal_2",
     nariz: "nariz_2",
   },
   {
     base: "cuerpo_3",
-    orejas: "orejas_3_ninfa_elfo_hada",
+    orejas_elfo_hada: "orejas_3_elfo_hada",
+    orejas_ninfa: "orejas_ninfa_3",
     boca: "boca_normal_3",
     nariz: "nariz_3",
   },
@@ -58,6 +61,15 @@ const UNIVERSAL_EYES = [
   "ojos_verdes",
 ];
 
+const OUTFITS =[
+  "ropa_elfo",
+  "ropa_hada",
+  "ropa_ninfa", 
+  "ropa_kitsune",
+  "ropa_humano",
+  "ropa_gnomo",
+];
+
 export default class NPCGenerator {
   static generateLooks(raza) {
     // Función auxiliar para elegir al azar
@@ -76,6 +88,7 @@ export default class NPCGenerator {
       orejas: null,
       ojos: pickRandom(UNIVERSAL_EYES),
       pelo: pickRandom(adnColor.pelos), // Elegimos un peinado del color seleccionado
+      ropa: null,
       rasgoDetras: null,
       rasgoFrente: null,
     };
@@ -83,24 +96,33 @@ export default class NPCGenerator {
     // 3. APLICAMOS LAS REGLAS DE LA RAZA
     switch (raza) {
       case "humanos":
+        aspecto.ropa = "ropa_humano";
         break;
 
       case "elfos":
-        aspecto.orejas = adnPiel.orejas;
+        aspecto.orejas = adnPiel.orejas_elfo_hada;
+        aspecto.ropa = "ropa_elfo";
         break;
 
       case "ninfas":
-        aspecto.orejas = adnPiel.orejas; // Tienen sus orejas
+        aspecto.orejas = adnPiel.orejas_ninfa; // Tienen sus orejas
         aspecto.rasgoFrente = "ninfa_feautures"; // Y ADEMÁS sus hojas encima
+        aspecto.ropa = "ropa_ninfa";
         break;
 
       case "kitsunes":
         aspecto.rasgoDetras = adnColor.cola;
+        aspecto.ropa = "ropa_kitsune";
         break;
 
       case "hadas":
-        aspecto.orejas = adnPiel.orejas; // Tienen sus orejas
+        aspecto.orejas = adnPiel.orejas_elfo_hada; // Tienen sus orejas
         aspecto.rasgoDetras = "hada_feautures"; // Y sus alas detrás
+        aspecto.ropa = "ropa_hada";
+        break;
+      case "gnomos":
+        aspecto.ropa = "ropa_gnomo"; 
+        aspecto.rasgoFrente = "gnomo_features"; 
         break;
     }
 
