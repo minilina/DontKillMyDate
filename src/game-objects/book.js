@@ -7,7 +7,6 @@ export default class Book extends Phaser.GameObjects.Container {
         scene.add.existing(this);
 
         this.setDepth(300);
-
         const width = scene.scale.width;
         const height = scene.scale.height;
         const scale = 3;
@@ -32,30 +31,45 @@ export default class Book extends Phaser.GameObjects.Container {
 
         const page1 = scene.add.container(0, 0);
         const page2 = scene.add.container(0, 0);
+        const page3 = scene.add.container(0, 0);
 
         this.pages.push(page1);
         this.pages.push(page2);
+        this.pages.push(page3);
 
         this.add(page1);
         this.add(page2);
+        this.add(page3);
 
         page2.setVisible(false);
+        page3.setVisible(false);
 
         // =========================
         // PAGINA 1 (AFINIDADES)
         // =========================
 
-         const title1 = scene.add.text(
-                318,
-                100,
-                "Afinidad",
-                {
-                    fontFamily: "VT323, monospace",
-                    fontSize: "48px",
-                    color: "#4f342d",
-                    fontStyle: "bold"
-                }
-            ).setOrigin(0.5);
+        const title1 = scene.add.text(
+            318,
+            100,
+            "Afinidad",
+            {
+                fontFamily: "VT323, monospace",
+                fontSize: "48px",
+                color: "#4f342d",
+                fontStyle: "bold"
+            }
+        ).setOrigin(0.5);
+
+        const afin = scene.add.image(555, 150, 'afin').setScale(3);
+        const igual = scene.add.image(555, 255, 'igual').setScale(3);
+        const hostil = scene.add.image(555, 360, 'hostil').setScale(3);
+        const nextButton1 = scene.add.image(645, 150, 'next').setScale(3);
+        const nextButton2 = scene.add.image(645, 255, 'next').setScale(3);
+        const nextButton3 = scene.add.image(645, 360, 'next').setScale(3);
+        const verde = scene.add.image(725, 150, 'greenTestTube').setScale(3);
+        const gris = scene.add.image(725, 255, 'grayTestTube').setScale(3);
+        const rojo = scene.add.image(725, 360, 'redTestTube').setScale(3);
+
 
         const elements = ['humanos', 'kitsunes', 'ninfas', 'hadas', 'elfos', 'gnomos'];
 
@@ -112,8 +126,8 @@ export default class Book extends Phaser.GameObjects.Container {
                 positions[index].y,
                 element
             )
-            .setScale(3)
-            .setInteractive({ useHandCursor: true });
+                .setScale(3)
+                .setInteractive({ useHandCursor: true });
 
             const label = scene.add.text(
                 positions[index].x,
@@ -126,113 +140,320 @@ export default class Book extends Phaser.GameObjects.Container {
                 }
             ).setOrigin(0.5);
 
-            icon.on('pointerdown', () => {
+            // Asegurarnos de que la lista existe desde el principio
+            // Asegurarnos de que la lista existe desde el principio
+            if (!this.iconosTocados) this.iconosTocados = [];
 
+            icon.on("pointerover", () => {
+                icon.setScale(3.2);
+            });
+
+            icon.on("pointerout", () => {
+                // Solo se encoge si NO está en la lista de seleccionados
+                if (!this.iconosTocados.includes(icon)) {
+                    icon.setScale(3);
+                }
+            });
+
+            icon.on('pointerdown', () => {
+                
+                icon.setScale(3.2);
+
+                if (!icon.rebordeVisual) {
+                    // Creamos la imagen en la misma posición relativa
+                    const reborde = scene.add.image(icon.x, icon.y, icon.texture.key)
+                        .setScale(3.5)
+                        .setTintFill(0xffffff); // Silueta blanca sólida
+
+                    
+                    if (icon.parentContainer) {
+                        icon.parentContainer.add(reborde); 
+                        icon.parentContainer.moveBelow(reborde, icon); 
+                    } else {
+                        reborde.setDepth(icon.depth - 1);
+                    }
+
+                    icon.rebordeVisual = reborde;
+                }
+
+                
                 this.selections.push(element);
+                this.iconosTocados.push(icon);
 
                 if (this.selections.length === 2) {
 
-                    const key = this.getKey(
-                        this.selections[0],
-                        this.selections[1]
-                    );
-
+                    const key = this.getKey(this.selections[0], this.selections[1]);
                     const resultImage = this.afinidadDict[key];
 
                     if (resultImage) {
+                        const res = scene.add.image(center.x, center.y, resultImage)
+                            .setOrigin(0.5).setAlpha(0).setScale(4);
 
-                        const res = scene.add.image(
-                            center.x,
-                            center.y,
-                            resultImage
-                        )
-                        .setOrigin(0.5)
-                        .setAlpha(0)
-                        .setScale(4);
-
+                        // Asumo que page1 es tu contenedor principal
                         page1.add(res);
 
                         scene.tweens.add({
-                            targets: res,
-                            alpha: 1,
-                            scale: 3,
-                            duration: 1200,
-                            ease: 'Power2',
+                            targets: res, alpha: 1, scale: 3, duration: 1200, ease: 'Power2',
                             onComplete: () => {
-
                                 scene.tweens.add({
-                                    targets: res,
-                                    alpha: 0,
-                                    duration: 600,
-                                    ease: 'Power2',
+                                    targets: res, alpha: 0, duration: 600, ease: 'Power2',
                                     onComplete: () => res.destroy()
                                 });
-
                             }
                         });
                     }
 
-                    this.selections = [];
-                }
+                    // 4. Limpieza: Destruimos los rebordes y encogemos
+                    this.iconosTocados.forEach(i => {
+                        if (i.rebordeVisual) {
+                            i.rebordeVisual.destroy();
+                            i.rebordeVisual = null;
+                        }
+                        i.setScale(3);
+                    });
 
+                    // Vaciamos las listas
+                    this.selections = [];
+                    this.iconosTocados = [];
+                }
             });
 
             page1.add(icon);
             page1.add(label);
             page1.add(title1);
+            page1.add(afin);
+            page1.add(igual);
+            page1.add(hostil);
+            page1.add(nextButton1);
+            page1.add(nextButton2);
+            page1.add(nextButton3);
+            page1.add(verde);
+            page1.add(gris);
+            page1.add(rojo);
 
         });
 
         // =========================
-        // PAGINA 2 (EJEMPLO)
+        // PAGINA 2 
         // =========================
 
-        const page2Text = scene.add.text(
+        const title2 = scene.add.text(
             318,
-            260,
-            "Bestiario\n(Proximamente)",
+            100,
+            "Ingredientes",
             {
-                fontFamily: "VT323",
-                fontSize: "42px",
+                fontFamily: "VT323, monospace",
+                fontSize: "48px",
                 color: "#4f342d",
-                align: "center"
+                fontStyle: "bold"
             }
         ).setOrigin(0.5);
 
-        page2.add(page2Text);
+        const mushroom = scene.add.image(235, 170, 'mushroom').setScale(3);
+        const berry = scene.add.image(235, 225, 'berry').setScale(3);
+        const root = scene.add.image(235, 280, 'root').setScale(3);
+        const algae = scene.add.image(235, 335, 'algae').setScale(3);
+        const crystal = scene.add.image(235, 390, 'crystal').setScale(3);
+        const nextButton4 = scene.add.image(310, 170, 'next').setScale(3);
+        const nextButton5 = scene.add.image(310, 225, 'next').setScale(3);
+        const nextButton6 = scene.add.image(310, 280, 'next').setScale(3);
+        const nextButton7 = scene.add.image(310, 335, 'next').setScale(3);
+        const nextButton8 = scene.add.image(310, 390, 'next').setScale(3);
 
+        const umami = scene.add.text(
+            360,
+            153,
+            "Umami",
+            {
+                fontFamily: "VT323, monospace",
+                fontSize: "30px",
+                color: "#4f342d",
+                fontStyle: "bold"
+            }
+        );
+        const acido = scene.add.text(
+            360,
+            208,
+            "Ácido",
+            {
+                fontFamily: "VT323, monospace",
+                fontSize: "30px",
+                color: "#4f342d",
+                fontStyle: "bold"
+            }
+        );
+        const amargo = scene.add.text(
+            360,
+            263,
+            "Amargo",
+            {
+                fontFamily: "VT323, monospace",
+                fontSize: "30px",
+                color: "#4f342d",
+                fontStyle: "bold"
+            }
+        );
+        const dulce = scene.add.text(
+            360,
+            318,
+            "Dulce",
+            {
+                fontFamily: "VT323, monospace",
+                fontSize: "30px",
+                color: "#4f342d",
+                fontStyle: "bold"
+            }
+        );
+        const salado = scene.add.text(
+            360,
+            373,
+            "Salado",
+            {
+                fontFamily: "VT323, monospace",
+                fontSize: "30px",
+                color: "#4f342d",
+                fontStyle: "bold"
+            }
+        );
+
+        // 1. Los estilos se quedan igual
+        const estiloTitulo = {
+            fontFamily: "VT323, monospace",
+            fontSize: "30px",
+            color: "#4f342d",
+            fontStyle: "bold"
+        };
+
+        const estiloDesc = {
+            fontFamily: "VT323, monospace",
+            fontSize: "22px",
+            color: "#4f342d"
+        };
+
+        // 2. COLUMNAS (Reculamos un poco a la izquierda)
+        const centroX = 640;   // Ni muy al centro, ni muy al borde
+        const imagenX = 530;
+        const descX = 560;
+
+        // --- BLOQUE 1: SIN PROCESAR (Todo sube 10px) ---
+        const noProcess = scene.add.text(centroX, 90, "Textura sólida", estiloTitulo).setOrigin(0.5);
+        const mushroomJar = scene.add.image(imagenX, 140, 'mushroomJar').setScale(2);
+        const descNoProcess = scene.add.text(descX, 140, "Agrega los ingredientes\ndirectamente del frasco.", estiloDesc).setOrigin(0, 0.5);
+
+        // --- BLOQUE 2: TABLA DE CORTAR (Todo sube 10px) ---
+        const cuttingText = scene.add.text(centroX, 200, "Textura masticable", estiloTitulo).setOrigin(0.5);
+        // Nota: Respeto tus coordenadas manuales X, solo resto 10 a la Y
+        const cutting = scene.add.image(580, 270, 'cuttingBoard').setScale(1.25);
+        const descCutting = scene.add.text(630, 265, "Picar los \ningredientes\nen la tabla.", estiloDesc).setOrigin(0, 0.5);
+
+        // --- BLOQUE 3: MORTERO (Título sube 10px, resto intacto) ---
+        const mortarText = scene.add.text(centroX, 340, "Textura cremosa", estiloTitulo).setOrigin(0.5);
+        const mortar = scene.add.image(545, 390, 'mortar').setScale(2);
+        const descMortar = scene.add.text(580, 390, "Reducir a polvo fino \ncon el mortero.", estiloDesc).setOrigin(0, 0.5);
+
+        page2.add(title2);
+        page2.add(mushroom);
+        page2.add(berry);
+        page2.add(root);
+        page2.add(algae);
+        page2.add(crystal);
+        page2.add(nextButton4);
+        page2.add(nextButton5);
+        page2.add(nextButton6);
+        page2.add(nextButton7);
+        page2.add(nextButton8);
+        page2.add(salado);
+        page2.add(dulce);
+        page2.add(amargo);
+        page2.add(acido);
+        page2.add(umami);
+        page2.add(cutting);
+        page2.add(mortar);
+        page2.add(mushroomJar);
+        page2.add(noProcess);
+        page2.add(cuttingText);
+        page2.add(mortarText);
+        page2.add(descNoProcess);
+        page2.add(descCutting);
+        page2.add(descMortar);
+
+        // =========================
+        // PAGINA 3 
+        // =========================
+
+        const title3 = scene.add.text(
+            318,
+            100,
+            "Tintes",
+            {
+                fontFamily: "VT323, monospace",
+                fontSize: "48px",
+                color: "#4f342d",
+                fontStyle: "bold"
+            }
+        ).setOrigin(0.5);
+
+        const descTintes = scene.add.text(180, 180, "Para determinar el color de la \npoción puedes utilizar los \ntintes disponibles directamente \nen el caldero.", estiloDesc).setOrigin(0, 0.5);
+        const esqColor = scene.add.image(643, 270, 'esqColor').setScale(3);
+        const redBowl = scene.add.image(268, 260, 'redBowl').setScale(3);
+        const blueBowl = scene.add.image(318, 260, 'blueBowl').setScale(3);
+        const yellowBowl = scene.add.image(368, 260, 'yellowBowl').setScale(3);
+        const descTintesMez = scene.add.text(180, 325, "Para crear colores más complejos \nmezcla los tintes en el plato \ny luego añadelos al caldero", estiloDesc).setOrigin(0, 0.5);
+        const plate = scene.add.image(318, 395, 'plate').setScale(3);
+
+        const esq = scene.add.text(
+            640,
+            120,
+            "Leyenda de colores",
+            {
+                fontFamily: "VT323, monospace",
+                fontSize: "30px",
+                color: "#4f342d",
+                fontStyle: "bold"
+            }
+        ).setOrigin(0.5);
+
+        page3.add(title3);
+        page3.add(esqColor);
+        page3.add(plate);
+        page3.add(descTintes);
+        page3.add(redBowl);
+        page3.add(blueBowl);
+        page3.add(yellowBowl);
+        page3.add(descTintesMez);
+        page3.add(esq);
 
         // =========================
         // ETIQUETAS DE PAGINA
         // =========================
-        
+
         const redTagButton = scene.add.image(279 * scale, 50 * scale, 'redTag2')
-        .setInteractive({
-            useHandCursor: true,
-            pixelPerfect: true
-        })
-        .setScale(scale);
+            .setInteractive({
+                useHandCursor: true,
+                pixelPerfect: true
+            })
+            .setScale(scale);
 
         const blueTagButton = scene.add.image(279 * scale, 74 * scale, 'blueTag1')
-        .setInteractive({
-            useHandCursor: true,
-            pixelPerfect: true 
-        })
-        .setScale(scale);
+            .setInteractive({
+                useHandCursor: true,
+                pixelPerfect: true
+            })
+            .setScale(scale);
 
         const greenTagButton = scene.add.image(279 * scale, 98 * scale, 'greenTag1')
-        .setInteractive({ 
-            useHandCursor: true,
-            pixelPerfect: true
-        })
-        .setScale(scale);
+            .setInteractive({
+                useHandCursor: true,
+                pixelPerfect: true
+            })
+            .setScale(scale);
 
         const purpleTagButton = scene.add.image(279 * scale, 122 * scale, 'purpleTag1')
-        .setInteractive({ 
-            useHandCursor: true,
-            pixelPerfect: true
-        })
-        .setScale(scale);
+            .setInteractive({
+                useHandCursor: true,
+                pixelPerfect: true
+            })
+            .setScale(scale);
 
         this.add(redTagButton);
         this.add(blueTagButton);
@@ -275,6 +496,24 @@ export default class Book extends Phaser.GameObjects.Container {
             }
         });
 
+        greenTagButton.on("pointerdown", () => {
+            this.showPage(2);
+            redTagButton.setTexture('redTag1');
+            blueTagButton.setTexture('blueTag1');
+            greenTagButton.setTexture('greenTag2');
+            purpleTagButton.setTexture('purpleTag1');
+        });
+
+        greenTagButton.on("pointerover", () => {
+            greenTagButton.setTexture('greenTag2');
+        });
+
+        greenTagButton.on("pointerout", () => {
+            if (this.currentPage !== 2) {
+                greenTagButton.setTexture('greenTag1');
+            }
+        });
+
 
         // =========================
         // BOTONES DE PAGINA
@@ -296,7 +535,7 @@ export default class Book extends Phaser.GameObjects.Container {
         // });
 
         // prevButton.on("pointerdown", () => {
-            // this.showPage(this.currentPage - 1);
+        // this.showPage(this.currentPage - 1);
         // });
 
         this.setVisible(false);

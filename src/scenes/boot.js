@@ -258,6 +258,7 @@ import greenTag1 from '../../assets/sprites/etiqueta_verde_1.png';
 import greenTag2 from '../../assets/sprites/etiqueta_verde_2.png';
 import blueTag1 from '../../assets/sprites/etiqueta_azul_1.png';
 import blueTag2 from '../../assets/sprites/etiqueta_azul_2.png';
+import esqColor from '../../assets/sprites/esq-color.png';
 
 //sonidos
 import fireSound from '../../assets/sound/fire.mp3';
@@ -499,6 +500,7 @@ export default class Boot extends Phaser.Scene {
         this.load.image('greenTag2', greenTag2);
         this.load.image('blueTag1', blueTag1);
         this.load.image('blueTag2', blueTag2);
+        this.load.image('esqColor', esqColor)
 
         this.load.image('cuttingBg', cuttingBg);
         this.load.image('cuttingBar', cuttingBar);
