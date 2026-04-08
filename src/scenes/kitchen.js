@@ -135,6 +135,8 @@ export default class Kitchen extends Phaser.Scene {
 
 
     finishKitchen() {
+        this.cauldron.resetCauldron();
+
         this.scene.sleep("kitchen");
 
         let storeScene = this.scene.get("store");

@@ -39,6 +39,20 @@ export default class Cauldron {
         this.cauldronSprite.on('pointerdown', () => {
             this.toggleFire();
         });
+
+        
+        this.scene.events.on('pause', () => {
+            if (this.fire.visible) {
+                this.scene.sound.pauseAll(); // Pausamos los sonidos para que no suene el fuego de fondo
+            }
+        }, this);
+
+       
+        this.scene.events.on('resume', () => {
+            if (this.fire.visible) {
+                this.scene.sound.resumeAll(); // Reanudamos los sonidos
+            }
+        }, this);
     }
 
     // activar/desactivar fuego
@@ -50,7 +64,7 @@ export default class Cauldron {
         } else {
             this.fire.setVisible(true);
             this.fire.play('heat');
-            this.scene.sound.play('fireSound', { volume: 0.5, loop: true });
+            this.scene.sound.play('fireSound', { volume: 1.5, loop: true });
             
             // mostrar barra de temperatura al encender el fuego
             this.heatBar.setVisible(true);
@@ -113,6 +127,7 @@ export default class Cauldron {
         this.temperatureValue = 0;
         this.heatArrow.x = this.heatBar.x + this.borderOffset;
         
+        // Al apagar el fuego aquí, también se corta el sonido gracias a toggleFire()
         if (this.fire.visible) {
             this.toggleFire();
         }

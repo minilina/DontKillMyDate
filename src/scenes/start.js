@@ -25,7 +25,7 @@ export default class Start extends Phaser.Scene {
 
         this.game.bgMusic = this.sound.add('startMusic', {
             loop: true,
-            volume: 0.1
+            volume: 1
         });
 
         this.game.bgMusic.play();
