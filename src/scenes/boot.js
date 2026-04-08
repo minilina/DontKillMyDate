@@ -137,9 +137,13 @@ import npcPelo3Rojo from '../../assets/sprites/npcs/pelo_3_rojo.png';
 import npcPelo3Rosa from '../../assets/sprites/npcs/pelo_3_rosa.png';
 import npcPelo3Rubio from '../../assets/sprites/npcs/pelo_3_rubio.png';
 import npcPelo3Verde from '../../assets/sprites/npcs/pelo_3_verde.png';
+
 import dialog from "../../assets/sprites/dialog.png";
+import dialog2 from "../../assets/sprites/dialog2.png";
 import dialogArrow from "../../assets/sprites/dialog_arrow.png";
 
+import thinkingBubbleAnim from '../../assets/anims/bocadillo_pensar.png'
+import thinkingBubbleAnimJson from '../../assets/anims/bocadillo_pensar_atlas.json'
 
 
 // sprites escena cocina
@@ -213,10 +217,46 @@ import note from '../../assets/sprites/kitchen/nota.png';
 import noteB from '../../assets/sprites/kitchen/nota_b.png';
 import emptyNormalPotion from '../../assets/sprites/kitchen/pocion_normal_vacia.png';
 import emptyNormalPotionB from '../../assets/sprites/kitchen/pocion_normal_vacia_b.png';
+import blueNormalPotion from '../../assets/sprites/kitchen/pocion_normal_azul.png';
+import blueNormalPotionB from '../../assets/sprites/kitchen/pocion_normal_azul_b.png';
+import redNormalPotion from '../../assets/sprites/kitchen/pocion_normal_roja.png';
+import redNormalPotionB from '../../assets/sprites/kitchen/pocion_normal_roja_b.png';
+import greenNormalPotion from '../../assets/sprites/kitchen/pocion_normal_verde.png';
+import greenNormalPotionB from '../../assets/sprites/kitchen/pocion_normal_verde_b.png';
+import purpleNormalPotion from '../../assets/sprites/kitchen/pocion_normal_morada.png';
+import purpleNormalPotionB from '../../assets/sprites/kitchen/pocion_normal_morada_b.png';
+import orangeNormalPotion from '../../assets/sprites/kitchen/pocion_normal_naranja.png';
+import orangeNormalPotionB from '../../assets/sprites/kitchen/pocion_normal_naranja_b.png';
+import yellowNormalPotion from '../../assets/sprites/kitchen/pocion_normal_amarilla.png';
+import yellowNormalPotionB from '../../assets/sprites/kitchen/pocion_normal_amarilla_b.png';
 import emptyHeartPotion from '../../assets/sprites/kitchen/pocion_corazon_vacia.png';
 import emptyHeartPotionB from '../../assets/sprites/kitchen/pocion_corazon_vacia_b.png';
+import blueHeartPotion from '../../assets/sprites/kitchen/pocion_corazon_azul.png';
+import blueHeartPotionB from '../../assets/sprites/kitchen/pocion_corazon_azul_b.png';
+import redHeartPotion from '../../assets/sprites/kitchen/pocion_corazon_roja.png';
+import redHeartPotionB from '../../assets/sprites/kitchen/pocion_corazon_roja_b.png';
+import greenHeartPotion from '../../assets/sprites/kitchen/pocion_corazon_verde.png';
+import greenHeartPotionB from '../../assets/sprites/kitchen/pocion_corazon_verde_b.png';
+import purpleHeartPotion from '../../assets/sprites/kitchen/pocion_corazon_morada.png';
+import purpleHeartPotionB from '../../assets/sprites/kitchen/pocion_corazon_morada_b.png';
+import orangeHeartPotion from '../../assets/sprites/kitchen/pocion_corazon_naranja.png';
+import orangeHeartPotionB from '../../assets/sprites/kitchen/pocion_corazon_naranja_b.png';
+import yellowHeartPotion from '../../assets/sprites/kitchen/pocion_corazon_amarilla.png';
+import yellowHeartPotionB from '../../assets/sprites/kitchen/pocion_corazon_amarilla_b.png';
 import emptyStarPotion from '../../assets/sprites/kitchen/pocion_estrella_vacia.png';
 import emptyStarPotionB from '../../assets/sprites/kitchen/pocion_estrella_vacia_b.png';
+import blueStarPotion from '../../assets/sprites/kitchen/pocion_estrella_azul.png';
+import blueStarPotionB from '../../assets/sprites/kitchen/pocion_estrella_azul_b.png';
+import redStarPotion from '../../assets/sprites/kitchen/pocion_estrella_roja.png';
+import redStarPotionB from '../../assets/sprites/kitchen/pocion_estrella_roja_b.png';
+import greenStarPotion from '../../assets/sprites/kitchen/pocion_estrella_verde.png';
+import greenStarPotionB from '../../assets/sprites/kitchen/pocion_estrella_verde_b.png';
+import purpleStarPotion from '../../assets/sprites/kitchen/pocion_estrella_morada.png';
+import purpleStarPotionB from '../../assets/sprites/kitchen/pocion_estrella_morada_b.png';
+import orangeStarPotion from '../../assets/sprites/kitchen/pocion_estrella_naranja.png';
+import orangeStarPotionB from '../../assets/sprites/kitchen/pocion_estrella_naranja_b.png';
+import yellowStarPotion from '../../assets/sprites/kitchen/pocion_estrella_amarilla.png';
+import yellowStarPotionB from '../../assets/sprites/kitchen/pocion_estrella_amarilla_b.png';
 import heatBar from '../../assets/sprites/kitchen/barra_calor.png';
 import heatArrow from '../../assets/sprites/kitchen/flecha_barra_calor.png';
 import nota from "../../assets/sprites/carta.png";
@@ -330,8 +370,11 @@ export default class Boot extends Phaser.Scene {
         this.load.tilemapTiledJSON('cueva', cueva);
 
         this.load.image('store', store);
-         this.load.image('dialog', dialog);
+        this.load.image('dialog', dialog);
+        this.load.image('dialog2', dialog2);
         this.load.image('dialogArrow', dialogArrow);
+        this.load.atlas('thinkingBubble', thinkingBubbleAnim, thinkingBubbleAnimJson);
+
         // --- CARGA DE CAPAS DE NPCs ---
         this.load.image('boca_normal_1', npcBocaNormal1);
         this.load.image('boca_normal_2', npcBocaNormal2);
@@ -471,10 +514,46 @@ export default class Boot extends Phaser.Scene {
         this.load.image('noteB', noteB);
         this.load.image('emptyNormalPotion', emptyNormalPotion);
         this.load.image('emptyNormalPotionB', emptyNormalPotionB);
+        this.load.image('blueNormalPotion', blueNormalPotion);
+        this.load.image('blueNormalPotionB', blueNormalPotionB);
+        this.load.image('redNormalPotion', redNormalPotion);
+        this.load.image('redNormalPotionB', redNormalPotionB);
+        this.load.image('greenNormalPotion', greenNormalPotion);
+        this.load.image('greenNormalPotionB', greenNormalPotionB);
+        this.load.image('purpleNormalPotion', purpleNormalPotion);
+        this.load.image('purpleNormalPotionB', purpleNormalPotionB);
+        this.load.image('orangeNormalPotion', orangeNormalPotion);
+        this.load.image('orangeNormalPotionB', orangeNormalPotionB);
+        this.load.image('yellowNormalPotion', yellowNormalPotion);
+        this.load.image('yellowNormalPotionB', yellowNormalPotionB);
         this.load.image('emptyHeartPotion', emptyHeartPotion);
         this.load.image('emptyHeartPotionB', emptyHeartPotionB);
+        this.load.image('blueHeartPotion', blueHeartPotion);
+        this.load.image('blueHeartPotionB', blueHeartPotionB);
+        this.load.image('redHeartPotion', redHeartPotion);
+        this.load.image('redHeartPotionB', redHeartPotionB);
+        this.load.image('greenHeartPotion', greenHeartPotion);
+        this.load.image('greenHeartPotionB', greenHeartPotionB);
+        this.load.image('purpleHeartPotion', purpleHeartPotion);
+        this.load.image('purpleHeartPotionB', purpleHeartPotionB);
+        this.load.image('orangeHeartPotion', orangeHeartPotion);
+        this.load.image('orangeHeartPotionB', orangeHeartPotionB);
+        this.load.image('yellowHeartPotion', yellowHeartPotion);
+        this.load.image('yellowHeartPotionB', yellowHeartPotionB);
         this.load.image('emptyStarPotion', emptyStarPotion);
         this.load.image('emptyStarPotionB', emptyStarPotionB);
+        this.load.image('blueStarPotion', blueStarPotion);
+        this.load.image('blueStarPotionB', blueStarPotionB);
+        this.load.image('redStarPotion', redStarPotion);
+        this.load.image('redStarPotionB', redStarPotionB);
+        this.load.image('greenStarPotion', greenStarPotion);
+        this.load.image('greenStarPotionB', greenStarPotionB);
+        this.load.image('purpleStarPotion', purpleStarPotion);
+        this.load.image('purpleStarPotionB', purpleStarPotionB);
+        this.load.image('orangeStarPotion', orangeStarPotion);
+        this.load.image('orangeStarPotionB', orangeStarPotionB);
+        this.load.image('yellowStarPotion', yellowStarPotion);
+        this.load.image('yellowStarPotionB', yellowStarPotionB);
         this.load.image('heatBar', heatBar);
         this.load.image('heatArrow', heatArrow);
         this.load.image("open_note", nota);

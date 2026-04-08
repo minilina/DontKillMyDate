@@ -88,7 +88,9 @@ export default class CustomerFlowManager {
       this.currentCustomer.leave(() => {
         this.currentCustomer = null;
         this.currentRequest = null;
-        this.spawnNextCustomer();
+        this.scene.time.delayedCall(1000, () => {
+          this.spawnNextCustomer();
+        });
       });
     } else {
       this.currentRequest = null;

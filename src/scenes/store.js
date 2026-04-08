@@ -24,6 +24,23 @@ export default class Store extends Phaser.Scene {
     this.flowManager = new CustomerFlowManager(this);
     this.flowManager.startShift();
 
+    this.events.on('wake', () => {
+        this.cameras.main.fadeIn(500, 0, 0, 0);
+    });
+
+    if (!this.anims.exists('think')) {
+        this.anims.create({
+            key: 'think',
+            frames: this.anims.generateFrameNames('thinkingBubble', { 
+                prefix: 'pensar-', 
+                start: 0, 
+                end: 3 
+            }),
+            frameRate: 5,
+            repeat: -1
+        });
+    }
+
     // Pausa
     this.pauseKey = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.ESC,
@@ -42,49 +59,83 @@ export default class Store extends Phaser.Scene {
     this.scene.pause();
   }
 
-  showPotionResult() {
-    // Fondo semitransparente
-    const overlay = this.add
-      .rectangle(this.scale.width / 2, 240, 500, 150, 0x000000, 0.7)
-      .setOrigin(0.5)
-      .setDepth(100);
+  showPotionResult(potionTextureKey) {
+    const resultPotion = this.add.image(149 * 3, 145 * 3, potionTextureKey).setOrigin(0, 0).setScale(3).setAlpha(0);
 
-    const quality = GameState.currentPotion.quality;
+    // animación de la poción apareciendo
+    this.tweens.add({
+      targets: resultPotion,
+      alpha: 1,
+      duration: 800,
+      ease: 'Power2',
+      delay: 300,
+      onComplete: () => {
 
-    // reaccionar cliente
-    if (this.flowManager && this.flowManager.currentCustomer) {
-      this.flowManager.currentCustomer.reaccionar(quality);
-    }
+        const thinkingBubble = this.add.sprite(45 * 3, 24 * 3, 'thinkingBubble').setOrigin(0, 0).setScale(3).play('think');
 
-    // actiualizar reputación
-    GameState.deliverPotion();
+        // PRIMERA PAUSA entre entrega poción y reacción cliente
+        this.time.delayedCall(1000, () => {
 
+          thinkingBubble.destroy();
+            
+          const quality = GameState.currentPotion.quality;
 
-    const qualityText = this.add
-      .text(this.scale.width / 2, 200, `Calidad: ${quality}%`, {
-        fontFamily: "VT323, monospace",
-        fontSize: "40px",
-        color: "#f2e3d3",
-      })
-      .setOrigin(0.5)
-      .setDepth(101);
+          // reacción cliente
+          if (this.flowManager && this.flowManager.currentCustomer) {
+            this.flowManager.currentCustomer.reaccionar(quality);
+          }
 
-    const repText = this.add
-      .text(this.scale.width / 2, 280, `Reputación: ${GameState.reputation}`, {
-        fontFamily: "VT323, monospace",
-        fontSize: "35px",
-        color: "#f2e3d3",
-      })
-      .setOrigin(0.5)
-      .setDepth(101);
+          // SEGUNDA PAUSA entre reacción cliente y textos resultado
+          this.time.delayedCall(1200, () => {
 
-    // Esperar 2.5 segundos y continuar
-    this.time.delayedCall(2500, () => {
-      overlay.destroy();
-      qualityText.destroy();
-      repText.destroy();
+            // actualizar reputación
+            GameState.deliverPotion();
 
-      this.flowManager.continueShift();
+            // textos de resultado
+            const overlay = this.add.image(630, 185, 'dialog2').setDepth(100).setScale(3).setAlpha(0);
+
+            const qualityText = this.add.text(630, 160, `Calidad: ${quality}%`, {
+                fontFamily: "VT323, monospace",
+                fontSize: "30px", 
+                color: "#000000",
+              })
+              .setOrigin(0.5)
+              .setDepth(101)
+              .setAlpha(0);
+
+            const repText = this.add.text(630, 210, `Reputación: ${GameState.reputation}`, {
+                fontFamily: "VT323, monospace",
+                fontSize: "30px", 
+                color: "#000000",
+              })
+              .setOrigin(0.5)
+              .setDepth(101)
+              .setAlpha(0);
+
+            // animación de los textos apareciendo después de la poción
+            this.tweens.add({
+              targets: [overlay, qualityText, repText],
+              alpha: 1,
+              duration: 500,
+              onComplete: () => {
+                
+                this.time.delayedCall(2000, () => {
+                  overlay.destroy();
+                  qualityText.destroy();
+                  repText.destroy();
+                  resultPotion.destroy();
+
+                  this.flowManager.continueShift();
+                });
+
+              }
+            });
+            
+          }); // fin de la segunda pausa
+
+        }); // fin de la primera pausa
+
+      }
     });
   }
 }

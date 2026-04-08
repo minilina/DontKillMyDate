@@ -52,7 +52,7 @@ export default class Kitchen extends Phaser.Scene {
         this.createKitchenItem(231, 102, 'testTubeRack', 'testTubeRackB', false);
 
         const trash = this.createKitchenItem(294, 113, 'trash', 'trashB', false);
-        const delivery = this.createKitchenItem(281, 133, 'delivery', 'deliveryB', false);
+        this.delivery = this.createKitchenItem(281, 133, 'delivery', 'deliveryB', false);
 
         const note = this.createKitchenItem(150, 44, "note", "noteB");
         // Creamos la interfaz grande usando nuestra nueva clase
@@ -105,14 +105,14 @@ export default class Kitchen extends Phaser.Scene {
         this.grab(grayTestTube, 'grayTestTubeB', 'smell', 'grayTestTube');
         this.grab(greenTestTube, 'greenTestTubeB', 'smell', 'greenTestTube');
 
+        // pociones (forma)
+        this.grab(emptyNormalPotion, 'emptyNormalPotionB', 'shape', 'Normal');
+        this.grab(emptyHeartPotion, 'emptyHeartPotionB', 'shape', 'Heart');
+        this.grab(emptyStarPotion, 'emptyStarPotionB', 'shape', 'Star');
+
         // pausa
         this.pauseKey = this.input.keyboard.addKey(
             Phaser.Input.Keyboard.KeyCodes.ESC
-        );
-
-        // PROVISIONAL: pasar escena con enter
-        this.enterKey = this.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.ENTER
         );
     }
 
@@ -120,10 +120,6 @@ export default class Kitchen extends Phaser.Scene {
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
             this.openPauseMenu();
-        }
-
-        if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
-            this.finishKitchen();
         }
     }
 
@@ -134,15 +130,30 @@ export default class Kitchen extends Phaser.Scene {
     }
 
 
-    finishKitchen() {
-        this.cauldron.resetCauldron();
+    finishKitchen(potionShape) {
+        this.input.keyboard.enabled = false;
+        this.input.enabled = false;
+        this.isDraggingItem = false;
 
-        this.scene.sleep("kitchen");
+        this.cameras.main.fadeOut(500, 0, 0, 0);
 
-        let storeScene = this.scene.get("store");
-        storeScene.scene.wake();
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
 
-        storeScene.showPotionResult();
+            let cauldronColor = this.cauldron.currentPotion.color.replace('Liquid', '');
+            let finalTexture = cauldronColor + potionShape + 'Potion';
+
+            this.cauldron.resetCauldron();
+
+            let storeScene = this.scene.get("store");
+            storeScene.scene.wake(); 
+            
+            storeScene.showPotionResult(finalTexture);
+
+            this.input.keyboard.enabled = true;
+            this.input.enabled = true;
+
+            this.scene.sleep("kitchen");
+        });
     }
 
 
@@ -230,7 +241,7 @@ export default class Kitchen extends Phaser.Scene {
                 if (!this.isDraggingItem) return;
                 dragItem.x = ptr.x;
                 dragItem.y = ptr.y;
-                this.updateBorders(ptr, itemType);
+                this.updateBorders(ptr, itemType, dragItem, currentDropData);
             };
 
             // soltar
@@ -258,7 +269,7 @@ export default class Kitchen extends Phaser.Scene {
 
 
     // añadir borde a los items debajo del cursor
-    updateBorders(ptr, itemType) {
+    updateBorders(ptr, itemType, dragItem = null, dropData = null) {
         const objectsUnderMouse = this.input.hitTestPointer(ptr);
         this.resetBorders();
 
@@ -267,17 +278,42 @@ export default class Kitchen extends Phaser.Scene {
             this.mortar.setTexture(objectsUnderMouse.includes(this.mortar) ? 'mortarB' : 'mortar');
             this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
         }
-        else if (itemType === 'processedTaste') {
+        else if (itemType === 'processedTaste' || itemType === 'color' || itemType === 'smell') {
             this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
+            if (itemType === 'color') {
+                this.mixPlate.setTexture(objectsUnderMouse.includes(this.mixPlate) ? 'plateB' : 'plate');
+            }
         }
-        else if (itemType === 'color') {
-            this.mixPlate.setTexture(objectsUnderMouse.includes(this.mixPlate) ? 'plateB' : 'plate');
+        else if (itemType === 'shape') {
             this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
-        }
-        else if (itemType === 'smell') {
-            this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
-        }
+            this.delivery.setTexture(objectsUnderMouse.includes(this.delivery) ? 'deliveryB' : 'delivery');
+            // si está sobre el caldero y el sprite actual es una poción vacía
+            if (objectsUnderMouse.includes(this.cauldronImg) && dragItem && dragItem.texture.key.includes('empty')) {
+                let cauldronColor = this.cauldron.currentPotion.color;
+                // rellenar poción con el color del caldero (si tiene)
+                if (cauldronColor) {
+                    cauldronColor = cauldronColor.replace('Liquid', '');
+                    const newTexture = cauldronColor + dropData + 'PotionB'; // ej: 'blue' + 'Heart' + 'PotionB'
+                    dragItem.setTexture(newTexture);
+                    this.cauldronImg.setTexture('cauldron'); // quitar borde caldero para que no confunda con la poción
+                    this.cauldron.liquidSprite.setVisible(false);
 
+                    // mostrar indicador de entrega
+                    this.hideIndicators(); 
+                    const arrowDelivery = this.add.sprite(this.delivery.x + 60, this.delivery.y - 15, 'indicator').setDepth(100).setScale(3);
+                    this.indicatorArrows.push(arrowDelivery);
+                    
+                    this.indicatorTween = this.tweens.add({
+                        targets: this.indicatorArrows,
+                        y: '-=10',
+                        duration: 600,
+                        yoyo: true,
+                        repeat: -1,
+                        ease: 'Sine.easeInOut'
+                    });
+                }
+            }
+        }
     }
 
 
@@ -342,6 +378,14 @@ export default class Kitchen extends Phaser.Scene {
                 isDroppedSuccessfully = true;
             }
         }
+        else if (itemType === 'shape') {
+            if (objectsUnderMouse.includes(this.delivery)) {
+                if (this.cauldron.currentPotion.color) {
+                    this.finishKitchen(dropData);
+                    isDroppedSuccessfully = true;
+                }
+            }
+        }
         return isDroppedSuccessfully;
     }
 
@@ -369,6 +413,10 @@ export default class Kitchen extends Phaser.Scene {
         }
         // si es un OLOR: flecha en caldero
         else if (itemType === 'smell') {
+            const arrow1 = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
+            this.indicatorArrows.push(arrow1);
+        }
+        else if (itemType === 'shape') {
             const arrow1 = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
             this.indicatorArrows.push(arrow1);
         }
