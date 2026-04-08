@@ -4,6 +4,7 @@ import {
   generateRandomRequest,
   processScriptedDialogue,
 } from "./requestGenerator.js";
+import { buildDialogueFromRequest } from "./dialogueScripts.js";
 import NPCGenerator from "../utils/npcGenerator.js";
 import GameState from "../state/GameState.js";
 
