@@ -82,3 +82,52 @@ export function generateRandomRequest() {
     },
   };
 }
+
+export function processScriptedDialogue(specialData) {
+  const reqs = specialData.requirements;
+
+  // 1. Buscamos un sinónimo aleatorio basado ESTRICTAMENTE en lo que pide el NPC
+  const txtSabor = Phaser.Utils.Array.GetRandom(
+    Diccionario.sabores[reqs.sabor],
+  );
+  const txtColor = Phaser.Utils.Array.GetRandom(
+    Diccionario.colores[reqs.color],
+  );
+  const txtConsist = Phaser.Utils.Array.GetRandom(
+    Diccionario.consistencias[reqs.consistencia],
+  );
+  const txtTemp = Phaser.Utils.Array.GetRandom(
+    Diccionario.temperaturas[reqs.temperatura],
+  );
+  const txtFrasco = Phaser.Utils.Array.GetRandom(
+    Diccionario.formas_frasco[reqs.forma_frasco],
+  );
+  const txtRazaObjetivo = Phaser.Utils.Array.GetRandom(
+    Diccionario.razas_objetivo[reqs.raza_objetivo],
+  );
+
+  // 2. Reemplazamos las etiquetas en sus líneas de diálogo
+  const processedLines = specialData.dialogue.map((line) => {
+    return line
+      .replace("{raza_objetivo}", txtRazaObjetivo)
+      .replace("{color}", txtColor)
+      .replace("{sabor}", txtSabor)
+      .replace("{consistencia}", txtConsist)
+      .replace("{temperatura}", txtTemp)
+      .replace("{forma_frasco}", txtFrasco);
+  });
+
+  // 3. Devolvemos los requisitos originales, las palabras literales nuevas, y el diálogo procesado
+  return {
+    requirements: reqs,
+    literalWords: {
+      raza_objetivo: txtRazaObjetivo,
+      color: txtColor,
+      sabor: txtSabor,
+      consistencia: txtConsist,
+      temperatura: txtTemp,
+      forma_frasco: txtFrasco,
+    },
+    dialogueLines: processedLines,
+  };
+}

@@ -219,6 +219,7 @@ import emptyStarPotion from '../../assets/sprites/kitchen/pocion_estrella_vacia.
 import emptyStarPotionB from '../../assets/sprites/kitchen/pocion_estrella_vacia_b.png';
 import heatBar from '../../assets/sprites/kitchen/barra_calor.png';
 import heatArrow from '../../assets/sprites/kitchen/flecha_barra_calor.png';
+import nota from "../../assets/sprites/carta.png";
 
 import indicator from '../../assets/sprites/kitchen/indicador.png';
 import lightOverlay from '../../assets/sprites/kitchen/capa_luz.png';
@@ -476,6 +477,7 @@ export default class Boot extends Phaser.Scene {
         this.load.image('emptyStarPotionB', emptyStarPotionB);
         this.load.image('heatBar', heatBar);
         this.load.image('heatArrow', heatArrow);
+        this.load.image("open_note", nota);
 
         this.load.image('indicator', indicator);
         this.load.image('lightOverlay', lightOverlay);

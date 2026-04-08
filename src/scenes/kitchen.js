@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 import Book from '../game-objects/book.js';
 import Cauldron from '../game-objects/cauldron.js';
+import Note from '../game-objects/note.js';
 
 export default class Kitchen extends Phaser.Scene {
     constructor() {
@@ -53,8 +54,15 @@ export default class Kitchen extends Phaser.Scene {
         const trash = this.createKitchenItem(294, 113, 'trash', 'trashB', false);
         const delivery = this.createKitchenItem(281, 133, 'delivery', 'deliveryB', false);
 
-        const note = this.createKitchenItem(150, 44, 'note', 'noteB');
+        const note = this.createKitchenItem(150, 44, "note", "noteB");
+        // Creamos la interfaz grande usando nuestra nueva clase
+        this.noteUI = new Note(this);
+        // Le decimos al papel de la mesa que abra la interfaz grande al hacer click
+          note.on("pointerdown", () => {
+            this.noteUI.open();
+          });
 
+        
         this.cauldronImg = this.createKitchenItem(129, 86, 'cauldron', 'cauldronB');
         const bookImg = this.createKitchenItem(205, 125, 'bookOnTable', 'bookOnTableB');
 

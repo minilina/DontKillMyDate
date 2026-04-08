@@ -1,7 +1,9 @@
 import NPC from "../game-objects/npc.js";
 import DialogueManager from "./dialogueManager.js";
-import { generateRandomRequest } from "./requestGenerator.js";
-import { buildDialogueFromRequest } from "./dialogueScripts.js";
+import {
+  generateRandomRequest,
+  processScriptedDialogue,
+} from "./requestGenerator.js";
 import NPCGenerator from "../utils/npcGenerator.js";
 import GameState from "../state/GameState.js";
 
@@ -43,18 +45,21 @@ export default class CustomerFlowManager {
       looksNPC = NPCGenerator.generateLooks(chosenRace);
       dialogueData = buildDialogueFromRequest(this.currentRequest);
     } else {
+      // --- ES UN PERSONAJE CON HISTORIA ---
       const specialData = GameState.getSpecialNPC(customerType);
 
-      // Mantenemos requirements y literalWords
+      // Pasamos los datos por nuestra nueva función para inyectar los sinónimos
+      const scriptedRequest = processScriptedDialogue(specialData);
+
       this.currentRequest = {
-        requirements: specialData.requirements,
-        literalWords: specialData.literalWords,
+        requirements: scriptedRequest.requirements,
+        literalWords: scriptedRequest.literalWords,
       };
 
       looksNPC = specialData.looks;
       dialogueData = {
         speakerName: specialData.name,
-        lines: specialData.dialogue,
+        lines: scriptedRequest.dialogueLines, // Usamos las líneas ya procesadas
       };
     }
 
