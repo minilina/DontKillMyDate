@@ -8,7 +8,9 @@ export default class Cueva extends Phaser.Scene {
 
     preload() { }
 
-    create() {
+    create(data = {}) {
+        this.datosDeLaCasa = data;
+
         var map = this.make.tilemap({ key: 'cueva' });
 
         var allPropsSeasons = map.addTilesetImage('ALL props seasons', 'allPropsSeasons');
@@ -71,7 +73,7 @@ export default class Cueva extends Phaser.Scene {
         this.animatedTiles.setRate(0.5);
 
         // CREAR AL JUGADOR
-        this.player = new Player(this, 168, 305);
+        this.player = new Player(this, 168, 290);
         this.player.setNavmesh(this.navMesh);
         // Descomentar esto cuando queramos mirar la posición del jugador para colocar cosas
         // window.player = this.player;
@@ -90,6 +92,9 @@ export default class Cueva extends Phaser.Scene {
             }
         });
 
+        // CONFIGURAR PROFUNDIDADES (DEPTH / Z-INDEX)
+        capaVallas.setDepth(9999);
+
         // CONFIGURAR CAMARA Y LIMITES
         this.cameras.main.setZoom(3);
         this.cameras.main.roundPixels = true;
@@ -103,6 +108,22 @@ export default class Cueva extends Phaser.Scene {
 
         // FUNDIDO A NEGRO AL ENTRAR
         this.cameras.main.fadeIn(1000, 0, 0, 0);
+        const zonaSalida = this.add.zone(168, 318, 48, 16).setOrigin(0.5, 0.5);
+        this.physics.add.existing(zonaSalida, true);
+
+        this.isTransitioning = false;
+
+        this.physics.add.overlap(this.player, zonaSalida, () => {
+           if (this.isTransitioning) return;
+            this.isTransitioning = true;
+            
+            this.scene.start('house', { 
+                spawnX: this.datosDeLaCasa.returnX, 
+                spawnY: this.datosDeLaCasa.returnY,
+                cuevaTileX: this.datosDeLaCasa.cuevaTileX,
+                cuevaTileY: this.datosDeLaCasa.cuevaTileY
+            });
+        });
 
         // CREACION DE OBJETOS DINAMICOS
         this.grupoCosas = this.physics.add.staticGroup();

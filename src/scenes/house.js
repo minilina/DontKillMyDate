@@ -8,7 +8,7 @@ export default class House extends Phaser.Scene {
 
     preload() { }
 
-    create() {
+    create(data = {}) {
         var map = this.make.tilemap({ key: 'casa' });
 
         var allPropsSeasons = map.addTilesetImage('ALL props seasons', 'allPropsSeasons');
@@ -61,8 +61,6 @@ export default class House extends Phaser.Scene {
         // CAPA DE COLISIONES
         const capaColisiones = map.createLayer('Colisiones', tilesetsArray, 0, 0);
 
-
-
         // ACTIVAR LA COLISION Y OCULTARLA
         capaColisiones.setCollisionByExclusion([-1]);
         capaColisiones.setVisible(false); // La hacemos invisible para no ver los cuadros rojos
@@ -99,7 +97,12 @@ export default class House extends Phaser.Scene {
         this.animatedTiles.setRate(0.5);
 
         // CREAR AL JUGADOR
-        this.player = new Player(this, 400, 300);
+        const startX = data.spawnX !== undefined ? data.spawnX : 400;
+        const startY = data.spawnY !== undefined ? data.spawnY : 300;
+
+        // Si data.spawnX existe (porque volvemos de la cueva), usamos esa posición. 
+        // Si no existe (porque acabamos de abrir el juego) usamos predefinidos
+        this.player = new Player(this, startX, startY);
         this.player.setNavmesh(this.navMesh); // Asignamos el navmesh al jugador para que pueda usarlo
         //Descomentar esto cuando queramos mirar la posición del jugador para colocar cosas
         //window.player = this.player;
@@ -152,7 +155,8 @@ export default class House extends Phaser.Scene {
             const tileHoverPiedra = capaPilares.getTileAtWorldXY(worldPoint.x, worldPoint.y);
 
             const idValla = [1393, 1394, 1395, 1405, 1406, 1407];
-            const idPiedra = [3868, 3870];
+            const idPiedra = [3852, 3868, 3869, 3870, 3871];
+            
 
             if (tileHoverValla && idValla.includes(tileHoverValla.index)) {
                 this.game.canvas.style.cursor = 'pointer';
@@ -163,7 +167,34 @@ export default class House extends Phaser.Scene {
             }
         });
 
+
         this.cuevaAbierta = false;
+        this.isTransitioning = false; // Cerrojo
+
+        // SI VENIMOS DE LA CUEVA, LA CUEVA YA ESTA ABIERTA
+        if (data.cuevaTileX !== undefined) {
+            this.cuevaAbierta = true;
+
+            capaFondoFalso.putTileAt(-1, data.cuevaTileX, data.cuevaTileY - 1);
+            capaFondoFalso.putTileAt(-1, data.cuevaTileX, data.cuevaTileY);
+
+            const pixelsX = map.tileToWorldX(data.cuevaTileX);
+            const pixelsY = map.tileToWorldY(data.cuevaTileY);
+            const zonaEntrada = this.add.zone(pixelsX, pixelsY, 16, 23).setOrigin(0, 0);
+            this.physics.add.existing(zonaEntrada, true);
+
+            this.physics.add.overlap(this.player, zonaEntrada, () => {
+                if (this.isTransitioning) return; // Si ya esta cambiando de escena, ignoramos
+                this.isTransitioning = true;      // Activamos el cerrojo
+                
+                this.scene.start('cueva', { 
+                    returnX: pixelsX + 8, 
+                    returnY: pixelsY + 32,
+                    cuevaTileX: data.cuevaTileX,
+                    cuevaTileY: data.cuevaTileY
+                });
+            });
+        }
 
         // ABRIR y CERRAR VALLAS y ABRIR CUEVA
         this.input.on('pointerdown', (pointer) => {
@@ -174,13 +205,10 @@ export default class House extends Phaser.Scene {
             const distancia = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
 
             if (tilePiedra) {
-                const ID_CUEVA_ARRIBA = 2121;
-                const ID_CUEVA_ABAJO = 2146;
-                const ID_PIEDRA_RUNICA_ARRIBA = 3868;
-                const ID_PIEDRA_RUNICA_ABAJO = 3870;
+                const idsPiedra = [3852, 3868, 3869, 3870, 3871];
 
                 // Si hacemos clic en la piedra, estamos cerca y la cueva esta cerrada
-                if ((tilePiedra.index === ID_PIEDRA_RUNICA_ARRIBA || tilePiedra.index === ID_PIEDRA_RUNICA_ABAJO) && distancia < 80 && !this.cuevaAbierta) {
+                if (idsPiedra.includes(tilePiedra.index) && distancia < 40 && !this.cuevaAbierta) {
                     const cuevaTileX = tilePiedra.x - 1;
                     const cuevaTileY = tilePiedra.y - 1;
                     this.cuevaAbierta = true;
@@ -192,13 +220,20 @@ export default class House extends Phaser.Scene {
                     // Creamos una zona invisible justo en la entrada de la cueva para entrar en ella
                     const pixelsX = map.tileToWorldX(cuevaTileX);
                     const pixelsY = map.tileToWorldY(cuevaTileY);
-                    const zonaEntrada = this.add.zone(pixelsX, pixelsY, 16, 17).setOrigin(0, 0);
+                    const zonaEntrada = this.add.zone(pixelsX, pixelsY, 16, 23).setOrigin(0, 0);
                     this.physics.add.existing(zonaEntrada, true);
 
-                    // ENTRAR A LA CUEVA SI TOCAS LA ZONA Y PULSAS ARRIBA
+                    // ENTRAR A LA CUEVA SI TOCAS LA ZONA
                     this.physics.add.overlap(this.player, zonaEntrada, () => {
-                        this.scene.start('cueva');
+                        if (this.isTransitioning) return; // Cerrojo
+                        this.isTransitioning = true;
 
+                        this.scene.start('cueva', { 
+                            returnX: pixelsX + 8, 
+                            returnY: pixelsY + 32,
+                            cuevaTileX: cuevaTileX,
+                            cuevaTileY: cuevaTileY
+                        });
                     });
 
                     // TEMBLOR DE CAMARA
@@ -218,7 +253,7 @@ export default class House extends Phaser.Scene {
                 const ID_posteIzquierdoArriba = 1399;
                 const ID_posteDerechoArriba = 1401;
 
-                if (distancia < 60) { // Distancia para poder abrirla
+                if (distancia < 40) { // Distancia para poder abrirla
 
                     // ABRIR VALLA
                     if (tileValla.index === ID_posteIzquierdo || tileValla.index === ID_Central || tileValla.index === ID_posteDerecho) {
@@ -370,6 +405,25 @@ export default class House extends Phaser.Scene {
                     } else if (nombre === 'templo') {
                         estructura.body.setSize(estructura.width - 16, 80);
                         estructura.body.setOffset(8, estructura.height - 80);
+
+                        // Calculamos el centro de la casa (puerta)
+                        const puertaX = obj.x + (estructura.width / 2); 
+                        const puertaY = obj.y + 5;
+
+                        // Creamos una zona invisible en la puerta
+                        const zonaCocina = this.add.zone(puertaX, puertaY, 40, 20).setOrigin(0.5, 1);
+                        this.physics.add.existing(zonaCocina, true);
+
+                        // Al pisar la zona, nos vamos a la cocina
+                        this.physics.add.overlap(this.player, zonaCocina, () => {
+                            if (this.isTransitioning) return; // Usamos el mismo cerrojo
+                            this.isTransitioning = true;
+
+                            this.scene.start('store', {
+                                returnX: puertaX,
+                                returnY: puertaY + 20
+                            });
+                        });
                     }
                     else if (nombre === 'letrero') {
                         // Colisión ajustada a la base del palito
@@ -382,12 +436,6 @@ export default class House extends Phaser.Scene {
 
         // Añadimos las colisiones contra el jugador
         this.physics.add.collider(this.player, this.grupoEstructuras);
-
-        // DIFUMINAR ARBOLES Y ESTRUCTURAS SI PASAS DEBAJO
-        const capaZonasCasa = map.getObjectLayer('TransparenciaCasa');
-        const zonasCasa = capaZonasCasa ? capaZonasCasa.objects : [];
-
-        let tilesTransparentes = [];
 
         this.events.on('update', () => {
             // El jugador tiene una profundidad que varia depende de su posicion Y
