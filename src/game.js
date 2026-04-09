@@ -25,7 +25,7 @@ const config = {
     scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
     pixelArt: true,
     roundPixels: true,
-    physics: { default: 'arcade', arcade: { gravity: { y: 0 }, debug: true } },
+    physics: { default: 'arcade', arcade: { gravity: { y: 0 }, debug: false } },
     scene: [Start, Boot, Letter, Store, Kitchen, CuttingMinigame, MortarMinigame, PotionScore, Menu, House, Cave, End],
     // npm install phaser-animated-tiles tuve que hacer para la animacion de las tiles
     // npm install phaser-navmesh tuve que hacer para el point and go del jugador
