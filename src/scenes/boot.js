@@ -302,8 +302,13 @@ import blueTag2 from '../../assets/sprites/etiqueta_azul_2.png';
 import esqColor from '../../assets/sprites/esq-color.png';
 
 //sonidos
+import buttonSound from '../../assets/sound/button.mp3';
 import fireSound from '../../assets/sound/fire.mp3';
-import bookSound from '../../assets/sound/book.mp3';
+import bookSound1 from '../../assets/sound/book1.mp3';
+import bookSound2 from '../../assets/sound/book2.mp3';
+import jarSound1 from '../../assets/sound/jar1.mp3';
+import jarSound2 from '../../assets/sound/jar2.mp3';
+import jarSound3 from '../../assets/sound/jar3.mp3';
 
 
 export default class Boot extends Phaser.Scene {
@@ -594,8 +599,11 @@ export default class Boot extends Phaser.Scene {
         this.load.atlas('knife', cutAnim, cutAnimJson);
 
         this.load.audio('fireSound', fireSound);
-        this.load.audio('bookSound', bookSound);
-        
+        this.load.audio('bookSound1', bookSound1);
+        this.load.audio('bookSound2', bookSound2);
+        this.load.audio('jarSound1', jarSound1);
+        this.load.audio('jarSound2', jarSound2);
+        this.load.audio('jarSound3', jarSound3);
     }
 
     create() {
