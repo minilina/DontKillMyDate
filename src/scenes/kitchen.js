@@ -4,14 +4,28 @@ import Book from '../game-objects/book.js';
 import Cauldron from '../game-objects/cauldron.js';
 import Note from '../game-objects/note.js';
 
+// IMPORTAMOS TUTORIAL Y EL DIALOGUE MANAGER PARA LOS TEXTOS
+import KitchenTutorial from '../tutorial/kitchenTutorial.js';
+import DialogueManager from '../dialogue/dialogueManager.js';
+
 export default class Kitchen extends Phaser.Scene {
     constructor() {
         super({ key: 'kitchen' }); // id escena
     }
 
+    init(data) {
+      
+        this.shouldStartInTutorialMode = data.startInTutorialMode || false;
+        console.log("Kitchen.init() -> ¿Empezar en modo tutorial?", this.shouldStartInTutorialMode);
+    }
     create() {
+        console.log("Kitchen.create() -> Iniciando la creación de la escena...");
 
+        this.hooks = {};
         this.isDraggingItem = false;
+
+        // AÑADIMOS UN ATRIBUTO BOOLEANO QUE NOS INDIQUE SI ESTAMOS EN MODO TUTORIAL
+        this.tutorialMode = false;
 
         this.bg = this.add.image(0, 0, 'kitchen').setOrigin(0, 0).setScale(3);
         this.lightOverlay = this.add.image(0, 0, 'lightOverlay').setOrigin(0, 0).setScale(3).setDepth(200);
@@ -29,47 +43,64 @@ export default class Kitchen extends Phaser.Scene {
         this.mortar = this.createKitchenItem(9, 106, 'mortar', 'mortarB', false);
         this.cuttingBoard = this.createKitchenItem(10, 129, 'cuttingBoard', 'cuttingBoardB', false);
 
-        const crystalJar = this.createKitchenItem(62, 54, 'crystalJar', 'crystalJarB');
-        const algaeJar = this.createKitchenItem(38, 54, 'algaeJar', 'algaeJarB');
-        const mushroomJar = this.createKitchenItem(27, 21, 'mushroomJar', 'mushroomJarB');
-        const rootsJar = this.createKitchenItem(73, 21, 'rootsJar', 'rootsJarB');
-        const berriesJar = this.createKitchenItem(50, 21, 'berriesJar', 'berriesJarB');
+        // INGREDIENTES (SABOR)
+        this.crystalJar = this.createKitchenItem(62, 54, 'crystalJar', 'crystalJarB');
+        this.algaeJar = this.createKitchenItem(38, 54, 'algaeJar', 'algaeJarB');
+        this.mushroomJar = this.createKitchenItem(27, 21, 'mushroomJar', 'mushroomJarB');
+        this.rootsJar = this.createKitchenItem(73, 21, 'rootsJar', 'rootsJarB');
+        this.berriesJar = this.createKitchenItem(50, 21, 'berriesJar', 'berriesJarB');
 
-        const redBowl = this.createKitchenItem(81, 113, 'redBowl', 'redBowlB');
-        const blueBowl = this.createKitchenItem(101, 113, 'blueBowl', 'blueBowlB');
-        const yellowBowl = this.createKitchenItem(91, 125, 'yellowBowl', 'yellowBowlB');
+        // POLVOS (COLOR)
+        this.redBowl = this.createKitchenItem(81, 113, 'redBowl', 'redBowlB');
+        this.blueBowl = this.createKitchenItem(101, 113, 'blueBowl', 'blueBowlB');
+        this.yellowBowl = this.createKitchenItem(91, 125, 'yellowBowl', 'yellowBowlB');
 
-        const emptyNormalPotion = this.createKitchenItem(130, 12, 'emptyNormalPotion', 'emptyNormalPotionB', false);
-        const emptyHeartPotion = this.createKitchenItem(174, 12, 'emptyHeartPotion', 'emptyHeartPotionB', false);
-        const emptyStarPotion = this.createKitchenItem(151, 12, 'emptyStarPotion', 'emptyStarPotionB', false);
+        // POCIONES VACIAS (FORMA)
+        this.emptyNormalPotion = this.createKitchenItem(130, 12, 'emptyNormalPotion', 'emptyNormalPotionB', false);
+        this.emptyHeartPotion = this.createKitchenItem(174, 12, 'emptyHeartPotion', 'emptyHeartPotionB', false);
+        this.emptyStarPotion = this.createKitchenItem(151, 12, 'emptyStarPotion', 'emptyStarPotionB', false);
 
         this.mixPlate = this.createKitchenItem(88, 141, 'plate', 'plateB', false);
         this.mixPlateColor = this.add.image(93 * 3, 146 * 3, 'redPlate').setOrigin(0, 0).setScale(3).setVisible(false).setDepth(1);
 
-        const redTestTube = this.createKitchenItem(233, 98, 'redTestTube', 'redTestTubeB');
-        const greenTestTube = this.createKitchenItem(253, 98, 'greenTestTube', 'greenTestTubeB');
-        const grayTestTube = this.createKitchenItem(243, 98, 'grayTestTube', 'grayTestTubeB');
+        // TUBOS DE ENSAYO (AFINIDAD)
+        this.redTestTube = this.createKitchenItem(233, 98, 'redTestTube', 'redTestTubeB');
+        this.greenTestTube = this.createKitchenItem(253, 98, 'greenTestTube', 'greenTestTubeB');
+        this.grayTestTube = this.createKitchenItem(243, 98, 'grayTestTube', 'grayTestTubeB');
         this.createKitchenItem(231, 102, 'testTubeRack', 'testTubeRackB', false);
 
-        const trash = this.createKitchenItem(294, 113, 'trash', 'trashB', false);
+        this.trash = this.createKitchenItem(294, 113, 'trash', 'trashB', false);
         this.delivery = this.createKitchenItem(281, 133, 'delivery', 'deliveryB', false);
 
-        const note = this.createKitchenItem(150, 44, "note", "noteB");
+        this.note = this.createKitchenItem(150, 44, "note", "noteB");
         // Creamos la interfaz grande usando nuestra nueva clase
         this.noteUI = new Note(this);
         // Le decimos al papel de la mesa que abra la interfaz grande al hacer click
-          note.on("pointerdown", () => {
+          this.note.on("pointerdown", () => {
             this.noteUI.open();
           });
 
         
         this.cauldronImg = this.createKitchenItem(129, 86, 'cauldron', 'cauldronB');
-        const bookImg = this.createKitchenItem(205, 125, 'bookOnTable', 'bookOnTableB');
+        this.bookImg = this.createKitchenItem(205, 125, 'bookOnTable', 'bookOnTableB');
 
         this.cauldron = new Cauldron(this, this.cauldronImg);
+
+        // Escuchamos el evento del caldero y lo convertimos en un hook
+        this.events.on('cauldron:tryheat', () => {
+            const heatHook = this.runHook('kitchen:cauldron:heat');
+            if (!heatHook.cancelled) {
+            this.cauldron.toggleFire();
+            }
+        });
+
         this.book = new Book(this);
 
-        bookImg.on('pointerdown', () => {
+        this.bookImg.on('pointerdown', () => {
+            // DISPARAMOS HOOK "ABRIR LIBRO"
+            const bookHook = this.runHook('kitchen:book:open');
+            if (bookHook.cancelled) return;
+
             this.book.open();
         });
 
@@ -87,33 +118,50 @@ export default class Kitchen extends Phaser.Scene {
             'blue,yellow': 'green'
         };
 
+        // Código Corregido
         // ingredientes (sabor)
-        this.grab(mushroomJar, 'mushroomB', 'taste', 'cutMushroom');
-        this.grab(berriesJar, 'berryB', 'taste', 'cutBerry');
-        this.grab(rootsJar, 'rootB', 'taste', 'cutRoot');
-        this.grab(algaeJar, 'algaeB', 'taste', 'cutAlgae');
-        this.grab(crystalJar, 'crystalB', 'taste', 'cutCrystal');
+        this.grab(this.mushroomJar, 'mushroomB', 'taste', 'cutMushroom');
+        this.grab(this.berriesJar, 'berryB', 'taste', 'cutBerry');
+        this.grab(this.rootsJar, 'rootB', 'taste', 'cutRoot');
+        this.grab(this.algaeJar, 'algaeB', 'taste', 'cutAlgae');
+        this.grab(this.crystalJar, 'crystalB', 'taste', 'cutCrystal');
 
         // polvos (color)
-        this.grab(redBowl, 'redPowder', 'color', 'red');
-        this.grab(blueBowl, 'bluePowder', 'color', 'blue');
-        this.grab(yellowBowl, 'yellowPowder', 'color', 'yellow');
-        this.grab(this.mixPlate, 'dynamic', 'color', null); // dynamic porque el sprite que arrastra depende de lo que haya mezclado el jugador
+        this.grab(this.redBowl, 'redPowder', 'color', 'red');
+        this.grab(this.blueBowl, 'bluePowder', 'color', 'blue');
+        this.grab(this.yellowBowl, 'yellowPowder', 'color', 'yellow');
+        this.grab(this.mixPlate, 'dynamic', 'color', null);
 
         // compatibilidad (olor)
-        this.grab(redTestTube, 'redTestTubeB', 'smell', 'redTestTube');
-        this.grab(grayTestTube, 'grayTestTubeB', 'smell', 'grayTestTube');
-        this.grab(greenTestTube, 'greenTestTubeB', 'smell', 'greenTestTube');
+        this.grab(this.redTestTube, 'redTestTubeB', 'smell', 'redTestTube');
+        this.grab(this.grayTestTube, 'grayTestTubeB', 'smell', 'grayTestTube');
+        this.grab(this.greenTestTube, 'greenTestTubeB', 'smell', 'greenTestTube');
 
         // pociones (forma)
-        this.grab(emptyNormalPotion, 'emptyNormalPotionB', 'shape', 'Normal');
-        this.grab(emptyHeartPotion, 'emptyHeartPotionB', 'shape', 'Heart');
-        this.grab(emptyStarPotion, 'emptyStarPotionB', 'shape', 'Star');
+        this.grab(this.emptyNormalPotion, 'emptyNormalPotionB', 'shape', 'Normal');
+        this.grab(this.emptyHeartPotion, 'emptyHeartPotionB', 'shape', 'Heart');
+        this.grab(this.emptyStarPotion, 'emptyStarPotionB', 'shape', 'Star');
 
         // pausa
         this.pauseKey = this.input.keyboard.addKey(
             Phaser.Input.Keyboard.KeyCodes.ESC
         );
+    
+
+        
+
+        this.dialogue = new DialogueManager(this);
+        this.kitchenTutorial = new KitchenTutorial(this, this.dialogue);
+
+        // --- AÑADE ESTAS LÍNEAS ---
+        console.log("Kitchen.create() -> Comprobando si hay que iniciar el tutorial...");
+        if (this.shouldStartInTutorialMode) {
+            console.log("Kitchen.create() -> SÍ, iniciando tutorial 'full'.");
+            this.startTutorial('full'); 
+        } else {
+            console.log("Kitchen.create() -> NO, modo de juego normal.");
+        }
+        // ------------------------
     }
 
 
@@ -155,6 +203,7 @@ export default class Kitchen extends Phaser.Scene {
             this.scene.sleep("kitchen");
         });
     }
+    
 
 
     // crea un item interactivo de la cocina
@@ -191,6 +240,10 @@ export default class Kitchen extends Phaser.Scene {
     // coger ingrediente para arrastrarlo
     grab(sourceSprite, dragItemKey, itemType, itemData = null) {
         sourceSprite.on('pointerdown', (pointer) => {
+
+            // DISPARAMOS HOOK "GRAB:START"
+            const grabHook = this.runHook('kitchen:grab:start', { sourceSprite, itemType, itemData });
+            if (grabHook.cancelled) return;
 
             let currentDropData = itemData;
             let currentDragItemKey = dragItemKey;
@@ -287,11 +340,19 @@ export default class Kitchen extends Phaser.Scene {
         else if (itemType === 'shape') {
             this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
             this.delivery.setTexture(objectsUnderMouse.includes(this.delivery) ? 'deliveryB' : 'delivery');
+            
             // si está sobre el caldero y el sprite actual es una poción vacía
             if (objectsUnderMouse.includes(this.cauldronImg) && dragItem && dragItem.texture.key.includes('empty')) {
                 let cauldronColor = this.cauldron.currentPotion.color;
+
                 // rellenar poción con el color del caldero (si tiene)
                 if (cauldronColor) {
+
+                    // DISPARAMOS HOOK "RELLENAR POCION"
+                    const fillHook = this.runHook('kitchen:potion:fill', { color: cauldronColor, shape: dropData });
+                    if (fillHook.cancelled) return;
+
+
                     cauldronColor = cauldronColor.replace('Liquid', '');
                     const newTexture = cauldronColor + dropData + 'PotionB'; // ej: 'blue' + 'Heart' + 'PotionB'
                     dragItem.setTexture(newTexture);
@@ -333,18 +394,32 @@ export default class Kitchen extends Phaser.Scene {
 
         if (itemType === 'taste') {
             if (objectsUnderMouse.includes(this.cuttingBoard)) {
+
+                //// DISPARAMOS HOOK "DROP EN LA TABLA"
+                const dropHook = this.runHook('kitchen:drop:cuttingBoard', { itemType, dropData });
+                if (dropHook.cancelled) return false;
+
                 // minijuego cortar
                 this.scene.pause();
                 this.scene.launch('cuttingMinigame', { ingredient: dropData });
+
                 isDroppedSuccessfully = true;
             }
             else if (objectsUnderMouse.includes(this.mortar)) {
+
+                // DISPARAMOS HOOK "DROP EN MORTERO"
+                const dropHook = this.runHook('kitchen:drop:mortar', { itemType, dropData });
+                if (dropHook.cancelled) return;
+
                 // minijuego machacar
                 this.scene.pause();
                 this.scene.launch('mortarMinigame', { ingredient: dropData });
                 isDroppedSuccessfully = true;
             }
             else if (objectsUnderMouse.includes(this.cauldronImg)) {
+                // DISPARAMOS HOOK "DROP EN CALDERO"
+                this.runHook('kitchen:drop:cauldron', { itemType, dropData });
+
                 // añadir al caldero
                 this.cauldron.addIngredient('taste', this.tasteDict[dropData.replace('cut', '').toLowerCase()]);
                 this.cauldron.addIngredient('consistency', 'whole');
@@ -353,7 +428,9 @@ export default class Kitchen extends Phaser.Scene {
         }
         else if (itemType === 'processedTaste') {
             if (objectsUnderMouse.includes(this.cauldronImg)) {
-                ;
+                // DISPARAMOS HOOK "DROP EN CALDERO"
+                this.runHook('kitchen:drop:cauldron', { itemType, dropData });
+
                 this.cauldron.addIngredient('taste', this.tasteDict[dropData.name]);
                 this.cauldron.addIngredient('consistency', dropData.consistency);
                 isDroppedSuccessfully = true;
@@ -363,17 +440,26 @@ export default class Kitchen extends Phaser.Scene {
             // si dropData es un color base ('red', 'blue', 'yellow'), es un polvo sacado directo del cuenco
             // si lo soltamos en el plato
             if (['red', 'blue', 'yellow'].includes(dropData) && objectsUnderMouse.includes(this.mixPlate)) {
+               // DISPARAMOS HOOK "AÑADIR A PLATO DE MEZCLA"
+                const mixHook = this.runHook('kitchen:add', { color: dropData });
+                if (mixHook.cancelled) return;
+                
                 this.addPowderToPlate(dropData);
                 isDroppedSuccessfully = true;
             }
             // si soltamos algo de color al caldero (ya sea base o mezclado)
             else if (objectsUnderMouse.includes(this.cauldronImg)) {
+                this.runHook('kitchen:drop:cauldron', { itemType, dropData });
+
                 this.cauldron.addIngredient('color', dropData + 'Liquid');
                 isDroppedSuccessfully = true;
             }
         }
         else if (itemType == 'smell') {
             if (objectsUnderMouse.includes(this.cauldronImg)) {
+                // DISPARAMOS HOOK "DROP EN CALDERO"
+                this.runHook('kitchen:drop:cauldron', { itemType, dropData });
+
                 this.cauldron.addIngredient('smell', dropData);
                 isDroppedSuccessfully = true;
             }
@@ -381,14 +467,30 @@ export default class Kitchen extends Phaser.Scene {
         else if (itemType === 'shape') {
             if (objectsUnderMouse.includes(this.delivery)) {
                 if (this.cauldron.currentPotion.color) {
+
+                    // DISPARAMOS HOOK "ENTREGAR POCION"
+                    const deliverHook = this.runHook('kitchen:deliver', { shape: dropData });
+                    if (deliverHook.cancelled) return false;
+
                     this.finishKitchen(dropData);
                     isDroppedSuccessfully = true;
                 }
             }
+        
+            else if (objectsUnderMouse.includes(this.trash)) {
+
+                // DISPARAMOS HOOK "TIRAR POCIÓN"
+                const trashHook = this.runHook('kitchen:potion:trash', { potionShape: dropData });
+                if (trashHook.cancelled) return false;
+
+                // Aquí iría la lógica para "gastar" la poción sin entregarla
+                console.log("Poción tirada a la basura");
+                isDroppedSuccessfully = true;
+            }
         }
+        
         return isDroppedSuccessfully;
     }
-
 
     // muestra indicadores sobre las estaciones de la cocina
     showIndicators(itemType) {
@@ -529,5 +631,61 @@ export default class Kitchen extends Phaser.Scene {
             new Phaser.Geom.Rectangle(xPos / 2, tex.height / 2, xPos, tex.height),
             Phaser.Geom.Rectangle.Contains
         );
+    }
+
+    // ---------------------------
+    // Tutorial
+    // ---------------------------
+
+    // Nuevos métdodos para activar / desctivar los tutoriales
+    startTutorial(id) {
+        if(this.tutorialMode) return; 
+        this.tutorialMode = true;
+        this.kitchenTutorial.start(id);
+    }
+
+    stopTutorial() {
+        if(!this.tutorialMode) return;
+        this.kitchenTutorial.finish();
+    }
+
+    // METODOS DE HOOKS EN KITCHEN
+
+
+   
+
+    // Resgistrar una funcion que se ejecute cuando ocurra un hook, esta funcion espera el nombre del hook y la funciona a ejecutar
+    addHook(name, fn) {
+        if (!this.hooks[name]) {
+            this.hooks[name] = [];
+        }
+        this.hooks[name].push(fn);
+
+        // Devolvemos una función para eliminar el hook registrado
+        return () => this.removeHook(name, fn);
+    }
+    
+    removeHook(name, fn) {
+        if (!this.hooks[name]) return;
+        this.hooks[name] = this.hooks[name].filter(hookFn => hookFn !== fn);
+    }
+
+    // Ejecuta los hooks registrados para un evento con el nombre y los datos que se pasan (el ingrediente...)
+    // Si algún hook devuelve {cancelled: true}, se detiene la acción normal
+    runHook(name, data) {
+        const hookFunctions = this.hooks[name];
+        if (!hookFunctions || hookFunctions.length === 0) 
+            return { cancelled: false };
+
+        let isCancelled = false;
+        for (const fn of [...hookFunctions]) {
+            const result = fn(data);
+            // Convención: si el hook devuelve un objeto con `cancel: true`, se cancela la acción.
+            if (result && result.cancel === true) {
+                isCancelled = true;
+            }
+        }
+
+        return { cancelled: isCancelled };
     }
 }

@@ -557,6 +557,8 @@ export default class Book extends Phaser.GameObjects.Container {
     }
 
     open() { this.setVisible(true); }
-    close() { this.setVisible(false); }
+    close() { 
+        this.scene.events.emit('book:closed'); 
+        this.setVisible(false); }
 
 }

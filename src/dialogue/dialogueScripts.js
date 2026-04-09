@@ -49,7 +49,6 @@ export function buildDialogueFromRequest(request) {
   const orderLines = splitIntoLines(request.text);
 
   return {
-    speakerName: "Cliente", // luego podéis cambiarlo por nombre real
     lines: orderLines,
   };
 }

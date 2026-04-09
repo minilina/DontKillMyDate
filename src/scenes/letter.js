@@ -110,7 +110,7 @@ export default class Letter extends Phaser.Scene {
 
     // Botón cerrar
     this.closeButton = this.add
-      .text(uiCx, closeY, "Cerrar carta", {
+      .text(uiCx, closeY, "COMENZAR TUTORIAL", {
         fontFamily: "VT323, monospace",
         fontSize: "21px",
         backgroundColor: "#4f342d",
@@ -121,7 +121,7 @@ export default class Letter extends Phaser.Scene {
       .setInteractive()
       .setVisible(false);
 
-    this.closeButton.on("pointerdown", () => this.scene.start("store"));
+    this.closeButton.on("pointerdown", () => this.scene.start('kitchen', { startInTutorialMode: true }));
 
     // (Quitado) Prompt "ENTER para continuar"
     // Ya no se crea nextPrompt
@@ -162,7 +162,7 @@ export default class Letter extends Phaser.Scene {
 
       // Si está el botón de cerrar (última página)
       if (this.closeButton.visible) {
-        this.scene.start("store");
+        this.scene.start('kitchen', { startInTutorialMode: true });
         return;
       }
 
@@ -183,6 +183,13 @@ export default class Letter extends Phaser.Scene {
 
     // Render inicial
     this.renderPage(0);
+  }
+
+  shutdown() {
+    console.log("Letter.js -> Limpiando listeners.");
+    // Eliminamos los listeners globales para que no interfieran con otras escenas.
+    this.input.keyboard.off("keydown-ENTER");
+    this.input.off("pointerdown");
   }
 
   // Utilidad: capitalizar primera letra

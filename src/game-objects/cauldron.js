@@ -35,11 +35,21 @@ export default class Cauldron {
         this.temperatureValue = 0;
         
         this.scene.events.on('update', this.updateTemperature, this);
-
+/*
         this.cauldronSprite.on('pointerdown', () => {
             this.toggleFire();
         });
+*/
 
+        // En Cauldron.js -> constructor()
+        this.cauldronSprite.on('pointerdown', () => {
+            // Si estamos arrastrando un item, no hacemos nada (esto ya lo tienes en Kitchen)
+            if (this.scene.isDraggingItem) return;
+
+            // 1. Avisamos a la escena Kitchen de que se ha intentado calentar el caldero.
+            //    Usamos un evento personalizado que la escena Kitchen escuchará.
+            this.scene.events.emit('cauldron:tryheat');
+        });
         
         this.scene.events.on('pause', () => {
             if (this.fire.visible) {

@@ -53,7 +53,10 @@ export default class MortarMinigame extends Phaser.Scene {
             delay: 1000 / 60,
             loop: true,
             callback: () => {
-                if (!this.gameActive) return;
+                if (!this.gameActive) {
+                    this.timerEvent.remove(); // Detiene el timer si el juego ha terminado
+                    return;
+                }
                 this.timeRemaining -= 1000 / 60;
                 this.updateTimeBar();
                 if (this.timeRemaining <= 0) {
@@ -121,30 +124,30 @@ export default class MortarMinigame extends Phaser.Scene {
     }
 
     removeCircle(circle) {
+        if (!circle) return;
         const index = this.circles.indexOf(circle);
         if (index !== -1) this.circles.splice(index, 1);
         if (circle.active) circle.destroy();
     }
 
     endGame(success) {
+        // Evita que la función se ejecute varias veces si ya ha terminado
+        if (!this.gameActive) return; 
         this.gameActive = false;
-
+        
+        // Limpiamos todo
         this.circles.forEach(c => c.destroy());
         this.circles = [];
 
-        this.children.list.forEach(child => {
-            if (child.input) child.disableInteractive();
-        });
+        // No mostramos nada de "SUCCESS" o "FAIL" para no interferir.
 
-        this.add.text(this.scale.width / 2, this.scale.height / 2,
-            success ? 'SUCCESS' : 'FAIL', {
-                fontSize: '40px',
-                color: success ? 0x00ff00 : 0xff0000
-            }).setOrigin(0.5);
+        // === INICIO DE LA SOLUCIÓN ===
+        // 1. Avisamos SIEMPRE a la cocina de que el minijuego ha terminado.
+        this.scene.get('kitchen').events.emit('minigame:tutorial:finished');
 
-        this.time.delayedCall(1000, () => {
-            this.scene.resume('kitchen');
-            this.scene.stop();
-        });
+        // 2. Cerramos esta escena y volvemos a la cocina.
+        this.scene.resume('kitchen');
+        this.scene.stop();
+        // === FIN DE LA SOLUCIÓN ===
     }
 }
