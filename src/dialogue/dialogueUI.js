@@ -34,12 +34,14 @@ export default class DialogueUI {
   }
 
   onContinue(handler) {
+
     this.scene.input.off("pointerdown");
     this.scene.input.keyboard?.off("keydown-ENTER");
 
     const advanceOrFinish = () => {
       if (!this.container.visible) return;
 
+      this.scene.sound.play("buttonSound", { volume: 0.5 });
       if (this.isTyping) {
         this.finishTyping();
       } else {
