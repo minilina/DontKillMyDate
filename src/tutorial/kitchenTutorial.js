@@ -131,7 +131,7 @@ export default class KitchenTutorial {
         this.disableAllInteractions();
         this.say("¡Bienvenida a la cocina! Me llamo Castiel y hoy seré el encargado de enseñarte todo lo que necesitas saber para comenzar a preparar tu primera poción.", () => {
                 // PASO 1: HACER UBICAR LAS BAYAS
-                this.step6(); 
+                this.step1(); 
                 });
     }
 
