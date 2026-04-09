@@ -248,6 +248,12 @@ init(data) {
             const grabHook = this.runHook('kitchen:grab:start', { sourceSprite, itemType, itemData });
             if (grabHook.cancelled) return;
 
+            if (itemType === 'taste') {
+                const jarSounds = ['jarSound1', 'jarSound2', 'jarSound3']; // Tus nombres de audio
+                const randomSound = Phaser.Math.RND.pick(jarSounds);
+                this.sound.play(randomSound, { volume: 1 });
+            }
+
             let currentDropData = itemData;
             let currentDragItemKey = dragItemKey;
 

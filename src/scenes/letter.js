@@ -68,7 +68,7 @@ export default class Letter extends Phaser.Scene {
 
     // UI nombre
     this.nameInput = this.add
-      .dom(uiCx, inputY+130, "input", { fontSize: "15px", padding: "5px" })
+      .dom(uiCx, inputY + 130, "input", { fontSize: "15px", padding: "5px" })
       .setVisible(false);
 
     this.nameInput.node.placeholder = "Escribe tu nombre";
@@ -159,21 +159,31 @@ export default class Letter extends Phaser.Scene {
       // Si está escribiendo: completar
       if (this.isTyping) {
         this.finishTyping();
+        this.sound.play("buttonSound", { volume: 1 });
         return;
       }
-
+      const bookSounds = ['bookSound1', 'bookSound2'];
+      const randomSound = Phaser.Math.RND.pick(bookSounds);
+      
       // Si está el botón de cerrar (última página)
       if (this.closeButton.visible) {
+
         this.initializeKitchen();
+
+        this.sound.play(randomSound, { volume: 1 });
+        this.scene.start("store");
+
         return;
       }
 
       // Si no: siguiente página
+      this.sound.play(randomSound, { volume: 1 });
       this.nextManualPage();
     };
 
     // Enter: misma lógica que click
     this.input.keyboard.on("keydown-ENTER", () => {
+
       this.advanceOrFinish();
     });
 

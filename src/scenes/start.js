@@ -25,7 +25,7 @@ export default class Start extends Phaser.Scene {
 
         this.game.bgMusic = this.sound.add('startMusic', {
             loop: true,
-            volume: 1
+            volume: 0.4
         });
 
         this.game.bgMusic.play();
@@ -80,7 +80,7 @@ export default class Start extends Phaser.Scene {
         // Click → iniciar Boot
         boton.on('pointerdown', () => {
             this.scene.start('Boot');
-            this.sound.play('buttonSound', { volume: 0.2 });
+            this.sound.play('buttonSound', { volume: 1 });
         });
     }
 
