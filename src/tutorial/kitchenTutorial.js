@@ -145,7 +145,7 @@ export default class KitchenTutorial {
         this.hook('kitchen:grab:start', (payload) => {
             if(payload.sourceSprite == this.k.berriesJar){
                 // Una vez coja las bayas, indicaremos que debe colocarlas en la tabla de cortar
-                this.step4();
+                this.step3();
             }
         });
     });
@@ -170,6 +170,7 @@ export default class KitchenTutorial {
 
                     // Esperamos la señal de que el minijuego ha terminado.
                     this.k.events.once('minigame:tutorial:finished', () => {
+
                         this.stop();
                         
                         // Al terminar, continuamos con el siguiente paso del tutorial.
@@ -184,37 +185,35 @@ export default class KitchenTutorial {
         });
     }
 
-      // PASO 3: MINIJUEGO MORTERO
-    step3(){
-        this.disableAllInteractions();
+    // PASO 3: MINIJUEGO MORTERO
+step3(){
+  
+  this.stop();this.disableAllInteractions();
+  this.k.tutorialMode = true;
 
-        this.stop(); 
-        this.k.tutorialMode = true; 
+  this.say("Para practicar con el mortero necesito que me traigas unas *raíces*. Cógelas de su frasco y arrástralas al mortero.", () => {
+    this.k.rootsJar.setInteractive();
+    this.k.mortar.setInteractive();
 
-        this.say("Para practicar con el mortero necesito que me traigas unas *raíces*. Cógelas de su frasco y arrástralas al mortero.", () => {
-            this.k.rootsJar.setInteractive();
-            this.k.mortar.setInteractive();
-            
-            
-            this.hook('kitchen:drop:mortar', (payload) => {
-                
-                if (payload.dropData === 'grindRoots') {
-                    this.k.scene.launch('mortarMinigame', { isTutorial: true, ingredient: payload.dropData });
+    this.hook('kitchen:drop:mortar', (payload) => {
+        console.log("Hook 'kitchen:drop:mortar' disparado con data:", payload);
+      if (payload.dropData === 'cutRoot') {
 
-                    this.k.events.once('minigame:tutorial:finished', () => {
-                        this.stop();
-
-                        this.say("¡Estupendo! Ahora ya sabemos cómo usar ambas herramientas. Los clientes podrán pedirte que dejes el ingrediente entero, lo machaques o lo cortes. Para sabes qué opción elegir siempre podrás consultarlo en el libro.", () => {
-                            this.step4();
-                        });
-                    });
-                   
-                    return { cancel: true }; 
-                }
-            });
+        // lanzar minijuego
+        console.log("Minijuego del mortero lanzado");
+        this.k.scene.launch('mortarMinigame', { ingredient: payload.dropData });
+        // esperar evento
+        this.k.events.once('minigame:tutorial:finished', () => {
+            console.log("Minijuego del mortero terminado");
+          this.stop();
+          this.say("¡Estupendo! ...", () => this.step4());
         });
-    }
 
+        return { cancel: true };
+      }
+    });
+  });
+}
     // PASO 4: USAR EL LIBRO DE RECETAS
     step4(){
         this.disableAllInteractions();

@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import GameState from '../state/GameState.js';
 
 export default class MortarMinigame extends Phaser.Scene {
 
@@ -130,24 +131,16 @@ export default class MortarMinigame extends Phaser.Scene {
         if (circle.active) circle.destroy();
     }
 
-    endGame(success) {
-        // Evita que la función se ejecute varias veces si ya ha terminado
-        if (!this.gameActive) return; 
-        this.gameActive = false;
-        
-        // Limpiamos todo
-        this.circles.forEach(c => c.destroy());
-        this.circles = [];
+   endGame(success) {
 
-        // No mostramos nada de "SUCCESS" o "FAIL" para no interferir.
+  if (!this.gameActive) return;
+  this.gameActive = false;
+  if (this.timerEvent) this.timerEvent.remove(false);
+  this.circles.forEach(c => c.destroy());
+  this.circles = [];
 
-        // === INICIO DE LA SOLUCIÓN ===
-        // 1. Avisamos SIEMPRE a la cocina de que el minijuego ha terminado.
-        this.scene.get('kitchen').events.emit('minigame:tutorial:finished');
-
-        // 2. Cerramos esta escena y volvemos a la cocina.
+  this.scene.get('kitchen').events.emit('minigame:tutorial:finished');
         this.scene.resume('kitchen');
         this.scene.stop();
-        // === FIN DE LA SOLUCIÓN ===
-    }
+}
 }

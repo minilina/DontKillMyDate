@@ -408,8 +408,9 @@ export default class Kitchen extends Phaser.Scene {
             else if (objectsUnderMouse.includes(this.mortar)) {
 
                 // DISPARAMOS HOOK "DROP EN MORTERO"
+                console.log("Intentando disparar hook 'kitchen:drop:mortar' con data:", { itemType, dropData });
                 const dropHook = this.runHook('kitchen:drop:mortar', { itemType, dropData });
-                if (dropHook.cancelled) return;
+                if (dropHook.cancelled) return false;
 
                 // minijuego machacar
                 this.scene.pause();
