@@ -611,6 +611,6 @@ export default class Boot extends Phaser.Scene {
     create() {
         GameState.initData(daysConfig, scriptedNpcs);
         
-        this.scene.start('house');
+        this.scene.start('Letter');
     }
 }
