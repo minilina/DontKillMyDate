@@ -244,17 +244,9 @@ init(data) {
     grab(sourceSprite, dragItemKey, itemType, itemData = null) {
         sourceSprite.on('pointerdown', (pointer) => {
 
-<<<<<<< Updated upstream
             // DISPARAMOS HOOK "GRAB:START"
             const grabHook = this.runHook('kitchen:grab:start', { sourceSprite, itemType, itemData });
             if (grabHook.cancelled) return;
-=======
-            if (itemType === 'taste') {
-                const jarSounds = ['jarSound1', 'jarSound2', 'jarSound3']; // Tus nombres de audio
-                const randomSound = Phaser.Math.RND.pick(jarSounds);
-                this.sound.play(randomSound, { volume: 1 });
-            }
->>>>>>> Stashed changes
 
             let currentDropData = itemData;
             let currentDragItemKey = dragItemKey;
