@@ -121,12 +121,11 @@ export default class Letter extends Phaser.Scene {
       .setInteractive()
       .setVisible(false);
 
-    this.closeButton.on("pointerdown", () => 
-      this.initializeKitchen()
-    );
+this.closeButton.on("pointerdown", () => {
+      this.scene.start("kitchen", { startInTutorialMode: true });
+    });
 
-    // (Quitado) Prompt "ENTER para continuar"
-    // Ya no se crea nextPrompt
+
 
     // ─────────────────────────────
     // PAGINACIÓN MANUAL
@@ -167,11 +166,10 @@ export default class Letter extends Phaser.Scene {
       
       // Si está el botón de cerrar (última página)
       if (this.closeButton.visible) {
-        this.initializeKitchen();
-
         this.sound.play(randomSound, { volume: 1 });
-        this.scene.start("store");
-
+        
+        // CAMBIO 2: Solo iniciamos la cocina, pasándole el parámetro
+        this.scene.start("kitchen", { startInTutorialMode: true });
         return;
       }
 

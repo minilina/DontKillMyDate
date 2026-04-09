@@ -43,7 +43,9 @@ export default class KitchenTutorial {
         this.stop();
         this.enableAllInteractions();
         this.k.tutorialMode = false;
-
+        
+        // ¡Sello puesto! El juego recordará que ya pasamos el tutorial
+        this.k.registry.set('tutorialDone', true);
     }
 
     // --- MÉTODOS DE AYUDA ---
@@ -320,6 +322,10 @@ export default class KitchenTutorial {
                 this.hook('kitchen:deliver', ({shape }) => {
                     this.say("¡Perfecto! Has completado el tutorial. Ya puedes preparar y entregar pociones por tu cuenta.", () => {
                         this.finish(); 
+                        
+                        // LIMPAMOS EL CALDERO PARA LA PARTIDA REAL
+                        this.k.cauldron.resetCauldron();
+                        
                         this.k.scene.sleep('kitchen');
                         this.k.scene.start('store');
                     });

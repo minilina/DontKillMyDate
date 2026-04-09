@@ -13,9 +13,20 @@ export default class Kitchen extends Phaser.Scene {
         super({ key: 'kitchen' }); // id escena
     }
 
-init(data) {
-        this.shouldStartInTutorialMode = data.startInTutorialMode || false;
-        console.log("Kitchen.init() -> ¿Empezar en modo tutorial?", this.shouldStartInTutorialMode);
+    init(data) {
+        // Comprobamos si ya completamos el tutorial en el registro global
+        const tutorialDone = this.registry.get('tutorialDone');
+
+        if (tutorialDone) {
+            this.shouldStartInTutorialMode = false;
+        } else {
+            this.shouldStartInTutorialMode = data?.startInTutorialMode || false;
+        }
+
+        // Limpiamos la variable para que Phaser no la recicle si la escena se reinicia
+        if (data) {
+            data.startInTutorialMode = false;
+        }
     }
 
     create() {
@@ -79,11 +90,10 @@ init(data) {
         // Creamos la interfaz grande usando nuestra nueva clase
         this.noteUI = new Note(this);
         // Le decimos al papel de la mesa que abra la interfaz grande al hacer click
-          this.note.on("pointerdown", () => {
+        this.note.on("pointerdown", () => {
             this.noteUI.open();
-          });
+        });
 
-        
         this.cauldronImg = this.createKitchenItem(129, 86, 'cauldron', 'cauldronB');
         this.bookImg = this.createKitchenItem(205, 125, 'bookOnTable', 'bookOnTableB');
 
@@ -93,7 +103,7 @@ init(data) {
         this.events.on('cauldron:tryheat', () => {
             const heatHook = this.runHook('kitchen:cauldron:heat');
             if (!heatHook.cancelled) {
-            this.cauldron.toggleFire();
+                this.cauldron.toggleFire();
             }
         });
 
@@ -149,24 +159,19 @@ init(data) {
         this.pauseKey = this.input.keyboard.addKey(
             Phaser.Input.Keyboard.KeyCodes.ESC
         );
-    
-
-        
 
         this.dialogue = new DialogueManager(this);
         this.kitchenTutorial = new KitchenTutorial(this, this.dialogue);
 
-        /*
+        // CAMBIO 3: Descomentamos y usamos la variable startTutorial que capturaste al inicio
         console.log("Kitchen.create() -> Comprobando si hay que iniciar el tutorial...");
-        if (this.shouldStartInTutorialMode) {
+        if (startTutorial) {
             console.log("Kitchen.create() -> SÍ, iniciando tutorial 'full'.");
-            this.startTutorial('full'); 
+            this.startTutorial('full');
         } else {
             console.log("Kitchen.create() -> NO, modo de juego normal.");
         }
-        */
     }
-
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
@@ -174,12 +179,10 @@ init(data) {
         }
     }
 
-
     openPauseMenu() {
         this.scene.launch('Menu', { parentScene: this.scene.key });
         this.scene.pause();
     }
-
 
     finishKitchen(potionShape) {
         this.input.keyboard.enabled = false;
@@ -189,15 +192,14 @@ init(data) {
         this.cameras.main.fadeOut(500, 0, 0, 0);
 
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-
             let cauldronColor = this.cauldron.currentPotion.color.replace('Liquid', '');
             let finalTexture = cauldronColor + potionShape + 'Potion';
 
             this.cauldron.resetCauldron();
 
             let storeScene = this.scene.get("store");
-            storeScene.scene.wake(); 
-            
+            storeScene.scene.wake();
+
             storeScene.showPotionResult(finalTexture);
 
             this.input.keyboard.enabled = true;
@@ -206,8 +208,6 @@ init(data) {
             this.scene.sleep("kitchen");
         });
     }
-    
-
 
     // crea un item interactivo de la cocina
     createKitchenItem(x, y, normalKey, borderKey, border = true) {
@@ -238,7 +238,6 @@ init(data) {
 
         return item;
     }
-
 
     // coger ingrediente para arrastrarlo
     grab(sourceSprite, dragItemKey, itemType, itemData = null) {
@@ -292,8 +291,7 @@ init(data) {
                 );
                 dragItem.setDepth(100);
 
-            }
-            else {
+            } else {
                 // para el resto de objetos (jarra, botes, etc.)
                 dragItem = this.add.image(pointer.x, pointer.y, currentDragItemKey).setScale(3).setDepth(100);
             }
@@ -329,7 +327,6 @@ init(data) {
         });
     }
 
-
     // añadir borde a los items debajo del cursor
     updateBorders(ptr, itemType, dragItem = null, dropData = null) {
         const objectsUnderMouse = this.input.hitTestPointer(ptr);
@@ -339,17 +336,15 @@ init(data) {
             this.cuttingBoard.setTexture(objectsUnderMouse.includes(this.cuttingBoard) ? 'cuttingBoardB' : 'cuttingBoard');
             this.mortar.setTexture(objectsUnderMouse.includes(this.mortar) ? 'mortarB' : 'mortar');
             this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
-        }
-        else if (itemType === 'processedTaste' || itemType === 'color' || itemType === 'smell') {
+        } else if (itemType === 'processedTaste' || itemType === 'color' || itemType === 'smell') {
             this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
             if (itemType === 'color') {
                 this.mixPlate.setTexture(objectsUnderMouse.includes(this.mixPlate) ? 'plateB' : 'plate');
             }
-        }
-        else if (itemType === 'shape') {
+        } else if (itemType === 'shape') {
             this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
             this.delivery.setTexture(objectsUnderMouse.includes(this.delivery) ? 'deliveryB' : 'delivery');
-            
+
             // si está sobre el caldero y el sprite actual es una poción vacía
             if (objectsUnderMouse.includes(this.cauldronImg) && dragItem && dragItem.texture.key.includes('empty')) {
                 let cauldronColor = this.cauldron.currentPotion.color;
@@ -369,10 +364,10 @@ init(data) {
                     this.cauldron.liquidSprite.setVisible(false);
 
                     // mostrar indicador de entrega
-                    this.hideIndicators(); 
+                    this.hideIndicators();
                     const arrowDelivery = this.add.sprite(this.delivery.x + 60, this.delivery.y - 15, 'indicator').setDepth(100).setScale(3);
                     this.indicatorArrows.push(arrowDelivery);
-                    
+
                     this.indicatorTween = this.tweens.add({
                         targets: this.indicatorArrows,
                         y: '-=10',
@@ -386,7 +381,6 @@ init(data) {
         }
     }
 
-
     // quitar bordes
     resetBorders() {
         this.cuttingBoard.setTexture('cuttingBoard');
@@ -394,7 +388,6 @@ init(data) {
         this.cauldronImg.setTexture('cauldron');
         this.mixPlate.setTexture('plate');
     }
-
 
     // mirar dónde ha soltado el jugador el item y qué pasa en cada caso
     handleItemDrop(ptr, itemType, dropData) {
@@ -413,8 +406,7 @@ init(data) {
                 this.scene.launch('cuttingMinigame', { ingredient: dropData });
 
                 isDroppedSuccessfully = true;
-            }
-            else if (objectsUnderMouse.includes(this.mortar)) {
+            } else if (objectsUnderMouse.includes(this.mortar)) {
 
                 // DISPARAMOS HOOK "DROP EN MORTERO"
                 console.log("Intentando disparar hook 'kitchen:drop:mortar' con data:", { itemType, dropData });
@@ -425,8 +417,7 @@ init(data) {
                 this.scene.pause();
                 this.scene.launch('mortarMinigame', { ingredient: dropData });
                 isDroppedSuccessfully = true;
-            }
-            else if (objectsUnderMouse.includes(this.cauldronImg)) {
+            } else if (objectsUnderMouse.includes(this.cauldronImg)) {
                 // DISPARAMOS HOOK "DROP EN CALDERO"
                 this.runHook('kitchen:drop:cauldron', { itemType, dropData });
 
@@ -435,8 +426,7 @@ init(data) {
                 this.cauldron.addIngredient('consistency', 'whole');
                 isDroppedSuccessfully = true;
             }
-        }
-        else if (itemType === 'processedTaste') {
+        } else if (itemType === 'processedTaste') {
             if (objectsUnderMouse.includes(this.cauldronImg)) {
                 // DISPARAMOS HOOK "DROP EN CALDERO"
                 this.runHook('kitchen:drop:cauldron', { itemType, dropData });
@@ -445,27 +435,23 @@ init(data) {
                 this.cauldron.addIngredient('consistency', dropData.consistency);
                 isDroppedSuccessfully = true;
             }
-        }
-        else if (itemType === 'color') {
+        } else if (itemType === 'color') {
             // si dropData es un color base ('red', 'blue', 'yellow'), es un polvo sacado directo del cuenco
             // si lo soltamos en el plato
             if (['red', 'blue', 'yellow'].includes(dropData) && objectsUnderMouse.includes(this.mixPlate)) {
-               // DISPARAMOS HOOK "AÑADIR A PLATO DE MEZCLA"
+                // DISPARAMOS HOOK "AÑADIR A PLATO DE MEZCLA"
                 const mixHook = this.runHook('kitchen:add', { color: dropData });
                 if (mixHook.cancelled) return;
-                
+
                 this.addPowderToPlate(dropData);
                 isDroppedSuccessfully = true;
-            }
-            // si soltamos algo de color al caldero (ya sea base o mezclado)
-            else if (objectsUnderMouse.includes(this.cauldronImg)) {
+            } else if (objectsUnderMouse.includes(this.cauldronImg)) {
                 this.runHook('kitchen:drop:cauldron', { itemType, dropData });
 
                 this.cauldron.addIngredient('color', dropData + 'Liquid');
                 isDroppedSuccessfully = true;
             }
-        }
-        else if (itemType == 'smell') {
+        } else if (itemType == 'smell') {
             if (objectsUnderMouse.includes(this.cauldronImg)) {
                 // DISPARAMOS HOOK "DROP EN CALDERO"
                 this.runHook('kitchen:drop:cauldron', { itemType, dropData });
@@ -473,8 +459,7 @@ init(data) {
                 this.cauldron.addIngredient('smell', dropData);
                 isDroppedSuccessfully = true;
             }
-        }
-        else if (itemType === 'shape') {
+        } else if (itemType === 'shape') {
             if (objectsUnderMouse.includes(this.delivery)) {
                 if (this.cauldron.currentPotion.color) {
 
@@ -485,9 +470,7 @@ init(data) {
                     this.finishKitchen(dropData);
                     isDroppedSuccessfully = true;
                 }
-            }
-        
-            else if (objectsUnderMouse.includes(this.trash)) {
+            } else if (objectsUnderMouse.includes(this.trash)) {
 
                 // DISPARAMOS HOOK "TIRAR POCIÓN"
                 const trashHook = this.runHook('kitchen:potion:trash', { potionShape: dropData });
@@ -498,7 +481,7 @@ init(data) {
                 isDroppedSuccessfully = true;
             }
         }
-        
+
         return isDroppedSuccessfully;
     }
 
@@ -511,24 +494,20 @@ init(data) {
             const arrow2 = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
             const arrow3 = this.add.sprite(this.cuttingBoard.x + 99, this.cuttingBoard.y - 15, 'indicator').setDepth(100).setScale(3);
             this.indicatorArrows.push(arrow1, arrow2, arrow3);
-        }
-        // si es un SABOR PROCESADO: flecha en caldero
-        else if (itemType === 'processedTaste') {
+        } else if (itemType === 'processedTaste') {
+            // si es un SABOR PROCESADO: flecha en caldero
             const arrow1 = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
             this.indicatorArrows.push(arrow1);
-        }
-        // si es un COLOR: flechas en platito y caldero
-        else if (itemType === 'color') {
+        } else if (itemType === 'color') {
+            // si es un COLOR: flechas en platito y caldero
             const arrow1 = this.add.sprite(this.mixPlate.x + 30, this.mixPlate.y - 15, 'indicator').setDepth(100).setScale(3);
             const arrow2 = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
             this.indicatorArrows.push(arrow1, arrow2);
-        }
-        // si es un OLOR: flecha en caldero
-        else if (itemType === 'smell') {
+        } else if (itemType === 'smell') {
+            // si es un OLOR: flecha en caldero
             const arrow1 = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
             this.indicatorArrows.push(arrow1);
-        }
-        else if (itemType === 'shape') {
+        } else if (itemType === 'shape') {
             const arrow1 = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
             this.indicatorArrows.push(arrow1);
         }
@@ -542,9 +521,7 @@ init(data) {
             repeat: -1,
             ease: 'Sine.easeInOut'
         });
-
     }
-
 
     // quita los indicadores
     hideIndicators() {
@@ -557,7 +534,6 @@ init(data) {
             this.indicatorTween.remove();
         }
     }
-
 
     // añadir colores al plato
     addPowderToPlate(colorName) {
@@ -572,7 +548,6 @@ init(data) {
             }
         }
     }
-
 
     // devolver el ingrediente procesado a la cocina después del minijuego
     returnFromMinigame(ingredient, processType, cutsArray = []) {
@@ -647,24 +622,21 @@ init(data) {
     // Tutorial
     // ---------------------------
 
-    // Nuevos métdodos para activar / desctivar los tutoriales
+    // Nuevos métodos para activar / desactivar los tutoriales
     startTutorial(id) {
-        if(this.tutorialMode) return; 
+        if (this.tutorialMode) return;
         this.tutorialMode = true;
         this.kitchenTutorial.start(id);
     }
 
     stopTutorial() {
-        if(!this.tutorialMode) return;
+        if (!this.tutorialMode) return;
         this.kitchenTutorial.finish();
     }
 
     // METODOS DE HOOKS EN KITCHEN
 
-
-   
-
-    // Resgistrar una funcion que se ejecute cuando ocurra un hook, esta funcion espera el nombre del hook y la funciona a ejecutar
+    // Registrar una función que se ejecute cuando ocurra un hook, esta función espera el nombre del hook y la función a ejecutar
     addHook(name, fn) {
         if (!this.hooks[name]) {
             this.hooks[name] = [];
@@ -674,7 +646,7 @@ init(data) {
         // Devolvemos una función para eliminar el hook registrado
         return () => this.removeHook(name, fn);
     }
-    
+
     removeHook(name, fn) {
         if (!this.hooks[name]) return;
         this.hooks[name] = this.hooks[name].filter(hookFn => hookFn !== fn);
@@ -684,7 +656,7 @@ init(data) {
     // Si algún hook devuelve {cancelled: true}, se detiene la acción normal
     runHook(name, data) {
         const hookFunctions = this.hooks[name];
-        if (!hookFunctions || hookFunctions.length === 0) 
+        if (!hookFunctions || hookFunctions.length === 0)
             return { cancelled: false };
 
         let isCancelled = false;
