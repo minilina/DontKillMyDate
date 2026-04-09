@@ -13,11 +13,11 @@ export default class Kitchen extends Phaser.Scene {
         super({ key: 'kitchen' }); // id escena
     }
 
-    init(data) {
-      
+init(data) {
         this.shouldStartInTutorialMode = data.startInTutorialMode || false;
         console.log("Kitchen.init() -> ¿Empezar en modo tutorial?", this.shouldStartInTutorialMode);
     }
+
     create() {
         console.log("Kitchen.create() -> Iniciando la creación de la escena...");
 
@@ -26,6 +26,9 @@ export default class Kitchen extends Phaser.Scene {
 
         // AÑADIMOS UN ATRIBUTO BOOLEANO QUE NOS INDIQUE SI ESTAMOS EN MODO TUTORIAL
         this.tutorialMode = false;
+
+        const startTutorial = this.shouldStartInTutorialMode;
+        this.shouldStartInTutorialMode = false;
 
         this.bg = this.add.image(0, 0, 'kitchen').setOrigin(0, 0).setScale(3);
         this.lightOverlay = this.add.image(0, 0, 'lightOverlay').setOrigin(0, 0).setScale(3).setDepth(200);
@@ -153,7 +156,7 @@ export default class Kitchen extends Phaser.Scene {
         this.dialogue = new DialogueManager(this);
         this.kitchenTutorial = new KitchenTutorial(this, this.dialogue);
 
-        // --- AÑADE ESTAS LÍNEAS ---
+        /*
         console.log("Kitchen.create() -> Comprobando si hay que iniciar el tutorial...");
         if (this.shouldStartInTutorialMode) {
             console.log("Kitchen.create() -> SÍ, iniciando tutorial 'full'.");
@@ -161,7 +164,7 @@ export default class Kitchen extends Phaser.Scene {
         } else {
             console.log("Kitchen.create() -> NO, modo de juego normal.");
         }
-        // ------------------------
+        */
     }
 
 

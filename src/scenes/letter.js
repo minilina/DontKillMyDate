@@ -121,7 +121,9 @@ export default class Letter extends Phaser.Scene {
       .setInteractive()
       .setVisible(false);
 
-    this.closeButton.on("pointerdown", () => this.scene.start('kitchen', { startInTutorialMode: true }));
+    this.closeButton.on("pointerdown", () => 
+      this.initializeKitchen()
+    );
 
     // (Quitado) Prompt "ENTER para continuar"
     // Ya no se crea nextPrompt
@@ -162,7 +164,7 @@ export default class Letter extends Phaser.Scene {
 
       // Si está el botón de cerrar (última página)
       if (this.closeButton.visible) {
-        this.scene.start('kitchen', { startInTutorialMode: true });
+        this.initializeKitchen();
         return;
       }
 
@@ -341,5 +343,13 @@ export default class Letter extends Phaser.Scene {
 
     this.pageIndex++;
     this.renderPage(this.pageIndex);
+  }
+
+  initializeKitchen() {
+    this.scene.start("kitchen");
+    const kitchen = this.scene.get("kitchen");
+    kitchen.events.once(Phaser.Scenes.Events.CREATE, () => {
+      kitchen.startTutorial('full');
+    });
   }
 }
