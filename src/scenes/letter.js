@@ -167,7 +167,6 @@ export default class Letter extends Phaser.Scene {
       
       // Si está el botón de cerrar (última página)
       if (this.closeButton.visible) {
-
         this.initializeKitchen();
 
         this.sound.play(randomSound, { volume: 1 });
