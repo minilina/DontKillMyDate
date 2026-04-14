@@ -13,7 +13,7 @@ export default class CuttingMinigame extends Phaser.Scene {
         this.clicks = 0;
         this.misses = 0;
         this.zones = [];
-        this.sc = 3;// escala
+        this.sc = 3; // escala
     }
 
     create() {
@@ -31,6 +31,7 @@ export default class CuttingMinigame extends Phaser.Scene {
         if (this.isTutorial) {
             this.runTutorialFlow();
         } else {
+            // empezar minijuego con cuenta atrás
             this.startCountdown();
         }
     }
@@ -179,12 +180,12 @@ export default class CuttingMinigame extends Phaser.Scene {
         if (this.clicks >= 3) {
             this.input.off('pointerdown');
             this.tweens.killTweensOf(this.arrow);
-            this.evaluateResult();
+            this.evaluateCut();
         }
     }
 
     // terminar minijuego
-    evaluateResult() {
+    evaluateCut() {
         this.input.off('pointerdown');
 
         if (this.isTutorial) {
@@ -210,7 +211,10 @@ export default class CuttingMinigame extends Phaser.Scene {
         }
     }
 
-    // --- TUTORIAL ---
+
+    // ---------------------------
+    // Tutorial
+    // ---------------------------
 
     runTutorialFlow() {
         // Mostramos el texto de instrucciones
@@ -220,85 +224,76 @@ export default class CuttingMinigame extends Phaser.Scene {
         ).setOrigin(0.5).setDepth(100);
 
         // Esperamos 3 segundos y luego empezamos el minijuego con la cuenta atrás
-        this.time.delayedCall(3000, () => {
+        this.time.delayedCall(2000, () => {
             instructions.destroy();
             this.startCountdown();
         });
     }
 
-
-
     showTutorialEndOptions() {
-    const { width, height } = this.scale;
+        const { width, height } = this.scale;
 
+        this.input.off('pointerdown');
 
-    this.input.off('pointerdown');
+        const overlay = this.add.rectangle(0, 0, width, height, 0x000000, 0.6)
+            .setOrigin(0)
+            .setDepth(99)
+            .setInteractive(); // captura input y evita clicks "a través"
 
+        const panelW = Math.min(420, width - 40);
+        const panelH = 240;
 
-    const overlay = this.add.rectangle(0, 0, width, height, 0x000000, 0.6)
-        .setOrigin(0)
-        .setDepth(99)
-        .setInteractive(); // captura input y evita clicks "a través"
+        const panel = this.add.rectangle(width / 2, height / 2, panelW, panelH, 0x2b1b16, 0.95)
+            .setDepth(100);
 
+        const border = this.add.rectangle(width / 2, height / 2, panelW + 8, panelH + 8, 0xf2e3d3, 1)
+            .setDepth(99.5);
 
-    const panelW = Math.min(420, width - 40);
-    const panelH = 240;
+        const title = this.add.text(width / 2, height / 2 - 80, "¡Bien hecho!", {
+            fontFamily: "VT323, monospace",
+            fontSize: "44px",
+            color: "#ffffff",
+            stroke: "#000000",
+            strokeThickness: 6
+        }).setOrigin(0.5).setDepth(101);
 
-    const panel = this.add.rectangle(width / 2, height / 2, panelW, panelH, 0x2b1b16, 0.95)
-        .setDepth(100);
+        // Botones
+        const btnStyle = {
+            fontFamily: "VT323, monospace",
+            fontSize: "30px",
+            backgroundColor: "#4f342d",
+            color: "#ffffff",
+            padding: { x: 18, y: 10 }
+        };
 
+        const retryButton = this.add.text(width / 2, height / 2 + 10, "Volver a intentar", btnStyle)
+            .setOrigin(0.5).setInteractive({ useHandCursor: true }).setDepth(101);
 
-    const border = this.add.rectangle(width / 2, height / 2, panelW + 8, panelH + 8, 0xf2e3d3, 1)
-        .setDepth(99.5);
+        const continueButton = this.add.text(width / 2, height / 2 + 70, "Continuar", btnStyle)
+            .setOrigin(0.5).setInteractive({ useHandCursor: true }).setDepth(101);
 
+        const popup = this.add.container(0, 0, [overlay, border, panel, title, retryButton, continueButton])
+            .setDepth(200);
 
-    const title = this.add.text(width / 2, height / 2 - 80, "¡Bien hecho!", {
-        fontFamily: "VT323, monospace",
-        fontSize: "44px",
-        color: "#ffffff",
-        stroke: "#000000",
-        strokeThickness: 6
-    }).setOrigin(0.5).setDepth(101);
+        popup.setScale(0.9);
+        popup.setAlpha(0);
+        this.tweens.add({ targets: popup, scale: 1, alpha: 1, duration: 140, ease: 'Sine.Out' });
 
-    // Botones
-    const btnStyle = {
-        fontFamily: "VT323, monospace",
-        fontSize: "30px",
-        backgroundColor: "#4f342d",
-        color: "#ffffff",
-        padding: { x: 18, y: 10 }
-    };
+        const closePopup = () => {
+            popup.destroy(true);
+        };
 
-    const retryButton = this.add.text(width / 2, height / 2 + 10, "Volver a intentar", btnStyle)
-        .setOrigin(0.5).setInteractive({ useHandCursor: true }).setDepth(101);
+        retryButton.on('pointerdown', () => {
+            closePopup();
+            this.scene.restart({ isTutorial: true, ingredient: this.ingredientId });
+        });
 
-    const continueButton = this.add.text(width / 2, height / 2 + 70, "Continuar", btnStyle)
-        .setOrigin(0.5).setInteractive({ useHandCursor: true }).setDepth(101);
-
-
-    const popup = this.add.container(0, 0, [overlay, border, panel, title, retryButton, continueButton])
-        .setDepth(200);
-
-
-    popup.setScale(0.9);
-    popup.setAlpha(0);
-    this.tweens.add({ targets: popup, scale: 1, alpha: 1, duration: 140, ease: 'Sine.Out' });
-
-    const closePopup = () => {
-        popup.destroy(true);
-    };
-
-    retryButton.on('pointerdown', () => {
-        closePopup();
-        this.scene.restart({ isTutorial: true, ingredient: this.ingredientId });
-    });
-
-    continueButton.on('pointerdown', () => {
-        closePopup();
-        this.scene.get('kitchen').events.emit('minigame:tutorial:finished');
-        this.exitScene();
-    });
-}
+        continueButton.on('pointerdown', () => {
+            closePopup();
+            this.scene.get('kitchen').events.emit('minigame:tutorial:finished');
+            this.exitScene();
+        });
+    }
 
     // --- FUNCIONES DE AYUDA Y VISUALES ---
 

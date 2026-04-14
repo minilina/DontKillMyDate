@@ -3,10 +3,9 @@ import Phaser from 'phaser';
 import Book from '../game-objects/book.js';
 import Cauldron from '../game-objects/cauldron.js';
 import Note from '../game-objects/note.js';
-
-// IMPORTAMOS TUTORIAL Y EL DIALOGUE MANAGER PARA LOS TEXTOS
 import KitchenTutorial from '../tutorial/kitchenTutorial.js';
 import DialogueManager from '../dialogue/dialogueManager.js';
+
 
 export default class Kitchen extends Phaser.Scene {
     constructor() {
@@ -14,7 +13,8 @@ export default class Kitchen extends Phaser.Scene {
     }
 
     init(data) {
-        // Comprobamos si ya completamos el tutorial en el registro global
+        // TUTORIAL
+        // comprobar si ya completamos el tutorial en el registro global
         const tutorialDone = this.registry.get('tutorialDone');
 
         if (tutorialDone) {
@@ -23,23 +23,22 @@ export default class Kitchen extends Phaser.Scene {
             this.shouldStartInTutorialMode = data?.startInTutorialMode || false;
         }
 
-        // Limpiamos la variable para que Phaser no la recicle si la escena se reinicia
+        // limpiar la variable para que Phaser no la recicle si la escena se reinicia
         if (data) {
             data.startInTutorialMode = false;
         }
     }
 
     create() {
-        console.log("Kitchen.create() -> Iniciando la creación de la escena...");
 
+        // variables tutorial
         this.hooks = {};
-        this.isDraggingItem = false;
-
-        // AÑADIMOS UN ATRIBUTO BOOLEANO QUE NOS INDIQUE SI ESTAMOS EN MODO TUTORIAL
         this.tutorialMode = false;
-
         const startTutorial = this.shouldStartInTutorialMode;
         this.shouldStartInTutorialMode = false;
+
+        // variables generales
+        this.isDraggingItem = false;
 
         this.bg = this.add.image(0, 0, 'kitchen').setOrigin(0, 0).setScale(3);
         this.lightOverlay = this.add.image(0, 0, 'lightOverlay').setOrigin(0, 0).setScale(3).setDepth(200);
@@ -57,27 +56,20 @@ export default class Kitchen extends Phaser.Scene {
         this.mortar = this.createKitchenItem(9, 106, 'mortar', 'mortarB', false);
         this.cuttingBoard = this.createKitchenItem(10, 129, 'cuttingBoard', 'cuttingBoardB', false);
 
-        // INGREDIENTES (SABOR)
         this.crystalJar = this.createKitchenItem(62, 54, 'crystalJar', 'crystalJarB');
         this.algaeJar = this.createKitchenItem(38, 54, 'algaeJar', 'algaeJarB');
         this.mushroomJar = this.createKitchenItem(27, 21, 'mushroomJar', 'mushroomJarB');
         this.rootsJar = this.createKitchenItem(73, 21, 'rootsJar', 'rootsJarB');
         this.berriesJar = this.createKitchenItem(50, 21, 'berriesJar', 'berriesJarB');
 
-        // POLVOS (COLOR)
         this.redBowl = this.createKitchenItem(81, 113, 'redBowl', 'redBowlB');
         this.blueBowl = this.createKitchenItem(101, 113, 'blueBowl', 'blueBowlB');
         this.yellowBowl = this.createKitchenItem(91, 125, 'yellowBowl', 'yellowBowlB');
 
-        // POCIONES VACIAS (FORMA)
-        this.emptyNormalPotion = this.createKitchenItem(130, 12, 'emptyNormalPotion', 'emptyNormalPotionB', false);
-        this.emptyHeartPotion = this.createKitchenItem(174, 12, 'emptyHeartPotion', 'emptyHeartPotionB', false);
-        this.emptyStarPotion = this.createKitchenItem(151, 12, 'emptyStarPotion', 'emptyStarPotionB', false);
+        this.emptyNormalPotion = this.createKitchenItem(130, 12, 'emptyNormalPotion', 'emptyNormalPotionB');
+        this.emptyHeartPotion = this.createKitchenItem(174, 12, 'emptyHeartPotion', 'emptyHeartPotionB');
+        this.emptyStarPotion = this.createKitchenItem(151, 12, 'emptyStarPotion', 'emptyStarPotionB');
 
-        this.mixPlate = this.createKitchenItem(88, 141, 'plate', 'plateB', false);
-        this.mixPlateColor = this.add.image(93 * 3, 146 * 3, 'redPlate').setOrigin(0, 0).setScale(3).setVisible(false).setDepth(1);
-
-        // TUBOS DE ENSAYO (AFINIDAD)
         this.redTestTube = this.createKitchenItem(233, 98, 'redTestTube', 'redTestTubeB');
         this.greenTestTube = this.createKitchenItem(253, 98, 'greenTestTube', 'greenTestTubeB');
         this.grayTestTube = this.createKitchenItem(243, 98, 'grayTestTube', 'grayTestTubeB');
@@ -87,18 +79,25 @@ export default class Kitchen extends Phaser.Scene {
         this.delivery = this.createKitchenItem(281, 133, 'delivery', 'deliveryB', false);
 
         this.note = this.createKitchenItem(150, 44, "note", "noteB");
-        // Creamos la interfaz grande usando nuestra nueva clase
-        this.noteUI = new Note(this);
-        // Le decimos al papel de la mesa que abra la interfaz grande al hacer click
-        this.note.on("pointerdown", () => {
-            this.noteUI.open();
-        });
 
         this.cauldronImg = this.createKitchenItem(129, 86, 'cauldron', 'cauldronB');
         this.bookImg = this.createKitchenItem(205, 125, 'bookOnTable', 'bookOnTableB');
 
-        this.cauldron = new Cauldron(this, this.cauldronImg);
+        this.mixPlateColor = this.add.image(93 * 3, 146 * 3, 'redPlate').setOrigin(0, 0).setScale(3).setVisible(false).setDepth(1);
+        this.mixPlate = this.createKitchenItem(88, 141, 'plate', 'plateB', false);
+        this.mixPlate.on('pointerover', () => {
+            // se pone el borde en el plato solo si NO estamos arrastrando algo y SÍ tiene algún color dentro
+            if (!this.isDraggingItem && this.selectedColors.size > 0) {
+                this.mixPlate.setTexture('plateB');
+            }
+        });
+        this.mixPlate.on('pointerout', () => {
+            if (!this.isDraggingItem) {
+                this.mixPlate.setTexture('plate');
+            }
+        });
 
+        this.cauldron = new Cauldron(this, this.cauldronImg);
         // Escuchamos el evento del caldero y lo convertimos en un hook
         this.events.on('cauldron:tryheat', () => {
             const heatHook = this.runHook('kitchen:cauldron:heat');
@@ -108,13 +107,17 @@ export default class Kitchen extends Phaser.Scene {
         });
 
         this.book = new Book(this);
-
         this.bookImg.on('pointerdown', () => {
             // DISPARAMOS HOOK "ABRIR LIBRO"
             const bookHook = this.runHook('kitchen:book:open');
             if (bookHook.cancelled) return;
 
             this.book.open();
+        });
+
+        this.noteUI = new Note(this);
+        this.note.on("pointerdown", () => {
+            this.noteUI.open();
         });
 
         // sistema mezcla colores cuencos
@@ -131,7 +134,6 @@ export default class Kitchen extends Phaser.Scene {
             'blue,yellow': 'green'
         };
 
-        // Código Corregido
         // ingredientes (sabor)
         this.grab(this.mushroomJar, 'mushroomB', 'taste', 'cutMushroom');
         this.grab(this.berriesJar, 'berryB', 'taste', 'cutBerry');
@@ -143,7 +145,7 @@ export default class Kitchen extends Phaser.Scene {
         this.grab(this.redBowl, 'redPowder', 'color', 'red');
         this.grab(this.blueBowl, 'bluePowder', 'color', 'blue');
         this.grab(this.yellowBowl, 'yellowPowder', 'color', 'yellow');
-        this.grab(this.mixPlate, 'dynamic', 'color', null);
+        this.grab(this.mixPlate, 'dynamic', 'color', null); // dynamic porque el sprite que arrastra depende de lo que haya mezclado el jugador
 
         // compatibilidad (olor)
         this.grab(this.redTestTube, 'redTestTubeB', 'smell', 'redTestTube');
@@ -163,7 +165,6 @@ export default class Kitchen extends Phaser.Scene {
         this.dialogue = new DialogueManager(this);
         this.kitchenTutorial = new KitchenTutorial(this, this.dialogue);
 
-        // CAMBIO 3: Descomentamos y usamos la variable startTutorial que capturaste al inicio
         console.log("Kitchen.create() -> Comprobando si hay que iniciar el tutorial...");
         if (startTutorial) {
             console.log("Kitchen.create() -> SÍ, iniciando tutorial 'full'.");
@@ -248,7 +249,7 @@ export default class Kitchen extends Phaser.Scene {
             if (grabHook.cancelled) return;
 
             if (itemType === 'taste') {
-                const jarSounds = ['jarSound1', 'jarSound2', 'jarSound3']; // Tus nombres de audio
+                const jarSounds = ['jarSound1', 'jarSound2', 'jarSound3'];
                 const randomSound = Phaser.Math.RND.pick(jarSounds);
                 this.sound.play(randomSound, { volume: 1 });
             }
@@ -276,7 +277,7 @@ export default class Kitchen extends Phaser.Scene {
                 sourceSprite.setVisible(false);
             }
 
-            this.showIndicators(itemType);
+            this.showIndicators(itemType, sourceSprite);
 
             // crear el sprite que sigue al cursor
             let dragItem;
@@ -336,11 +337,13 @@ export default class Kitchen extends Phaser.Scene {
             this.cuttingBoard.setTexture(objectsUnderMouse.includes(this.cuttingBoard) ? 'cuttingBoardB' : 'cuttingBoard');
             this.mortar.setTexture(objectsUnderMouse.includes(this.mortar) ? 'mortarB' : 'mortar');
             this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
+
         } else if (itemType === 'processedTaste' || itemType === 'color' || itemType === 'smell') {
             this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
             if (itemType === 'color') {
                 this.mixPlate.setTexture(objectsUnderMouse.includes(this.mixPlate) ? 'plateB' : 'plate');
             }
+
         } else if (itemType === 'shape') {
             this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
             this.delivery.setTexture(objectsUnderMouse.includes(this.delivery) ? 'deliveryB' : 'delivery');
@@ -355,7 +358,6 @@ export default class Kitchen extends Phaser.Scene {
                     // DISPARAMOS HOOK "RELLENAR POCION"
                     const fillHook = this.runHook('kitchen:potion:fill', { color: cauldronColor, shape: dropData });
                     if (fillHook.cancelled) return;
-
 
                     cauldronColor = cauldronColor.replace('Liquid', '');
                     const newTexture = cauldronColor + dropData + 'PotionB'; // ej: 'blue' + 'Heart' + 'PotionB'
@@ -396,18 +398,16 @@ export default class Kitchen extends Phaser.Scene {
 
         if (itemType === 'taste') {
             if (objectsUnderMouse.includes(this.cuttingBoard)) {
-
-                //// DISPARAMOS HOOK "DROP EN LA TABLA"
+                // DISPARAMOS HOOK "DROP EN LA TABLA"
                 const dropHook = this.runHook('kitchen:drop:cuttingBoard', { itemType, dropData });
                 if (dropHook.cancelled) return false;
 
                 // minijuego cortar
                 this.scene.pause();
                 this.scene.launch('cuttingMinigame', { ingredient: dropData });
-
                 isDroppedSuccessfully = true;
-            } else if (objectsUnderMouse.includes(this.mortar)) {
 
+            } else if (objectsUnderMouse.includes(this.mortar)) {
                 // DISPARAMOS HOOK "DROP EN MORTERO"
                 console.log("Intentando disparar hook 'kitchen:drop:mortar' con data:", { itemType, dropData });
                 const dropHook = this.runHook('kitchen:drop:mortar', { itemType, dropData });
@@ -417,6 +417,7 @@ export default class Kitchen extends Phaser.Scene {
                 this.scene.pause();
                 this.scene.launch('mortarMinigame', { ingredient: dropData });
                 isDroppedSuccessfully = true;
+
             } else if (objectsUnderMouse.includes(this.cauldronImg)) {
                 // DISPARAMOS HOOK "DROP EN CALDERO"
                 this.runHook('kitchen:drop:cauldron', { itemType, dropData });
@@ -425,6 +426,7 @@ export default class Kitchen extends Phaser.Scene {
                 this.cauldron.addIngredient('taste', this.tasteDict[dropData.replace('cut', '').toLowerCase()]);
                 this.cauldron.addIngredient('consistency', 'whole');
                 isDroppedSuccessfully = true;
+
             }
         } else if (itemType === 'processedTaste') {
             if (objectsUnderMouse.includes(this.cauldronImg)) {
@@ -434,6 +436,7 @@ export default class Kitchen extends Phaser.Scene {
                 this.cauldron.addIngredient('taste', this.tasteDict[dropData.name]);
                 this.cauldron.addIngredient('consistency', dropData.consistency);
                 isDroppedSuccessfully = true;
+            
             }
         } else if (itemType === 'color') {
             // si dropData es un color base ('red', 'blue', 'yellow'), es un polvo sacado directo del cuenco
@@ -445,11 +448,15 @@ export default class Kitchen extends Phaser.Scene {
 
                 this.addPowderToPlate(dropData);
                 isDroppedSuccessfully = true;
-            } else if (objectsUnderMouse.includes(this.cauldronImg)) {
+
+            } 
+            // si soltamos algo de color al caldero (ya sea base o mezclado)
+            else if (objectsUnderMouse.includes(this.cauldronImg)) {
                 this.runHook('kitchen:drop:cauldron', { itemType, dropData });
 
                 this.cauldron.addIngredient('color', dropData + 'Liquid');
                 isDroppedSuccessfully = true;
+
             }
         } else if (itemType == 'smell') {
             if (objectsUnderMouse.includes(this.cauldronImg)) {
@@ -458,35 +465,27 @@ export default class Kitchen extends Phaser.Scene {
 
                 this.cauldron.addIngredient('smell', dropData);
                 isDroppedSuccessfully = true;
+
             }
         } else if (itemType === 'shape') {
             if (objectsUnderMouse.includes(this.delivery)) {
                 if (this.cauldron.currentPotion.color) {
-
                     // DISPARAMOS HOOK "ENTREGAR POCION"
                     const deliverHook = this.runHook('kitchen:deliver', { shape: dropData });
                     if (deliverHook.cancelled) return false;
 
+                    if (this.cauldron.currentPotion.color) {
                     this.finishKitchen(dropData);
                     isDroppedSuccessfully = true;
+                    }
                 }
-            } else if (objectsUnderMouse.includes(this.trash)) {
-
-                // DISPARAMOS HOOK "TIRAR POCIÓN"
-                const trashHook = this.runHook('kitchen:potion:trash', { potionShape: dropData });
-                if (trashHook.cancelled) return false;
-
-                // Aquí iría la lógica para "gastar" la poción sin entregarla
-                console.log("Poción tirada a la basura");
-                isDroppedSuccessfully = true;
             }
         }
-
         return isDroppedSuccessfully;
     }
 
     // muestra indicadores sobre las estaciones de la cocina
-    showIndicators(itemType) {
+    showIndicators(itemType, sourceSprite) {
         this.indicatorArrows = [];
         // si es un SABOR: flechas en mortero, caldero y tabla
         if (itemType === 'taste') {
@@ -499,10 +498,13 @@ export default class Kitchen extends Phaser.Scene {
             const arrow1 = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
             this.indicatorArrows.push(arrow1);
         } else if (itemType === 'color') {
-            // si es un COLOR: flechas en platito y caldero
-            const arrow1 = this.add.sprite(this.mixPlate.x + 30, this.mixPlate.y - 15, 'indicator').setDepth(100).setScale(3);
+            // si es un COLOR: flechas en platito (si NO hemos cogido el polvo de él) y caldero
+            if (sourceSprite !== this.mixPlate) {
+                const arrow1 = this.add.sprite(this.mixPlate.x + 30, this.mixPlate.y - 15, 'indicator').setDepth(100).setScale(3);
+                this.indicatorArrows.push(arrow1);
+            }
             const arrow2 = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
-            this.indicatorArrows.push(arrow1, arrow2);
+            this.indicatorArrows.push(arrow2);
         } else if (itemType === 'smell') {
             // si es un OLOR: flecha en caldero
             const arrow1 = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
