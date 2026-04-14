@@ -7,32 +7,26 @@ export default class CuttingMinigame extends Phaser.Scene {
     }
 
     init(data) {
-        this.isTutorial = data.isTutorial || false;
         this.ingredientId = data.ingredient;
         this.cutsMade = 0;
         this.clicks = 0;
         this.misses = 0;
-        this.zones = [];
-        this.sc = 3;// escala
+        this.zones = []; 
+        this.sc = 3; // escala
     }
 
     create() {
         this.createAnimations();
-
-        // fondo oscuro y mesa con tabla
-        this.bg = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000000, 0.5).setOrigin(0).setDepth(9);
+        
+        this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000000, 0.5).setOrigin(0).setDepth(9);
         this.add.image(0, 0, 'cuttingBg').setOrigin(0).setDepth(1).setScale(this.sc);
 
-        // crear elementos minijuego
         this.createIngredient(141 * this.sc, 67 * this.sc);
         this.createBar(74 * this.sc, 132 * this.sc);
         this.createArrow(151 * this.sc);
 
-        if (this.isTutorial) {
-            this.runTutorialFlow();
-        } else {
-            this.startCountdown();
-        }
+        // empezar minijuego con cuenta atrás
+        this.startCountdown();
     }
 
     // cuenta atrás antes de empezar el minijuego
@@ -61,7 +55,7 @@ export default class CuttingMinigame extends Phaser.Scene {
         this.tweens.add({
             targets: this.arrow,
             x: this.bar.x + this.bar.displayWidth - 14,
-            duration: 2500,
+            duration: 2500, 
             onComplete: () => this.evaluateCut()
         });
     }
@@ -72,8 +66,8 @@ export default class CuttingMinigame extends Phaser.Scene {
             this.anims.create({
                 key: 'cut',
                 frames: this.anims.generateFrameNames('knife', { prefix: 'cuchillo_anim-', start: 0, end: 10 }),
-                frameRate: 50,
-                repeat: 0
+                frameRate: 50, 
+                repeat: 0 
             });
         }
     }
@@ -110,15 +104,15 @@ export default class CuttingMinigame extends Phaser.Scene {
             // buscar un punto random dentro de cada tercio de la barra
             let randomX = Phaser.Math.Snap.To( // para que respete la dimensión de los píxeles
                 Phaser.Math.Between(
-                    this.bar.x + (6 * this.sc) + (i * segmentW) + (rectangleW / 2),
+                    this.bar.x + (6 * this.sc) + (i * segmentW) + (rectangleW / 2), 
                     this.bar.x + (6 * this.sc) + ((i + 1) * segmentW) - (rectangleW / 2)
-                ),
+                ), 
                 3 * this.sc
             );
 
             // crear el rectángulo de la zona en la barra
             let zone = this.add.rectangle(randomX, this.bar.y + (barH / 2), rectangleW, barH - 18, 0x422c26).setDepth(3);
-
+            
             // estado inicial y guardado en el array de zonas
             zone.isCut = false;
             this.zones.push(zone);
@@ -141,11 +135,11 @@ export default class CuttingMinigame extends Phaser.Scene {
             hitZone.isCut = true; // marcar como cortada
             this.cutsMade++; // sumar acierto
             hitZone.setFillStyle(0x476237); // cambiar color a verde
-
+            
             // TRADUCIR LA POSICIÓN DEL CORTE
             // índice del corte (0, 1 o 2)
             const cutIndex = this.zones.indexOf(hitZone);
-
+            
             // ancho del ingrediente en pantalla
             const visualIngredientWidth = this.textures.getFrame(this.ingredientId).width * this.sc;
 
@@ -154,18 +148,18 @@ export default class CuttingMinigame extends Phaser.Scene {
 
             // calcular el offset real para que el cuchillo caiga en la posición correcta del ingrediente, teniendo en cuenta los trozos ya cortados
             const offset = this.ingredientPieces[cutIndex + 1].x - this.ingredientXBase;
-
+            
             // posición X final real para el sprite del cuchillo
             const finalKnifeX = baseKnifeX + offset;
-
+            
             // ANIMACIÓN
             // crear y ejecutar la animación del corte en esa posición
             let anim = this.add.sprite(finalKnifeX, this.ingredientYBase, 'knife', 'cuchillo_anim-0').setScale(this.sc).setDepth(4);
             anim.play('cut').on('animationcomplete', () => anim.destroy());
-
+            
             // mover hacia la derecha todos los trozos que quedan tras el corte (separación)
             for (let p = cutIndex + 1; p < 4; p++) {
-                this.ingredientPieces[p].x += (3 * this.sc);
+                this.ingredientPieces[p].x += (3 * this.sc); 
             }
 
         } else {
@@ -179,84 +173,29 @@ export default class CuttingMinigame extends Phaser.Scene {
         if (this.clicks >= 3) {
             this.input.off('pointerdown');
             this.tweens.killTweensOf(this.arrow);
-            this.evaluateResult();
+            this.evaluateCut(); 
         }
     }
 
     // terminar minijuego
-    evaluateResult() {
+    evaluateCut() {
         this.input.off('pointerdown');
 
-        if (this.isTutorial) {
-            this.showTutorialEndOptions();
-        } else {
-            // penalización por cortes no realizados
-            const unmadeCuts = 3 - this.cutsMade;
-            if (unmadeCuts > 0) {
-                GameState.reducePotionQuality(unmadeCuts * 10);
-            }
-
-            const cutsArray = this.zones.map(z => z.isCut);
-
-            this.time.delayedCall(1500, () => {
-
-                let kitchenScene = this.scene.get('kitchen');
-                kitchenScene.returnFromMinigame(this.ingredientId, 'cut', cutsArray);
-
-                this.scene.resume('kitchen');
-                this.scene.stop();
-
-            });
+        // penalización por cortes no realizados
+        const unmadeCuts = 3 - this.cutsMade;
+        if (unmadeCuts > 0) {
+            GameState.reducePotionQuality(unmadeCuts * 10);
         }
-    }
 
-    // --- TUTORIAL ---
-
-    runTutorialFlow() {
-        // Mostramos el texto de instrucciones
-        const instructions = this.add.text(
-            this.scale.width / 2, 40, "¡Haz clic cuando la flecha esté en una zona oscura!",
-            { fontFamily: "VT323, monospace", fontSize: '32px', color: '#ffffff', stroke: '#000000', strokeThickness: 5, align: 'center' }
-        ).setOrigin(0.5).setDepth(100);
-
-        // Esperamos 3 segundos y luego empezamos el minijuego con la cuenta atrás
-        this.time.delayedCall(3000, () => {
-            instructions.destroy();
-            this.startCountdown();
-        });
-    }
-
-
-
-    showTutorialEndOptions() {
-        // Texto de felicitación
-        this.add.text(this.scale.width / 2, 80, "¡Bien hecho!", { fontFamily: "VT323, monospace", fontSize: '40px', color: '#ffffff', stroke: '#000000', strokeThickness: 5 }).setOrigin(0.5).setDepth(100);
-
-        // Botón "Reintentar"
-        const retryButton = this.add.text(this.scale.width / 2, this.scale.height / 2 - 30, "Volver a intentar", { fontFamily: "VT323, monospace", fontSize: '28px', backgroundColor: '#4f342d', color: '#ffffff', padding: { x: 15, y: 8 } }).setOrigin(0.5).setInteractive().setDepth(100);
-
-        retryButton.on('pointerdown', () => {
-            // Reinicia la escena para volver a empezar el tutorial
-            this.scene.restart({ isTutorial: true, ingredient: this.ingredientId });
-        });
-
-        // Botón "Continuar"
-        const continueButton = this.add.text(this.scale.width / 2, this.scale.height / 2 + 30, "Continuar", { fontFamily: "VT323, monospace", fontSize: '28px', backgroundColor: '#4f342d', color: '#ffffff', padding: { x: 15, y: 8 } }).setOrigin(0.5).setInteractive().setDepth(100);
-
-        continueButton.on('pointerdown', () => {
-            // Avisamos a la cocina y salimos
-            this.scene.get('kitchen').events.emit('minigame:tutorial:finished');
-            this.exitScene();
-        });
-    }
-
-    // --- FUNCIONES DE AYUDA Y VISUALES ---
-
-    exitScene() {
         const cutsArray = this.zones.map(z => z.isCut);
-        let kitchenScene = this.scene.get('kitchen');
-        kitchenScene.returnFromMinigame(this.ingredientId, 'cut', cutsArray);
-        this.scene.resume('kitchen');
-        this.scene.stop();
+        
+        this.time.delayedCall(1500, () => {
+
+            let kitchenScene = this.scene.get('kitchen');
+            kitchenScene.returnFromMinigame(this.ingredientId, 'cut', cutsArray);
+
+            this.scene.resume('kitchen');
+            this.scene.stop();
+        });
     }
 }
