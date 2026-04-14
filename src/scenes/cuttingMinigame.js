@@ -229,26 +229,76 @@ export default class CuttingMinigame extends Phaser.Scene {
 
 
     showTutorialEndOptions() {
-        // Texto de felicitación
-        this.add.text(this.scale.width / 2, 80, "¡Bien hecho!", { fontFamily: "VT323, monospace", fontSize: '40px', color: '#ffffff', stroke: '#000000', strokeThickness: 5 }).setOrigin(0.5).setDepth(100);
+    const { width, height } = this.scale;
 
-        // Botón "Reintentar"
-        const retryButton = this.add.text(this.scale.width / 2, this.scale.height / 2 - 30, "Volver a intentar", { fontFamily: "VT323, monospace", fontSize: '28px', backgroundColor: '#4f342d', color: '#ffffff', padding: { x: 15, y: 8 } }).setOrigin(0.5).setInteractive().setDepth(100);
 
-        retryButton.on('pointerdown', () => {
-            // Reinicia la escena para volver a empezar el tutorial
-            this.scene.restart({ isTutorial: true, ingredient: this.ingredientId });
-        });
+    this.input.off('pointerdown');
 
-        // Botón "Continuar"
-        const continueButton = this.add.text(this.scale.width / 2, this.scale.height / 2 + 30, "Continuar", { fontFamily: "VT323, monospace", fontSize: '28px', backgroundColor: '#4f342d', color: '#ffffff', padding: { x: 15, y: 8 } }).setOrigin(0.5).setInteractive().setDepth(100);
 
-        continueButton.on('pointerdown', () => {
-            // Avisamos a la cocina y salimos
-            this.scene.get('kitchen').events.emit('minigame:tutorial:finished');
-            this.exitScene();
-        });
-    }
+    const overlay = this.add.rectangle(0, 0, width, height, 0x000000, 0.6)
+        .setOrigin(0)
+        .setDepth(99)
+        .setInteractive(); // captura input y evita clicks "a través"
+
+
+    const panelW = Math.min(420, width - 40);
+    const panelH = 240;
+
+    const panel = this.add.rectangle(width / 2, height / 2, panelW, panelH, 0x2b1b16, 0.95)
+        .setDepth(100);
+
+
+    const border = this.add.rectangle(width / 2, height / 2, panelW + 8, panelH + 8, 0xf2e3d3, 1)
+        .setDepth(99.5);
+
+
+    const title = this.add.text(width / 2, height / 2 - 80, "¡Bien hecho!", {
+        fontFamily: "VT323, monospace",
+        fontSize: "44px",
+        color: "#ffffff",
+        stroke: "#000000",
+        strokeThickness: 6
+    }).setOrigin(0.5).setDepth(101);
+
+    // Botones
+    const btnStyle = {
+        fontFamily: "VT323, monospace",
+        fontSize: "30px",
+        backgroundColor: "#4f342d",
+        color: "#ffffff",
+        padding: { x: 18, y: 10 }
+    };
+
+    const retryButton = this.add.text(width / 2, height / 2 + 10, "Volver a intentar", btnStyle)
+        .setOrigin(0.5).setInteractive({ useHandCursor: true }).setDepth(101);
+
+    const continueButton = this.add.text(width / 2, height / 2 + 70, "Continuar", btnStyle)
+        .setOrigin(0.5).setInteractive({ useHandCursor: true }).setDepth(101);
+
+
+    const popup = this.add.container(0, 0, [overlay, border, panel, title, retryButton, continueButton])
+        .setDepth(200);
+
+
+    popup.setScale(0.9);
+    popup.setAlpha(0);
+    this.tweens.add({ targets: popup, scale: 1, alpha: 1, duration: 140, ease: 'Sine.Out' });
+
+    const closePopup = () => {
+        popup.destroy(true);
+    };
+
+    retryButton.on('pointerdown', () => {
+        closePopup();
+        this.scene.restart({ isTutorial: true, ingredient: this.ingredientId });
+    });
+
+    continueButton.on('pointerdown', () => {
+        closePopup();
+        this.scene.get('kitchen').events.emit('minigame:tutorial:finished');
+        this.exitScene();
+    });
+}
 
     // --- FUNCIONES DE AYUDA Y VISUALES ---
 
