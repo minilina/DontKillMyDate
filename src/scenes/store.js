@@ -59,7 +59,7 @@ export default class Store extends Phaser.Scene {
     this.scene.pause();
   }
 
-  showPotionResult(potionTextureKey) {
+  showPotionResult(potionTextureKey, quality) {
     const resultPotion = this.add.image(149 * 3, 145 * 3, potionTextureKey).setOrigin(0, 0).setScale(3).setAlpha(0);
 
     // animación de la poción apareciendo
@@ -77,8 +77,6 @@ export default class Store extends Phaser.Scene {
         this.time.delayedCall(1000, () => {
 
           thinkingBubble.destroy();
-            
-          const quality = GameState.currentPotion.quality;
 
           // reacción cliente
           if (this.flowManager && this.flowManager.currentCustomer) {

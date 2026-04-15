@@ -10,10 +10,10 @@ export default class Cauldron {
         // requisitos poción
         this.currentPotion = {
             color: null,
-            smell: null,
-            taste: null,
-            consistency: null,
-            temperature: 'cold' 
+            smell: [],
+            taste: [],
+            consistency: [],
+            temperature: 'cold'
         };
 
         // animación fuego
@@ -35,28 +35,24 @@ export default class Cauldron {
         this.temperatureValue = 0;
         
         this.scene.events.on('update', this.updateTemperature, this);
-/*
+
         this.cauldronSprite.on('pointerdown', () => {
             this.toggleFire();
         });
-*/
 
-        // En Cauldron.js -> constructor()
+        /*
         this.cauldronSprite.on('pointerdown', () => {
-            // Si estamos arrastrando un item, no hacemos nada (esto ya lo tienes en Kitchen)
-            if (this.scene.isDraggingItem) return;
-
-            // 1. Avisamos a la escena Kitchen de que se ha intentado calentar el caldero.
-            //    Usamos un evento personalizado que la escena Kitchen escuchará.
-            this.scene.events.emit('cauldron:tryheat');
+            if (!this.scene.isDraggingItem) {
+                this.scene.events.emit('cauldron:tryheat'); 
+            }
         });
+        */
         
         this.scene.events.on('pause', () => {
             if (this.fire.visible) {
                 this.scene.sound.pauseAll(); // Pausamos los sonidos para que no suene el fuego de fondo
             }
         }, this);
-
        
         this.scene.events.on('resume', () => {
             if (this.fire.visible) {
@@ -87,7 +83,7 @@ export default class Cauldron {
         // solo calienta si el fuego está encendido y no ha llegado al máximo (100)
         if (this.fire.visible && this.temperatureValue < 100) {
             
-             // la temperatura incrementa con el tiempo
+            // la temperatura incrementa con el tiempo
             this.temperatureValue += 0.005 * delta;
             this.temperatureValue = Phaser.Math.Clamp(this.temperatureValue, 0, 100); // para evitar que supere 100
 
@@ -108,25 +104,31 @@ export default class Cauldron {
 
     // añadir un ingrediente a la poción
     addIngredient(ingredientCategory, ingredientValue) {
-        // ingredientCategory puede ser: 'color', 'smell', 'taste'...
-        this.currentPotion[ingredientCategory] = ingredientValue;
+        // si la categoría es una LISTA (olor, sabor, consistencia)
+        if (Array.isArray(this.currentPotion[ingredientCategory])) {
+            this.currentPotion[ingredientCategory].push(ingredientValue);
+        }
+        // si es un VALOR ÚNICO (color, temperatura)
+        else {
+            this.currentPotion[ingredientCategory] = ingredientValue;
 
-        // cambiar color poción caldero
-        if (ingredientCategory === 'color') {
-            this.liquidSprite.setTexture(ingredientValue);
-            this.liquidSprite.setVisible(true);
+            // cambiar color poción caldero
+            if (ingredientCategory === 'color') {
+                this.liquidSprite.setTexture(ingredientValue);
+                this.liquidSprite.setVisible(true);
+            }
         }
 
-        console.log('Ingredientes actuales dentro caldero:', this.currentPotion);
+        console.log('Ingredientes actuales dentro caldero:', JSON.stringify(this.currentPotion, null, 2));
     }
 
     // resetear el caldero para el siguiente cliente
     resetCauldron() {
         this.currentPotion = {
             color: null,
-            smell: null,
-            taste: null,
-            consistency: null,
+            smell: [],
+            taste: [],
+            consistency: [],
             temperature: 'cold'
         };
         
@@ -137,7 +139,6 @@ export default class Cauldron {
         this.temperatureValue = 0;
         this.heatArrow.x = this.heatBar.x + this.borderOffset;
         
-        // Al apagar el fuego aquí, también se corta el sonido gracias a toggleFire()
         if (this.fire.visible) {
             this.toggleFire();
         }

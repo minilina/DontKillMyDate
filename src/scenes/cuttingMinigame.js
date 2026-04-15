@@ -173,7 +173,7 @@ export default class CuttingMinigame extends Phaser.Scene {
             this.misses++;
             this.cameras.main.flash(200, 102, 14, 14); // flash rojo
             // penalización por fallo
-            GameState.reducePotionQuality(10);
+            GameState.reducePotionQuality(5);
         }
 
         // máximo 3 clicks !!

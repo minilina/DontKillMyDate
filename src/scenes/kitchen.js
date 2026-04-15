@@ -5,6 +5,7 @@ import Cauldron from '../game-objects/cauldron.js';
 import Note from '../game-objects/note.js';
 import KitchenTutorial from '../tutorial/kitchenTutorial.js';
 import DialogueManager from '../dialogue/dialogueManager.js';
+import GameState from '../state/GameState.js';
 
 
 export default class Kitchen extends Phaser.Scene {
@@ -196,12 +197,15 @@ export default class Kitchen extends Phaser.Scene {
             let cauldronColor = this.cauldron.currentPotion.color.replace('Liquid', '');
             let finalTexture = cauldronColor + potionShape + 'Potion';
 
+            const currentOrder = this.registry.get("currentOrder");
+            const finalQuality = GameState.evaluatePotion(this.cauldron.currentPotion, currentOrder, potionShape);
+            
             this.cauldron.resetCauldron();
 
             let storeScene = this.scene.get("store");
             storeScene.scene.wake();
 
-            storeScene.showPotionResult(finalTexture);
+            storeScene.showPotionResult(finalTexture, finalQuality);
 
             this.input.keyboard.enabled = true;
             this.input.enabled = true;
@@ -452,6 +456,9 @@ export default class Kitchen extends Phaser.Scene {
             } 
             // si soltamos algo de color al caldero (ya sea base o mezclado)
             else if (objectsUnderMouse.includes(this.cauldronImg)) {
+                // si ya hay un color en el caldero, cancelar la acción
+                if (this.cauldron.currentPotion.color !== null) return false;
+
                 this.runHook('kitchen:drop:cauldron', { itemType, dropData });
 
                 this.cauldron.addIngredient('color', dropData + 'Liquid');
@@ -475,8 +482,8 @@ export default class Kitchen extends Phaser.Scene {
                     if (deliverHook.cancelled) return false;
 
                     if (this.cauldron.currentPotion.color) {
-                    this.finishKitchen(dropData);
-                    isDroppedSuccessfully = true;
+                        this.finishKitchen(dropData);
+                        isDroppedSuccessfully = true;
                     }
                 }
             }
