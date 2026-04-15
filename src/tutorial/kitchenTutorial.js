@@ -46,50 +46,60 @@ export default class KitchenTutorial {
         
         // ¡Sello puesto! El juego recordará que ya pasamos el tutorial
         this.k.registry.set('tutorialDone', true);
+
+        // Destruimos el sprite del botón "SALTAR TUTORIAL" y su texto
+        if (this.skipBtnBg) {
+            this.skipBtnBg.destroy();
+            this.skipBtnBg = null;
+        }
+        if (this.skipBtnText) {
+            this.skipBtnText.destroy();
+            this.skipBtnText = null;
+        }
     }
 
     // --- MÉTODOS DE AYUDA ---
     // BLOQUEO DE OBJETOS
     disableAllInteractions() {
-                // Creamos una lista de todos los objetos que queremos bloquear.
-                // Añade aquí cualquier otro objeto interactivo que tengas.
-                const itemsToDisable = [
-                        this.k.mortar, this.k.cuttingBoard,
-                        this.k.crystalJar, this.k.algaeJar, this.k.mushroomJar,this.k.berriesJar,this.k.rootsJar, 
-                        this.k.redBowl, this.k.blueBowl, this.k.yellowBowl,
-                        this.k.mixPlate,
-                        this.k.redTestTube, this.k.greenTestTube, this.k.grayTestTube,
-                        this.k.trash, this.k.delivery, this.k.note,
-                        this.k.cauldronImg, this.k.bookImg,
-                        this.k.emptyStarPotion, this.k.emptyHeartPotion, this.k.emptyNormalPotion,
-                ];
+        // Creamos una lista de todos los objetos que queremos bloquear.
+        // Añade aquí cualquier otro objeto interactivo que tengas.
+        const itemsToDisable = [
+            this.k.mortar, this.k.cuttingBoard,
+            this.k.crystalJar, this.k.algaeJar, this.k.mushroomJar,this.k.berriesJar,this.k.rootsJar, 
+            this.k.redBowl, this.k.blueBowl, this.k.yellowBowl,
+            this.k.mixPlate,
+            this.k.redTestTube, this.k.greenTestTube, this.k.grayTestTube,
+            this.k.trash, this.k.delivery, this.k.note,
+            this.k.cauldronImg, this.k.bookImg,
+            this.k.emptyStarPotion, this.k.emptyHeartPotion, this.k.emptyNormalPotion,
+        ];
 
-                itemsToDisable.forEach(item => {
-                        if (item) {
-                                item.disableInteractive(); 
-                        }
-                });
-        }
+        itemsToDisable.forEach(item => {
+            if (item) {
+                item.disableInteractive(); 
+            }
+        });
+    }
 
-        /** Reactiva la interactividad de todos los objetos. */
-        enableAllInteractions() {
-                const itemsToEnable = [
-                        this.k.mortar, this.k.cuttingBoard,
-                        this.k.crystalJar, this.k.algaeJar, this.k.mushroomJar,
-                        this.k.rootsJar, this.k.berriesJar, 
-                        this.k.redBowl, this.k.blueBowl, this.k.yellowBowl,
-                        this.k.mixPlate,
-                        this.k.redTestTube, this.k.greenTestTube, this.k.grayTestTube,
-                        this.k.trash, this.k.delivery, this.k.note,
-                        this.k.cauldronImg, this.k.bookImg
-                ];
+    /** Reactiva la interactividad de todos los objetos. */
+    enableAllInteractions() {
+        const itemsToEnable = [
+            this.k.mortar, this.k.cuttingBoard,
+            this.k.crystalJar, this.k.algaeJar, this.k.mushroomJar,
+            this.k.rootsJar, this.k.berriesJar, 
+            this.k.redBowl, this.k.blueBowl, this.k.yellowBowl,
+            this.k.mixPlate,
+            this.k.redTestTube, this.k.greenTestTube, this.k.grayTestTube,
+            this.k.trash, this.k.delivery, this.k.note,
+            this.k.cauldronImg, this.k.bookImg
+        ];
                 
-                itemsToEnable.forEach(item => {
-                        if (item) {
-                                item.setInteractive(); // Reactivamos los clics.
-                        }
-                });
-        }
+        itemsToEnable.forEach(item => {
+            if (item) {
+                item.setInteractive(); // Reactivamos los clics.
+            }
+        });
+    }
 
     hook(name, fn) {
         const unsub = this.k.addHook(name, fn);
@@ -130,11 +140,13 @@ export default class KitchenTutorial {
     // --- LÓGICA DE LOS TUTORIALES ---
 
     startFullFlow() {
+        this.createSkipButton(); 
+
         this.disableAllInteractions();
         this.say("¡Bienvenida a la cocina! Me llamo Castiel y hoy seré el encargado de enseñarte todo lo que necesitas saber para comenzar a preparar tu primera poción.", () => {
-                // PASO 1: HACER UBICAR LAS BAYAS
-                this.step1(); 
-                });
+            // PASO 1: HACER UBICAR LAS BAYAS
+            this.step1(); 
+        });
     }
 
     // PASO 1: HACER UBICAR LAS BAYAS
@@ -334,5 +346,60 @@ export default class KitchenTutorial {
                 });
             }
         );
+    }
+
+   createSkipButton() {
+        const btnX = this.k.scale.width - 120; 
+        const btnY = 45;
+
+        // Sprite botón
+        this.skipBtnBg = this.k.add.image(btnX, btnY, 'button')
+            .setInteractive({ useHandCursor: true })
+            .setOrigin(0.5)
+            .setScale(3)
+            .setDepth(1000);
+
+        // Texto "SALTAR TUTORIAL"
+        this.skipBtnText = this.k.add.text(btnX, btnY - 3, 'SALTAR TUTORIAL', {
+            fontFamily: 'VT323, monospace',
+            fontSize: '25px',
+            fill: '#ffffff'
+        })
+        .setOrigin(0.5)
+        .setDepth(1001);
+
+        // Animación hover
+        this.skipBtnBg.on('pointerover', () => {
+            this.skipBtnBg.setScale(2.9);
+            this.skipBtnText.setColor('#ffcc00'); // color en hover
+        });
+
+        this.skipBtnBg.on('pointerout', () => {
+            this.skipBtnBg.setScale(3);
+            this.skipBtnText.setColor('#ffffff'); // color normal
+        });
+
+        // Acción al hacer clic
+        this.skipBtnBg.on('pointerdown', () => {
+            this.skipTutorial();
+        });
+    }
+
+    skipTutorial() {
+        // 1. Apagamos los eventos para que el tutorial no intente avanzar en segundo plano
+        this.k.events.off("dialogue:finished");
+
+        // 2. Cerramos la caja de texto usando DialogueManager
+        this.dm.finish(); 
+
+        // 3. Limpiamos el tutorial y reactivamos la cocina
+        this.finish();
+
+        // 4. Limpiamos el caldero por si el jugador ya había echado algo
+        this.k.cauldron.resetCauldron();
+
+        // 5. Volvemos a la tienda día 1
+        this.k.scene.sleep('kitchen');
+        this.k.scene.start('store');
     }
 }
