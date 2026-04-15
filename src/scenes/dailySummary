@@ -7,120 +7,141 @@ export default class DailySummary extends Phaser.Scene {
   }
 
   create() {
-    // 1. Añadimos el pergamino como fondo en el centro de la pantalla
-    const bg = this.add
-      .image(this.scale.width / 2, this.scale.height / 2, "resumenBg")
-      .setOrigin(0.5);
+    const centerX = this.scale.width / 2;
+    const centerY = this.scale.height / 2;
 
-    // Lo escalamos x3 para que mantenga el estilo pixel art del resto del juego
-    bg.setScale(3);
+    // 1. CONFIGURACIÓN VISUAL (Pergamino grande, elementos pequeños)
+    const bgScale = 3;
+    const iconScale = 1.6; // Tamaño pequeño solicitado
+    const iconSpacing = 65; // Espaciado para iconos pequeños
 
-    // Extraemos los datos del día
-    const day = GameState.currentDay;
+    // 2. FONDO
+    this.add.image(centerX, centerY, "resumenBg").setScale(bgScale);
+
     const stats = GameState.dailyStats;
+    const titleColor = "#3e2723";
+    const textColor = "#2b1d10";
 
-    // 2. Colores de "tinta" oscuros para que se lean sobre el pergamino
-    const titleColor = "#3e2723"; // Marrón muy oscuro
-    const textColor = "#1a1a1a"; // Casi negro
-    const successColor = "#1b5e20"; // Verde oscuro
-    const failColor = "#b71c1c"; // Rojo oscuro
-
-    // TÍTULO
+    // --- TÍTULO ---
     this.add
-      .text(
-        this.scale.width / 2,
-        this.scale.height / 2 - 140,
-        `FIN DEL DÍA ${day}`,
-        {
-          fontFamily: "VT323, monospace",
-          fontSize: "65px",
-          color: titleColor,
-        },
-      )
-      .setOrigin(0.5);
-
-    // ESTADÍSTICAS
-    const startY = this.scale.height / 2 - 40;
-    const spacing = 45;
-    const textStyle = {
-      fontFamily: "VT323, monospace",
-      fontSize: "35px",
-      color: textColor,
-    };
-
-    this.add
-      .text(
-        this.scale.width / 2,
-        startY,
-        `Clientes atendidos: ${stats.served}`,
-        textStyle,
-      )
-      .setOrigin(0.5);
-
-    this.add
-      .text(
-        this.scale.width / 2,
-        startY + spacing,
-        `Pociones exitosas: ${stats.good}`,
-        {
-          ...textStyle,
-          color: successColor,
-        },
-      )
-      .setOrigin(0.5);
-
-    this.add
-      .text(
-        this.scale.width / 2,
-        startY + spacing * 2,
-        `Pociones desastrosas: ${stats.bad}`,
-        {
-          ...textStyle,
-          color: failColor,
-        },
-      )
-      .setOrigin(0.5);
-
-    // BALANCE DE REPUTACIÓN
-    let repText = `Balance de reputación: `;
-    if (stats.repChange > 0) repText += `+${stats.repChange}`;
-    else repText += `${stats.repChange}`;
-
-    this.add
-      .text(this.scale.width / 2, startY + spacing * 4, repText, {
+      .text(centerX, centerY - 140, `DÍA ${GameState.currentDay} FINALIZADO`, {
         fontFamily: "VT323, monospace",
-        fontSize: "45px",
-        color: stats.repChange >= 0 ? successColor : failColor,
+        fontSize: "42px",
+        color: titleColor,
+        fontWeight: "bold",
       })
       .setOrigin(0.5);
 
-    // INSTRUCCIÓN PARA CONTINUAR
-    const continueText = this.add
-      .text(
-        this.scale.width / 2,
-        this.scale.height / 2 + 170,
-        "> Haz clic para ir a casa <",
-        {
-          fontFamily: "VT323, monospace",
-          fontSize: "30px",
-          color: titleColor,
-        },
-      )
+    // --- SECCIÓN 1: ESTRELLAS (CALIDAD) ---
+    this.add
+      .text(centerX, centerY - 85, "Desempeño Alquímico", {
+        fontFamily: "VT323, monospace",
+        fontSize: "26px",
+        color: textColor,
+      })
       .setOrigin(0.5);
 
-    // Animación de parpadeo suave
-    this.tweens.add({
-      targets: continueText,
-      alpha: 0.4,
-      duration: 800,
-      yoyo: true,
-      repeat: -1,
+    this.drawIconRow(
+      centerX,
+      centerY - 45,
+      "estrella",
+      GameState.getDailyStars(),
+      iconScale,
+      iconSpacing,
+    );
+
+    // --- SECCIÓN 2: CORAZONES (REPUTACIÓN TOTAL) ---
+    const sign = stats.repChange >= 0 ? "+" : "";
+    const repLabel = `Reputación Total: ${GameState.reputation} (${sign}${stats.repChange})`;
+
+    this.add
+      .text(centerX, centerY + 25, repLabel, {
+        fontFamily: "VT323, monospace",
+        fontSize: "26px",
+        color: titleColor,
+      })
+      .setOrigin(0.5);
+
+    this.drawIconRow(
+      centerX,
+      centerY + 65,
+      "corazon",
+      GameState.getReputationHearts(),
+      iconScale,
+      iconSpacing,
+    );
+
+    // --- SECCIÓN 3: CONSEJOS DINÁMICOS CON TYPEWRITER ---
+    const consejos = [
+      "Investiga todo lo que puedas, el bosque aguarda secretos.",
+      "El tiempo vuela fuera, aprovecha cada paso en el exterior.",
+      "Habla con los vecinos, a veces tienen ingredientes raros.",
+      "Ciertos espíritus solo aparecen cuando la luz es baja.",
+      "Tu reputación determina quién se atreve a visitarte.",
+      "Explora cada rincón de la casa antes de marcharte.",
+      "No todos los ingredientes se encuentran en las estanterías.",
+    ];
+
+    const consejoDelDia =
+      consejos[(GameState.currentDay - 1) % consejos.length];
+
+    const tipText = this.add
+      .text(centerX, centerY + 140, "", {
+        fontFamily: "VT323, monospace",
+        fontSize: "26px",
+        color: "#5d4037",
+        align: "center",
+        fontStyle: "italic",
+        wordWrap: { width: 480 },
+      })
+      .setOrigin(0.5);
+
+    // Animación de escritura
+    let currentChar = 0;
+    this.time.addEvent({
+      delay: 45,
+      callback: () => {
+        tipText.text += consejoDelDia[currentChar];
+        currentChar++;
+      },
+      repeat: consejoDelDia.length - 1,
     });
 
-    // AL HACER CLIC: Avanzamos de día y vamos a la casa
+    // Resaltado visual del consejo (suave latido)
+    this.tweens.add({
+      targets: tipText,
+      alpha: { from: 0.7, to: 1 },
+      scale: { from: 1, to: 1.03 },
+      duration: 1800,
+      yoyo: true,
+      repeat: -1,
+      ease: "Sine.easeInOut",
+    });
+
+    // --- INTERACCIÓN ---
+    // Toda la pantalla detecta el clic para avanzar sin necesidad de texto
     this.input.once("pointerdown", () => {
       GameState.advanceDay();
       this.scene.start("house");
     });
+  }
+
+  /**
+   * Dibuja una fila de 5 iconos ajustable.
+   */
+  drawIconRow(x, y, spriteKey, activeCount, scale, spacing) {
+    const startX = x - spacing * 2;
+
+    for (let i = 0; i < 5; i++) {
+      const icon = this.add
+        .image(startX + i * spacing, y, spriteKey)
+        .setScale(scale);
+
+      if (i >= activeCount) {
+        // Iconos apagados: Oscuros y con mucha transparencia
+        icon.setTint(0x000000);
+        icon.setAlpha(0.2);
+      }
+    }
   }
 }

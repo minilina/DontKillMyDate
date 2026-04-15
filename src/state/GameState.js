@@ -203,6 +203,19 @@ const GameState = {
 
     // avanzar al siguiente cliente
     this.currentCustomer++;
+  },
+
+  // funciones para el resumen diario
+  getDailyStars() {
+    if (this.dailyStats.served === 0) return 0;
+    const ratio = this.dailyStats.good / this.dailyStats.served;
+    return Math.round(ratio * 5); 
+  },
+
+  getReputationHearts() {
+    const maxRep = 100; // lo ajustaremos cd sepamos el maximo real
+    const clampedRep = Math.max(0, Math.min(this.reputation, maxRep));
+    return Math.round((clampedRep / maxRep) * 5);
   }
 };
 

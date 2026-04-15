@@ -72,6 +72,8 @@ import store from '../../assets/sprites/store.jpg';
 
 //sprite resumen diario
 import resumenBg from '../../assets/sprites/resumen_dia.png';
+import estrella from '../../assets/sprites/estrella.png';
+import corazon from '../../assets/sprites/corazon.png';
 
 // sprites escena diálogo
 import npcBocaNormal1 from '../../assets/sprites/npcs/boca_normal_1.png';
@@ -376,6 +378,8 @@ export default class Boot extends Phaser.Scene {
         this.load.image('pilaBarriles', pilaBarriles);
 
         this.load.image('resumenBg', resumenBg);
+        this.load.image('estrella', estrella);
+        this.load.image('corazon', corazon);    
 
         this.load.tilemapTiledJSON('cueva', cueva);
 
