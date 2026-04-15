@@ -70,6 +70,9 @@ import cueva from '../../assets/tiled/cueva.json';
 // sprites escena tienda
 import store from '../../assets/sprites/store.jpg';
 
+//sprite resumen diario
+import resumenBg from '../../assets/sprites/resumen_dia.png';
+
 // sprites escena diálogo
 import npcBocaNormal1 from '../../assets/sprites/npcs/boca_normal_1.png';
 import npcBocaNormal2 from '../../assets/sprites/npcs/boca_normal_2.png';
@@ -371,6 +374,8 @@ export default class Boot extends Phaser.Scene {
         this.load.image('barril', barril);
         this.load.image('tendedero', tendedero);
         this.load.image('pilaBarriles', pilaBarriles);
+
+        this.load.image('resumenBg', resumenBg);
 
         this.load.tilemapTiledJSON('cueva', cueva);
 

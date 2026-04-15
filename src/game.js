@@ -11,9 +11,11 @@ import End from './scenes/end.js';
 import MortarMinigame from './scenes/mortarMinigame.js';
 import CuttingMinigame from './scenes/cuttingMinigame.js';
 import PotionScore from './scenes/potionScore.js';
+import DailySummary from './scenes/dailySummary';
 
 import AnimatedTiles from 'phaser-animated-tiles/dist/AnimatedTiles.js';
 import { PhaserNavMeshPlugin } from "phaser-navmesh";
+
 
 
 const config = {
@@ -26,7 +28,7 @@ const config = {
     pixelArt: true,
     roundPixels: true,
     physics: { default: 'arcade', arcade: { gravity: { y: 0 }, debug: false } },
-    scene: [Start, Boot, Letter, Store, Kitchen, CuttingMinigame, MortarMinigame, PotionScore, Menu, House, Cave, End],
+    scene: [Start, Boot, Letter, Store, Kitchen, CuttingMinigame, MortarMinigame, PotionScore, Menu, DailySummary, House, Cave, End],
     // npm install phaser-animated-tiles tuve que hacer para la animacion de las tiles
     // npm install phaser-navmesh tuve que hacer para el point and go del jugador
     plugins: {

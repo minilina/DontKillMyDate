@@ -104,9 +104,8 @@ export default class CustomerFlowManager {
   }
 
   _finishShift() {
-    GameState.advanceDay();
     this.scene.scene.stop("store");
-    this.scene.scene.start("house");
+    this.scene.scene.start("dailySummary");
   }
 
   update() {

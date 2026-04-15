@@ -1,0 +1,126 @@
+import Phaser from "phaser";
+import GameState from "../state/GameState.js";
+
+export default class DailySummary extends Phaser.Scene {
+  constructor() {
+    super({ key: "dailySummary" });
+  }
+
+  create() {
+    // 1. Añadimos el pergamino como fondo en el centro de la pantalla
+    const bg = this.add
+      .image(this.scale.width / 2, this.scale.height / 2, "resumenBg")
+      .setOrigin(0.5);
+
+    // Lo escalamos x3 para que mantenga el estilo pixel art del resto del juego
+    bg.setScale(3);
+
+    // Extraemos los datos del día
+    const day = GameState.currentDay;
+    const stats = GameState.dailyStats;
+
+    // 2. Colores de "tinta" oscuros para que se lean sobre el pergamino
+    const titleColor = "#3e2723"; // Marrón muy oscuro
+    const textColor = "#1a1a1a"; // Casi negro
+    const successColor = "#1b5e20"; // Verde oscuro
+    const failColor = "#b71c1c"; // Rojo oscuro
+
+    // TÍTULO
+    this.add
+      .text(
+        this.scale.width / 2,
+        this.scale.height / 2 - 140,
+        `FIN DEL DÍA ${day}`,
+        {
+          fontFamily: "VT323, monospace",
+          fontSize: "65px",
+          color: titleColor,
+        },
+      )
+      .setOrigin(0.5);
+
+    // ESTADÍSTICAS
+    const startY = this.scale.height / 2 - 40;
+    const spacing = 45;
+    const textStyle = {
+      fontFamily: "VT323, monospace",
+      fontSize: "35px",
+      color: textColor,
+    };
+
+    this.add
+      .text(
+        this.scale.width / 2,
+        startY,
+        `Clientes atendidos: ${stats.served}`,
+        textStyle,
+      )
+      .setOrigin(0.5);
+
+    this.add
+      .text(
+        this.scale.width / 2,
+        startY + spacing,
+        `Pociones exitosas: ${stats.good}`,
+        {
+          ...textStyle,
+          color: successColor,
+        },
+      )
+      .setOrigin(0.5);
+
+    this.add
+      .text(
+        this.scale.width / 2,
+        startY + spacing * 2,
+        `Pociones desastrosas: ${stats.bad}`,
+        {
+          ...textStyle,
+          color: failColor,
+        },
+      )
+      .setOrigin(0.5);
+
+    // BALANCE DE REPUTACIÓN
+    let repText = `Balance de reputación: `;
+    if (stats.repChange > 0) repText += `+${stats.repChange}`;
+    else repText += `${stats.repChange}`;
+
+    this.add
+      .text(this.scale.width / 2, startY + spacing * 4, repText, {
+        fontFamily: "VT323, monospace",
+        fontSize: "45px",
+        color: stats.repChange >= 0 ? successColor : failColor,
+      })
+      .setOrigin(0.5);
+
+    // INSTRUCCIÓN PARA CONTINUAR
+    const continueText = this.add
+      .text(
+        this.scale.width / 2,
+        this.scale.height / 2 + 170,
+        "> Haz clic para ir a casa <",
+        {
+          fontFamily: "VT323, monospace",
+          fontSize: "30px",
+          color: titleColor,
+        },
+      )
+      .setOrigin(0.5);
+
+    // Animación de parpadeo suave
+    this.tweens.add({
+      targets: continueText,
+      alpha: 0.4,
+      duration: 800,
+      yoyo: true,
+      repeat: -1,
+    });
+
+    // AL HACER CLIC: Avanzamos de día y vamos a la casa
+    this.input.once("pointerdown", () => {
+      GameState.advanceDay();
+      this.scene.start("house");
+    });
+  }
+}

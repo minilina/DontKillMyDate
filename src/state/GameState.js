@@ -10,6 +10,13 @@ const GameState = {
     quality: 100,
   },
 
+  dailyStats: {
+    served: 0,
+    good: 0,
+    bad: 0,
+    repChange: 0,
+  },
+
   initData(jsonConfig, specialNpcsConfig) {
     this.daysData = jsonConfig;
     this.specialNpcsData = specialNpcsConfig;
@@ -22,7 +29,7 @@ const GameState = {
       return todayConfig.difficulty;
     }
 
-    return "facil"; 
+    return "facil";
   },
 
   isDayOver() {
@@ -46,6 +53,13 @@ const GameState = {
   advanceDay() {
     this.currentDay++;
     this.currentCustomer = 0;
+
+    this.dailyStats = { // reiniciamos las stats diarias
+      served: 0,
+      good: 0,
+      bad: 0,
+      repChange: 0,
+    };
   },
 
   reducePotionQuality(penalty) {
@@ -176,6 +190,16 @@ const GameState = {
     if (this.reputation <= 0) {
         this.reputation = 0;
     }
+
+     this.dailyStats.served++; // sumamos un cliente atendido
+
+     if (q >= 50) {
+       this.dailyStats.repChange += change; // gurado rep
+       this.dailyStats.good++; // sumamos un éxito
+     } else {
+       this.dailyStats.repChange += change; // guardamos rep
+       this.dailyStats.bad++; // sumamos un fallo
+     }
 
     // avanzar al siguiente cliente
     this.currentCustomer++;

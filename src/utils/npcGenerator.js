@@ -27,26 +27,32 @@ const TONOS_PIEL = [
 const COLORES_MAGICOS = [
   {
     pelos: ["pelo_1_azul", "pelo_2_azul", "pelo_3_azul"],
+    cejas: "cejas_normales_azules",
     cola: "kitsune_feautures_azul",
   },
   {
     pelos: ["pelo_1_negro", "pelo_2_negro", "pelo_3_negro"],
+    cejas: "cejas_normales_negras",
     cola: "kitsune_feautures_negro",
   },
   {
     pelos: ["pelo_1_rojo", "pelo_2_rojo", "pelo_3_rojo"],
+    cejas: "cejas_normales_rojas",
     cola: "kitsune_feautures_rojol",
   },
   {
     pelos: ["pelo_1_rosa", "pelo_2_rosa", "pelo_3_rosa"],
+    cejas: "cejas_normales_rosas",
     cola: "kitsune_feautures_rosa",
   },
   {
     pelos: ["pelo_1_rubiol", "pelo_2_rubio", "pelo_3_rubio"],
+    cejas: "cejas_normales_rubias",
     cola: "kitsune_feautures_rubiol",
   },
   {
     pelos: ["pelo_1_verde", "pelo_2_verde", "pelo_3_verde"],
+    cejas: "cejas_normales_verdes",
     cola: "kitsune_feautures_verde",
   },
 ];
@@ -87,6 +93,7 @@ export default class NPCGenerator {
       nariz: adnPiel.nariz,
       orejas: null,
       ojos: pickRandom(UNIVERSAL_EYES),
+      cejas: adnColor.cejas,
       pelo: pickRandom(adnColor.pelos), // Elegimos un peinado del color seleccionado
       ropa: null,
       rasgoDetras: null,
@@ -106,7 +113,7 @@ export default class NPCGenerator {
 
       case "ninfas":
         aspecto.orejas = adnPiel.orejas_ninfa; // Tienen sus orejas
-        aspecto.rasgoFrente = "ninfa_feautures"; // Y ADEMÁS sus hojas encima
+        aspecto.rasgoFrente = "ninfa_feautures"; 
         aspecto.ropa = "ropa_ninfa";
         break;
 

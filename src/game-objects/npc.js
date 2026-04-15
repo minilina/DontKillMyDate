@@ -6,7 +6,8 @@ const LAYER_DEPTH = {
   RASGO_DETRAS: 5,
   BASE: 10,
   BOCA: 15,
-  NARIZ: 16,
+  NARIZ: 15,
+  CEJAS: 18,
   OJOS: 20,
   ROPA: 25,
   PELO: 30,
@@ -71,7 +72,7 @@ export default class NPC extends Phaser.GameObjects.Container {
     addPart(looks.boca, LAYER_DEPTH.BOCA, "spriteBoca");
     addPart(looks.nariz, LAYER_DEPTH.NARIZ);
     addPart(looks.ojos, LAYER_DEPTH.OJOS, "spriteOjos");
-
+    addPart(looks.cejas, LAYER_DEPTH.CEJAS);
     addPart(looks.pelo, LAYER_DEPTH.PELO);
     addPart(looks.orejas, LAYER_DEPTH.OREJAS);
     addPart(looks.rasgoFrente, LAYER_DEPTH.RASGO_FRENTE);
