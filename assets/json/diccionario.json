@@ -1,96 +1,253 @@
 {
   "sabores": {
-    "dulce": [
-      "un regusto dulce",
-      "un toque afrutado y dulce",
-      "sabor a frutas dulces",
-      "que empalague",
-      "dulce como la miel"
-    ],
-    "amargo": [
-      "amargo como la hiel",
-      "con un sabor fuerte y amargo",
-      "nada de dulzuras, lo quiero amargo",
-      "que deje un regusto rudo"
-    ],
-    "salado": [
-      "con un toque de sal",
-      "bien salado",
-      "que sepa a mar",
-      "con ese gusto salobre"
-    ],
-    "umami": [
-      "con un sabor profundo y sabroso",
-      "un toque terroso y reconfortante",
-      "ese inconfundible gusto umami",
-      "muy sabroso y sustancioso"
-    ],
-    "acido": [
-      "con un toque ácido",
-      "que haga fruncir el ceño",
-      "avinagrado",
-      "cítrico y punzante"
-    ]
+    "dulce": {
+      "facil": ["un sabor dulce", "un gusto azucarado", "un gusto dulzón"],
+      "medio": ["un toque afrutado", "un regusto a miel", "un matiz azucarado"],
+      "dificil": [
+        "un dulzor que empalague",
+        "notas de néctar celestial",
+        "un dulzor empalagoso y persistente"
+      ]
+    },
+    "amargo": {
+      "facil": ["un sabor amargo", "un gusto rudo", "un sabor que amargue"],
+      "medio": ["un toque recio", "un fuerte amargor", "un regusto áspero"],
+      "dificil": [
+        "un sabor como la hiel",
+        "amargura que seque la boca",
+        "una amargura profunda en el paladar"
+      ]
+    },
+    "salado": {
+      "facil": ["un sabor salado", "un gusto a sal", "un toque de sal"],
+      "medio": [
+        "un toque salobre",
+        "sabor a la brisa del océano",
+        "un deje salino"
+      ],
+      "dificil": [
+        "un gusto a agua de mar",
+        "el sabor de las lágrimas",
+        "el inconfundible sabor del océano"
+      ]
+    },
+    "umami": {
+      "facil": ["un sabor sabroso", "un gusto a caldo", "un regusto sabroso"],
+      "medio": [
+        "un toque terroso",
+        "sabor reconfortante",
+        "un matiz a carne o setas"
+      ],
+      "dificil": [
+        "un gusto profundo y sustancioso",
+        "el inconfundible sabor umami",
+        "una esencia umami que llene la boca"
+      ]
+    },
+    "acido": {
+      "facil": ["un sabor ácido", "un gusto avinagrado", "un regusto ácido"],
+      "medio": ["un toque cítrico", "un regusto punzante", "un matiz agrio"],
+      "dificil": [
+        "un gusto que haga fruncir el ceño",
+        "una acidez que despierte los sentidos",
+        "una acidez que despierte hasta a los muertos"
+      ]
+    }
   },
   "colores": {
-    "rojo": ["color sangre", "carmesí", "de un tono rojizo", "rojo pasión"],
-    "azul": [
-      "azul como el cielo",
-      "de un tono zafiro",
-      "celeste",
-      "azul profundo"
-    ],
-    "amarillo": ["amarillo brillante", "color oro", "como la luz del sol"],
-    "verde": ["color esmeralda", "verde como el bosque", "de un tono verdoso"],
-    "naranja": ["color atardecer", "de un tono anaranjado", "naranja vibrante"],
-    "morado": ["púrpura real", "color amatista", "de un tono violáceo"]
+    "rojo": {
+      "facil": ["de color rojo", "de aspecto rojo", "de aspecto rojizo"],
+      "medio": ["de tono carmesí", "de un tono rojizo", "con un matiz granate"],
+      "dificil": [
+        "con el color de la sangre",
+        "roja como la pasión",
+        "con el rubor de una rosa al alba"
+      ]
+    },
+    "azul": {
+      "facil": ["de color azul", "de aspecto azulado", "de color azulado"],
+      "medio": ["de tono celeste", "de un tono zafiro", "con un matiz índigo"],
+      "dificil": [
+        "como el cielo despejado",
+        "como el océano profundo",
+        "del color de un lago a medianoche"
+      ]
+    },
+    "amarillo": {
+      "facil": [
+        "de color amarillo",
+        "de aspecto amarillo",
+        "de aspecto amarillento"
+      ],
+      "medio": [
+        "de tono dorado",
+        "de un tono amarillento",
+        "con un matiz limón"
+      ],
+      "dificil": [
+        "brillante como el oro",
+        "como la luz del sol",
+        "brillante como un campo de trigo"
+      ]
+    },
+    "verde": {
+      "facil": ["de color verde", "de aspecto verdoso", "de aspecto verde"],
+      "medio": [
+        "de tono esmeralda",
+        "de un tono musgo",
+        "con un matiz oliváceo"
+      ],
+      "dificil": [
+        "como las hojas del bosque",
+        "del color de la naturaleza",
+        "del color de la savia pura"
+      ]
+    },
+    "naranja": {
+      "facil": [
+        "de color naranja",
+        "de aspecto naranja",
+        "de color anaranjado"
+      ],
+      "medio": [
+        "de tono anaranjado",
+        "de un tono ámbar",
+        "con un matiz cobrizo"
+      ],
+      "dificil": [
+        "vibrante como el fuego",
+        "como un atardecer de otoño",
+        "del color de las brasas ardientes"
+      ]
+    },
+    "morado": {
+      "facil": ["de color morado", "de aspecto lila", "de aspecto morado"],
+      "medio": [
+        "de tono violáceo",
+        "de un tono amatista",
+        "con un matiz púrpura"
+      ],
+      "dificil": [
+        "como una flor de lavanda",
+        "del color de la realeza",
+        "del color del cielo nocturno al atardecer"
+      ]
+    }
   },
   "consistencias": {
-    "entera": [
-      "entera, ni se te ocurra cortarla",
-      "de una sola pieza",
-      "intacta"
-    ],
-    "cortada": [
-      "bien cortada",
-      "cortada en trozos",
-      "en daditos",
-      "troceada con cuidado"
-    ],
-    "machacada": [
-      "bien machacada",
-      "completamente triturada en el mortero",
-      "machacada hasta hacerla pasta"
-    ]
+    "entera": {
+      "facil": ["entera", "sin cortar", "sin machacar"],
+      "medio": ["de una sola pieza", "sin trocear", "intacta"],
+      "dificil": [
+        "completamente intacta",
+        "en su forma original",
+        "sin que la hoja del cuchillo la haya tocado"
+      ]
+    },
+    "cortada": {
+      "facil": ["cortada", "troceada", "hecha trocitos"],
+      "medio": ["en pequeños trozos", "en daditos", "partida en porciones"],
+      "dificil": [
+        "picada finamente",
+        "separada en porciones precisas",
+        "seccionada con precisión quirúrgica"
+      ]
+    },
+    "machacada": {
+      "facil": ["machacada", "triturada", "hecha puré"],
+      "medio": ["en forma de pasta", "molida", "triturada al máximo"],
+      "dificil": [
+        "reducida a polvo en el mortero",
+        "completamente aplastada",
+        "reducida a una pasta fina e irreconocible"
+      ]
+    }
   },
   "temperaturas": {
-    "frio": ["bien helada", "que enfríe el aliento", "fría como el hielo"],
-    "calor": ["hirviendo", "muy caliente", "que queme al tocar el frasco"],
-    "tiempo": [
-      "del tiempo",
-      "a temperatura ambiente",
-      "ni muy fría ni caliente"
-    ]
+    "frio": {
+      "facil": ["fría", "helada", "fresquita"],
+      "medio": ["bien fría", "muy helada", "gélida"],
+      "dificil": [
+        "fría como el hielo",
+        "que congele el aliento",
+        "con escarcha en los bordes"
+      ]
+    },
+    "calor": {
+      "facil": ["caliente", "muy caliente", "calentita"],
+      "medio": ["hirviendo", "humeante", "con la temperatura del fuego"],
+      "dificil": [
+        "ardiente al tacto",
+        "que queme al tocar el cristal",
+        "burbujeante por el calor extremo"
+      ]
+    },
+    "tiempo": {
+      "facil": ["del tiempo", "natural", "fresca pero sin helar"],
+      "medio": [
+        "a temperatura ambiente",
+        "ni muy fría ni caliente",
+        "con un calor natural"
+      ],
+      "dificil": [
+        "sin alterar su temperatura",
+        "templada por la brisa",
+        "tal y como manda la naturaleza"
+      ]
+    }
   },
   "formas_frasco": {
-    "estrella": [
-      "en un recipiente que recuerde a los astros",
-      "guardado en cristal de cinco puntas",
-      "en un frasco que brille como el cielo nocturno",
-      "en un envase con forma de estrella"
-    ],
-    "corazon": [
-      "en un cristal que represente mis sentimientos",
-      "en un envase que lata de pasión",
-      "guardado en la forma del amor",
-      "en un frasco tallado como un corazón"
-    ],
-    "normal": [
-      "en un frasco corriente",
-      "no te compliques con el envase",
-      "un recipiente estándar bastará",
-      "en cristal liso y normal"
-    ]
+    "estrella": {
+      "facil": [
+        "en un frasco de estrella",
+        "en un bote de estrella",
+        "en algo con forma de estrella"
+      ],
+      "medio": [
+        "en cristal de cinco puntas",
+        "en un envase estrellado",
+        "en un receptáculo estelar"
+      ],
+      "dificil": [
+        "en un frasco que recuerde a los astros",
+        "en un envase que brille como la noche",
+        "en un envase de puntas afiladas como astros"
+      ]
+    },
+    "corazon": {
+      "facil": [
+        "en un frasco de corazón",
+        "en un bote de corazón",
+        "en algo con forma de corazón"
+      ],
+      "medio": [
+        "en cristal con forma de corazón",
+        "en el envase del amor",
+        "en un receptáculo romántico"
+      ],
+      "dificil": [
+        "en un frasco que represente mis sentimientos",
+        "en un envase que lata de pasión",
+        "en un vaso tallado con la silueta de un corazón"
+      ]
+    },
+    "normal": {
+      "facil": [
+        "en un frasco normal",
+        "en un bote redondo",
+        "en un frasco sin más"
+      ],
+      "medio": [
+        "en cristal liso",
+        "en un recipiente estándar",
+        "en una botella estándar"
+      ],
+      "dificil": [
+        "en un recipiente corriente y sin adornos",
+        "no te compliques con el envase",
+        "en un recipiente humilde y sin pretensiones"
+      ]
+    }
   },
   "razas_cliente": {
     "ninfas": ["las ninfas", "la gente del río", "nosotras"],
@@ -101,12 +258,84 @@
     "elfos": ["los altos elfos", "mi gente del bosque"]
   },
   "razas_objetivo": {
-    "ninfas": ["una ninfa del río", "alguien del pueblo del agua"],
-    "humanos": ["un pueblerino", "un humano de la capital"],
-    "kitsunes": ["un kitsune", "un espíritu zorro muy escurridizo"],
-    "hadas": ["un hada del bosque", "una criatura feérica"],
-    "gnomos": ["un gnomo de las profundidades", "un minero gnomo"],
-    "elfos": ["un alto elfo", "un guardián del bosque"]
+    "ninfas": {
+      "facil": ["una ninfa", "una mujer del río", "una dama del agua"],
+      "medio": [
+        "alguien del pueblo del agua",
+        "una ninfa de las cascadas",
+        "una guardiana del río"
+      ],
+      "dificil": [
+        "un espíritu de los ríos",
+        "alguien que domina las mareas",
+        "una hija de las corrientes cristalinas"
+      ]
+    },
+    "humanos": {
+      "facil": ["un humano", "una humana", "una persona normal"],
+      "medio": [
+        "un simple mortal",
+        "un pueblerino",
+        "un habitante de la ciudad"
+      ],
+      "dificil": [
+        "un aldeano de la capital",
+        "alguien de vida efímera",
+        "un mortal de vida fugaz"
+      ]
+    },
+    "kitsunes": {
+      "facil": ["un kitsune", "un zorro", "un chico zorro"],
+      "medio": [
+        "un espíritu zorro",
+        "un kitsune escurridizo",
+        "un guardián de múltiples colas"
+      ],
+      "dificil": [
+        "un ser de colas mágicas",
+        "una ilusión del bosque",
+        "un ser de magia ilusoria"
+      ]
+    },
+    "hadas": {
+      "facil": ["un hada", "una pequeña hada", "un ser alado"],
+      "medio": [
+        "un ser del claro",
+        "un hada del bosque",
+        "una habitante de las flores"
+      ],
+      "dificil": [
+        "una criatura feérica",
+        "alguien que baila entre las hojas",
+        "una tejedora de polvo de hadas"
+      ]
+    },
+    "gnomos": {
+      "facil": ["un gnomo", "una gnoma", "un chico de las minas"],
+      "medio": [
+        "un minero del subsuelo",
+        "un gnomo de las minas",
+        "un excavador experto"
+      ],
+      "dificil": [
+        "un enano de las profundidades",
+        "alguien forjado en la piedra",
+        "un maestro de los metales bajo tierra"
+      ]
+    },
+    "elfos": {
+      "facil": ["un elfo", "una elfa", "un chico del bosque"],
+      "medio": [
+        "un habitante del bosque",
+        "un alto elfo",
+        "un arquero silvano"
+      ],
+      "dificil": [
+        "un alto guardián de la arboleda",
+        "un ser de orejas puntiagudas",
+        "un ser ancestral de los bosques milenarios"
+      ]
+    }
   },
   "saludos": {
     "neutro": [
@@ -126,23 +355,19 @@
       "Eh...",
       "Oye, necesito algo ya.",
       "Escucha bien, alquimista. No tengo todo el día.",
-      "Vengo con prisa, así que escucha bien.",
-      ""
+      "Vengo con prisa, así que escucha bien."
     ],
     "nervioso": [
       "Shh... ¿podemos hablar en voz baja?",
       "Perdón, perdón... es importante.",
       "No sé si debería estar aquí, pero...",
-      "Estoy un poco nervioso, disculpa.",
-      "¡Por favor, rápido!"
+      "Estoy un poco nervioso, disculpa."
     ],
     "misterioso": [
       "Que las sombras no te confundan.",
       "Los astros me han traído hasta aquí.",
       "La noche susurra tu nombre, alquimista.",
-      "He seguido señales para encontrarte.",
-      "He viajado mucho para encontrar esto.",
-      "Los astros se alinean y requiero de tu arte."
+      "He seguido señales para encontrarte."
     ]
   },
   "despedidas": [
@@ -152,21 +377,25 @@
     "Que te vaya bien.",
     "No me hagas esperar.",
     "Será mejor que salga bien.",
-    "No me decepciones.",
-    "Estoy en tus manos.",
     "Te lo pagaré bien si sale perfecto.",
     "¡Suerte!",
-    "Que tu pulso no tiemble.",
-    "Que tu mezcla sea precisa.",
-    "No cometas errores.",
-    "Hazlo con cuidado.",
-    "Ponle dedicación.",
-    "Que salga perfecto.",
-    "¿Podrás hacerlo?"
+    "Hazlo con cuidado."
   ],
-  "templates": [
-    "{saludo} Quiero preparar un filtro de amor para conquistar a {raza_objetivo}. Dicen que les atrae el color {color} y {sabor}. Prepáralo {temperatura} y con los ingredientes {consistencia}. Dámelo {forma_frasco}. {despedida}",
-    "{saludo} Necesito enamorar a {raza_objetivo}. Hazme una poción {color} y sírvela {temperatura} {forma_frasco}. Ponle {sabor} y, sobre todo, que la mezcla esté {consistencia}. {despedida}",
-    "{saludo} Ayúdame, alquimista. He perdido la cabeza por alguien del reino de {raza_objetivo}. Requiero un elixir {temperatura}, de aspecto {color} y {sabor}. Los componentes deben ir {consistencia} y guárdalo {forma_frasco}. {despedida}"
-  ]
+  "templates": {
+    "facil": [
+      "{saludo} Quiero conquistar a {raza_objetivo}. Hazme un líquido {color} y con {sabor}. Que la mezcla esté {consistencia} y la bebida quede {temperatura}. Ponla {forma_frasco}. {despedida}",
+      "{saludo} Me gusta {raza_objetivo}. Necesito un elixir {color} que tenga {sabor}. Déjala {temperatura} y con la mezcla {consistencia}. Dámelo {forma_frasco}. {despedida}",
+      "{saludo} Ayúdame con {raza_objetivo}. Haz un filtro {color} y con {sabor}. La poción debe estar {temperatura} y la textura quedar {consistencia}. Guárdalo {forma_frasco}. {despedida}"
+    ],
+    "medio": [
+      "{saludo} El amor me llama hacia {raza_objetivo}. Necesito un brebaje {color} que deje {sabor}. Asegúrate de que la mezcla resulte {consistencia} y la poción se mantenga {temperatura}. Envuélvelo {forma_frasco}. {despedida}",
+      "{saludo} Vengo buscando un milagro para atraer a {raza_objetivo}. Por favor, prepara una infusión {color} y con {sabor}. Es esencial que la textura quede {consistencia} y la bebida se sirva {temperatura}. Entrégamela {forma_frasco}. {despedida}",
+      "{saludo} Necesito un favor especial para {raza_objetivo}. Dicen que adoran la magia {color} si viene con {sabor}. Que la poción esté {temperatura} y asegúrate de que la base quede {consistencia}. Viértelo {forma_frasco}. {despedida}"
+    ],
+    "dificil": [
+      "{saludo} Mi corazón ansía desesperadamente el afecto de {raza_objetivo}. Requiere de tu mayor arte: un elixir {color} que posea {sabor}. Confío en que la textura de la mezcla quede {consistencia} y que la poción repose {temperatura}. Presérvalo {forma_frasco}. {despedida}",
+      "{saludo} Los hilos del destino me unen a {raza_objetivo}, pero la magia debe sellar el pacto. Fórjame un encantamiento líquido {color} y con {sabor}. La alquimia exige que la esencia se mantenga {consistencia} y la bebida repose {temperatura}. Oculta el secreto {forma_frasco}. {despedida}",
+      "{saludo} Escucha mi ruego. Debo deslumbrar a {raza_objetivo} antes del amanecer. Destila una maravilla {color} que embriague con {sabor}. Exijo que la mezcla quede estrictamente {consistencia} y la poción final esté {temperatura}. Custódialo {forma_frasco}. {despedida}"
+    ]
+  }
 }

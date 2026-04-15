@@ -1,12 +1,3 @@
-/**
- * Convierte un request (texto largo + requirements) en líneas cortas para UI con "Continuar".
- * Aquí es donde más adelante meteréis personalidades, nombres, retratos, etc.
- */
-
-/**
- * Divide un texto en frases "razonables" para mostrarlas por líneas.
- * Regla simple: separa por . ! ? (manteniendo el separador).
- */
 export function splitIntoLines(text, maxLen = 120) {
   if (!text) return [];
 

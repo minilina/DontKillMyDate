@@ -15,7 +15,16 @@ const GameState = {
     this.specialNpcsData = specialNpcsConfig;
   },
 
-  isDayOver(){
+  getCurrentDifficulty() {
+    const todayConfig = this.daysData[this.currentDay - 1];
+
+    if (todayConfig && todayConfig.difficulty) {
+      return todayConfig.difficulty;
+    }
+
+    return "facil"; 
+  },
+  isDayOver() {
     const today = this.daysData[this.currentDay - 1];
     return this.currentCustomer >= today.customers.length;
   },

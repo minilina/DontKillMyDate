@@ -22,8 +22,8 @@
       "forma_frasco": "estrella"
     },
     "dialogue": [
-      "Saludos, alquimista. Vengo de las profundidades del bosque.",
-      "Necesito una esencia *{sabor}* y *{color}*, y la necesito *{consistencia}*. Que esté *{temperatura}* y guárdala en un *{forma_frasco}*."
+      "Saludos, alquimista. Vengo de las profundidades del bosque porque deseo impresionar a {raza_objetivo}.",
+      "Necesito una esencia {color} y con {sabor}. Asegúrate de que la textura quede {consistencia}. Que esté {temperatura} y guárdala {forma_frasco}."
     ]
   },
   "nymph": {
@@ -49,8 +49,8 @@
       "forma_frasco": "corazon"
     },
     "dialogue": [
-      "El agua está turbia hoy...",
-      "Tráeme algo *{color}* y *{sabor}*. Es para un *{raza_objetivo}*, así que dásmelo a *{temperatura}*. Asegúrate de que los ingredientes estén *{consistencia}* y ponlo en un *{forma_frasco}*."
+      "El agua está turbia hoy... y mi corazón también late por {raza_objetivo}.",
+      "Tráeme algo {color} que tenga {sabor}. Dásmelo {temperatura}. Asegúrate de que la mezcla quede {consistencia} y ponlo {forma_frasco}."
     ]
   },
   "gnomo_1": {
@@ -76,8 +76,8 @@
       "forma_frasco": "estrella"
     },
     "dialogue": [
-      "Saludos, alquimista. Vengo de las profundidades del bosque.",
-      "Necesito una esencia *{sabor}* y *{color}*, y la necesito *{consistencia}*. Que esté *{temperatura}* y guárdala en un *{forma_frasco}*."
+      "Saludos, alquimista. Vengo de las minas oscuras persiguiendo el amor de {raza_objetivo}.",
+      "Hazme una poción {color} y con {sabor}, y déjala {consistencia}. Que esté {temperatura} y guárdala {forma_frasco}."
     ]
   }
 }

@@ -35,32 +35,37 @@ export default class CustomerFlowManager {
 
     GameState.prepareNewCustomer();
 
-    // Obtenemos si toca "npc" u otra cosa ("elf", "nymph")
+    // si es npc o scripted
     const customerType = GameState.getCurrentCustomerType();
+
+    // dificultad actual para generar diálogos acorde a ella
+    const difficulty = GameState.getCurrentDifficulty ? GameState.getCurrentDifficulty() : "facil";
+
     let looksNPC;
     let dialogueData;
 
     if (customerType === "npc") {
-      this.currentRequest = generateRandomRequest();
+      // le pasamos la dificultad al generador aleatorio
+      this.currentRequest = generateRandomRequest(difficulty);
       const chosenRace = this.currentRequest.requirements.raza;
       looksNPC = NPCGenerator.generateLooks(chosenRace);
       dialogueData = buildDialogueFromRequest(this.currentRequest);
     } else {
-      // --- ES UN PERSONAJE CON HISTORIA ---
+      // scripted
       const specialData = GameState.getSpecialNPC(customerType);
 
-      // Pasamos los datos por nuestra nueva función para inyectar los sinónimos
+      // para estos no necesitmos dificultad en principio
       const scriptedRequest = processScriptedDialogue(specialData);
 
       this.currentRequest = {
-        requirements: scriptedRequest.requirements,
-        literalWords: scriptedRequest.literalWords,
+        requirements: scriptedRequest.requirements, // requisitos reales: traducciones
+        literalWords: scriptedRequest.literalWords, // palabras literales para mostrar en la UI
       };
 
       looksNPC = specialData.looks;
       dialogueData = {
         speakerName: specialData.name,
-        lines: scriptedRequest.dialogueLines, // Usamos las líneas ya procesadas
+        lines: scriptedRequest.dialogueLines, 
       };
     }
 
