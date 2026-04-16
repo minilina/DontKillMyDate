@@ -31,10 +31,13 @@ export default class Menu extends Phaser.Scene {
       fill: '#ffffff'
     }).setOrigin(0.5);
 
+
+
+
     //  BOTÓN RESUME
     this.createStyledButton(
       width / 2,
-      height / 2 - 20,
+      height / 2 + 75,
       'RESUME',
       () => this.resumeGame()
     );
@@ -42,12 +45,94 @@ export default class Menu extends Phaser.Scene {
     //  BOTÓN MENU
     this.createStyledButton(
       width / 2,
-      height / 2 + 80,
+      height / 2 + 150,
       'MAIN MENU',
       () => this.goToMainMenu()
     );
 
     this.scene.bringToTop();
+
+    //BOTON MUTE
+    this.createMuteButton(width/2-50, height/2-20, () => {
+      if (!this.game.sound.mute) {
+        this.game.sound.mute = true;
+      }
+      else {
+        this.game.sound.mute = false;
+      }
+    });
+
+  }
+  createMuteButton(btnX, btnY, callback) {
+    // Sprite botón
+    let texture, hoverTexture;
+    if (this.game.sound.mute) {
+      texture = 'btnSoundOff';
+      hoverTexture = 'btnSoundOffPressed';
+    }
+    else {
+      texture = 'btnSoundOn';
+      hoverTexture = 'btnSoundOnPressed';
+    }
+    this.pauseBtnBg = this.add.image(btnX, btnY, texture)
+      .setInteractive({ useHandCursor: true })
+      .setOrigin(0.5)
+      .setScale(3)
+      .setDepth(1000);
+
+
+
+    // Animación hover
+    this.pauseBtnBg.on('pointerover', () => {
+      this.pauseBtnBg.setTexture(hoverTexture);
+    });
+
+    this.pauseBtnBg.on('pointerout', () => {
+      this.pauseBtnBg.setTexture(texture);
+    });
+
+    // Acción al hacer clic
+    this.pauseBtnBg.on('pointerdown', () => {
+      this.sound.play('buttonSound', { volume: 0.2 });
+      if (!this.game.sound.mute) {
+        texture = 'btnSoundOff';
+        hoverTexture = 'btnSoundOffPressed';
+      }
+      else {
+        texture = 'btnSoundOn';
+        hoverTexture = 'btnSoundOnPressed';
+      }
+      this.pauseBtnBg.setTexture(hoverTexture);
+      callback();
+    });
+
+  }
+  createButton(btnX, btnY, texture, hoverTexture, callback) {
+
+
+    // Sprite botón
+    this.pauseBtnBg = this.add.image(btnX, btnY, texture)
+      .setInteractive({ useHandCursor: true })
+      .setOrigin(0.5)
+      .setScale(3)
+      .setDepth(1000);
+
+
+
+    // Animación hover
+    this.pauseBtnBg.on('pointerover', () => {
+      this.pauseBtnBg.setTexture(hoverTexture);
+    });
+
+    this.pauseBtnBg.on('pointerout', () => {
+      this.pauseBtnBg.setTexture(texture);
+    });
+
+    // Acción al hacer clic
+    this.pauseBtnBg.on('pointerdown', () => {
+      this.sound.play('buttonSound', { volume: 0.2 });
+      callback();
+    });
   }
 
   createStyledButton(x, y, text, callback) {
@@ -85,6 +170,8 @@ export default class Menu extends Phaser.Scene {
       this.sound.play('buttonSound', { volume: 0.2 });
       callback();
     });
+
+
   }
 
   resumeGame() {

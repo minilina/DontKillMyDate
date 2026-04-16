@@ -318,6 +318,10 @@ import jarSound3 from '../../assets/sound/jar3.mp3';
 //UI
 import pauseBtn from '../../assets/sprites/pauseBtn.png';
 import pauseBtnPressed from '../../assets/sprites/pauseBtnPressed.png';
+import btnSoundOn from '../../assets/sprites/buttonSoundOn.png';
+import btnSoundOff from '../../assets/sprites/buttonSoundOff.png';
+import btnSoundOnPressed from '../../assets/sprites/buttonSoundOnPressed.png';
+import btnSoundOffPressed from '../../assets/sprites/buttonSoundOffPressed.png';
 
 export default class Boot extends Phaser.Scene {
     constructor() {
@@ -620,6 +624,10 @@ export default class Boot extends Phaser.Scene {
 
         this.load.image('pauseBtn', pauseBtn);
         this.load.image('pauseBtnPressed', pauseBtnPressed);
+        this.load.image('btnSoundOn', btnSoundOn);
+        this.load.image('btnSoundOff', btnSoundOff);
+        this.load.image('btnSoundOnPressed', btnSoundOnPressed);
+        this.load.image('btnSoundOffPressed', btnSoundOffPressed);
         
     }
 
