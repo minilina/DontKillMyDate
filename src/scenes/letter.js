@@ -121,7 +121,7 @@ export default class Letter extends Phaser.Scene {
       .setInteractive()
       .setVisible(false);
 
-this.closeButton.on("pointerdown", () => {
+    this.closeButton.on("pointerdown", () => {
       this.scene.start("kitchen", { startInTutorialMode: true });
     });
 
@@ -163,11 +163,11 @@ this.closeButton.on("pointerdown", () => {
       }
       const bookSounds = ['bookSound1', 'bookSound2'];
       const randomSound = Phaser.Math.RND.pick(bookSounds);
-      
+
       // Si está el botón de cerrar (última página)
       if (this.closeButton.visible) {
         this.sound.play(randomSound, { volume: 1 });
-        
+
         // CAMBIO 2: Solo iniciamos la cocina, pasándole el parámetro
         this.scene.start("kitchen", { startInTutorialMode: true });
         return;
@@ -192,6 +192,53 @@ this.closeButton.on("pointerdown", () => {
 
     // Render inicial
     this.renderPage(0);
+
+
+    // Pausa
+    this.pauseKey = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.ESC,
+    );
+    this.createPauseButton();
+
+  }
+  createPauseButton() {
+    const btnX = this.scale.width -25;
+    const btnY = 25;
+
+    // Sprite botón
+    this.pauseBtnBg = this.add.image(btnX, btnY, 'pauseBtn')
+      .setInteractive({ useHandCursor: true })
+      .setOrigin(0.5)
+      .setScale(3)
+      .setDepth(1000);
+
+
+
+    // Animación hover
+    this.pauseBtnBg.on('pointerover', () => {
+      this.pauseBtnBg.setTexture('pauseBtnPressed');
+    });
+
+    this.pauseBtnBg.on('pointerout', () => {
+      this.pauseBtnBg.setTexture('pauseBtn');
+    });
+
+    // Acción al hacer clic
+    this.pauseBtnBg.on('pointerdown', () => {
+      this.sound.play('buttonSound', { volume: 0.2 });
+      this.openPauseMenu();
+    });
+  }
+  update(time, delta) {
+    this.flowManager?.update(time, delta);
+    if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
+      this.openPauseMenu();
+    }
+  }
+
+  openPauseMenu() {
+    this.scene.launch("Menu", { parentScene: this.scene.key });
+    this.scene.pause();
   }
 
   shutdown() {

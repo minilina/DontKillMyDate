@@ -156,7 +156,7 @@ export default class House extends Phaser.Scene {
 
             const idValla = [1393, 1394, 1395, 1405, 1406, 1407];
             const idPiedra = [3852, 3868, 3869, 3870, 3871];
-            
+
 
             if (tileHoverValla && idValla.includes(tileHoverValla.index)) {
                 this.game.canvas.style.cursor = 'pointer';
@@ -186,9 +186,9 @@ export default class House extends Phaser.Scene {
             this.physics.add.overlap(this.player, zonaEntrada, () => {
                 if (this.isTransitioning) return; // Si ya esta cambiando de escena, ignoramos
                 this.isTransitioning = true;      // Activamos el cerrojo
-                
-                this.scene.start('cueva', { 
-                    returnX: pixelsX + 8, 
+
+                this.scene.start('cueva', {
+                    returnX: pixelsX + 8,
                     returnY: pixelsY + 32,
                     cuevaTileX: data.cuevaTileX,
                     cuevaTileY: data.cuevaTileY
@@ -228,8 +228,8 @@ export default class House extends Phaser.Scene {
                         if (this.isTransitioning) return; // Cerrojo
                         this.isTransitioning = true;
 
-                        this.scene.start('cueva', { 
-                            returnX: pixelsX + 8, 
+                        this.scene.start('cueva', {
+                            returnX: pixelsX + 8,
                             returnY: pixelsY + 32,
                             cuevaTileX: cuevaTileX,
                             cuevaTileY: cuevaTileY
@@ -407,7 +407,7 @@ export default class House extends Phaser.Scene {
                         estructura.body.setOffset(8, estructura.height - 80);
 
                         // Calculamos el centro de la casa (puerta)
-                        const puertaX = obj.x + (estructura.width / 2); 
+                        const puertaX = obj.x + (estructura.width / 2);
                         const puertaY = obj.y + 5;
 
                         // Creamos una zona invisible en la puerta
@@ -580,19 +580,54 @@ export default class House extends Phaser.Scene {
                 console.log("COLISION - ID:", tileColision.index);
             }
         });
+        // Pausa
+        this.pauseKey = this.input.keyboard.addKey(
+            Phaser.Input.Keyboard.KeyCodes.ESC,
+        );
+        this.createPauseButton();
+
     }
-    update() {
+    createPauseButton() {
+        const btnX = this.scale.width - 25;
+        const btnY = 25;
+
+        // Sprite botón
+        this.pauseBtnBg = this.add.image(btnX, btnY, 'pauseBtn')
+            .setInteractive({ useHandCursor: true })
+            .setOrigin(0.5)
+            .setScale(3)
+            .setDepth(1000);
+
+
+
+        // Animación hover
+        this.pauseBtnBg.on('pointerover', () => {
+            this.pauseBtnBg.setTexture('pauseBtnPressed');
+        });
+
+        this.pauseBtnBg.on('pointerout', () => {
+            this.pauseBtnBg.setTexture('pauseBtn');
+        });
+
+        // Acción al hacer clic
+        this.pauseBtnBg.on('pointerdown', () => {
+            this.sound.play('buttonSound', { volume: 0.2 });
+            this.openPauseMenu();
+        });
+    }
+    update(time, delta) {
+        this.flowManager?.update(time, delta);
         if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
             this.openPauseMenu();
         }
-
         if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
             this.scene.start('store');
         }
-
     }
+
     openPauseMenu() {
-        this.scene.launch('Menu', { parentScene: this.scene.key });
+        this.scene.launch("Menu", { parentScene: this.scene.key });
         this.scene.pause();
     }
+
 }

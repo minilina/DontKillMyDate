@@ -173,16 +173,50 @@ export default class Kitchen extends Phaser.Scene {
         } else {
             console.log("Kitchen.create() -> NO, modo de juego normal.");
         }
-    }
+        // Pausa
+        this.pauseKey = this.input.keyboard.addKey(
+            Phaser.Input.Keyboard.KeyCodes.ESC,
+        );
+        this.createPauseButton();
 
-    update() {
+    }
+    createPauseButton() {
+        const btnX = this.scale.width - 25;
+        const btnY = 25;
+
+        // Sprite botón
+        this.pauseBtnBg = this.add.image(btnX, btnY, 'pauseBtn')
+            .setInteractive({ useHandCursor: true })
+            .setOrigin(0.5)
+            .setScale(3)
+            .setDepth(1000);
+
+
+
+        // Animación hover
+        this.pauseBtnBg.on('pointerover', () => {
+            this.pauseBtnBg.setTexture('pauseBtnPressed');
+        });
+
+        this.pauseBtnBg.on('pointerout', () => {
+            this.pauseBtnBg.setTexture('pauseBtn');
+        });
+
+        // Acción al hacer clic
+        this.pauseBtnBg.on('pointerdown', () => {
+            this.sound.play('buttonSound', { volume: 0.2 });
+            this.openPauseMenu();
+        });
+    }
+    update(time, delta) {
+        this.flowManager?.update(time, delta);
         if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
             this.openPauseMenu();
         }
     }
 
     openPauseMenu() {
-        this.scene.launch('Menu', { parentScene: this.scene.key });
+        this.scene.launch("Menu", { parentScene: this.scene.key });
         this.scene.pause();
     }
 
@@ -199,7 +233,7 @@ export default class Kitchen extends Phaser.Scene {
 
             const currentOrder = this.registry.get("currentOrder");
             const finalQuality = GameState.evaluatePotion(this.cauldron.currentPotion, currentOrder, potionShape);
-            
+
             this.cauldron.resetCauldron();
 
             let storeScene = this.scene.get("store");
@@ -440,7 +474,7 @@ export default class Kitchen extends Phaser.Scene {
                 this.cauldron.addIngredient('taste', this.tasteDict[dropData.name]);
                 this.cauldron.addIngredient('consistency', dropData.consistency);
                 isDroppedSuccessfully = true;
-            
+
             }
         } else if (itemType === 'color') {
             // si dropData es un color base ('red', 'blue', 'yellow'), es un polvo sacado directo del cuenco
@@ -453,7 +487,7 @@ export default class Kitchen extends Phaser.Scene {
                 this.addPowderToPlate(dropData);
                 isDroppedSuccessfully = true;
 
-            } 
+            }
             // si soltamos algo de color al caldero (ya sea base o mezclado)
             else if (objectsUnderMouse.includes(this.cauldronImg)) {
                 // si ya hay un color en el caldero, cancelar la acción

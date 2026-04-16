@@ -315,6 +315,9 @@ import jarSound1 from '../../assets/sound/jar1.mp3';
 import jarSound2 from '../../assets/sound/jar2.mp3';
 import jarSound3 from '../../assets/sound/jar3.mp3';
 
+//UI
+import pauseBtn from '../../assets/sprites/pauseBtn.png';
+import pauseBtnPressed from '../../assets/sprites/pauseBtnPressed.png';
 
 export default class Boot extends Phaser.Scene {
     constructor() {
@@ -614,6 +617,9 @@ export default class Boot extends Phaser.Scene {
         this.load.audio('jarSound2', jarSound2);
         this.load.audio('jarSound3', jarSound3);
         this.load.audio('buttonSound', buttonSound);
+
+        this.load.image('pauseBtn', pauseBtn);
+        this.load.image('pauseBtnPressed', pauseBtnPressed);
         
     }
 

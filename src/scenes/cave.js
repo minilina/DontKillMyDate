@@ -26,7 +26,7 @@ export default class Cueva extends Phaser.Scene {
         var pathTiles = map.addTilesetImage('pathTiles', 'pathTiles');
         var propsMine = map.addTilesetImage('Props Mine', 'propsMine');
         var stoneWithMinerals = map.addTilesetImage('stone with minerals', 'stoneWithMinerals');
-        var tilesetGrassCaves = map.addTilesetImage('Tileset Grass Caves', 'tilesetGrassCaves');        
+        var tilesetGrassCaves = map.addTilesetImage('Tileset Grass Caves', 'tilesetGrassCaves');
 
         const tilesetsArray = [
             allPropsSeasons, bonfireFish, caveWaterGroundAnimationsTiles, caves,
@@ -114,11 +114,11 @@ export default class Cueva extends Phaser.Scene {
         this.isTransitioning = false;
 
         this.physics.add.overlap(this.player, zonaSalida, () => {
-           if (this.isTransitioning) return;
+            if (this.isTransitioning) return;
             this.isTransitioning = true;
-            
-            this.scene.start('house', { 
-                spawnX: this.datosDeLaCasa.returnX, 
+
+            this.scene.start('house', {
+                spawnX: this.datosDeLaCasa.returnX,
                 spawnY: this.datosDeLaCasa.returnY,
                 cuevaTileX: this.datosDeLaCasa.cuevaTileX,
                 cuevaTileY: this.datosDeLaCasa.cuevaTileY
@@ -145,7 +145,7 @@ export default class Cueva extends Phaser.Scene {
 
                 if (imagenesCueva[nombre]) {
                     const imagenKey = imagenesCueva[nombre];
-                    
+
                     const objeto = this.grupoCosas.create(obj.x, obj.y, imagenKey);
 
                     // Para los invisibles forzamos el 16
@@ -168,7 +168,7 @@ export default class Cueva extends Phaser.Scene {
                     if (nombre === 'lampara') {
                         objeto.body.setSize(9, 8);
                         objeto.body.setOffset(objeto.width / 2 - 5, objeto.height - 10);
-                    } 
+                    }
                     else if (nombre === 'barril') {
                         objeto.body.setSize(16, 10);
                         objeto.body.setOffset(objeto.width / 2 - 8, objeto.height - 13);
@@ -196,19 +196,50 @@ export default class Cueva extends Phaser.Scene {
                 }
             });
         }
-        
+
         this.physics.add.collider(this.player, this.grupoCosas);
+        // Pausa
+        this.pauseKey = this.input.keyboard.addKey(
+            Phaser.Input.Keyboard.KeyCodes.ESC,
+        );
+        this.createPauseButton();
+
     }
+    createPauseButton() {
+        const btnX = this.scale.width - 25;
+        const btnY = 25;
 
-    update() {
-        this.player.setDepth(this.player.y + 4);
+        // Sprite botón
+        this.pauseBtnBg = this.add.image(btnX, btnY, 'pauseBtn')
+            .setInteractive({ useHandCursor: true })
+            .setOrigin(0.5)
+            .setScale(3)
+            .setDepth(1000);
 
+
+
+        // Animación hover
+        this.pauseBtnBg.on('pointerover', () => {
+            this.pauseBtnBg.setTexture('pauseBtnPressed');
+        });
+
+        this.pauseBtnBg.on('pointerout', () => {
+            this.pauseBtnBg.setTexture('pauseBtn');
+        });
+
+        // Acción al hacer clic
+        this.pauseBtnBg.on('pointerdown', () => {
+            this.sound.play('buttonSound', { volume: 0.2 });
+            this.openPauseMenu();
+        });
+    }
+    update(time, delta) {
+        this.flowManager?.update(time, delta);
         if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
             this.openPauseMenu();
         }
-    }
-    openPauseMenu() {
-        this.scene.launch('Menu', { parentScene: this.scene.key });
-        this.scene.pause();
+        if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
+            this.scene.start('store');
+        }
     }
 }
