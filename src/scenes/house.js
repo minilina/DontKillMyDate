@@ -142,9 +142,11 @@ export default class House extends Phaser.Scene {
         );
 
         // PROVISIONAL hasta que esté implementado entrar a la casa
+        /*
         this.enterKey = this.input.keyboard.addKey(
             Phaser.Input.Keyboard.KeyCodes.ENTER
         );
+        */
 
 
 
@@ -620,9 +622,13 @@ export default class House extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
             this.openPauseMenu();
         }
+
+        /*
         if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
             this.scene.start('store');
         }
+        */
+
     }
 
     openPauseMenu() {

@@ -40,6 +40,7 @@ export default class Kitchen extends Phaser.Scene {
 
         // variables generales
         this.isDraggingItem = false;
+        this.indicatorArrows = [];
 
         this.bg = this.add.image(0, 0, 'kitchen').setOrigin(0, 0).setScale(3);
         this.lightOverlay = this.add.image(0, 0, 'lightOverlay').setOrigin(0, 0).setScale(3).setDepth(200);
@@ -118,6 +119,7 @@ export default class Kitchen extends Phaser.Scene {
 
         this.noteUI = new Note(this);
         this.note.on("pointerdown", () => {
+            this.hideIndicators();
             this.noteUI.open();
         });
 
@@ -172,6 +174,17 @@ export default class Kitchen extends Phaser.Scene {
             this.startTutorial('full');
         } else {
             console.log("Kitchen.create() -> NO, modo de juego normal.");
+            const noteArrow = this.add.sprite(this.note.x + 18, this.note.y - 15, 'indicator').setDepth(100).setScale(3);
+            this.indicatorArrows.push(noteArrow);
+
+            this.indicatorTween = this.tweens.add({
+                targets: this.indicatorArrows,
+                y: '-=10',
+                duration: 600,
+                yoyo: true,
+                repeat: -1,
+                ease: 'Sine.easeInOut'
+            });
         }
         // Pausa
         this.pauseKey = this.input.keyboard.addKey(
@@ -527,7 +540,7 @@ export default class Kitchen extends Phaser.Scene {
 
     // muestra indicadores sobre las estaciones de la cocina
     showIndicators(itemType, sourceSprite) {
-        this.indicatorArrows = [];
+        this.hideIndicators();
         // si es un SABOR: flechas en mortero, caldero y tabla
         if (itemType === 'taste') {
             const arrow1 = this.add.sprite(this.mortar.x + 36, this.mortar.y - 15, 'indicator').setDepth(100).setScale(3);
