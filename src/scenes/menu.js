@@ -53,94 +53,54 @@ export default class Menu extends Phaser.Scene {
     this.scene.bringToTop();
 
     //BOTON MUTE
-    this.createMuteButton(width/2-50, height/2-20, () => {
-      if (!this.game.sound.mute) {
-        this.game.sound.mute = true;
-      }
-      else {
-        this.game.sound.mute = false;
-      }
-    });
+    this.createStyledButton(
+      width / 2 - 50,
+      height / 2 - 20,
+      null,
+      () => {
+        if (!this.game.sound.mute) {
+          this.game.sound.mute = true;
+        }
+        else {
+          this.game.sound.mute = false;
+        }
+      },
+      'btnSoundOn',
+      'btnSoundOff');
+
+    //BOTON FULLSCREEN
+
+    this.createStyledButton(
+      width / 2 + 50,
+      height / 2 - 20,
+      '⛶',
+      () => { this.scale.toggleFullscreen() },
+      'blankBtn'
+    );
 
   }
-  createMuteButton(btnX, btnY, callback) {
-    // Sprite botón
-    let texture, hoverTexture;
-    if (this.game.sound.mute) {
-      texture = 'btnSoundOff';
-      hoverTexture = 'btnSoundOffPressed';
-    }
-    else {
-      texture = 'btnSoundOn';
-      hoverTexture = 'btnSoundOnPressed';
-    }
-    this.pauseBtnBg = this.add.image(btnX, btnY, texture)
-      .setInteractive({ useHandCursor: true })
-      .setOrigin(0.5)
-      .setScale(3)
-      .setDepth(1000);
 
-
-
-    // Animación hover
-    this.pauseBtnBg.on('pointerover', () => {
-      this.pauseBtnBg.setTexture(hoverTexture);
-    });
-
-    this.pauseBtnBg.on('pointerout', () => {
-      this.pauseBtnBg.setTexture(texture);
-    });
-
-    // Acción al hacer clic
-    this.pauseBtnBg.on('pointerdown', () => {
-      this.sound.play('buttonSound', { volume: 0.2 });
-      if (!this.game.sound.mute) {
-        texture = 'btnSoundOff';
-        hoverTexture = 'btnSoundOffPressed';
-      }
-      else {
-        texture = 'btnSoundOn';
-        hoverTexture = 'btnSoundOnPressed';
-      }
-      this.pauseBtnBg.setTexture(hoverTexture);
-      callback();
-    });
-
-  }
-  createButton(btnX, btnY, texture, hoverTexture, callback) {
-
-
-    // Sprite botón
-    this.pauseBtnBg = this.add.image(btnX, btnY, texture)
-      .setInteractive({ useHandCursor: true })
-      .setOrigin(0.5)
-      .setScale(3)
-      .setDepth(1000);
-
-
-
-    // Animación hover
-    this.pauseBtnBg.on('pointerover', () => {
-      this.pauseBtnBg.setTexture(hoverTexture);
-    });
-
-    this.pauseBtnBg.on('pointerout', () => {
-      this.pauseBtnBg.setTexture(texture);
-    });
-
-    // Acción al hacer clic
-    this.pauseBtnBg.on('pointerdown', () => {
-      this.sound.play('buttonSound', { volume: 0.2 });
-      callback();
-    });
-  }
-
-  createStyledButton(x, y, text, callback) {
+  /**
+   * Creates a styled button with the specified properties.
+   * @param {number} x - The x-coordinate of the button.
+   * @param {number} y - The y-coordinate of the button.
+   * @param {string} text - The text to display on the button.
+   * @param {function} callback - The function to call when the button is clicked.
+   * @param {string} texture - The texture for the button (optional).
+   * @param {string} alternateTexture - An optional alternate texture to switch with when the button is pressed (useful for toggle buttons)(optional).
+   */
+  createStyledButton(x, y, text, callback, texture = 'button', alternateTexture = null) {
     // botón (MISMO estilo que Start)
-    const boton = this.add.image(x, y, 'button')
+    if (!text&&!texture) {
+      texture = 'blankBtn';
+    }
+    let toggleState = false;
+    let switchable = alternateTexture !== null;
+
+    const boton = this.add.image(x, y, texture)
       .setInteractive({ useHandCursor: true })
       .setOrigin(0.5)
-      .setScale(3);
+      .setScale(3)
 
     // texto (MISMO estilo)
     const botonTexto = this.add.text(
@@ -157,17 +117,23 @@ export default class Menu extends Phaser.Scene {
     // hover (IGUAL que Start)
     boton.on('pointerover', () => {
       boton.setScale(2.9);
-      botonTexto.setColor('#ffcc00');
+      if (text)
+        botonTexto.setColor('#ffcc00');
     });
 
     boton.on('pointerout', () => {
       boton.setScale(3);
-      botonTexto.setColor('#ffffff');
+      if (text)
+        botonTexto.setColor('#ffffff');
     });
 
     // click
     boton.on('pointerdown', () => {
       this.sound.play('buttonSound', { volume: 0.2 });
+      if (switchable) {
+        toggleState = !toggleState;
+        boton.setTexture(toggleState ? alternateTexture : texture);
+      }
       callback();
     });
 
