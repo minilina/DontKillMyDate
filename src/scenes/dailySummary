@@ -22,7 +22,6 @@ export default class DailySummary extends Phaser.Scene {
     const titleColor = "#3e2723";
     const textColor = "#2b1d10";
 
-    // --- TÍTULO ---
     this.add
       .text(centerX, centerY - 140, `DÍA ${GameState.currentDay} FINALIZADO`, {
         fontFamily: "VT323, monospace",
@@ -32,7 +31,6 @@ export default class DailySummary extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    // --- SECCIÓN 1: ESTRELLAS (CALIDAD) ---
     this.add
       .text(centerX, centerY - 85, "Desempeño Alquímico", {
         fontFamily: "VT323, monospace",
@@ -50,7 +48,6 @@ export default class DailySummary extends Phaser.Scene {
       iconSpacing,
     );
 
-    // --- SECCIÓN 2: CORAZONES (REPUTACIÓN TOTAL) ---
     const sign = stats.repChange >= 0 ? "+" : "";
     const repLabel = `Reputación Total: ${GameState.reputation} (${sign}${stats.repChange})`;
 
@@ -71,15 +68,11 @@ export default class DailySummary extends Phaser.Scene {
       iconSpacing,
     );
 
-    // --- SECCIÓN 3: CONSEJOS DINÁMICOS CON TYPEWRITER ---
     const consejos = [
       "Investiga todo lo que puedas, el bosque aguarda secretos.",
       "El tiempo vuela fuera, aprovecha cada paso en el exterior.",
-      "Habla con los vecinos, a veces tienen ingredientes raros.",
-      "Ciertos espíritus solo aparecen cuando la luz es baja.",
-      "Tu reputación determina quién se atreve a visitarte.",
-      "Explora cada rincón de la casa antes de marcharte.",
-      "No todos los ingredientes se encuentran en las estanterías.",
+      "Tu reputación determina tu futuro, cuida cada poción.",
+      "Explora cada rincón fuera de la casa antes de marcharte.",,
     ];
 
     const consejoDelDia =

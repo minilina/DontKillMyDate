@@ -12,6 +12,6 @@
   {
     "day": 3,
     "difficulty": "dificil",
-    "customers": ["npc", "nymph", "npc"]
+    "customers": ["npc", "npc", "npc"]
   }
 ]
