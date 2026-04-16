@@ -145,11 +145,11 @@ export default class DialogueUI {
           let styleConfig = {
             fontFamily: "VT323, monospace",
             fontSize: "23px",
-            color: seg.highlight ? "#ffcc00" : "#000000", // amarillo si es pista, negro si es normal
+            color: seg.highlight ? "#f9ce2a" : "#000000", // amarillo si es pista, negro si es normal
           };
 
           if (seg.highlight) {
-            styleConfig.stroke = "#5c3a21";
+            styleConfig.stroke = "#623100";
             styleConfig.strokeThickness = 6; 
           }
 
