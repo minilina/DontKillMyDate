@@ -75,7 +75,7 @@ export default class Menu extends Phaser.Scene {
       height / 2 - 20,
       '⛶',
       () => { this.scale.toggleFullscreen() },
-      'blankBtn'
+      'blankBtn',null,'🗗'
     );
 
   }
@@ -88,8 +88,9 @@ export default class Menu extends Phaser.Scene {
    * @param {function} callback - The function to call when the button is clicked.
    * @param {string} texture - The texture for the button (optional).
    * @param {string} alternateTexture - An optional alternate texture to switch with when the button is pressed (useful for toggle buttons)(optional).
+   * @param {string} alternateText - An optional alternate text to display when the button is pressed (useful for toggle buttons)(optional).
    */
-  createStyledButton(x, y, text, callback, texture = 'button', alternateTexture = null) {
+  createStyledButton(x, y, text, callback, texture = 'button', alternateTexture = null,alternateText = null) {
     // botón (MISMO estilo que Start)
     if (!text&&!texture) {
       texture = 'blankBtn';
@@ -133,6 +134,9 @@ export default class Menu extends Phaser.Scene {
       if (switchable) {
         toggleState = !toggleState;
         boton.setTexture(toggleState ? alternateTexture : texture);
+        if (alternateText) {
+          botonTexto.setText(toggleState ? alternateText : text);
+        }
       }
       callback();
     });
