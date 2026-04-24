@@ -30,9 +30,15 @@ export default class KitchenTutorial {
         this.activeUnsubscriptions = [];
 
         this.activeTweens.forEach(tween => {
-            
             if (tween.targets && tween.targets[0]) {
-                tween.targets[0].setAlpha(1);
+                const obj = tween.targets[0];
+                obj.setAlpha(1);
+                
+                // Si el objeto tiene la función de limpiar tinte, la usamos
+                if (typeof obj.clearTint === 'function') {
+                    obj.clearTint();
+                    obj.setScale(3); // Importante: tu escala base
+                }
             }
             tween.destroy();
         });
@@ -108,17 +114,49 @@ export default class KitchenTutorial {
 
     highlight(obj) {
         if (!obj) return;
-        // Detenemos otros resaltados
-        this.activeTweens.forEach(t => t.destroy());
+        
+        // 1. Limpiamos cualquier animación previa
+        this.activeTweens.forEach(t => {
+            if (t.targets && t.targets[0]) {
+                t.targets[0].clearTint();
+                t.targets[0].setScale(3); // Devuelve a tu escala base
+            }
+            t.destroy();
+        });
         this.activeTweens = [];
 
+        // 2. Preparamos los colores para la mezcla
+        // 0xffffff es el color neutro (sin tinte), 0xffff00 es amarillo/dorado
+        const colorInicio = Phaser.Display.Color.ValueToColor(0xffffff); 
+        const colorFin = Phaser.Display.Color.ValueToColor(0xF7EB9C);    
+
+        // Inventamos una propiedad en el objeto para que el Tween la anime
+        obj.tintPercent = 0;
+
+        // 3. Creamos el Tween que hace TODO (Palpitar tamaño + Parpadear color)
         const tween = this.k.tweens.add({
             targets: obj,
-            alpha: 0.6,
-            duration: 400,
-            yoyo: true,
-            repeat: -1,
+            scaleX: 3.15,         // Aumenta un poquito
+            scaleY: 3.15,
+            tintPercent: 100,     // Anima nuestra variable del 0% al 100%
+            duration: 500,        // Medio segundo en iluminarse
+            yoyo: true,           // Vuelve a apagarse (deshace el camino)
+            repeat: -1,           // Bucle infinito
+            onUpdate: () => {
+                // En cada frame de la animación, calculamos el color intermedio
+                const colorIntermedio = Phaser.Display.Color.Interpolate.ColorWithColor(
+                    colorInicio, 
+                    colorFin, 
+                    100, 
+                    obj.tintPercent
+                );
+                
+                // Lo aplicamos al sprite
+                const tinteFinal = Phaser.Display.Color.GetColor(colorIntermedio.r, colorIntermedio.g, colorIntermedio.b);
+                obj.setTint(tinteFinal);
+            }
         });
+
         this.activeTweens.push(tween);
     }
 
@@ -155,11 +193,13 @@ export default class KitchenTutorial {
         this.say("Primero, vamos a familiarizarnos con los ingredientes. Las *bayas* están en la estantería de la izquierda. Intenta cogerlas.", () => {
 
                 // Desactivamos la interacción con TODO excepto las bayas
+                this.highlight(this.k.berriesJar);
                 this.k.berriesJar.setInteractive();
 
                 this.hook('kitchen:grab:start', (payload) => {
                         if(payload.sourceSprite == this.k.berriesJar){
                                 // Una vez coja las bayas, indicaremos que debe colocarlas en la tabla de cortar
+                                this.stop();
                                 this.step2();
                         }
                 });
@@ -176,6 +216,7 @@ export default class KitchenTutorial {
                 this.say("¡Perfecto! Ahora arrastra las bayas hasta la *tabla de cortar*.", () => {
                         this.k.cuttingBoard.setInteractive();
                         this.k.berriesJar.setInteractive();
+                        this.highlight(this.k.cuttingBoard);
                         
                         this.hook('kitchen:drop:cuttingBoard', (payload) => {
                                 // Nos aseguramos de que está soltando las bayas (por si acaso)
@@ -208,7 +249,16 @@ export default class KitchenTutorial {
 
         this.say("Para practicar con el mortero necesito que me traigas unas *raíces*. Cógelas de su frasco y arrástralas al mortero.", () => {
             this.k.rootsJar.setInteractive();
-            this.k.mortar.setInteractive();
+            this.highlight(this.k.rootsJar);
+            this.hook('kitchen:grab:start', (payload) => {
+                if (payload.sourceSprite === this.k.rootsJar) {
+                    this.stop();
+                    this.k.mortar.setInteractive();
+                    this.highlight(this.k.mortar);
+                }
+
+            });
+            
 
             this.hook('kitchen:drop:mortar', (payload) => {
                     //console.log("Hook 'kitchen:drop:mortar' disparado con data:", payload);
@@ -238,6 +288,7 @@ export default class KitchenTutorial {
         this.say("El libro de recetas es tu mejor amigo. En él podrás consultar qué ingredientes hay, las afinidades entre las distintas razas y para qué sirve cada herramienta. También podrás regresar a los tutoriales siempre que necesites practicar o que te refresquen la memoria ", () => {
 
             this.k.bookImg.setInteractive();
+            this.highlight(this.k.bookImg);
             this.k.bookImg.once('pointerdown', () => {
                 this.k.events.emit('book');
                 this.k.events.once('book:closed', () => {
@@ -261,6 +312,8 @@ export default class KitchenTutorial {
             this.k.greenTestTube.setInteractive();
             this.k.grayTestTube.setInteractive();
             this.k.cauldronImg.setInteractive();
+
+            
 
             const expected = 'redTestTube';
 

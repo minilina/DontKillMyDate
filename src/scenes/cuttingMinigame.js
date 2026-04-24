@@ -219,12 +219,12 @@ export default class CuttingMinigame extends Phaser.Scene {
     runTutorialFlow() {
         // Mostramos el texto de instrucciones
         const instructions = this.add.text(
-            this.scale.width / 2, 40, "¡Haz clic cuando la flecha esté en una zona oscura!",
+            this.scale.width / 2, 40, "Haz clic cuando la flecha esté en una zona oscura.\nDebes hacer 3 cortes.",
             { fontFamily: "VT323, monospace", fontSize: '32px', color: '#ffffff', stroke: '#000000', strokeThickness: 5, align: 'center' }
         ).setOrigin(0.5).setDepth(100);
 
         // Esperamos 3 segundos y luego empezamos el minijuego con la cuenta atrás
-        this.time.delayedCall(2000, () => {
+        this.time.delayedCall(10000, () => {
             instructions.destroy();
             this.startCountdown();
         });
