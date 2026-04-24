@@ -1,3 +1,41 @@
+export function splitIntoLines(text, maxLen = 2000) {
+  if (!text) return [];
+
+  // 1. Limpiamos el texto de espacios extra
+  const cleanText = text.replace(/\s+/g, " ").trim();
+
+  // 2. IMPORTANTE: No cortamos por frases ni por caracteres.
+  // Enviamos el bloque de texto completo. 
+  // Phaser (en dialogueUI.js) ya tiene configurado el 'wordWrapWidth: 480',
+  // por lo que él solo se encargará de que las palabras bajen de línea.
+  
+  // Si el texto es extremadamente largo (más de 400 caracteres), 
+  // podrías querer dividirlo en dos párrafos, pero para tus tutoriales
+  // lo mejor es mandarlo entero y que Phaser lo coloque.
+  
+  return [cleanText]; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 export function splitIntoLines(text, maxLen = 120) {
   if (!text) return [];
 
@@ -31,7 +69,7 @@ export function splitIntoLines(text, maxLen = 120) {
   }
 
   return lines;
-}
+}*/
 
 /**
  * Construye un diálogo completo (varias líneas) a partir de un request procedural.

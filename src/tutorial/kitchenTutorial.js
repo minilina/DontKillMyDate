@@ -231,7 +231,7 @@ export default class KitchenTutorial {
                                                 
                                                 // Al terminar, continuamos con el siguiente paso del tutorial.
                                                 this.say("¡Genial! Ya sabes cómo usar la tabla. Vamos al siguiente paso. Ahora vamos a utilizar el mortero.", () => {
-                                                        this.step3();
+                                                        this.step4();
                                                 });
                                         });
                                      
