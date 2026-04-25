@@ -1,21 +1,34 @@
-export function splitIntoLines(text, maxLen = 2000) {
+export function splitIntoLines(text, maxLen = 300) {
   if (!text) return [];
 
-  // 1. Limpiamos el texto de espacios extra
-  const cleanText = text.replace(/\s+/g, " ").trim();
+  // 1. Limpiamos y convertimos en un array de palabras
+  const words = text.replace(/\s+/g, " ").trim().split(" ");
+  
+  const pages = [];
+  let currentPage = "";
 
-  // 2. IMPORTANTE: No cortamos por frases ni por caracteres.
-  // Enviamos el bloque de texto completo. 
-  // Phaser (en dialogueUI.js) ya tiene configurado el 'wordWrapWidth: 480',
-  // por lo que él solo se encargará de que las palabras bajen de línea.
-  
-  // Si el texto es extremadamente largo (más de 400 caracteres), 
-  // podrías querer dividirlo en dos párrafos, pero para tus tutoriales
-  // lo mejor es mandarlo entero y que Phaser lo coloque.
-  
-  return [cleanText]; 
+  // 2. Vamos metiendo palabras una a una
+  for (const word of words) {
+    // Probamos si la palabra cabe en la página actual
+    const candidate = currentPage ? `${currentPage} ${word}` : word;
+    
+    // Si el texto acumulado supera los 145 caracteres, cerramos página.
+    // 145 caracteres son unas 3 lineas y media en tu UI, lo justo para no salirse.
+    if (candidate.length > maxLen) {
+      pages.push(currentPage);
+      currentPage = word;
+    } else {
+      currentPage = candidate;
+    }
+  }
+
+  // 3. Empujamos lo último que haya quedado
+  if (currentPage) {
+    pages.push(currentPage);
+  }
+
+  return pages;
 }
-
 
 
 
