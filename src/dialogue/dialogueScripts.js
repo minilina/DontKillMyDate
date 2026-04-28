@@ -1,3 +1,54 @@
+export function splitIntoLines(text, maxLen = 300) {
+  if (!text) return [];
+
+  // 1. Limpiamos y convertimos en un array de palabras
+  const words = text.replace(/\s+/g, " ").trim().split(" ");
+  
+  const pages = [];
+  let currentPage = "";
+
+  // 2. Vamos metiendo palabras una a una
+  for (const word of words) {
+    // Probamos si la palabra cabe en la página actual
+    const candidate = currentPage ? `${currentPage} ${word}` : word;
+    
+    // Si el texto acumulado supera los 145 caracteres, cerramos página.
+    // 145 caracteres son unas 3 lineas y media en tu UI, lo justo para no salirse.
+    if (candidate.length > maxLen) {
+      pages.push(currentPage);
+      currentPage = word;
+    } else {
+      currentPage = candidate;
+    }
+  }
+
+  // 3. Empujamos lo último que haya quedado
+  if (currentPage) {
+    pages.push(currentPage);
+  }
+
+  return pages;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 export function splitIntoLines(text, maxLen = 120) {
   if (!text) return [];
 
@@ -31,7 +82,7 @@ export function splitIntoLines(text, maxLen = 120) {
   }
 
   return lines;
-}
+}*/
 
 /**
  * Construye un diálogo completo (varias líneas) a partir de un request procedural.
