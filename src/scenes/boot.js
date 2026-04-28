@@ -15,6 +15,7 @@ import duckMallad from '../../assets/tiled/duckMallad.png';
 import extraVillageTilesets from '../../assets/tiled/extraVillageTilesets.png';
 import fenceWood from '../../assets/tiled/fenceWood.png';
 import halloweenContent from '../../assets/tiled/halloweenContent.png';
+import mushroomTree from '../../assets/tiled/Mushroom Tree.png';
 import pathTiles from '../../assets/tiled/pathTiles.png';
 import propsWater from '../../assets/tiled/propsWater.png';
 import road from '../../assets/tiled/road.png';
@@ -54,6 +55,20 @@ import pilar2 from '../../assets/tiled/pilar2.png';
 import roca from '../../assets/tiled/roca.png';
 import estatua from '../../assets/tiled/estatua.png';
 
+// flores y decoracion
+import amarillo from '../../assets/tiled/amarillo.png';
+import blanco from '../../assets/tiled/blanco.png';
+import brote from '../../assets/tiled/brote.png';
+import bushes from '../../assets/tiled/bushes.png';
+import campana from '../../assets/tiled/campana.png';
+import flores from '../../assets/tiled/flores.png';
+import hierbaVerde from '../../assets/tiled/hierba verde.png';
+import hierba from '../../assets/tiled/hierba.png';
+import setaAmarilla from '../../assets/tiled/seta amarilla.png';
+import setaRoja from '../../assets/tiled/seta roja.png';
+import setaVerde from '../../assets/tiled/seta verde.png';
+import setaTiled from '../../assets/tiled/seta.png';
+
 // objetos cueva
 import barril from '../../assets/tiled/barril.png';
 import tendedero from '../../assets/tiled/tendedero.png';
@@ -61,11 +76,26 @@ import lamp from '../../assets/tiled/lamp.png';
 import dogBathtub from '../../assets/tiled/dogBathtub.png';
 import pilaBarriles from '../../assets/tiled/pilaBarriles.png';
 
+// sprites mapa top-down (ciudad)
+import dosPng from '../../assets/tiled/2.png';
+import barnTileset from '../../assets/tiled/Barn tileset.png';
+import baseHouses from '../../assets/tiled/Base houses.png';
+import bigOldTree from '../../assets/tiled/Big old Tree.png';
+import constructionArea from '../../assets/tiled/Construction area.png';
+import leaf from '../../assets/tiled/Leaf.png';
+import pineTree from '../../assets/tiled/Pine Tree copiar.png';
+import springCrops from '../../assets/tiled/Spring Crops.png';
+import tableTiled from '../../assets/tiled/Table.png';
+import tilledSoil from '../../assets/tiled/Tilled Soil and wet soil.png';
+import waterBox from '../../assets/tiled/water box.png';
+import waterFountain from '../../assets/tiled/Water fountain.png';
+import wheat from '../../assets/tiled/Wheat.png';
+import wood from '../../assets/tiled/wood.png';
+
 import playerRun from '../../assets/anims/run.png';
 import playerIdle from '../../assets/anims/idle.png';
 import casa from '../../assets/tiled/casa.json';
 import cueva from '../../assets/tiled/cueva.json';
-
 
 // sprites escena tienda
 import store from '../../assets/sprites/store.jpg';
@@ -328,26 +358,31 @@ export default class Boot extends Phaser.Scene {
     }
 
     preload() {
+
+        // TOPDOWN 
         this.load.spritesheet('player-run', playerRun, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('player-idle', playerIdle, { frameWidth: 32, frameHeight: 32 });
 
-        this.load.image('allPropsSeasons', allPropsSeasons); 
-        this.load.image('bestFishPoint', bestFishPoint);
-        this.load.image('deepForestStones', deepForestStones);
-        this.load.image('duckMallad', duckMallad);
-        this.load.image('extraVillageTilesets', extraVillageTilesets);
-        this.load.image('fenceWood', fenceWood);
-        this.load.image('halloweenContent', halloweenContent);
+        // CASA
+        this.load.image('ALL props seasons', allPropsSeasons); 
+        this.load.image('best fish point 2', bestFishPoint);
+        this.load.image('deep forest stones', deepForestStones);
+        this.load.image('Duck Mallad', duckMallad);
+        this.load.image('Extra Village Tilesets', extraVillageTilesets);
+        this.load.image('Fence Wood', fenceWood);
+        this.load.image('Halloween Content', halloweenContent);
+        this.load.image('Mushroom Tree', mushroomTree);
+        this.load.image('Path tiles', pathTiles);
         this.load.image('pathTiles', pathTiles);
-        this.load.image('propsWater', propsWater);
-        this.load.image('road', road);
-        this.load.image('stoneStructures', stoneStructures);
-        this.load.image('stoneStructuresWater', stoneStructuresWater);
-        this.load.image('tilesetGrassCliffTilesetSpring', tilesetGrassCliffTilesetSpring);
-        this.load.image('tilesetGrassSpring', tilesetGrassSpring);
-        this.load.image('tilesetGrassWaterSpring', tilesetGrassWaterSpring);
-        this.load.image('treeTrunks', treeTrunks);
-        this.load.image('waterGroundAnimationsTiles', waterGroundAnimationsTiles);
+        this.load.image('props water', propsWater);
+        this.load.image('Road', road);
+        this.load.image('Stone structures', stoneStructures);
+        this.load.image('Stone structures Water', stoneStructuresWater);
+        this.load.image('Tileset Grass Cliff Tileset Spring', tilesetGrassCliffTilesetSpring);
+        this.load.image('Tileset Grass Spring', tilesetGrassSpring);
+        this.load.image('Tileset Grass Water Spring', tilesetGrassWaterSpring);
+        this.load.image('TREE TRUNKS copiar', treeTrunks);
+        this.load.image('Water Ground animations tiles', waterGroundAnimationsTiles);
 
         this.load.image('arbol_grande', pine);
         this.load.image('arbol_mediano', pine2);
@@ -361,21 +396,34 @@ export default class Boot extends Phaser.Scene {
         this.load.image('roca', roca);
         this.load.image('estatua', estatua);
         this.load.image('letrero', letrero);
+        this.load.image('amarillo', amarillo);
+        this.load.image('blanco', blanco);
+        this.load.image('brote', brote);
+        this.load.image('bushes', bushes);
+        this.load.image('campana', campana);
+        this.load.image('flores', flores);
+        this.load.image('hierba verde', hierbaVerde);
+        this.load.image('hierba', hierba);
+        this.load.image('seta amarilla', setaAmarilla);
+        this.load.image('seta roja', setaRoja);
+        this.load.image('seta verde', setaVerde);
+        this.load.image('seta', setaTiled);
 
         this.load.tilemapTiledJSON('casa', casa);
 
-        this.load.image('bonfireFish', bonfireFish);
-        this.load.image('caveWaterGroundAnimationsTiles', caveWaterGroundAnimationsTiles);
-        this.load.image('caves', caves);
+        // CUEVA
+        this.load.image('bonfire Fish', bonfireFish);
+        this.load.image('Cave Water Ground animations tiles', caveWaterGroundAnimationsTiles);
+        this.load.image('Caves', caves);
         this.load.image('chest', chest);
         this.load.image('entering', entering);
-        this.load.image('exteriorBeach', exteriorBeach);
-        this.load.image('exterior', exterior);
-        this.load.image('lightEffect', lightEffect);
-        this.load.image('mineProps', mineProps);
-        this.load.image('propsMine', propsMine);
-        this.load.image('stoneWithMinerals', stoneWithMinerals);
-        this.load.image('tilesetGrassCaves', tilesetGrassCaves);
+        this.load.image('Exterior Beach', exteriorBeach);
+        this.load.image('Exterior', exterior);
+        this.load.image('Light Effect', lightEffect);
+        this.load.image('Mine props', mineProps);
+        this.load.image('Props Mine', propsMine);
+        this.load.image('stone with minerals', stoneWithMinerals);
+        this.load.image('Tileset Grass Caves', tilesetGrassCaves);
 
         this.load.image('dogBathtub', dogBathtub);
         this.load.image('lamp', lamp);
@@ -383,11 +431,29 @@ export default class Boot extends Phaser.Scene {
         this.load.image('tendedero', tendedero);
         this.load.image('pilaBarriles', pilaBarriles);
 
+        this.load.tilemapTiledJSON('cueva', cueva);
+
+        // CIUDAD
+        this.load.image('2', dosPng);
+        this.load.image('Barn tileset', barnTileset);
+        this.load.image('Base houses', baseHouses);
+        this.load.image('Big old Tree', bigOldTree);
+        this.load.image('Construction area', constructionArea);
+        this.load.image('Leaf', leaf);
+        this.load.image('Pine Tree copiar', pineTree);
+        this.load.image('Spring Crops', springCrops);
+        this.load.image('Table', tableTiled);
+        this.load.image('Tilled Soil and wet soil', tilledSoil);
+        this.load.image('water box', waterBox);
+        this.load.image('Water fountain', waterFountain);
+        this.load.image('Wheat', wheat);
+        this.load.image('wood', wood);
+
+        // TIENDA
+
         this.load.image('resumenBg', resumenBg);
         this.load.image('estrella', estrella);
         this.load.image('corazon', corazon);    
-
-        this.load.tilemapTiledJSON('cueva', cueva);
 
         this.load.image('store', store);
         this.load.image('dialog', dialog);
