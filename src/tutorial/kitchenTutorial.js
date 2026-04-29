@@ -115,52 +115,35 @@ export default class KitchenTutorial {
     }
 
     highlight(obj) {
-        if (!obj) return;
+    if (!obj) return;
 
-        // 1. Limpiamos cualquier animación previa
-        this.activeTweens.forEach(t => {
-            if (t.targets && t.targets[0]) {
-                t.targets[0].clearTint();
-                t.targets[0].setScale(3); // Devuelve a tu escala base
-            }
+    // 1. En lugar de this.stop(), solo quitamos el brillo 
+    // si ESTE objeto específico ya lo tenía puesto.
+    this.activeTweens = this.activeTweens.filter(t => {
+        if (t.targets && t.targets[0] === obj) {
+            obj.clearTint();
+            obj.setScale(3); // Tu escala base
             t.destroy();
-        });
-        this.activeTweens = [];
+            return false; // Lo eliminamos de la lista
+        }
+        return true;
+    });
 
-        // 2. Preparamos los colores para la mezcla
-        // 0xffffff es el color neutro (sin tinte), 0xffff00 es amarillo/dorado
-        const colorInicio = Phaser.Display.Color.ValueToColor(0xffffff);
-        const colorFin = Phaser.Display.Color.ValueToColor(0xF7EB9C);
+    // 2. Aplicamos el efecto (manteniendo tu estilo de brillo)
+    const tween = this.k.tweens.add({
+        targets: obj,
+        scaleX: 3.15,
+        scaleY: 3.15,
+        duration: 800,
+        yoyo: true,
+        repeat: -1,
+        onStart: () => {
+            obj.setTint(0xF7EB9C); // O el color que prefieras
+        }
+    });
 
-        // Inventamos una propiedad en el objeto para que el Tween la anime
-        obj.tintPercent = 0;
-
-        // 3. Creamos el Tween que hace TODO (Palpitar tamaño + Parpadear color)
-        const tween = this.k.tweens.add({
-            targets: obj,
-            scaleX: 3.15,         // Aumenta un poquito
-            scaleY: 3.15,
-            tintPercent: 100,     // Anima nuestra variable del 0% al 100%
-            duration: 500,        // Medio segundo en iluminarse
-            yoyo: true,           // Vuelve a apagarse (deshace el camino)
-            repeat: -1,           // Bucle infinito
-            onUpdate: () => {
-                // En cada frame de la animación, calculamos el color intermedio
-                const colorIntermedio = Phaser.Display.Color.Interpolate.ColorWithColor(
-                    colorInicio,
-                    colorFin,
-                    100,
-                    obj.tintPercent
-                );
-
-                // Lo aplicamos al sprite
-                const tinteFinal = Phaser.Display.Color.GetColor(colorIntermedio.r, colorIntermedio.g, colorIntermedio.b);
-                obj.setTint(tinteFinal);
-            }
-        });
-
-        this.activeTweens.push(tween);
-    }
+    this.activeTweens.push(tween);
+}
 
     say(text, onDoneCallback) {
 
@@ -351,13 +334,14 @@ export default class KitchenTutorial {
         this.disableAllInteractions();
         this.stop();
         this.k.tutorialMode = true;
-        this.say("El libro de recetas es tu mejor amigo. En él podrás consultar qué ingredientes hay, las afinidades entre las distintas razas y para qué sirve cada herramienta. También podrás regresar a los tutoriales siempre que necesites practicar o que te refresquen la memoria ", () => {
+        this.say("El libro de recetas es tu mejor amigo. En él podrás consultar qué ingredientes hay, las afinidades entre las distintas razas y para qué sirve cada herramienta. También podrás regresar a los tutoriales siempre que necesites practicar o que te refresquen la memoria.", () => {
             this.showHelp("Abre el libro de recetas");
 
             this.k.bookImg.setInteractive();
             this.highlight(this.k.bookImg);
             this.k.bookImg.once('pointerdown', () => {
                 this.clearHelp();
+                this.stop();
                 this.k.events.emit('book');
                 this.k.events.once('book:closed', () => {
                     this.say("¡Perfecto! Ahora que ya sabes dónde mirar las compatibilidades entre razas podemos pasar a las tres probetas que se encuentran a mi derecha. Dependiendo de la afinidad que obtengamos, deberás elegir una u otra y arrastrarlas al caldero.", () => {
@@ -380,14 +364,26 @@ export default class KitchenTutorial {
             this.showHelp("Comprueba la afinidad entre gnomos y hadas y arrastra la probeta hacia el caldero");
             
             this.k.bookImg.setInteractive();
-            this.k.redTestTube.setInteractive();
-            this.k.greenTestTube.setInteractive();
-            this.k.grayTestTube.setInteractive();
-            this.k.cauldronImg.setInteractive();
-
-
+            
+            //this.k.cauldronImg.setInteractive();
 
             const expected = 'redTestTube';
+
+            this.highlight(this.k.bookImg);
+            this.k.bookImg.once('pointerdown', () => {
+                this.stop();
+                this.k.events.emit('book');
+                this.k.events.once('book:closed', () => {
+
+                    this.k.redTestTube.setInteractive();
+                    this.k.greenTestTube.setInteractive();
+                    this.k.grayTestTube.setInteractive();
+
+                    this.highlight(this.k.redTestTube);
+                    this.highlight(this.k.greenTestTube);
+                    this.highlight(this.k.grayTestTube);
+                    });
+                });
 
             this.hook('kitchen:drop:cauldron', ({ itemType, dropData }) => {
 
