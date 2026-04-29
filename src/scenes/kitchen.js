@@ -606,6 +606,7 @@ export default class Kitchen extends Phaser.Scene {
     }
 
     // devolver el ingrediente procesado a la cocina después del minijuego
+    // devolver el ingrediente procesado a la cocina después del minijuego
     returnFromMinigame(ingredient, processType, cutsArray = []) {
         if (processType === 'cut') {
 
@@ -637,6 +638,43 @@ export default class Kitchen extends Phaser.Scene {
                 name: baseName,
                 consistency: 'chopped',
                 cuts: cutsArray
+            });
+
+        } else if (processType === 'mortar') {
+            
+            const baseName = ingredient.replace('cut', '').toLowerCase();
+            const normalKey = baseName;       // ej: 'mushroom'
+            const borderKey = baseName + 'B'; // ej: 'mushroomB'
+
+            // Crear el sprite del ingrediente machacado sobre el mortero
+            // Ajustamos x e y para que quede centrado en el mortero
+            const mashedIngredient = this.add.sprite(
+                this.mortar.x + 30, 
+                this.mortar.y + 10, 
+                normalKey
+            ).setOrigin(0, 0).setScale(3).setInteractive({ 
+                useHandCursor: true, 
+                pixelPerfect: true 
+            });            
+
+            // Opcional: darle un pequeño giro o tinte para que se vea diferente al ingrediente entero
+            mashedIngredient.setTint(0xdddddd);
+            mashedIngredient.setAngle(30);
+
+            mashedIngredient.on('pointerover', () => {
+                if (!this.isDraggingItem) {
+                    mashedIngredient.setTexture(borderKey);
+                }
+            });
+
+            mashedIngredient.on('pointerout', () => {
+                mashedIngredient.setTexture(normalKey);
+            });
+
+            this.grab(mashedIngredient, normalKey, 'processedTaste', {
+                name: baseName,
+                consistency: 'mashed',
+                score: cutsArray // Guardamos la puntuación que nos pase el minijuego
             });
         }
     }
