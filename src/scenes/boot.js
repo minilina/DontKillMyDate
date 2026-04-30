@@ -313,6 +313,17 @@ import cutCrystal from '../../assets/sprites/kitchen/cristal_cortar.png';
 import cutAnim from '../../assets/anims/cuchillo_anim.png';
 import cutAnimJson from '../../assets/anims/cuchillo_anim_atlas.json';
 
+import smashedAlgae from '../../assets/sprites/kitchen/alga_machacada.png';
+import smashedBerries from '../../assets/sprites/kitchen/baya_machacada.png';
+import smashedMushroom from '../../assets/sprites/kitchen/seta_machacada.png';
+import smashedRoot from '../../assets/sprites/kitchen/raiz_machacada.png';
+import smashedCrystal from '../../assets/sprites/kitchen/cristal_machacado.png';
+import algaeInMortar from '../../assets/sprites/kitchen/alga_mortero.png';
+import berriesInMortar from '../../assets/sprites/kitchen/baya_mortero.png';
+import mushroomInMortar from '../../assets/sprites/kitchen/seta_mortero.png';
+import rootInMortar from '../../assets/sprites/kitchen/raiz_mortero.png';
+import crystalInMortar from '../../assets/sprites/kitchen/cristal_mortero.png';
+
 // sprites libro abierto cocina
 import openBook from '../../assets/sprites/libro.png';
 import normal from '../../assets/sprites/normal.png';
@@ -643,6 +654,16 @@ export default class Boot extends Phaser.Scene {
         this.load.image('heatBar', heatBar);
         this.load.image('heatArrow', heatArrow);
         this.load.image("open_note", nota);
+        this.load.image('smashedAlgae', smashedAlgae);
+        this.load.image('smashedBerries', smashedBerries);
+        this.load.image('smashedMushroom', smashedMushroom);
+        this.load.image('smashedRoot', smashedRoot);
+        this.load.image('smashedCrystal', smashedCrystal);
+        this.load.image('algaeInMortar', algaeInMortar);
+        this.load.image('berriesInMortar', berriesInMortar);
+        this.load.image('mushroomInMortar', mushroomInMortar);
+        this.load.image('rootInMortar', rootInMortar);
+        this.load.image('crystalInMortar', crystalInMortar);
 
         this.load.image('indicator', indicator);
         this.load.image('lightOverlay', lightOverlay);

@@ -191,7 +191,7 @@ export default class MortarMinigame extends Phaser.Scene {
         
         // Penalización (solo si no es el tutorial)
         if (!this.isTutorial) {
-            GameState.reducePotionQuality(2); 
+            GameState.reducePotionQuality(1); 
         }
     }
 
@@ -304,7 +304,7 @@ export default class MortarMinigame extends Phaser.Scene {
         let kitchenScene = this.scene.get('kitchen');
         
         // Enviamos la puntuación obtenida a la cocina
-        kitchenScene.returnFromMinigame(this.ingredientId, 'mortar', this.score);
+        kitchenScene.returnFromMinigame(this.ingredientId, 'mortar');
         
         this.scene.resume('kitchen');
         this.scene.stop();
