@@ -1,6 +1,6 @@
 {
   "elf": {
-    "name": "Joker Persona 5",
+    "name": "Aelion, Guardián del Alba",
     "looks": {
       "base": "cuerpo_1",
       "boca": "boca_normal_1",
@@ -22,12 +22,16 @@
       "forma_frasco": "estrella"
     },
     "dialogue": [
-      "Saludos, alquimista. Vengo de las profundidades del bosque porque deseo impresionar a {raza_objetivo}.",
-      "Necesito una esencia {color} y con {sabor}. Asegúrate de que la textura quede {consistencia}. Que esté {temperatura} y guárdala {forma_frasco}."
+      "Saludos, alquimista. Hace siglos que perdimos los caminos de nuestro propio bosque, pero deseo abrirle los ojos a los {raza_objetivo}.",
+      "Necesito que vean la verdad oculta tras la niebla. Prepárame una esencia {color} y con {sabor}. Asegúrate de que la textura quede {consistencia}, que esté {temperatura} y guárdala {forma_frasco}."
+    ],
+    "successDialogue": [
+      "La pureza de esta poción es deslumbrante... Al beber esto, los velos mágicos se apartarán de sus ojos por fin.",
+      "Si alguna vez exploras la Arboleda Oeste, búscame. Te contaré lo que descubrimos más allá de la niebla."
     ]
   },
   "nymph": {
-    "name": "Heeseung El Traidor",
+    "name": "Thalassa de las Aguas Claras",
     "looks": {
       "base": "cuerpo_2",
       "boca": "boca_normal_2",
@@ -49,12 +53,16 @@
       "forma_frasco": "corazon"
     },
     "dialogue": [
-      "El agua está turbia hoy... y mi corazón también late por {raza_objetivo}.",
-      "Tráeme algo {color} que tenga {sabor}. Dásmelo {temperatura}. Asegúrate de que la mezcla quede {consistencia} y ponlo {forma_frasco}."
+      "Las raíces oscuras están envenenando el río... He forjado una alianza secreta con los {raza_objetivo} para purificar los manantiales antes de que sea tarde.",
+      "Nuestra magia combinada requiere un catalizador. Tráeme algo {color} que tenga {sabor}. Dásmelo {temperatura}, que la mezcla quede {consistencia} y ponlo {forma_frasco}."
+    ],
+    "successDialogue": [
+      "¡Oh! Siento palpitar la energía en este frasco. Esta mezcla es perfecta para sanar el Manantial Llorón.",
+      "Pásate por la orilla del Río Norte cuando salgas de la tienda. Mis aliados y yo estaremos en deuda contigo."
     ]
   },
-  "gnomo_1": {
-    "name": "No se Ya",
+  "gnomo": {
+    "name": "Bramok Picoférreo",
     "looks": {
       "base": "cuerpo_3",
       "boca": "boca_normal_3",
@@ -76,8 +84,105 @@
       "forma_frasco": "estrella"
     },
     "dialogue": [
-      "Saludos, alquimista. Vengo de las minas oscuras persiguiendo el amor de {raza_objetivo}.",
-      "Hazme una poción {color} y con {sabor}, y déjala {consistencia}. Que esté {temperatura} y guárdala {forma_frasco}."
+      "Muchacho, en las profundidades de la mina hemos despertado algo antiguo... Los {raza_objetivo} son los únicos con la luz suficiente para sellar la grieta.",
+      "Para forjar el sello necesito una mezcla {color} y {sabor}. Déjala {consistencia}. Que esté {temperatura} y ponlo {forma_frasco}."
+    ],
+    "successDialogue": [
+      "¡Por las barbas de piedra! Tiene la potencia exacta. Con esto conseguiremos sellar la grieta antes de que esa cosa escape.",
+      "Te has ganado el respeto de las profundidades. Búscame en la entrada de la cueva en tu tiempo libre, tengo algo importante que mostrarte."
+    ]
+  },
+  "fairy": {
+    "name": "Lirael, Tejedora de Luz",
+    "looks": {
+      "base": "cuerpo_4",
+      "boca": "boca_normal_4",
+      "nariz": "nariz_4",
+      "ojos": "ojos_dorados",
+      "pelo": "pelo_4_rosa",
+      "ropa": "ropa_hada",
+      "orejas": "orejas_1_elfo_hada",
+      "rasgoFrente": "alas_hada",
+      "rasgoDetras": null
+    },
+    "requirements": {
+      "raza": "hadas",
+      "raza_objetivo": "gnomos",
+      "sabor": "acido",
+      "color": "amarillo",
+      "consistencia": "entera",
+      "temperatura": "frio",
+      "forma_frasco": "estrella"
+    },
+    "dialogue": [
+      "El polvo de estrellas de nuestro hogar se está apagando... Los ancianos creen que los cristales de los {raza_objetivo} pueden reflejar la luz que hemos perdido.",
+      "Para despertar esa magia, requiero una poción {color} y con {sabor}. Mantén la esencia {consistencia}. Sírvela {temperatura} y guárdala {forma_frasco}."
+    ],
+    "successDialogue": [
+      "¡Qué maravilla! Brilla con la intensidad de mil luciérnagas. Con esto podremos devolverle la vida a nuestra arboleda.",
+      "Si alguna vez caminas por el Claro Resplandeciente bajo la luna, ven a verme. Te enseñaré a escuchar el canto de la luz."
+    ]
+  },
+  "human": {
+    "name": "Kaelen el Errante",
+    "looks": {
+      "base": "cuerpo_5",
+      "boca": "boca_normal_5",
+      "nariz": "nariz_5",
+      "ojos": "ojos_marrones",
+      "pelo": "pelo_5_castano",
+      "ropa": "ropa_humano",
+      "orejas": null,
+      "rasgoFrente": null,
+      "rasgoDetras": "capa_viajero"
+    },
+    "requirements": {
+      "raza": "humanos",
+      "raza_objetivo": "ninfas",
+      "sabor": "amargo",
+      "color": "verde",
+      "consistencia": "machacada",
+      "temperatura": "caliente",
+      "forma_frasco": "normal"
+    },
+    "dialogue": [
+      "Las cosechas de mi aldea se marchitan bajo una extraña plaga. He viajado semanas buscando el poder purificador de las {raza_objetivo} para salvar a mi pueblo.",
+      "El remedio debe ser {color} y de un intenso sabor {sabor}. Asegúrate de dejarlo bien {consistencia}. Prepáralo {temperatura} y entrégamelo {forma_frasco}."
+    ],
+    "successDialogue": [
+      "Increíble... el calor y el aroma por sí solos ya me devuelven la esperanza. Mi gente no olvidará esta deuda, alquimista.",
+      "Si te aventuras por el Camino del Sur en tus expediciones, visita nuestro campamento. Podría conseguirte materiales raros."
+    ]
+  },
+  "kitsune": {
+    "name": "Akira, Sombra del Templo",
+    "looks": {
+      "base": "cuerpo_6",
+      "boca": "boca_normal_6",
+      "nariz": "nariz_6",
+      "ojos": "ojos_rasgados",
+      "pelo": "pelo_6_blanco",
+      "ropa": "ropa_kitsune",
+      "orejas": "orejas_kitsune",
+      "rasgoFrente": "marcas_kitsune",
+      "rasgoDetras": "colas_kitsune"
+    },
+    "requirements": {
+      "raza": "kitsunes",
+      "raza_objetivo": "hadas",
+      "sabor": "umami",
+      "color": "naranja",
+      "consistencia": "cortada",
+      "temperatura": "caliente",
+      "forma_frasco": "estrella"
+    },
+    "dialogue": [
+      "Saludos, mortal. Los faroles de nuestro santuario ancestral se han apagado, y se dice que la chispa de las {raza_objetivo} es la única capaz de encender el fuego espiritual de nuevo.",
+      "Necesito una ofrenda de color {color} y con sabor {sabor}. Deja que la textura quede {consistencia}. Sírvela bien {temperatura} y guárdala {forma_frasco}."
+    ],
+    "successDialogue": [
+      "Ah... qué aroma tan fascinante. Esta esencia es exactamente lo que necesitamos para engañar a las sombras y devolver la luz a nuestros dominios.",
+      "Me has caído bien. Si alguna vez te pierdes en el Bosque de los Cerezos, busca el farol azul. Te enseñaré un par de trucos interesantes."
     ]
   }
 }

@@ -2,16 +2,76 @@
   {
     "day": 1,
     "difficulty": "facil",
-    "customers": ["npc", "npc"]
+    "customers": ["elf", "npc"]
   },
   {
     "day": 2,
+    "difficulty": "facil",
+    "customers": ["npc", "npc"]
+  },
+  {
+    "day": 3,
+    "difficulty": "facil",
+    "customers": ["npc", "elf"]
+  },
+  {
+    "day": 4,
     "difficulty": "medio",
     "customers": ["npc", "npc", "npc"]
   },
   {
-    "day": 3,
-    "difficulty": "dificil",
+    "day": 5,
+    "difficulty": "medio",
+    "customers": ["npc", "nymph", "npc"]
+  },
+  {
+    "day": 6,
+    "difficulty": "medio",
     "customers": ["npc", "npc", "npc"]
+  },
+  {
+    "day": 7,
+    "difficulty": "medio",
+    "customers": ["npc", "npc", "gnomo", "npc"]
+  },
+  {
+    "day": 8,
+    "difficulty": "medio",
+    "customers": ["npc", "npc", "npc", "npc"]
+  },
+  {
+    "day": 9,
+    "difficulty": "dificil",
+    "customers": ["npc", "fairy", "npc", "npc"]
+  },
+  {
+    "day": 10,
+    "difficulty": "dificil",
+    "customers": ["npc", "npc", "npc", "npc"]
+  },
+  {
+    "day": 11,
+    "difficulty": "dificil",
+    "customers": ["npc", "npc", "human", "npc", "npc"]
+  },
+  {
+    "day": 12,
+    "difficulty": "dificil",
+    "customers": ["npc", "npc", "npc", "npc", "npc"]
+  },
+  {
+    "day": 13,
+    "difficulty": "dificil",
+    "customers": ["npc", "kitsune", "npc", "npc", "npc"]
+  },
+  {
+    "day": 14,
+    "difficulty": "dificil",
+    "customers": ["npc", "npc", "npc", "npc", "npc"]
+  },
+  {
+    "day": 15,
+    "difficulty": "dificil",
+    "customers": ["npc", "npc", "npc", "npc", "npc"]
   }
 ]

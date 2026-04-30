@@ -10,6 +10,23 @@ const GameState = {
     quality: 100,
   },
 
+  // Puntuación que obtiene cada npc scripted para pasarsela al topdown
+  specialNpcRecords: {
+    elf: null,
+    nymph: null,
+    gnomo: null,
+    fairy: null,
+    human: null,
+    kitsune: null,
+  },
+
+  // Con esta función guardamos la puntuación en el diccionario de arriba
+  saveSpecialNpcRecord(npcId, score) {
+    if (this.specialNpcRecords[npcId] !== undefined) {
+      this.specialNpcRecords[npcId] = score;
+    }
+  },
+
   dailyStats: {
     served: 0,
     good: 0,
@@ -54,7 +71,8 @@ const GameState = {
     this.currentDay++;
     this.currentCustomer = 0;
 
-    this.dailyStats = { // reiniciamos las stats diarias
+    this.dailyStats = {
+      // reiniciamos las stats diarias
       served: 0,
       good: 0,
       bad: 0,
@@ -78,57 +96,90 @@ const GameState = {
     // diccionario de traducción palabras caldero - palabras json
     const dict = {
       // sabores
-      'sweet': 'dulce', 'bitter': 'amargo', 'salty': 'salado', 'umami': 'umami', 'sour': 'acido',
+      sweet: "dulce",
+      bitter: "amargo",
+      salty: "salado",
+      umami: "umami",
+      sour: "acido",
       // colores
-      'red': 'rojo', 'blue': 'azul', 'yellow': 'amarillo', 'green': 'verde', 'orange': 'naranja', 'purple': 'morado',
+      red: "rojo",
+      blue: "azul",
+      yellow: "amarillo",
+      green: "verde",
+      orange: "naranja",
+      purple: "morado",
       // consistencias
-      'whole': 'entera', 'chopped': 'cortada', 'mashed': 'machacada',
+      whole: "entera",
+      chopped: "cortada",
+      mashed: "machacada",
       // temperaturas
-      'cold': 'frio', 'hot': 'calor', 'warm': 'tiempo',
+      cold: "frio",
+      hot: "calor",
+      warm: "tiempo",
       // formas frascos
-      'Star': 'estrella', 'Heart': 'corazon', 'Normal': 'normal'
+      Star: "estrella",
+      Heart: "corazon",
+      Normal: "normal",
     };
 
     // calculadora de olores (compatiqbilidad razas)
     const getExpectedTestTube = (raza1, raza2) => {
-        if (!raza1 || !raza2) return null; 
+      if (!raza1 || !raza2) return null;
 
-        const key = [raza1.toLowerCase(), raza2.toLowerCase()].sort().join("-");
-        
-        const afinidadDict = {
-          "humanos-humanos": "afin", "hadas-hadas": "afin", "ninfas-ninfas": "afin",
-          "kitsunes-kitsunes": "afin", "elfos-elfos": "afin", "gnomos-gnomos": "afin",
-          "hadas-humanos": "afin", "humanos-ninfas": "igual", "humanos-kitsunes": "igual",
-          "elfos-humanos": "hostil", "gnomos-humanos": "hostil", "hadas-ninfas": "hostil",
-          "hadas-kitsunes": "igual", "elfos-hadas": "igual", "gnomos-hadas": "hostil",
-          "kitsunes-ninfas": "hostil", "elfos-ninfas": "afin", "gnomos-ninfas": "igual",
-          "elfos-kitsunes": "hostil", "gnomos-kitsunes": "afin", "elfos-gnomos": "igual"
-        };
+      const key = [raza1.toLowerCase(), raza2.toLowerCase()].sort().join("-");
 
-        const afinidad = afinidadDict[key] || "igual"; 
+      const afinidadDict = {
+        "humanos-humanos": "afin",
+        "hadas-hadas": "afin",
+        "ninfas-ninfas": "afin",
+        "kitsunes-kitsunes": "afin",
+        "elfos-elfos": "afin",
+        "gnomos-gnomos": "afin",
+        "hadas-humanos": "afin",
+        "humanos-ninfas": "igual",
+        "humanos-kitsunes": "igual",
+        "elfos-humanos": "hostil",
+        "gnomos-humanos": "hostil",
+        "hadas-ninfas": "hostil",
+        "hadas-kitsunes": "igual",
+        "elfos-hadas": "igual",
+        "gnomos-hadas": "hostil",
+        "kitsunes-ninfas": "hostil",
+        "elfos-ninfas": "afin",
+        "gnomos-ninfas": "igual",
+        "elfos-kitsunes": "hostil",
+        "gnomos-kitsunes": "afin",
+        "elfos-gnomos": "igual",
+      };
 
-        if (afinidad === "afin") return "greenTestTube";
-        if (afinidad === "hostil") return "redTestTube";
-        return "grayTestTube";
+      const afinidad = afinidadDict[key] || "igual";
+
+      if (afinidad === "afin") return "greenTestTube";
+      if (afinidad === "hostil") return "redTestTube";
+      return "grayTestTube";
     };
 
     // función para validar categorías que son arrays (sabor, consistencia, olor)
     const checkArrayCategory = (actualArray, requiredValue) => {
-        const translatedArray = actualArray.map(item => dict[item] || item);
-        if (!translatedArray.includes(requiredValue)) {
-          quality -= 20; 
-        }
-        const extraIngredients = translatedArray.filter(item => item !== requiredValue);
-        quality -= (20 * extraIngredients.length); 
+      const translatedArray = actualArray.map((item) => dict[item] || item);
+      if (!translatedArray.includes(requiredValue)) {
+        quality -= 20;
+      }
+      const extraIngredients = translatedArray.filter(
+        (item) => item !== requiredValue,
+      );
+      quality -= 20 * extraIngredients.length;
     };
 
     // validar color
     if (req.color) {
-        let finalColor = cauldronPotion.color ? cauldronPotion.color.replace('Liquid', '') : null;
-        let translatedColor = dict[finalColor] || finalColor;
-        if (translatedColor !== req.color) {
-          quality -= 20; 
-        }
+      let finalColor = cauldronPotion.color
+        ? cauldronPotion.color.replace("Liquid", "")
+        : null;
+      let translatedColor = dict[finalColor] || finalColor;
+      if (translatedColor !== req.color) {
+        quality -= 20;
+      }
     }
 
     // validar sabor
@@ -149,22 +200,23 @@ const GameState = {
 
     // validar temperatura
     if (req.temperatura) {
-        let translatedTemp = dict[cauldronPotion.temperature] || cauldronPotion.temperature;
-        if (translatedTemp !== req.temperatura) {
-          quality -= 20; 
-        }
+      let translatedTemp =
+        dict[cauldronPotion.temperature] || cauldronPotion.temperature;
+      if (translatedTemp !== req.temperatura) {
+        quality -= 20;
+      }
     }
 
     // validar forma frasco
     if (req.forma_frasco) {
-        let translatedShape = dict[potionShape] || potionShape;
-        if (translatedShape !== req.forma_frasco) {
-          quality -= 20; 
-        }
+      let translatedShape = dict[potionShape] || potionShape;
+      if (translatedShape !== req.forma_frasco) {
+        quality -= 20;
+      }
     }
 
     this.currentPotion.quality = Math.max(0, quality);
-    
+
     return this.currentPotion.quality;
   },
 
@@ -188,18 +240,18 @@ const GameState = {
     this.reputation += change;
 
     if (this.reputation <= 0) {
-        this.reputation = 0;
+      this.reputation = 0;
     }
 
-     this.dailyStats.served++; // sumamos un cliente atendido
+    this.dailyStats.served++; // sumamos un cliente atendido
 
-     if (q >= 50) {
-       this.dailyStats.repChange += change; // gurado rep
-       this.dailyStats.good++; // sumamos un éxito
-     } else {
-       this.dailyStats.repChange += change; // guardamos rep
-       this.dailyStats.bad++; // sumamos un fallo
-     }
+    if (q >= 50) {
+      this.dailyStats.repChange += change; // gurado rep
+      this.dailyStats.good++; // sumamos un éxito
+    } else {
+      this.dailyStats.repChange += change; // guardamos rep
+      this.dailyStats.bad++; // sumamos un fallo
+    }
 
     // avanzar al siguiente cliente
     this.currentCustomer++;
@@ -209,14 +261,14 @@ const GameState = {
   getDailyStars() {
     if (this.dailyStats.served === 0) return 0;
     const ratio = this.dailyStats.good / this.dailyStats.served;
-    return Math.round(ratio * 5); 
+    return Math.round(ratio * 5);
   },
 
   getReputationHearts() {
     const maxRep = 100; // lo ajustaremos cd sepamos el maximo real
     const clampedRep = Math.max(0, Math.min(this.reputation, maxRep));
     return Math.round((clampedRep / maxRep) * 5);
-  }
+  },
 };
 
 export default GameState;

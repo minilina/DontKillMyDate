@@ -54,8 +54,9 @@ export function generateRandomRequest(difficulty = "facil") {
   );
   const txtDespedida = Phaser.Utils.Array.GetRandom(Diccionario.despedidas);
 
-
-  const template = Phaser.Utils.Array.GetRandom(Diccionario.templates[difficulty],);
+  const template = Phaser.Utils.Array.GetRandom(
+    Diccionario.templates[difficulty],
+  );
 
   // los * son para marcar dnd van las animaciones
   const text = template
@@ -93,7 +94,7 @@ export function generateRandomRequest(difficulty = "facil") {
 export function processScriptedDialogue(specialData, difficulty = "facil") {
   const reqs = specialData.requirements;
 
-  // pista según dificultad 
+  // pista según dificultad
   const txtSabor = Phaser.Utils.Array.GetRandom(
     Diccionario.sabores[reqs.sabor][difficulty],
   );
@@ -113,15 +114,15 @@ export function processScriptedDialogue(specialData, difficulty = "facil") {
     Diccionario.razas_objetivo[reqs.raza_objetivo][difficulty],
   );
 
-  // Reemplazamos las etiquetas en sus líneas de diálogo
+  
   const processedLines = specialData.dialogue.map((line) => {
     return line
-      .replace("{raza_objetivo}", txtRazaObjetivo)
-      .replace("{color}", txtColor)
-      .replace("{sabor}", txtSabor)
-      .replace("{consistencia}", txtConsist)
-      .replace("{temperatura}", txtTemp)
-      .replace("{forma_frasco}", txtFrasco);
+      .replace("{raza_objetivo}", `*${txtRazaObjetivo}*`)
+      .replace("{color}", `*${txtColor}*`)
+      .replace("{sabor}", `*${txtSabor}*`)
+      .replace("{consistencia}", `*${txtConsist}*`)
+      .replace("{temperatura}", `*${txtTemp}*`)
+      .replace("{forma_frasco}", `*${txtFrasco}*`);
   });
 
   return {

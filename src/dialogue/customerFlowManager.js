@@ -4,7 +4,7 @@ import {
   generateRandomRequest,
   processScriptedDialogue,
 } from "./requestGenerator.js";
-import { buildDialogueFromRequest } from "./dialogueScripts.js";
+import { buildDialogueFromRequest, splitIntoLines } from "./dialogueScripts.js";
 import NPCGenerator from "../utils/npcGenerator.js";
 import GameState from "../state/GameState.js";
 
@@ -14,6 +14,9 @@ export default class CustomerFlowManager {
     this.dialogueManager = new DialogueManager(scene);
     this.currentCustomer = null;
     this.currentRequest = null;
+
+    this.isShowingResult = false;
+    this.onResultComplete = null;
 
     this._onDialogueFinished = this._onDialogueFinished.bind(this);
     this.scene.events.on("dialogue:finished", this._onDialogueFinished);
@@ -39,7 +42,9 @@ export default class CustomerFlowManager {
     const customerType = GameState.getCurrentCustomerType();
 
     // dificultad actual para generar diálogos acorde a ella
-    const difficulty = GameState.getCurrentDifficulty ? GameState.getCurrentDifficulty() : "facil";
+    const difficulty = GameState.getCurrentDifficulty
+      ? GameState.getCurrentDifficulty()
+      : "facil";
 
     let looksNPC;
     let dialogueData;
@@ -65,8 +70,10 @@ export default class CustomerFlowManager {
       looksNPC = specialData.looks;
       dialogueData = {
         speakerName: specialData.name,
-        lines: scriptedRequest.dialogueLines, 
+        lines: scriptedRequest.dialogueLines,
       };
+
+      this.currentRequest.specialData = specialData;
     }
 
     // creamos NPC
@@ -78,14 +85,40 @@ export default class CustomerFlowManager {
       this.currentRequest.requirements,
     );
 
+    if (this.currentRequest.specialData) {
+      this.currentCustomer.npcData = this.currentRequest.specialData;
+      this.currentCustomer.id = customerType;
+    }
+
     this.dialogueManager.start(dialogueData);
   }
 
   _onDialogueFinished() {
+    if (this.isShowingResult) {
+      this.isShowingResult = false;
+      if (this.onResultComplete) {
+        this.onResultComplete();
+        this.onResultComplete = null;
+      }
+      return;
+    }
+
     if (!this.currentRequest) return;
     this.scene.registry.set("currentOrder", this.currentRequest);
     this.scene.scene.sleep("store");
     this.scene.scene.launch("kitchen");
+  }
+
+  showResultDialogue(dialogueLines, callback) {
+    this.isShowingResult = true;
+    this.onResultComplete = callback;
+
+    const formattedLines = [];
+    dialogueLines.forEach((line) => {
+      formattedLines.push(...splitIntoLines(line));
+    });
+
+    this.dialogueManager.start({ lines: formattedLines });
   }
 
   continueShift() {

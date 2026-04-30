@@ -1,74 +1,25 @@
-export function splitIntoLines(text, maxLen = 250) {
+export function splitIntoLines(text) {
   if (!text) return [];
 
   // 1. Separamos el texto por frases usando puntos, exclamaciones e interrogaciones
   // El "split" mantiene el signo de puntuación al final de la frase
-  const phrases = text.replace(/\s+/g, " ").trim().split(/(?<=[.!?…])\s+/);
-  
+  const phrases = text
+    .replace(/\s+/g, " ")
+    .trim()
+    .split(/(?<=[.!?…])\s+/);
+
   const pages = [];
-  let currentPage = "";
 
+  // 2. Metemos cada frase limpia directamente como una página nueva
+  // Así forzamos a que el jugador tenga que hacer un click por cada frase
   for (const phrase of phrases) {
-    // Si la frase es absurdamente larga (más que el máximo de la caja ella sola)
-    // tenemos que cortarla por palabras obligatoriamente para que no rompa la UI
-    if (phrase.length > maxLen) {
-      if (currentPage) pages.push(currentPage.trim());
-      
-      const words = phrase.split(" ");
-      let tempLine = "";
-      for (const w of words) {
-        if ((tempLine + " " + w).length > maxLen) {
-          pages.push(tempLine.trim());
-          tempLine = w;
-        } else {
-          tempLine = tempLine ? `${tempLine} ${w}` : w;
-        }
-      }
-      currentPage = tempLine;
-      continue;
+    if (phrase.trim().length > 0) {
+      pages.push(phrase.trim());
     }
-
-    // LÓGICA "TODO O NADA"
-    // Calculamos cómo quedaría la página si añadiéramos la frase siguiente
-    const testPage = currentPage ? `${currentPage} ${phrase}` : phrase;
-
-    if (testPage.length <= maxLen) {
-      // SI CABE: La añadimos y seguimos acumulando
-      currentPage = testPage;
-    } else {
-      // NO CABE: Guardamos la página actual y mandamos la frase ENTERA a la siguiente
-      if (currentPage) {
-        pages.push(currentPage.trim());
-      }
-      currentPage = phrase;
-    }
-  }
-
-  // Guardamos lo que haya quedado en la última página
-  if (currentPage) {
-    pages.push(currentPage.trim());
   }
 
   return pages;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 export function splitIntoLines(text, maxLen = 120) {

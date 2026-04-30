@@ -10,8 +10,7 @@ import Cave from './scenes/cave.js';
 import End from './scenes/end.js';
 import MortarMinigame from './scenes/mortarMinigame.js';
 import CuttingMinigame from './scenes/cuttingMinigame.js';
-import DailySummary from './scenes/dailySummary';
-
+import DailySummary from './scenes/dailySummary.js';
 import AnimatedTiles from 'phaser-animated-tiles/dist/AnimatedTiles.js';
 import { PhaserNavMeshPlugin } from "phaser-navmesh";
 
