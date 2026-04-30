@@ -32,17 +32,21 @@ export default class Book extends Phaser.GameObjects.Container {
         const page1 = scene.add.container(0, 0);
         const page2 = scene.add.container(0, 0);
         const page3 = scene.add.container(0, 0);
+        const page4 = scene.add.container(0, 0);
 
         this.pages.push(page1);
         this.pages.push(page2);
         this.pages.push(page3);
+        this.pages.push(page4)
 
         this.add(page1);
         this.add(page2);
         this.add(page3);
+        this.add(page4);
 
         page2.setVisible(false);
         page3.setVisible(false);
+        page4.setVisible(false);
 
         // =========================
         // PAGINA 1 (AFINIDADES)
@@ -424,6 +428,85 @@ export default class Book extends Phaser.GameObjects.Container {
         page3.add(esq);
 
         // =========================
+        // PAGINA 4 
+        // =========================
+
+        const title4 = scene.add.text(
+            318,
+            100,
+            "Temperatura",
+            {
+                fontFamily: "VT323, monospace",
+                fontSize: "48px",
+                color: "#4f342d",
+                fontStyle: "bold"
+            }
+        ).setOrigin(0.5);
+
+         const title5 = scene.add.text(
+            640,
+            100,
+            "Vestimenta",
+            {
+                fontFamily: "VT323, monospace",
+                fontSize: "48px",
+                color: "#4f342d",
+                fontStyle: "bold"
+            }
+        ).setOrigin(0.5);
+
+        const descCauldron = scene.add.text(180, 160, "Para cocinar la poción enciende \nel fuego pulsando el caldero.", estiloDesc).setOrigin(0, 0.5);
+        const cauldron = scene.add.image(318, 240, 'cauldron').setScale(1.5);
+        const descHeat = scene.add.text(180, 320, "Apaga el fuego cuando la \nflecha llegue a la temperatura \ndeseada.", estiloDesc).setOrigin(0, 0.5);
+        const heatBar = scene.add.image(318, 380, 'heatBar').setScale(4);
+        const frio = scene.add.text(
+            210,
+            395,
+            "Helado",
+            {
+                fontFamily: "VT323, monospace",
+                fontSize: "25px",
+                color: "#376482",
+                fontStyle: "bold"
+            }
+        );
+
+        const templado = scene.add.text(
+            275,
+            395,
+            "Templado",
+            {
+                fontFamily: "VT323, monospace",
+                fontSize: "25px",
+                color: "#bd6b00",
+                fontStyle: "bold"
+            }
+        );
+
+        const caliente = scene.add.text(
+            360,
+            395,
+            "Caliente",
+            {
+                fontFamily: "VT323, monospace",
+                fontSize: "25px",
+                color: "#7c1c1c",
+                fontStyle: "bold"
+            }
+        );
+
+        page4.add(cauldron);
+        page4.add(descCauldron)
+        page4.add(heatBar);
+        page4.add(descHeat)
+        page4.add(frio);
+        page4.add(templado);
+        page4.add(caliente);
+
+
+        page4.add(title4);
+        page4.add(title5);
+        // =========================
         // ETIQUETAS DE PAGINA
         // =========================
 
@@ -511,6 +594,24 @@ export default class Book extends Phaser.GameObjects.Container {
         greenTagButton.on("pointerout", () => {
             if (this.currentPage !== 2) {
                 greenTagButton.setTexture('greenTag1');
+            }
+        });
+
+        purpleTagButton.on("pointerdown", () => {
+            this.showPage(3);
+            redTagButton.setTexture('redTag1');
+            blueTagButton.setTexture('blueTag1');
+            greenTagButton.setTexture('greenTag1');
+            purpleTagButton.setTexture('purpleTag2');
+        });
+
+        purpleTagButton.on("pointerover", () => {
+            purpleTagButton.setTexture('purpleTag2');
+        });
+
+        purpleTagButton.on("pointerout", () => {
+            if (this.currentPage !== 3) {
+                purpleTagButton.setTexture('purpleTag1');
             }
         });
 
