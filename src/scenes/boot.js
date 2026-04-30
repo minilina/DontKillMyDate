@@ -98,7 +98,12 @@ import casa from '../../assets/tiled/casa.json';
 import cueva from '../../assets/tiled/cueva.json';
 
 // sprites escena tienda
-import store from '../../assets/sprites/store.jpg';
+import store from '../../assets/sprites/store.png';
+import mostrador from '../../assets/sprites/mostrador.png';
+import luzStore from '../../assets/sprites/luzStore.png';
+import redPotion from '../../assets/anims/encasedPotion_YELLOW_RED.png';
+import bluePotion from '../../assets/anims/smallElixir_CYAN.png';
+import yellowPotion from '../../assets/anims/smallVial_GOLD.png';
 
 //sprite resumen diario
 import resumenBg from '../../assets/sprites/resumen_dia.png';
@@ -467,6 +472,12 @@ export default class Boot extends Phaser.Scene {
         this.load.image('corazon', corazon);    
 
         this.load.image('store', store);
+        this.load.image('mostrador', mostrador);
+        this.load.image('luzStore', luzStore);
+        this.load.spritesheet('pocion_roja', redPotion, { frameWidth: 16, frameHeight: 24 });
+        this.load.spritesheet('pocion_azul', bluePotion, { frameWidth: 16, frameHeight: 24 });
+        this.load.spritesheet('pocion_amarrilla', yellowPotion, { frameWidth: 16, frameHeight: 24 });
+
         this.load.image('dialog', dialog);
         this.load.image('dialog2', dialog2);
         this.load.image('dialogArrow', dialogArrow);

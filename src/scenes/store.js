@@ -16,11 +16,38 @@ export default class Store extends Phaser.Scene {
    * Creación de los elementos de la escena principal de juego
    */
   create() {
-    this.add
-      .image(0, 0, "store")
+    this.add.image(0, 0, "store")
       .setOrigin(0, 0)
-      .setDisplaySize(this.scale.width, this.scale.height);
+      .setDisplaySize(this.scale.width, this.scale.height)
+      .setDepth(0);
+    
+    this.crearAnimacionesPociones();
 
+    this.add.sprite(450, 200, 'pocion_roja')
+      .setDepth(5)
+      .setScale(3)
+      .play('anim_pocion_roja');
+
+    this.add.sprite(500, 200, 'pocion_azul')
+      .setDepth(5)
+      .setScale(3)
+      .play('anim_pocion_azul');
+
+    this.add.sprite(550, 200, 'pocion_amarrilla') 
+      .setDepth(5)
+      .setScale(3)
+      .play('anim_pocion_amarilla');
+
+    this.add.image(0, 0, "mostrador")
+      .setOrigin(0, 0)
+      .setDisplaySize(this.scale.width, this.scale.height)
+      .setDepth(10);
+
+    this.add.image(0, 0, "luzStore")
+      .setOrigin(0, 0)
+      .setDisplaySize(this.scale.width, this.scale.height)
+      .setDepth(20)
+    
     this.flowManager = new CustomerFlowManager(this);
     this.flowManager.startShift();
 
@@ -47,6 +74,39 @@ export default class Store extends Phaser.Scene {
     );
     this.createPauseButton();
   }
+
+  crearAnimacionesPociones() {
+    // Animación Amarilla (9 fotogramas: 0 al 8)
+    if (!this.anims.exists('anim_pocion_amarilla')) {
+      this.anims.create({
+        key: 'anim_pocion_amarilla',
+        frames: this.anims.generateFrameNumbers('pocion_amarilla', { start: 0, end: 8 }),
+        frameRate: 8,
+        repeat: -1
+      });
+    }
+
+    // Animación Roja (8 fotogramas: 0 al 7)
+    if (!this.anims.exists('anim_pocion_roja')) {
+      this.anims.create({
+        key: 'anim_pocion_roja',
+        frames: this.anims.generateFrameNumbers('pocion_roja', { start: 0, end: 7 }),
+        frameRate: 8,
+        repeat: -1
+      });
+    }
+
+    // Animación Azul (8 fotogramas: 0 al 7)
+    if (!this.anims.exists('anim_pocion_azul')) {
+      this.anims.create({
+        key: 'anim_pocion_azul',
+        frames: this.anims.generateFrameNumbers('pocion_azul', { start: 0, end: 7 }),
+        frameRate: 8,
+        repeat: -1
+      });
+    }
+  }
+
   createPauseButton() {
     const btnX = this.scale.width - 25;
     const btnY = 25;
