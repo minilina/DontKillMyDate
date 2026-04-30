@@ -96,7 +96,7 @@ export default class Menu extends Phaser.Scene {
       texture = 'blankBtn';
     }
     let toggleState = false;
-    let switchable = alternateTexture !== null;
+    let switchable = alternateTexture !== null|| alternateText !== null; // Si hay algo para alternar, es un botón con estado
 
     const boton = this.add.image(x, y, texture)
       .setInteractive({ useHandCursor: true })
@@ -133,9 +133,9 @@ export default class Menu extends Phaser.Scene {
       this.sound.play('buttonSound', { volume: 0.2 });
       if (switchable) {
         toggleState = !toggleState;
-        boton.setTexture(toggleState ? alternateTexture : texture);
+        boton.setTexture(toggleState&& alternateTexture ? alternateTexture : texture);
         if (alternateText) {
-          botonTexto.setText(toggleState ? alternateText : text);
+          botonTexto.setText(toggleState&& alternateText ? alternateText : text);
         }
       }
       callback();
