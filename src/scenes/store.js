@@ -23,17 +23,17 @@ export default class Store extends Phaser.Scene {
     
     this.crearAnimacionesPociones();
 
-    this.add.sprite(450, 200, 'pocion_roja')
+    this.add.sprite(420, 193, 'pocion_roja')
       .setDepth(5)
       .setScale(3)
       .play('anim_pocion_roja');
 
-    this.add.sprite(500, 200, 'pocion_azul')
+    this.add.sprite(480, 185, 'pocion_azul')
       .setDepth(5)
       .setScale(3)
       .play('anim_pocion_azul');
 
-    this.add.sprite(550, 200, 'pocion_amarrilla') 
+    this.add.sprite(540, 196, 'pocion_amarilla') 
       .setDepth(5)
       .setScale(3)
       .play('anim_pocion_amarilla');
@@ -96,11 +96,11 @@ export default class Store extends Phaser.Scene {
       });
     }
 
-    // Animación Azul (8 fotogramas: 0 al 7)
+    // Animación Azul (7 fotogramas: 0 al 6)
     if (!this.anims.exists('anim_pocion_azul')) {
       this.anims.create({
         key: 'anim_pocion_azul',
-        frames: this.anims.generateFrameNumbers('pocion_azul', { start: 0, end: 7 }),
+        frames: this.anims.generateFrameNumbers('pocion_azul', { start: 0, end: 6 }),
         frameRate: 8,
         repeat: -1
       });

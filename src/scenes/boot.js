@@ -367,6 +367,8 @@ import pauseBtnPressed from '../../assets/sprites/pauseBtnPressed.png';
 import btnSoundOn from '../../assets/sprites/btnSoundOn.png';
 import btnSoundOff from '../../assets/sprites/btnSoundOff.png';
 import blankBtn from '../../assets/sprites/blankBtn.png';
+import eBtn from '../../assets/sprites/eBtn.png';
+import eBtnPressed from '../../assets/sprites/eBtnPressed.png';
 
 export default class Boot extends Phaser.Scene {
     constructor() {
@@ -474,9 +476,9 @@ export default class Boot extends Phaser.Scene {
         this.load.image('store', store);
         this.load.image('mostrador', mostrador);
         this.load.image('luzStore', luzStore);
-        this.load.spritesheet('pocion_roja', redPotion, { frameWidth: 16, frameHeight: 24 });
-        this.load.spritesheet('pocion_azul', bluePotion, { frameWidth: 16, frameHeight: 24 });
-        this.load.spritesheet('pocion_amarrilla', yellowPotion, { frameWidth: 16, frameHeight: 24 });
+        this.load.spritesheet('pocion_roja', redPotion, { frameWidth: 14, frameHeight: 25 });
+        this.load.spritesheet('pocion_amarilla', yellowPotion, { frameWidth: 14, frameHeight: 24 });
+        this.load.spritesheet('pocion_azul', bluePotion, { frameWidth: 15, frameHeight: 30 });
 
         this.load.image('dialog', dialog);
         this.load.image('dialog2', dialog2);
@@ -724,12 +726,14 @@ export default class Boot extends Phaser.Scene {
         this.load.image('btnSoundOn', btnSoundOn);
         this.load.image('btnSoundOff', btnSoundOff);
         this.load.image('blankBtn', blankBtn);
+        this.load.image('eBtn', eBtn);
+        this.load.image('eBtnPressed', eBtnPressed);
         
     }
 
     create() {
         GameState.initData(daysConfig, scriptedNpcs);
         
-        this.scene.start('Letter');
+        this.scene.start('house');
     }
 }

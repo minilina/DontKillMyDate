@@ -75,9 +75,118 @@ export default class House extends topDownScene {
             abrirCueva(data.cuevaTileX, data.cuevaTileY, false);
         }
 
-        // CLIC EN VALLAS Y CUEVA
+        // Abrir/cerrar vallas (funcion reutilizable)
+        const interactuarValla = (tileValla) => {
+            const IDs = { cerrado: [1393, 1394, 1395], abierto: [1405, 1406, 1407], colision: 1210 };
+
+            if (IDs.cerrado.includes(tileValla.index)) {
+                let sX = tileValla.x - (tileValla.index === 1394 ? 1 : (tileValla.index === 1395 ? 2 : 0));
+                capaTapar?.putTileAt(1399, sX, tileValla.y - 1);
+                capaTapar?.putTileAt(1401, sX + 2, tileValla.y - 1);
+                capaVallas.putTileAt(1405, sX, tileValla.y);
+                capaVallas.putTileAt(1406, sX + 1, tileValla.y);
+                capaVallas.putTileAt(1407, sX + 2, tileValla.y);
+                this.capaColisiones?.putTileAt(-1, sX + 1, tileValla.y);
+                this.player.setNavmesh(this.navMeshPlugin.buildMeshFromTilemap("mesh", this.map, [this.capaColisiones]));
+            } else if (IDs.abierto.includes(tileValla.index)) {
+                let sX = tileValla.x - (tileValla.index === 1406 ? 1 : (tileValla.index === 1407 ? 2 : 0));
+                if (this.map.worldToTileX(this.player.x) === sX + 1 && this.map.worldToTileY(this.player.y) === tileValla.y) return;
+                
+                capaTapar?.putTileAt(-1, sX, tileValla.y - 1);
+                capaTapar?.putTileAt(-1, sX + 2, tileValla.y - 1);
+                capaVallas.putTileAt(1393, sX, tileValla.y);
+                capaVallas.putTileAt(1394, sX + 1, tileValla.y);
+                capaVallas.putTileAt(1395, sX + 2, tileValla.y);
+                this.capaColisiones?.putTileAt(IDs.colision, sX + 1, tileValla.y);
+                this.player.setNavmesh(this.navMeshPlugin.buildMeshFromTilemap("mesh", this.map, [this.capaColisiones]));
+            }
+        };
+
+        // Boton E para interactuar con vallas y piedra
+        this.teclaE_icono = this.add.image(0, 0, 'eBtn')
+            .setOrigin(0.5, 0.5)
+            .setDepth(10000)
+            .setVisible(false);
+
+        this.estadoBotonE = false;
+
+        // Hacemos que el boton tenga animacion
+        this.time.addEvent({
+            delay: 400,
+            loop: true,
+            callback: () => {
+                if (!this.teclaE_icono.visible) return; 
+                this.estadoBotonE = !this.estadoBotonE;
+                this.teclaE_icono.setTexture(this.estadoBotonE ? 'eBtnPressed' : 'eBtn');
+            }
+        });
+
+        this.interactableCercano = null;
+
+        // Proximidad (Update loop)
+        this.events.on('update', () => {
+            if (!this.sys || !this.sys.settings.active || !this.player || !this.player.active) return;
+            if (!capaVallas || !capaVallas.scene || !capaPilares || !capaPilares.scene) return;
+            
+            const px = this.player.x;
+            const py = this.player.y;
+            const distMax = 40; 
+
+            let tileMasCercano = null;
+            let minDist = distMax;
+            let tipoInteractable = null;
+
+            const tilesValla = capaVallas?.getTilesWithinWorldXY(px - distMax, py - distMax, distMax*2, distMax*2);
+            const tilesPiedra = capaPilares?.getTilesWithinWorldXY(px - distMax, py - distMax, distMax*2, distMax*2);
+
+            tilesValla?.forEach(t => {
+                if ([1394, 1406].includes(t.index)) { // Solo contamos las de el medio
+                    const d = Phaser.Math.Distance.Between(px, py, t.pixelX + 8, t.pixelY + 8);
+                    if (d < minDist) { minDist = d; tileMasCercano = t; tipoInteractable = 'valla'; }
+                }
+            });
+
+            if (!this.cuevaAbierta) {
+                tilesPiedra?.forEach(t => {
+                    if ([3852].includes(t.index)) { // Solo contamos la parte de arriba del pilar
+                        const d = Phaser.Math.Distance.Between(px, py, t.pixelX + 8, t.pixelY + 8);
+                        if (d < minDist) { minDist = d; tileMasCercano = t; tipoInteractable = 'cueva'; }
+                    }
+                });
+            }
+
+            if (tileMasCercano) {
+                this.interactableCercano = { tile: tileMasCercano, tipo: tipoInteractable };
+                this.teclaE_icono.setVisible(true);
+
+                if (tipoInteractable === 'valla') {
+                    // Posicion Izquierda/Arriba para la valla
+                    this.teclaE_icono.setPosition(tileMasCercano.pixelX - 14, tileMasCercano.pixelY - 10);
+                } else if (tipoInteractable === 'cueva') {
+                    // Posicion Derecha/Arriba para la cueva
+                    this.teclaE_icono.setPosition(tileMasCercano.pixelX + 23, tileMasCercano.pixelY + 6);
+                }
+            } else {
+                this.interactableCercano = null;
+                this.teclaE_icono.setVisible(false);
+                this.estadoBotonE = false;
+                this.teclaE_icono.setTexture('eBtn');
+            }
+        });
+
+        // Pulsar E
+        this.input.keyboard.on('keydown-E', () => {
+            if (this.interactableCercano) {
+                if (this.interactableCercano.tipo === 'cueva') {
+                    abrirCueva(this.interactableCercano.tile.x - 1, this.interactableCercano.tile.y, true);
+                } else if (this.interactableCercano.tipo === 'valla') {
+                    interactuarValla(this.interactableCercano.tile);
+                }
+            }
+        });
+
+        // Click raton
         this.input.on('pointerdown', (pointer) => {
-            // Convertir el clic de la pantalla a coordenadas
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
             const distancia = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
 
@@ -86,45 +195,25 @@ export default class House extends topDownScene {
             const tilePiedra = capaPilares?.getTileAtWorldXY(worldPoint.x, worldPoint.y);
             const tileValla = capaVallas?.getTileAtWorldXY(worldPoint.x, worldPoint.y);
 
-            // ABRIR CUEVA
             if (tilePiedra && !this.cuevaAbierta) {
                 const idsPiedra = [3852, 3868, 3869, 3870, 3871];
                 if (idsPiedra.includes(tilePiedra.index)) {
-                    abrirCueva(tilePiedra.x - 1, tilePiedra.y - 1, true); // True para el temblor
+                    // No importa que parte del pilar toques, se va a usar el tile 3852
+                    let anchorY = tilePiedra.y;
+                    for (let i = -3; i <= 3; i++) {
+                        let t = capaPilares?.getTileAt(tilePiedra.x, tilePiedra.y + i);
+                        if (t && t.index === 3852) {
+                            anchorY = tilePiedra.y + i;
+                            break;
+                        }
+                    }
+
+                    abrirCueva(tilePiedra.x - 1, anchorY, true); 
                 }
             }
 
-            // Vallas
             if (tileValla) {
-                const IDs = { cerrado: [1393, 1394, 1395], abierto: [1405, 1406, 1407], colision: 1210 };
-
-                // ABRIR VALLA
-                if (IDs.cerrado.includes(tileValla.index)) {
-                    let sX = tileValla.x - (tileValla.index === 1394 ? 1 : (tileValla.index === 1395 ? 2 : 0));
-                    capaTapar?.putTileAt(1399, sX, tileValla.y - 1);
-                    capaTapar?.putTileAt(1401, sX + 2, tileValla.y - 1);
-                    capaVallas.putTileAt(1405, sX, tileValla.y);
-                    capaVallas.putTileAt(1406, sX + 1, tileValla.y);
-                    capaVallas.putTileAt(1407, sX + 2, tileValla.y);
-                    this.capaColisiones?.putTileAt(-1, sX + 1, tileValla.y);
-                    this.player.setNavmesh(this.navMeshPlugin.buildMeshFromTilemap("mesh", this.map, [this.capaColisiones]));
-                }
-
-                // CERRAR VALLA
-                else if (IDs.abierto.includes(tileValla.index)) {
-                    let sX = tileValla.x - (tileValla.index === 1406 ? 1 : (tileValla.index === 1407 ? 2 : 0));
-
-                    // Evitar que te quedes atascado dentro de la valla al cerrar
-                    if (this.map.worldToTileX(this.player.x) === sX + 1 && this.map.worldToTileY(this.player.y) === tileValla.y) return;
-                    
-                    capaTapar?.putTileAt(-1, sX, tileValla.y - 1);
-                    capaTapar?.putTileAt(-1, sX + 2, tileValla.y - 1);
-                    capaVallas.putTileAt(1393, sX, tileValla.y);
-                    capaVallas.putTileAt(1394, sX + 1, tileValla.y);
-                    capaVallas.putTileAt(1395, sX + 2, tileValla.y);
-                    this.capaColisiones?.putTileAt(IDs.colision, sX + 1, tileValla.y);
-                    this.player.setNavmesh(this.navMeshPlugin.buildMeshFromTilemap("mesh", this.map, [this.capaColisiones]));
-                }
+                interactuarValla(tileValla);
             }
         });
 

@@ -101,15 +101,22 @@ export default class TopDownScene extends Phaser.Scene {
     setupUI() {
         this.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
-        // Creamos el boton
-        const btnX = this.scale.width - 25;
-        const btnY = 25;
+        // Rescatamos el zoom de la camara
+        const zoom = this.cameras.main.zoom;
+        const w = this.scale.width;
+        const h = this.scale.height;
 
+        // Calculamos las coordenadas inversas para que encaje perfecto en la esquina con zoom
+        const btnX = (w / 2) + ((w / 2) / zoom) - (25 / zoom);
+        const btnY = (h / 2) - ((h / 2) / zoom) + (25 / zoom);
+
+        // Creamos el boton
         this.pauseBtnBg = this.add.image(btnX, btnY, 'pauseBtn')
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5)
-            .setScale(3)
-            .setDepth(1000);
+            .setScale(3 / zoom) 
+            .setDepth(10000)
+            .setScrollFactor(0);
 
         this.pauseBtnBg.on('pointerover', () => this.pauseBtnBg.setTexture('pauseBtnPressed'));
         this.pauseBtnBg.on('pointerout', () => this.pauseBtnBg.setTexture('pauseBtn'));
@@ -238,13 +245,18 @@ export default class TopDownScene extends Phaser.Scene {
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
             let esInteractivo = false;
 
-            for (const config of configuraciones) {
-                if (!config.capa) continue; // Si la capa no existe, pasamos a la siguiente
-                
-                const tile = config.capa.getTileAtWorldXY(worldPoint.x, worldPoint.y);
-                if (tile && config.ids.includes(tile.index)) {
-                    esInteractivo = true;
-                    break; // Si ya hemos encontrado algo interactivo, dejamos de buscar
+            // Calculamos a que distancia esta el raton del jugador
+            const distancia = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
+
+            if (distancia <= 40) {
+                for (const config of configuraciones) {
+                    if (!config.capa) continue; // Si la capa no existe, pasamos a la siguiente
+                    
+                    const tile = config.capa.getTileAtWorldXY(worldPoint.x, worldPoint.y);
+                    if (tile && config.ids.includes(tile.index)) {
+                        esInteractivo = true;
+                        break; // Si ya hemos encontrado algo interactivo, dejamos de buscar
+                    }
                 }
             }
 
