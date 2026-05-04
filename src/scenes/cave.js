@@ -12,17 +12,17 @@ export default class Cueva extends topDownScene {
         this.datosDeLaCasa = data;
         this.initScene('cueva');
 
-        const capaVallas = this.map.getLayer('Vertical/Vallas')?.tilemapLayer;
         const capaEfectos = this.map.getLayer('Decoracion/Efectos')?.tilemapLayer;
+        const capaDecoracionVallas = this.map.getLayer('Decoracion/Decoracion Vallas')?.tilemapLayer;
 
-        if (capaVallas) capaVallas.setDepth(9999);
         if (capaEfectos) capaEfectos.setDepth(9999);
+        if (capaDecoracionVallas) capaDecoracionVallas.setDepth(9999);
 
         this.setupPlayer(168, 290);
-
         this.setupUI();
 
-        this.cameras.main.fadeIn(1000, 0, 0, 0);
+        // Decoracion (valla) con depth dinamico
+        this.crearDecoracionDinamica(['Objetos/spawnValla']);
 
         // Zona salida
         const zonaSalida = this.add.zone(168, 318, 48, 16).setOrigin(0.5, 0.5);
@@ -37,41 +37,24 @@ export default class Cueva extends topDownScene {
         });
 
         // CREACION DE OBJETOS DINAMICOS
-        this.grupoCosas = this.physics.add.staticGroup();
-        this.map.getObjectLayer('spawnCosas')?.objects.forEach(obj => {
-            // Al topo y al fuego al tener animacion en tiled, le ponemos una imagen cualquiera y lo hacemos invisible
-            const n = obj.name || 'lampara';
-            const imgKeys = { 
-                'barril': 'barril', 'lampara': 'lamp', 'topo': 'dogBathtub', 
-                'cesto': 'dogBathtub', 'tendedero': 'tendedero', 'fuego': 'dogBathtub', 
-                'pilaBarriles': 'pilaBarriles' 
-            };
+        const configCosas = {
+            'lampara':      { key: 'lamp',         w: 9,  h: 8,  ox: -5,  oy: -10, centrarOffset: true },
+            'barril':       { key: 'barril',       w: 16, h: 10, ox: -8,  oy: -13, centrarOffset: true },
+            'cesto':        { key: 'dogBathtub',   w: 20, h: 12, ox: -10, oy: -14, centrarOffset: true },
+            'tendedero':    { key: 'tendedero',    w: 36, h: 10, ox: -18, oy: -10, centrarOffset: true },
+            'pilaBarriles': { key: 'pilaBarriles', w: 44, h: 12, ox: -22, oy: -15, centrarOffset: true },
+            // Fuego y Topo al tener animaciones tienen un key generico que se oculta y necesitamos el ofset para la colision
+            'fuego':        { key: 'dogBathtub',   w: 24, h: 16, ox: 0,   oy: -16, spriteOffsetX: 8, centrarOffset: true },
+            'topo':         { key: 'dogBathtub',   w: 18, h: 12, ox: 0,   oy: -16, spriteOffsetX: 8, centrarOffset: true }
+        };
 
-            if (imgKeys[n]) {
-                const objSprite = this.grupoCosas.create(obj.x, obj.y, imgKeys[n]).setOrigin(0.5, 1).setDepth(obj.y);
-                // Ajuste de X (si es fuego o topo, el tiled usa ancho 16, si no, usa el ancho de la imagen)
-                objSprite.x += (n === 'fuego' || n === 'topo') ? 8 : objSprite.width / 2;
-                if (n === 'fuego' || n === 'topo') objSprite.setVisible(false);
-                objSprite.refreshBody();
+        this.grupoCosas = this.crearObjetos('Objetos/spawnCosas', configCosas);
 
-                // DICCIONARIO DE COLISIONES: { Ancho, Alto, OffsetX, OffsetY }
-                const fisicas = {
-                    'lampara':      { w: 9,  h: 8,  ox: -5,  oy: -10 },
-                    'barril':       { w: 16, h: 10, ox: -8,  oy: -13 },
-                    'cesto':        { w: 20, h: 12, ox: -10, oy: -14 },
-                    'fuego':        { w: 24, h: 16, ox: 0,   oy: -16 },
-                    'tendedero':    { w: 36, h: 10, ox: -18, oy: -10 },
-                    'topo':         { w: 18, h: 12, ox: 0,   oy: -16 },
-                    'pilaBarriles': { w: 44, h: 12, ox: -22, oy: -15 }
-                }[n];
-
-                // Aplicamos las fisicas leyendo el diccionario
-                if (fisicas) {
-                    objSprite.body.setSize(fisicas.w, fisicas.h)
-                    .setOffset(objSprite.width / 2 + fisicas.ox, objSprite.height + fisicas.oy);
-                }
+        // Ocultamos el fuego y el topo iterando sobre el grupo que nos devuelve la funcion
+        this.grupoCosas.getChildren().forEach(obj => {
+            if (obj.tipoObjeto === 'fuego' || obj.tipoObjeto === 'topo') {
+                obj.setVisible(false);
             }
         });
-        this.physics.add.collider(this.player, this.grupoCosas);
     }
 }

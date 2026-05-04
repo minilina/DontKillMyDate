@@ -31,7 +31,7 @@ export default class House extends topDownScene {
         this.setupPlayer(startX, startY); // Crea NavMesh, Player, Camara y Fisicas
         this.setupUI();                   // Crea el boton de pausa y la tecla ESC
 
-        // Capa 
+        // Decoracion (flores y demas) con depth dinamico
         this.crearDecoracionDinamica(['Objetos/SpawnFlores']);
 
         // HOVER PARA LAS VALLAS Y LA PIEDRA
@@ -103,119 +103,25 @@ export default class House extends topDownScene {
         };
 
         // Boton E para interactuar con vallas y piedra
-        this.teclaE_icono = this.add.image(0, 0, 'eBtn')
-            .setOrigin(0.5, 0.5)
-            .setDepth(10000)
-            .setVisible(false);
-
-        this.estadoBotonE = false;
-
-        // Hacemos que el boton tenga animacion
-        this.time.addEvent({
-            delay: 400,
-            loop: true,
-            callback: () => {
-                if (!this.teclaE_icono.visible) return; 
-                this.estadoBotonE = !this.estadoBotonE;
-                this.teclaE_icono.setTexture(this.estadoBotonE ? 'eBtnPressed' : 'eBtn');
-            }
-        });
-
-        this.interactableCercano = null;
-
-        // Proximidad (Update loop)
-        this.events.on('update', () => {
-            if (!this.sys || !this.sys.settings.active || !this.player || !this.player.active) return;
-            if (!capaVallas || !capaVallas.scene || !capaPilares || !capaPilares.scene) return;
-            
-            const px = this.player.x;
-            const py = this.player.y;
-            const distMax = 40; 
-
-            let tileMasCercano = null;
-            let minDist = distMax;
-            let tipoInteractable = null;
-
-            const tilesValla = capaVallas?.getTilesWithinWorldXY(px - distMax, py - distMax, distMax*2, distMax*2);
-            const tilesPiedra = capaPilares?.getTilesWithinWorldXY(px - distMax, py - distMax, distMax*2, distMax*2);
-
-            tilesValla?.forEach(t => {
-                if ([1394, 1406].includes(t.index)) { // Solo contamos las de el medio
-                    const d = Phaser.Math.Distance.Between(px, py, t.pixelX + 8, t.pixelY + 8);
-                    if (d < minDist) { minDist = d; tileMasCercano = t; tipoInteractable = 'valla'; }
-                }
-            });
-
-            if (!this.cuevaAbierta) {
-                tilesPiedra?.forEach(t => {
-                    if ([3852].includes(t.index)) { // Solo contamos la parte de arriba del pilar
-                        const d = Phaser.Math.Distance.Between(px, py, t.pixelX + 8, t.pixelY + 8);
-                        if (d < minDist) { minDist = d; tileMasCercano = t; tipoInteractable = 'cueva'; }
+        this.crearSistemaInteraccion([
+            { capa: capaVallas, ids: [1394, 1406], idsClic: [1393, 1394, 1395, 1405, 1406, 1407], tipo: 'valla', offsetX: -22, offsetY: -18 },
+            { capa: capaPilares, ids: [3852], idsClic: [3852, 3868, 3869, 3870, 3871], tipo: 'cueva', offsetX: 15, offsetY: -2, condicion: () => !this.cuevaAbierta }
+        ], (tipo, tile) => {
+            if (tipo === 'cueva') {
+                // Buscamos la gema (id 3852) en un 3x3 alrededor del que hacemos click para usar su Y
+                let anchorY = tile.y;
+                for (let i = -3; i <= 3; i++) {
+                    let t = capaPilares?.getTileAt(tile.x, tile.y + i);
+                    if (t && t.index === 3852) {
+                        anchorY = tile.y + i; 
+                        break;
                     }
-                });
-            }
-
-            if (tileMasCercano) {
-                this.interactableCercano = { tile: tileMasCercano, tipo: tipoInteractable };
-                this.teclaE_icono.setVisible(true);
-
-                if (tipoInteractable === 'valla') {
-                    // Posicion Izquierda/Arriba para la valla
-                    this.teclaE_icono.setPosition(tileMasCercano.pixelX - 14, tileMasCercano.pixelY - 10);
-                } else if (tipoInteractable === 'cueva') {
-                    // Posicion Derecha/Arriba para la cueva
-                    this.teclaE_icono.setPosition(tileMasCercano.pixelX + 23, tileMasCercano.pixelY + 6);
                 }
-            } else {
-                this.interactableCercano = null;
-                this.teclaE_icono.setVisible(false);
-                this.estadoBotonE = false;
-                this.teclaE_icono.setTexture('eBtn');
+                abrirCueva(tile.x - 1, anchorY, true);
+            } else if (tipo === 'valla') {
+                interactuarValla(tile);
             }
-        });
-
-        // Pulsar E
-        this.input.keyboard.on('keydown-E', () => {
-            if (this.interactableCercano) {
-                if (this.interactableCercano.tipo === 'cueva') {
-                    abrirCueva(this.interactableCercano.tile.x - 1, this.interactableCercano.tile.y, true);
-                } else if (this.interactableCercano.tipo === 'valla') {
-                    interactuarValla(this.interactableCercano.tile);
-                }
-            }
-        });
-
-        // Click raton
-        this.input.on('pointerdown', (pointer) => {
-            const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
-            const distancia = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
-
-            if (distancia > 40) return;
-
-            const tilePiedra = capaPilares?.getTileAtWorldXY(worldPoint.x, worldPoint.y);
-            const tileValla = capaVallas?.getTileAtWorldXY(worldPoint.x, worldPoint.y);
-
-            if (tilePiedra && !this.cuevaAbierta) {
-                const idsPiedra = [3852, 3868, 3869, 3870, 3871];
-                if (idsPiedra.includes(tilePiedra.index)) {
-                    // No importa que parte del pilar toques, se va a usar el tile 3852
-                    let anchorY = tilePiedra.y;
-                    for (let i = -3; i <= 3; i++) {
-                        let t = capaPilares?.getTileAt(tilePiedra.x, tilePiedra.y + i);
-                        if (t && t.index === 3852) {
-                            anchorY = tilePiedra.y + i;
-                            break;
-                        }
-                    }
-
-                    abrirCueva(tilePiedra.x - 1, anchorY, true); 
-                }
-            }
-
-            if (tileValla) {
-                interactuarValla(tileValla);
-            }
-        });
+        });        
 
         // CREACION DE ARBOLES DINAMICOS
         const configArboles = {

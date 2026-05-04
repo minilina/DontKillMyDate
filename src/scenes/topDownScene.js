@@ -75,6 +75,7 @@ export default class TopDownScene extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+        this.cameras.main.fadeIn(600, 0, 0, 0); // todas las escenas empiezan con un fadeIn
         
         if (this.capaColisiones) this.physics.add.collider(this.player, this.capaColisiones);
 
@@ -273,6 +274,98 @@ export default class TopDownScene extends Phaser.Scene {
                 const tile = obj.capa.getTileAtWorldXY(worldPoint.x, worldPoint.y);
                 if (tile) console.log(`${obj.nombre} - ID:`, tile.index);
             });
+        });
+    }
+    
+    crearSistemaInteraccion(configuraciones, onInteract) {
+         // Boton E
+        this.teclaE_icono = this.add.image(0, 0, 'eBtn').setOrigin(0.5, 0.5).setDepth(10000).setVisible(false);
+        this.estadoBotonE = false;
+
+        // animacion del boton E (parpadeo)
+        this.time.addEvent({
+            delay: 400, loop: true,
+            callback: () => {
+                if (!this.teclaE_icono.visible) return; 
+                this.estadoBotonE = !this.estadoBotonE;
+                this.teclaE_icono.setTexture(this.estadoBotonE ? 'eBtnPressed' : 'eBtn');
+            }
+        });
+
+        this.interactableCercano = null;
+
+        this.events.on('update', () => {
+            if (!this.sys || !this.sys.settings.active || !this.player || !this.player.active) return;
+            
+            const px = this.player.x;
+            const py = this.player.y;
+            const distMax = 40; 
+
+            let tileMasCercano = null;
+            let minDist = distMax;
+            let tipoInteractable = null;
+            let offsetBoton = { x: 0, y: 0 };
+
+            for (const config of configuraciones) {
+                // Para que no crashee
+                if (!config.capa || !config.capa.scene) continue;
+                // Si le pasamos una condicion y es falsa (la cueva ya esta abierta) lo ignoramos
+                if (config.condicion !== undefined && !config.condicion()) continue;
+
+                const tiles = config.capa.getTilesWithinWorldXY(px - distMax, py - distMax, distMax*2, distMax*2);
+                tiles?.forEach(t => {
+                    if (config.ids.includes(t.index)) {
+                        const d = Phaser.Math.Distance.Between(px, py, t.pixelX + 8, t.pixelY + 8);
+                        if (d < minDist) { 
+                            minDist = d; 
+                            tileMasCercano = t; 
+                            tipoInteractable = config.tipo;
+                            offsetBoton = { x: config.offsetX || 0, y: config.offsetY || 0 };
+                        }
+                    }
+                });
+            }
+
+            if (tileMasCercano) {
+                this.interactableCercano = { tile: tileMasCercano, tipo: tipoInteractable };
+                this.teclaE_icono.setVisible(true);
+                this.teclaE_icono.setPosition(tileMasCercano.pixelX + 8 + offsetBoton.x, tileMasCercano.pixelY + 8 + offsetBoton.y);
+            } else {
+                this.interactableCercano = null;
+                this.teclaE_icono.setVisible(false);
+                this.estadoBotonE = false;
+                this.teclaE_icono.setTexture('eBtn');
+            }
+        });
+
+        this.input.keyboard.on('keydown-E', () => {
+            if (this.interactableCercano) {
+                onInteract(this.interactableCercano.tipo, this.interactableCercano.tile);
+            }
+        });
+
+        // Raton
+        this.input.on('pointerdown', (pointer) => {
+            if (!this.player || !this.player.active) return;
+            
+            const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
+            const dist = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
+
+            if (dist > 40) return;
+
+            for (const config of configuraciones) {
+                if (!config.capa || !config.capa.scene) continue;
+                if (config.condicion !== undefined && !config.condicion()) continue;
+
+                const tile = config.capa.getTileAtWorldXY(worldPoint.x, worldPoint.y);
+                // Si no tiene idsClic definidos usa los de la E
+                const idsPermitidos = config.idsClic || config.ids; 
+
+                if (tile && idsPermitidos.includes(tile.index)) {
+                    onInteract(config.tipo, tile);
+                    return;
+                }
+            }
         });
     }
 }

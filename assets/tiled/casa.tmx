@@ -1270,7 +1270,7 @@
   </layer>
  </group>
  <group id="55" name="Objetos">
-  <objectgroup id="45" name="SpawnArboles">
+  <objectgroup id="45" name="SpawnArboles" visible="0">
    <object id="207" name="peque" x="656" y="608">
     <point/>
    </object>

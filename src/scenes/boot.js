@@ -76,6 +76,9 @@ import lamp from '../../assets/tiled/lamp.png';
 import dogBathtub from '../../assets/tiled/dogBathtub.png';
 import pilaBarriles from '../../assets/tiled/pilaBarriles.png';
 
+// valla cueva
+import vallaMina from '../../assets/tiled/vallaMina.png';
+
 // sprites mapa top-down (ciudad)
 import dosPng from '../../assets/tiled/2.png';
 import barnTileset from '../../assets/tiled/Barn tileset.png';
@@ -448,6 +451,7 @@ export default class Boot extends Phaser.Scene {
         this.load.image('barril', barril);
         this.load.image('tendedero', tendedero);
         this.load.image('pilaBarriles', pilaBarriles);
+        this.load.image('vallaMina', vallaMina);
 
         this.load.tilemapTiledJSON('cueva', cueva);
 
