@@ -85,7 +85,7 @@ export default class Kitchen extends Phaser.Scene {
         this.cauldronImg = this.createKitchenItem(129, 86, 'cauldron', 'cauldronB');
         this.bookImg = this.createKitchenItem(205, 125, 'bookOnTable', 'bookOnTableB');
 
-        
+
 
         this.mixPlateColor = this.add.image(93 * 3, 146 * 3, 'redPlate').setOrigin(0, 0).setScale(3).setVisible(false).setDepth(1);
         this.mixPlate = this.createKitchenItem(88, 141, 'plate', 'plateB', false);
@@ -108,7 +108,7 @@ export default class Kitchen extends Phaser.Scene {
             // Solo queremos que se encienda si el jugador no está arrastrando ningún ingrediente
             if (!this.isDraggingItem) {
                 // Emitimos el evento que ya tienes preparado más abajo en tu código
-                this.events.emit('cauldron:tryheat'); 
+                this.events.emit('cauldron:tryheat');
             }
         });
 
@@ -337,7 +337,11 @@ export default class Kitchen extends Phaser.Scene {
 
             this.isDraggingItem = true;
 
-            if (itemType === 'smell' || itemType === 'processedTaste') {
+            if (itemType === 'smell') {
+                sourceSprite.setVisible(false);
+                this.sound.play('testTubeSound', { volume: 1 });
+            }
+            if (itemType === 'processedTaste') {
                 sourceSprite.setVisible(false);
             }
 
@@ -460,6 +464,7 @@ export default class Kitchen extends Phaser.Scene {
         const objectsUnderMouse = this.input.hitTestPointer(ptr);
         let isDroppedSuccessfully = false;
 
+
         if (itemType === 'taste') {
             if (objectsUnderMouse.includes(this.cuttingBoard)) {
                 // DISPARAMOS HOOK "DROP EN LA TABLA"
@@ -485,6 +490,7 @@ export default class Kitchen extends Phaser.Scene {
             } else if (objectsUnderMouse.includes(this.cauldronImg)) {
                 // DISPARAMOS HOOK "DROP EN CALDERO"
                 this.runHook('kitchen:drop:cauldron', { itemType, dropData });
+                this.sound.play('dropCauldronSound', { volume: 1 });
 
                 // añadir al caldero
                 this.cauldron.addIngredient('taste', this.tasteDict[dropData.replace('cut', '').toLowerCase()]);
@@ -500,6 +506,7 @@ export default class Kitchen extends Phaser.Scene {
                 this.cauldron.addIngredient('taste', this.tasteDict[dropData.name]);
                 this.cauldron.addIngredient('consistency', dropData.consistency);
                 isDroppedSuccessfully = true;
+                this.sound.play('dropCauldronSound', { volume: 1 });
 
             }
         } else if (itemType === 'color') {
@@ -513,6 +520,7 @@ export default class Kitchen extends Phaser.Scene {
                 this.addPowderToPlate(dropData);
                 isDroppedSuccessfully = true;
 
+
             }
             // si soltamos algo de color al caldero (ya sea base o mezclado)
             else if (objectsUnderMouse.includes(this.cauldronImg)) {
@@ -523,6 +531,7 @@ export default class Kitchen extends Phaser.Scene {
 
                 this.cauldron.addIngredient('color', dropData + 'Liquid');
                 isDroppedSuccessfully = true;
+                this.sound.play('dropCauldronSound', { volume: 1 });
 
             }
         } else if (itemType == 'smell') {
@@ -532,6 +541,7 @@ export default class Kitchen extends Phaser.Scene {
 
                 this.cauldron.addIngredient('smell', dropData);
                 isDroppedSuccessfully = true;
+                this.sound.play('dropCauldronSound', { volume: 1 });
 
             }
         } else if (itemType === 'shape') {
@@ -653,9 +663,9 @@ export default class Kitchen extends Phaser.Scene {
             });
 
         } else if (processType === 'mortar') {
-            
+
             const baseName = ingredient.replace('cut', '').toLowerCase();
-            
+
             // diccionario para encontrar la llave de la textura correcta
             const mortarSprites = {
                 'algae': { inMortar: 'algaeInMortar', smashed: 'smashedAlgae' },
@@ -669,16 +679,16 @@ export default class Kitchen extends Phaser.Scene {
 
             // crear el sprite del ingrediente machacado sobre el mortero
             const mashedIngredient = this.add.sprite(
-                14 * 3, 
-                112 * 3, 
+                14 * 3,
+                112 * 3,
                 spriteKeys.inMortar
             )
-            .setOrigin(0, 0)
-            .setScale(3)
-            .setInteractive({ 
-                useHandCursor: true, 
-                pixelPerfect: true 
-            });            
+                .setOrigin(0, 0)
+                .setScale(3)
+                .setInteractive({
+                    useHandCursor: true,
+                    pixelPerfect: true
+                });
 
             this.grab(mashedIngredient, spriteKeys.smashed, 'processedTaste', {
                 name: baseName,

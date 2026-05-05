@@ -152,6 +152,7 @@ export default class MortarMinigame extends Phaser.Scene {
             clicked = true;
             this.score++;
             this.scoreText.setText('Score: ' + this.score);
+            this.sound.play('mortarSound', { volume: 1 });
             this.removeCircle(circleObj);
         });
 

@@ -372,6 +372,9 @@ import grassSound from '../../assets/sound/grass.mp3';
 import fenceSound from '../../assets/sound/fence.mp3';
 import tilesSound from '../../assets/sound/tiles.mp3';
 import groundSound from '../../assets/sound/ground.mp3';
+import dropCauldronSound from '../../assets/sound/dropCauldron.mp3';
+import mortarSound from '../../assets/sound/mortar.mp3';
+import testTubeSound from '../../assets/sound/testTube.mp3';
 
 //UI
 import pauseBtn from '../../assets/sprites/pauseBtn.png';
@@ -745,6 +748,9 @@ export default class Boot extends Phaser.Scene {
         this.load.audio('fenceSound', fenceSound);
         this.load.audio('tilesSound', tilesSound);
         this.load.audio('groundSound', groundSound);
+        this.load.audio('dropCauldronSound', dropCauldronSound);
+        this.load.audio('mortarSound', mortarSound);
+        this.load.audio('testTubeSound', testTubeSound);
 
         this.load.image('pauseBtn', pauseBtn);
         this.load.image('pauseBtnPressed', pauseBtnPressed);
