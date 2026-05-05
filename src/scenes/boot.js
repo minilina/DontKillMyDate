@@ -99,6 +99,8 @@ import playerRun from '../../assets/anims/run.png';
 import playerIdle from '../../assets/anims/idle.png';
 import casa from '../../assets/tiled/casa.json';
 import cueva from '../../assets/tiled/cueva.json';
+import ciudad from '../../assets/tiled/ciudad.json';
+import ciudad2 from '../../assets/tiled/ciudad2.json';
 
 // sprites escena tienda
 import store from '../../assets/sprites/store.png';
@@ -366,6 +368,10 @@ import bookSound2 from '../../assets/sound/book2.mp3';
 import jarSound1 from '../../assets/sound/jar1.mp3';
 import jarSound2 from '../../assets/sound/jar2.mp3';
 import jarSound3 from '../../assets/sound/jar3.mp3';
+import grassSound from '../../assets/sound/grass.mp3';
+import fenceSound from '../../assets/sound/fence.mp3';
+import tilesSound from '../../assets/sound/tiles.mp3';
+import groundSound from '../../assets/sound/ground.mp3';
 
 //UI
 import pauseBtn from '../../assets/sprites/pauseBtn.png';
@@ -473,6 +479,9 @@ export default class Boot extends Phaser.Scene {
         this.load.image('Water fountain', waterFountain);
         this.load.image('Wheat', wheat);
         this.load.image('wood', wood);
+
+        this.load.tilemapTiledJSON('ciudad', ciudad);
+        this.load.tilemapTiledJSON('ciudad2', ciudad2);
 
         // TIENDA
 
@@ -732,6 +741,10 @@ export default class Boot extends Phaser.Scene {
         this.load.audio('jarSound2', jarSound2);
         this.load.audio('jarSound3', jarSound3);
         this.load.audio('buttonSound', buttonSound);
+        this.load.audio('grassSound', grassSound);
+        this.load.audio('fenceSound', fenceSound);
+        this.load.audio('tilesSound', tilesSound);
+        this.load.audio('groundSound', groundSound);
 
         this.load.image('pauseBtn', pauseBtn);
         this.load.image('pauseBtnPressed', pauseBtnPressed);

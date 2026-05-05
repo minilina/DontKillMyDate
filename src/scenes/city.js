@@ -1,119 +1,99 @@
 import Phaser from 'phaser';
-import Player from '../game-objects/player.js';
-import GameState from '../state/GameState.js'; // Importante para leer la reputación
+import topDownScene from './topDownScene.js';
 
-export default class Ciudad extends Phaser.Scene {
+export default class City extends topDownScene {
     constructor() {
-        super({ key: 'ciudad' });
+        super('city');
     }
 
     preload() { }
 
     create(data = {}) {
-        // ELEGIR EL MAPA SEGUN LA REPUTACION
-        let mapKey = 'ciudad_normal'; 
-        if (GameState.reputation > 70) {
-            mapKey = 'ciudad_lujo';
-        } else if (GameState.reputation < 30) {
-            mapKey = 'ciudad_pobre';
-        }
+        this.initScene('ciudad');
 
-        var map = this.make.tilemap({ key: mapKey });
+        // CONFIGURAR PROFUNDIDADES (Lo que vaya por encima del jugador)
 
-        // 2. CARGAR TILESETS 
-        // (Ajusta estos nombres según los que hayas puesto en tu Tiled de la ciudad)
-        var allPropsSeasons = map.addTilesetImage('ALL props seasons', 'allPropsSeasons');
-        var pathTiles = map.addTilesetImage('Path tiles', 'pathTiles');
-        var road = map.addTilesetImage('Road', 'road');
-        // Añade aquí el resto de tilesets que use tu ciudad...
+        // 3. JUGADOR Y UI
+        const startX = data.spawnX ?? 800; // Coordenadas por defecto al entrar al juego
+        const startY = data.spawnY ?? 600;
 
-        const tilesetsArray = [
-            allPropsSeasons, pathTiles, road
-        ];
+        this.setupPlayer(startX, startY);
+        this.setupUI(); 
 
-        // 3. CREAR CAPAS (Ajusta los nombres según tu Tiled)
-        const capaSuelo = map.createLayer('Suelo', tilesetsArray, 0, 0);
-        const capaDecoracion = map.createLayer('Decoracion', tilesetsArray, 0, 0);
-        const capaColisiones = map.createLayer('Colisiones', tilesetsArray, 0, 0);
+        // 4. DECORACIÓN DINÁMICA (Si tienes capas de flores, etc.)
+        // this.crearDecoracionDinamica(['Objetos/SpawnFlores']);
 
-        // ACTIVAR COLISIONES Y OCULTARLAS
-        capaColisiones.setCollisionByExclusion([-1]);
-        capaColisiones.setVisible(false);
+        // =======================================================
+        // 5. HOVER DEL RATÓN
+        // =======================================================
+        this.hover([
+            // Ejemplo: { capa: capaEdificios, ids: [100, 101] } // Puertas
+        ]);
 
-        // 4. NAVMESH
-        this.navMesh = this.navMeshPlugin.buildMeshFromTilemap("mesh", map, [capaColisiones], null, 4.5);
-
-        // ANIMACION DE LAS TILES
-        if (this.animatedTiles) {
-            this.animatedTiles.init(map);
-            this.animatedTiles.setRate(0.5);
-        }
-
-        // 5. CREAR AL JUGADOR
-        // Si venimos de la casa, data.spawnX existirá. Si no, usamos valores por defecto.
-        const startX = data.spawnX !== undefined ? data.spawnX : 400;
-        const startY = data.spawnY !== undefined ? data.spawnY : 400;
-
-        this.player = new Player(this, startX, startY);
-        this.player.setNavmesh(this.navMesh);
-
-        // MOVIMIENTO CON CLIC (Igual que en la casa)
-        this.input.on('pointerdown', (pointer) => {
-            const worldPoint = pointer.positionToCamera(this.cameras.main);
-            const path = this.player.navMesh.findPath(
-                { x: this.player.x, y: this.player.y },
-                { x: worldPoint.x, y: worldPoint.y }
-            );
-
-            if (path && path.length > 0) {
-                this.player.setPath(path);
+        // =======================================================
+        // 6. SISTEMA UNIVERSAL DE INTERACCIONES (BOTÓN [E] Y CLIC)
+        // =======================================================
+        this.crearSistemaInteraccion([
+            /* EJEMPLO DE PUERTA A LA TIENDA
+            {
+                capa: capaEdificios,
+                ids: [500], // ID de la puerta para la E
+                idsClic: [500, 501, 502], // IDs de la puerta para el ratón
+                tipo: 'tienda',
+                offsetX: 0, 
+                offsetY: -10
+            },
+            EJEMPLO DE CARTEL
+            {
+                capa: capaEdificios,
+                ids: [600],
+                tipo: 'cartel',
+                offsetX: 0, 
+                offsetY: -20
+            }
+            */
+        ], (tipo, tile) => {
+            // Lógica de lo que pasa al interactuar
+            if (tipo === 'tienda') {
+                // this.cambiarEscena('store', { returnX: tile.x, returnY: tile.y + 30 });
+            } else if (tipo === 'cartel') {
+                // Lógica para mostrar un texto en pantalla
+                console.log("Leyendo cartel...");
             }
         });
 
-        // 6. CONFIGURAR CÁMARA Y FÍSICAS
-        this.cameras.main.setZoom(3);
-        this.cameras.main.roundPixels = true;
-        this.cameras.main.startFollow(this.player);
-        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        // =======================================================
+        // 7. CREACIÓN DE OBJETOS DINÁMICOS CON COLISIONES
+        // =======================================================
+        const configObjetosCiudad = {
+            /* EJEMPLOS:
+            'farola': { key: 'farola_img', w: 10, h: 10, ox: -5, oy: -5, centrarOffset: true },
+            'banco':  { key: 'banco_img',  w: 32, h: 16, ox: -16, oy: -8, centrarOffset: true }
+            */
+        };
+        // Si tienes una capa de objetos en Tiled llamada 'SpawnCiudad'
+        // this.grupoObjetosCiudad = this.crearObjetos('Objetos/SpawnCiudad', configObjetosCiudad);
 
-        this.physics.add.collider(this.player, capaColisiones);
+        // =======================================================
+        // 8. TRANSPARENCIAS
+        // =======================================================
+        // this.activarTransparencias([this.grupoObjetosCiudad]);
 
-        // PAUSA
-        this.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-        this.isTransitioning = false; // Nuestro cerrojo anti-bugs
-
-        // ==========================================
-        // 7. ZONA DE SALIDA (VOLVER A LA CASA)
-        // ==========================================
-        
-        // Creamos una alfombra invisible en la parte superior o inferior del mapa.
-        // Aquí la he puesto en la parte de ARRIBA (Y: 20) asumiendo que vas hacia el norte para volver a casa.
-        const zonaSalidaCasa = this.add.zone(map.widthInPixels / 2, 20, map.widthInPixels, 40).setOrigin(0.5, 0.5);
-        this.physics.add.existing(zonaSalidaCasa, true);
-
-        this.physics.add.overlap(this.player, zonaSalidaCasa, () => {
-            if (this.isTransitioning) return;
-            this.isTransitioning = true;
-            
-            // Volvemos a la casa y aparecemos en la parte inferior del mapa
-            this.scene.start('house', { 
-                spawnX: 400, 
-                spawnY: 800 // Pon aquí la Y que corresponda a la parte de abajo de tu casa
-            });
+        // =======================================================
+        // ZONA DE TRANSICIÓN A LA CASA (Borde Izquierdo)
+        // =======================================================
+        // Creamos una zona invisible pegada al borde izquierdo del mapa
+        const zonaCasaX = this.map.widthInPixels; 
+        const zonaCasaY = 320;
+        const zonaCasa = this.add.zone(zonaCasaX, zonaCasaY, 16, 48).setOrigin(0.5, 1);
+        this.physics.add.existing(zonaCasa, true);
+        this.physics.add.overlap(this.player, zonaCasa, () => {
+            this.cambiarEscena('house', { spawnX: 32, spawnY: 464});
         });
-    }
 
-    update() {
-        this.player.setDepth(this.player.y + 4);
-
-        if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
-            this.openPauseMenu();
-        }
-    }
-
-    openPauseMenu() {
-        this.scene.launch("Menu", { parentScene: this.scene.key });
-        this.scene.pause();
+        // HERRAMIENTA DE DEBUG
+        this.debugTiles([
+            // { nombre: "EDIFICIOS", capa: capaEdificios }
+        ]);
     }
 }
