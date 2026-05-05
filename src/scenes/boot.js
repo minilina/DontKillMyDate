@@ -367,6 +367,10 @@ import bookSound2 from '../../assets/sound/book2.mp3';
 import jarSound1 from '../../assets/sound/jar1.mp3';
 import jarSound2 from '../../assets/sound/jar2.mp3';
 import jarSound3 from '../../assets/sound/jar3.mp3';
+import grassSound from '../../assets/sound/grass.mp3';
+import fenceSound from '../../assets/sound/fence.mp3';
+import tilesSound from '../../assets/sound/tiles.mp3';
+import groundSound from '../../assets/sound/ground.mp3';
 
 //UI
 import pauseBtn from '../../assets/sprites/pauseBtn.png';
@@ -733,6 +737,10 @@ export default class Boot extends Phaser.Scene {
         this.load.audio('jarSound2', jarSound2);
         this.load.audio('jarSound3', jarSound3);
         this.load.audio('buttonSound', buttonSound);
+        this.load.audio('grassSound', grassSound);
+        this.load.audio('fenceSound', fenceSound);
+        this.load.audio('tilesSound', tilesSound);
+        this.load.audio('groundSound', groundSound);
 
         this.load.image('pauseBtn', pauseBtn);
         this.load.image('pauseBtnPressed', pauseBtnPressed);
