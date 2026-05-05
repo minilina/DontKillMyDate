@@ -104,22 +104,35 @@ export default class Kitchen extends Phaser.Scene {
         this.stone = this.createKitchenItem(170, 120, 'stone', 'stone');
         this.stone.setScale(.2);
 
+
         this.stone.on('pointerdown', () => {
-            // Solo queremos que se encienda si el jugador no está arrastrando ningún ingrediente
+            // Si acaba de hacer clic hace un instante, ignoramos este clic extra
+            if (this.isClickLocked) return;
+
             if (!this.isDraggingItem) {
-                // Emitimos el evento que ya tienes preparado más abajo en tu código
-                this.events.emit('cauldron:tryheat');
+                this.isClickLocked = true; // Bloqueamos temporalmente
+
+                const heatHook = this.runHook('kitchen:cauldron:heat');
+                if (!heatHook.cancelled) {
+                    this.cauldron.toggleFire(); // Llamamos al caldero directamente
+                }
+
+                // Desbloqueamos después de 250 milisegundos (1/4 de segundo)
+                this.time.delayedCall(250, () => {
+                    this.isClickLocked = false;
+                });
             }
         });
 
         this.cauldron = new Cauldron(this, this.cauldronImg);
-        // Escuchamos el evento del caldero y lo convertimos en un hook
+
+        /* Escuchamos el evento del caldero y lo convertimos en un hook
         this.events.on('cauldron:tryheat', () => {
             const heatHook = this.runHook('kitchen:cauldron:heat');
             if (!heatHook.cancelled) {
                 this.cauldron.toggleFire();
             }
-        });
+        });*/
 
         this.book = new Book(this);
         this.bookImg.on('pointerdown', () => {

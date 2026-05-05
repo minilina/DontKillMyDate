@@ -35,12 +35,12 @@ export default class Cauldron {
         this.temperatureValue = 0;
 
         this.scene.events.on('update', this.updateTemperature, this);
-/*
-        this.cauldronSprite.on('pointerdown', () => {
-
-            this.toggleFire();
-        });
-*/
+        /*
+                this.cauldronSprite.on('pointerdown', () => {
+        
+                    this.toggleFire();
+                });
+        */
         /*
         this.cauldronSprite.on('pointerdown', () => {
             if (!this.scene.isDraggingItem) {
@@ -139,6 +139,12 @@ export default class Cauldron {
         this.heatArrow.setVisible(false);
         this.temperatureValue = 0;
         this.heatArrow.x = this.heatBar.x + this.borderOffset;
+
+        this.fire.setVisible(false);
+        this.fire.stop();
+        if (this.scene.sound.get('fireSound')) {
+            this.scene.sound.stopByKey('fireSound');
+        }
 
         if (this.fire.visible) {
             this.toggleFire();
