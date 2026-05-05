@@ -35,12 +35,12 @@ export default class Cauldron {
         this.temperatureValue = 0;
 
         this.scene.events.on('update', this.updateTemperature, this);
-
+/*
         this.cauldronSprite.on('pointerdown', () => {
 
             this.toggleFire();
         });
-
+*/
         /*
         this.cauldronSprite.on('pointerdown', () => {
             if (!this.scene.isDraggingItem) {

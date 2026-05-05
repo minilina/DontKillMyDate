@@ -303,6 +303,7 @@ import yellowStarPotionB from '../../assets/sprites/kitchen/pocion_estrella_amar
 import heatBar from '../../assets/sprites/kitchen/barra_calor.png';
 import heatArrow from '../../assets/sprites/kitchen/flecha_barra_calor.png';
 import nota from "../../assets/sprites/carta.png";
+import stone from "../../assets/sprites/kitchen/piedra_placeholder.png";
 
 import indicator from '../../assets/sprites/kitchen/indicador.png';
 import lightOverlay from '../../assets/sprites/kitchen/capa_luz.png';
@@ -683,6 +684,9 @@ export default class Boot extends Phaser.Scene {
         this.load.image('mushroomInMortar', mushroomInMortar);
         this.load.image('rootInMortar', rootInMortar);
         this.load.image('crystalInMortar', crystalInMortar);
+
+        this.load.image('stone', stone);
+        this.load.image('stoneB', stone);
 
         this.load.image('indicator', indicator);
         this.load.image('lightOverlay', lightOverlay);

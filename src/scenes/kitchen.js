@@ -85,6 +85,8 @@ export default class Kitchen extends Phaser.Scene {
         this.cauldronImg = this.createKitchenItem(129, 86, 'cauldron', 'cauldronB');
         this.bookImg = this.createKitchenItem(205, 125, 'bookOnTable', 'bookOnTableB');
 
+        
+
         this.mixPlateColor = this.add.image(93 * 3, 146 * 3, 'redPlate').setOrigin(0, 0).setScale(3).setVisible(false).setDepth(1);
         this.mixPlate = this.createKitchenItem(88, 141, 'plate', 'plateB', false);
         this.mixPlate.on('pointerover', () => {
@@ -96,6 +98,17 @@ export default class Kitchen extends Phaser.Scene {
         this.mixPlate.on('pointerout', () => {
             if (!this.isDraggingItem) {
                 this.mixPlate.setTexture('plate');
+            }
+        });
+
+        this.stone = this.createKitchenItem(170, 120, 'stone', 'stone');
+        this.stone.setScale(.2);
+
+        this.stone.on('pointerdown', () => {
+            // Solo queremos que se encienda si el jugador no está arrastrando ningún ingrediente
+            if (!this.isDraggingItem) {
+                // Emitimos el evento que ya tienes preparado más abajo en tu código
+                this.events.emit('cauldron:tryheat'); 
             }
         });
 
