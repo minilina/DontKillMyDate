@@ -321,6 +321,8 @@ import cutCrystal from '../../assets/sprites/kitchen/cristal_cortar.png';
 import cutAnim from '../../assets/anims/cuchillo_anim.png';
 import cutAnimJson from '../../assets/anims/cuchillo_anim_atlas.json';
 
+import mortarBg from '../../assets/sprites/kitchen/mortero_bg.png';
+
 import smashedAlgae from '../../assets/sprites/kitchen/alga_machacada.png';
 import smashedBerries from '../../assets/sprites/kitchen/baya_machacada.png';
 import smashedMushroom from '../../assets/sprites/kitchen/seta_machacada.png';
@@ -716,6 +718,8 @@ export default class Boot extends Phaser.Scene {
         this.load.image('cutCrystal', cutCrystal);
         this.load.image('cutArrow', cutArrow);
         this.load.atlas('knife', cutAnim, cutAnimJson);
+
+        this.load.image('mortarBg', mortarBg);
 
         this.load.audio('fireSound', fireSound);
         this.load.audio('bookSound1', bookSound1);

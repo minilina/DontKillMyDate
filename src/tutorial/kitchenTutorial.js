@@ -477,7 +477,7 @@ export default class KitchenTutorial {
 
     createSkipButton() {
         const btnX = this.k.scale.width - 120;
-        const btnY = 45;
+        const btnY = this.k.scale.height - 40;
 
         // Sprite botón
         this.skipBtnBg = this.k.add.image(btnX, btnY, 'button')

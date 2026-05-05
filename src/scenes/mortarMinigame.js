@@ -16,14 +16,13 @@ export default class MortarMinigame extends Phaser.Scene {
         this.timeRemaining = this.totalTime;
         this.gameActive = false;
         this.circles = [];
+        this.sc = 3; // escala
     }
 
     create() {
-        // Fondo overlay
-        this.bg = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000000, 0.7)
-            .setOrigin(0)
-            .setDepth(0)
-            .setInteractive(); // <-- AÑADIDO: Ahora captura clics
+        // fondo oscuro y mesa con mortero
+        this.bg = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000000, 0.5).setOrigin(0).setDepth(0).setInteractive();
+        this.add.image(0, 0, 'mortarBg').setOrigin(0).setDepth(1).setScale(this.sc);
 
         // --- AÑADIDO: Si haces clic en el fondo, cuenta como fallo ---
         this.bg.on('pointerdown', () => {
@@ -33,31 +32,33 @@ export default class MortarMinigame extends Phaser.Scene {
         });
 
         // Score
-        this.scoreText = this.add.text(20, 20, 'Score: 0', {
+        this.scoreText = this.add.text(60, 55, 'Score: 0', {
             fontFamily: "VT323, monospace",
-            fontSize: '32px',
+            fontSize: '30px',
             color: '#ffffff'
         }).setDepth(1);
 
         // Barra de tiempo
-        this.barWidth = 400;
-        this.barHeight = 20;
+        this.barWidth = 20;
+        this.barHeight = 400;
+        const barX = this.scale.width - 74; 
+        const barY = this.scale.height / 2;
 
         this.timeBarBackground = this.add.rectangle(
-            this.scale.width / 2,
-            40,
+            barX,
+            barY,
             this.barWidth,
             this.barHeight,
             0x555555
-        ).setOrigin(0.5).setDepth(1);
+        ).setOrigin(0.5, 0.5).setDepth(1);
 
         this.timeBar = this.add.rectangle(
-            this.scale.width / 2 - this.barWidth / 2,
-            40,
+            barX,
+            barY + (this.barHeight / 2), 
             this.barWidth,
             this.barHeight,
             0x00ff00
-        ).setOrigin(0, 0.5).setDepth(1);
+        ).setOrigin(0.5, 1).setDepth(1);
 
         if (this.isTutorial) {
             this.runTutorialFlow();
@@ -114,7 +115,7 @@ export default class MortarMinigame extends Phaser.Scene {
 
     updateTimeBar() {
         const ratio = Phaser.Math.Clamp(this.timeRemaining / this.totalTime, 0, 1);
-        this.timeBar.width = this.barWidth * ratio;
+        this.timeBar.scaleY = ratio;
         if (ratio > 0.5) this.timeBar.fillColor = 0x00ff00;
         else if (ratio > 0.25) this.timeBar.fillColor = 0xffff00;
         else this.timeBar.fillColor = 0xff0000;
