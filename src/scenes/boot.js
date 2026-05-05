@@ -99,6 +99,8 @@ import playerRun from '../../assets/anims/run.png';
 import playerIdle from '../../assets/anims/idle.png';
 import casa from '../../assets/tiled/casa.json';
 import cueva from '../../assets/tiled/cueva.json';
+import ciudad from '../../assets/tiled/ciudad.json';
+import ciudad2 from '../../assets/tiled/ciudad2.json';
 
 // sprites escena tienda
 import store from '../../assets/sprites/store.png';
@@ -472,6 +474,9 @@ export default class Boot extends Phaser.Scene {
         this.load.image('Water fountain', waterFountain);
         this.load.image('Wheat', wheat);
         this.load.image('wood', wood);
+
+        this.load.tilemapTiledJSON('ciudad', ciudad);
+        this.load.tilemapTiledJSON('ciudad2', ciudad2);
 
         // TIENDA
 

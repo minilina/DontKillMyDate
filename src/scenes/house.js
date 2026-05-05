@@ -158,6 +158,16 @@ export default class House extends topDownScene {
             });
         }
 
+        // Transicion a la ciudad
+        const zonaCiudadX = 0; 
+        const zonaCiudadY = 496;
+        const anchoCiudad = 640;
+        const zonaCiudad = this.add.zone(zonaCiudadX, zonaCiudadY, 16, 240).setOrigin(0.5, 1);
+        this.physics.add.existing(zonaCiudad, true);
+        this.physics.add.overlap(this.player, zonaCiudad, () => {
+            this.cambiarEscena('city', { spawnX: anchoCiudad - 32, spawnY: 288});
+        });
+
         // TRANSPARENCIAS
         this.activarTransparencias([this.grupoArboles, this.grupoEstructuras]);
 

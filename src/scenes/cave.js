@@ -22,7 +22,7 @@ export default class Cueva extends topDownScene {
         this.setupUI();
 
         // Decoracion (valla) con depth dinamico
-        this.crearDecoracionDinamica(['Objetos/spawnValla']);
+        this.crearDecoracionDinamica(['Objetos/SpawnValla']);
 
         // Zona salida
         const zonaSalida = this.add.zone(168, 318, 48, 16).setOrigin(0.5, 0.5);
@@ -48,7 +48,7 @@ export default class Cueva extends topDownScene {
             'topo':         { key: 'dogBathtub',   w: 18, h: 12, ox: 0,   oy: -16, spriteOffsetX: 8, centrarOffset: true }
         };
 
-        this.grupoCosas = this.crearObjetos('Objetos/spawnCosas', configCosas);
+        this.grupoCosas = this.crearObjetos('Objetos/SpawnCosas', configCosas);
 
         // Ocultamos el fuego y el topo iterando sobre el grupo que nos devuelve la funcion
         this.grupoCosas.getChildren().forEach(obj => {
