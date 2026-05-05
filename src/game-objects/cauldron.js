@@ -27,16 +27,17 @@ export default class Cauldron {
         }
 
         this.fire = this.scene.add.sprite(126 * 3, 115 * 3, 'hotFire').setOrigin(0, 0).setScale(3).setVisible(false);
-        
+
         // barra de temperatura
         this.borderOffset = 3;
         this.heatBar = this.scene.add.image(133 * 3, 151 * 3, 'heatBar').setOrigin(0, 0).setScale(3).setVisible(false);
         this.heatArrow = this.scene.add.image((133 * 3) + this.borderOffset, (151 * 3) + 18, 'heatArrow').setOrigin(0.5, 0).setScale(3).setVisible(false);
         this.temperatureValue = 0;
-        
+
         this.scene.events.on('update', this.updateTemperature, this);
 
         this.cauldronSprite.on('pointerdown', () => {
+
             this.toggleFire();
         });
 
@@ -47,13 +48,13 @@ export default class Cauldron {
             }
         });
         */
-        
+
         this.scene.events.on('pause', () => {
             if (this.fire.visible) {
                 this.scene.sound.pauseAll(); // Pausamos los sonidos para que no suene el fuego de fondo
             }
         }, this);
-       
+
         this.scene.events.on('resume', () => {
             if (this.fire.visible) {
                 this.scene.sound.resumeAll(); // Reanudamos los sonidos
@@ -71,7 +72,7 @@ export default class Cauldron {
             this.fire.setVisible(true);
             this.fire.play('heat');
             this.scene.sound.play('fireSound', { volume: 1.5, loop: true });
-            
+
             // mostrar barra de temperatura al encender el fuego
             this.heatBar.setVisible(true);
             this.heatArrow.setVisible(true);
@@ -82,7 +83,7 @@ export default class Cauldron {
     updateTemperature(time, delta) {
         // solo calienta si el fuego está encendido y no ha llegado al máximo (100)
         if (this.fire.visible && this.temperatureValue < 100) {
-            
+
             // la temperatura incrementa con el tiempo
             this.temperatureValue += 0.005 * delta;
             this.temperatureValue = Phaser.Math.Clamp(this.temperatureValue, 0, 100); // para evitar que supere 100
@@ -131,14 +132,14 @@ export default class Cauldron {
             consistency: [],
             temperature: 'cold'
         };
-        
+
         this.liquidSprite.setVisible(false);
-        
+
         this.heatBar.setVisible(false);
         this.heatArrow.setVisible(false);
         this.temperatureValue = 0;
         this.heatArrow.x = this.heatBar.x + this.borderOffset;
-        
+
         if (this.fire.visible) {
             this.toggleFire();
         }

@@ -12,7 +12,7 @@ export default class MortarMinigame extends Phaser.Scene {
         this.ingredientId = data.ingredient; 
         this.score = 0;
         this.misses = 0;
-        this.totalTime = 10000;
+        this.totalTime = 6000;
         this.timeRemaining = this.totalTime;
         this.gameActive = false;
         this.circles = [];
@@ -24,15 +24,16 @@ export default class MortarMinigame extends Phaser.Scene {
         this.bg = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000000, 0.5).setOrigin(0).setDepth(0).setInteractive();
         this.add.image(0, 0, 'mortarBg').setOrigin(0).setDepth(1).setScale(this.sc);
 
-        // --- AÑADIDO: Si haces clic en el fondo, cuenta como fallo ---
         this.bg.on('pointerdown', () => {
-            if (this.gameActive) {
-                this.registerMiss();
-            }
+            if (this.gameActive) this.registerMiss();
         });
 
-        // Score
-        this.scoreText = this.add.text(60, 55, 'Score: 0', {
+
+        this.ingredientSprite = this.add.sprite(this.scale.width / 2, this.scale.height / 2, this.ingredientId)
+            .setScale(this.sc)
+            .setDepth(1); 
+
+        this.scoreText = this.add.text(20, 20, 'Score: 0', {
             fontFamily: "VT323, monospace",
             fontSize: '30px',
             color: '#ffffff'
@@ -60,15 +61,11 @@ export default class MortarMinigame extends Phaser.Scene {
             0x00ff00
         ).setOrigin(0.5, 1).setDepth(1);
 
-        if (this.isTutorial) {
-            this.runTutorialFlow();
-        } else {
-            // Empezar minijuego con cuenta atrás
-            this.startCountdown();
-        }
+
+        if (this.isTutorial) this.runTutorialFlow();
+        else this.startCountdown();
     }
 
-    // Cuenta atrás antes de empezar el minijuego
     startCountdown() {
         const txt = this.add.text(this.scale.width / 2, this.scale.height / 2, '3', {
             fontFamily: "VT323, monospace",
@@ -78,36 +75,25 @@ export default class MortarMinigame extends Phaser.Scene {
 
         this.time.delayedCall(1000, () => txt.setText('2'));
         this.time.delayedCall(2000, () => txt.setText('1'));
-        this.time.delayedCall(3000, () => {
-            txt.destroy();
-            this.startGame(); // Cuando acaba, empieza el juego real
-        });
+        this.time.delayedCall(3000, () => { txt.destroy(); this.startGame(); });
     }
 
-    // Activar input y mecánicas para empezar el minijuego
     startGame() {
         this.gameActive = true;
 
-        // Timer de juego
         this.timerEvent = this.time.addEvent({
             delay: 1000 / 60,
             loop: true,
             callback: () => {
-                if (!this.gameActive) {
-                    this.timerEvent.remove();
-                    return;
-                }
+                if (!this.gameActive) return;
                 this.timeRemaining -= 1000 / 60;
                 this.updateTimeBar();
-                if (this.timeRemaining <= 0) {
-                    this.evaluateGame();
-                }
+                if (this.timeRemaining <= 0) this.evaluateGame();
             }
         });
 
-        // Intentar crear un círculo nuevo cada 0.5s
         this.spawnEvent = this.time.addEvent({
-            delay: 500,
+            delay: 1000,
             loop: true,
             callback: () => this.spawnCircle()
         });
@@ -115,88 +101,95 @@ export default class MortarMinigame extends Phaser.Scene {
 
     updateTimeBar() {
         const ratio = Phaser.Math.Clamp(this.timeRemaining / this.totalTime, 0, 1);
+        
         this.timeBar.scaleY = ratio;
         if (ratio > 0.5) this.timeBar.fillColor = 0x00ff00;
         else if (ratio > 0.25) this.timeBar.fillColor = 0xffff00;
         else this.timeBar.fillColor = 0xff0000;
+
     }
 
     spawnCircle() {
         if (!this.gameActive) return;
-        
-        // --- AÑADIDO: Si quedan 3 segundos (3000 ms) o menos, ya no salen más círculos ---
-        if (this.timeRemaining <= 1000) return; 
-
-        if (this.circles.length >= 6) return; // Máximo 6 simultáneos
+        if (this.timeRemaining <= 500) return;
+        if (this.circles.length >= 6) return;
 
         const radius = 40;
         const padding = 10;
-        let x, y, tries = 0;
-        let overlaps;
+        let x, y, tries = 0, overlaps;
 
         do {
             x = Phaser.Math.Between(radius + padding, this.scale.width - radius - padding);
             y = Phaser.Math.Between(radius + padding, this.scale.height - radius - padding);
 
             overlaps = this.circles.some(c => {
-                const dx = c.x - x;
-                const dy = c.y - y;
+                const dx = c.sprite.x - x;
+                const dy = c.sprite.y - y;
                 return Math.sqrt(dx*dx + dy*dy) < radius*2 + padding;
             });
 
             tries++;
         } while (overlaps && tries < 20);
 
-        if (overlaps) return; // No pudo colocarse sin superponer
+        if (overlaps) return;
 
-        const circle = this.add.circle(x, y, radius, 0xff0000).setInteractive().setDepth(2);
-        this.circles.push(circle);
+        const circle = this.add.circle(x, y, radius, 0xffffff, 0.3)
+        .setScale(1.3)
+        .setDepth(2)
+        .setInteractive({ useHandCursor: true });
+        const back = this.add.sprite(x, y, this.ingredientId)
+            .setScale(1.6)
+            .setDepth(3);
 
-        // Los círculos ahora duran entre 1.5s y 2.5s
-        const duration = Phaser.Math.Between(1500, 2500);
+        const circleObj = { sprite: circle, back: back };
+        this.circles.push(circleObj);
+
+        const duration = Phaser.Math.Between(1000, 1500);
         let clicked = false;
 
-        // Al hacer clic
         circle.on('pointerdown', () => {
             if (!this.gameActive) return;
             clicked = true;
             this.score++;
             this.scoreText.setText('Score: ' + this.score);
-            this.removeCircle(circle);
+            this.removeCircle(circleObj);
         });
 
-        // Al acabarse el tiempo de vida del círculo
         this.time.delayedCall(duration, () => {
             if (!this.gameActive) return;
-            if (!clicked) {
-                // FALLO: El círculo desapareció sin que el jugador lo pulsara
-                this.registerMiss();
-            }
-            this.removeCircle(circle);
+            if (!clicked) this.registerMiss();
+            this.removeCircle(circleObj);
         });
     }
 
-    removeCircle(circle) {
-        if (!circle) return;
-        const index = this.circles.indexOf(circle);
+    removeCircle(circleObj) {
+        if (!circleObj) return;
+
+        const index = this.circles.indexOf(circleObj);
         if (index !== -1) this.circles.splice(index, 1);
-        if (circle.active) circle.destroy();
+
+        if (circleObj.sprite?.active) circleObj.sprite.destroy();
+        if (circleObj.back?.active) circleObj.back.destroy();
     }
 
     registerMiss() {
-        if (!this.gameActive) return;
-        
-        this.misses++;
-        // Flash rojo en la pantalla
-        this.cameras.main.flash(200, 102, 14, 14); 
-        
-        // Penalización (solo si no es el tutorial)
-        if (!this.isTutorial) {
-            GameState.reducePotionQuality(1); 
-        }
-    }
+    if (!this.gameActive) return;
+    
+    this.misses++;
 
-    // Terminar minijuego
+    // Flash rojo
+    this.cameras.main.flash(200, 102, 14, 14); 
+
+    // ❗ Penalización de score
+    this.score = Math.max(0, this.score - 1);
+    this.scoreText.setText('Score: ' + this.score);
+
+    // Penalización de la poción (solo fuera del tutorial)
+    if (!this.isTutorial) {
+        GameState.reducePotionQuality(1); 
+    }
+}
+
     evaluateGame() {
         if (!this.gameActive) return;
         this.gameActive = false;
@@ -204,7 +197,7 @@ export default class MortarMinigame extends Phaser.Scene {
         if (this.timerEvent) this.timerEvent.remove(false);
         if (this.spawnEvent) this.spawnEvent.remove(false);
 
-        this.circles.forEach(c => c.destroy());
+        this.circles.forEach(c => this.removeCircle(c));
         this.circles = [];
 
         if (this.isTutorial) {
