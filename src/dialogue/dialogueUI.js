@@ -24,8 +24,28 @@ export default class DialogueUI {
     });
     this.arrowTween.pause();
 
+   
+    this.nameBg = scene.add.graphics();
+    this.nameText = scene.add.text(380, 70, "", {
+      // Lo subimos de 60 a 40
+      fontFamily: "VT323, monospace",
+      fontSize: "23px", // Mismo tamaño exacto que el diálogo
+      color: "#f9ce2a",
+    });
+
+    // Ocultos por defecto
+    this.nameBg.setVisible(false);
+    this.nameText.setVisible(false);
+
     this.currentTextObjects = [];
-    this.container.add([this.dialog, this.dialogArrow]);
+
+    // Añadimos TODO al contenedor general (el fondo va ANTES que el texto para que quede detrás)
+    this.container.add([
+      this.dialog,
+      this.dialogArrow,
+      this.nameBg,
+      this.nameText,
+    ]);
 
     // variables de máquina de escribir
     this.isTyping = false;
@@ -33,8 +53,38 @@ export default class DialogueUI {
     this.arrowTimer = null;
   }
 
-  onContinue(handler) {
+  // --- NUEVO: Función mejorada para poner el nombre con bordes redondeados ---
+  setName(name) {
+    if (name) {
+      this.nameText.setText(name);
 
+      // Limpiamos el gráfico anterior y lo preparamos para dibujar el nuevo tamaño
+      this.nameBg.clear();
+      this.nameBg.fillStyle(0x623100, 1); // Color marrón oscuro
+
+      // Márgenes (padding)
+      const paddingX = 12;
+      const paddingY = 6;
+
+      // Calculamos la posición y el tamaño de la caja de fondo
+      const bgX = this.nameText.x - paddingX;
+      const bgY = this.nameText.y - paddingY;
+      const bgWidth = this.nameText.width + paddingX * 2;
+      const bgHeight = this.nameText.height + paddingY * 2;
+      const radius = 10; // Nivel de "redondeo" de las esquinas
+
+      // Dibujamos el rectángulo redondeado
+      this.nameBg.fillRoundedRect(bgX, bgY, bgWidth, bgHeight, radius);
+
+      this.nameBg.setVisible(true);
+      this.nameText.setVisible(true);
+    } else {
+      this.nameBg.setVisible(false);
+      this.nameText.setVisible(false);
+    }
+  }
+
+  onContinue(handler) {
     this.scene.input.off("pointerdown");
     this.scene.input.keyboard?.off("keydown-ENTER");
 
@@ -150,7 +200,7 @@ export default class DialogueUI {
 
           if (seg.highlight) {
             styleConfig.stroke = "#623100";
-            styleConfig.strokeThickness = 6; 
+            styleConfig.strokeThickness = 6;
           }
 
           let t = this.scene.add.text(cx, cy, "", styleConfig);
@@ -161,7 +211,7 @@ export default class DialogueUI {
             highlight: seg.highlight,
             fullText: seg.text,
           });
-          
+
           tempText.setStyle(styleConfig);
           tempText.setText(seg.text);
           cx += tempText.width;

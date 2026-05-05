@@ -28,16 +28,14 @@ export default class NPC extends Phaser.GameObjects.Container {
 
     this.requirements = requirements;
 
-    // 1. Construir las capas visuales
     this.buildCharacter(scene, looks);
 
-    // 2. Escalar el personaje
+    this.setDepth(30);
+
     this.setScale(3);
 
-    // 3. Añadirlo a la escena principal
     scene.add.existing(this);
 
-    // 4. Animación de entrada suave
     this.alpha = 0;
     scene.tweens.add({
       targets: this,

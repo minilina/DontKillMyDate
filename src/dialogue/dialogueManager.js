@@ -24,12 +24,16 @@ export default class DialogueManager {
 
   /**
    * Inicia un diálogo.
-   * @param {{lines: string[]}} dialogue
+   * @param {{lines: string[], speakerName?: string}} dialogue
    */
   start(dialogue) {
     this.active = true;
     this.lines = dialogue?.lines ?? [];
     this.index = 0;
+
+    // --- NUEVO: Recogemos el nombre y se lo pasamos a la UI ---
+    this.speakerName = dialogue?.speakerName ?? "";
+    this.ui.setName(this.speakerName);
 
     this.ui.show();
     this._showCurrentLine();
@@ -61,7 +65,5 @@ export default class DialogueManager {
     this.scene.events.emit("dialogue:finished");
   }
 
-  update() {
-    
-  }
+  update() {}
 }

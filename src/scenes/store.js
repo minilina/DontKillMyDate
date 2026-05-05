@@ -16,38 +16,44 @@ export default class Store extends Phaser.Scene {
    * Creación de los elementos de la escena principal de juego
    */
   create() {
-    this.add.image(0, 0, "store")
+    this.add
+      .image(0, 0, "store")
       .setOrigin(0, 0)
       .setDisplaySize(this.scale.width, this.scale.height)
       .setDepth(0);
-    
+
     this.crearAnimacionesPociones();
 
-    this.add.sprite(420, 193, 'pocion_roja')
+    this.add
+      .sprite(420, 193, "pocion_roja")
       .setDepth(5)
       .setScale(3)
-      .play('anim_pocion_roja');
+      .play("anim_pocion_roja");
 
-    this.add.sprite(480, 185, 'pocion_azul')
+    this.add
+      .sprite(480, 185, "pocion_azul")
       .setDepth(5)
       .setScale(3)
-      .play('anim_pocion_azul');
+      .play("anim_pocion_azul");
 
-    this.add.sprite(540, 196, 'pocion_amarilla') 
+    this.add
+      .sprite(540, 196, "pocion_amarilla")
       .setDepth(5)
       .setScale(3)
-      .play('anim_pocion_amarilla');
+      .play("anim_pocion_amarilla");
 
-    this.add.image(0, 0, "mostrador")
+    this.add
+      .image(0, 0, "mostrador")
       .setOrigin(0, 0)
       .setDisplaySize(this.scale.width, this.scale.height)
       .setDepth(10);
 
-    this.add.image(0, 0, "luzStore")
+    this.add
+      .image(0, 0, "luzStore")
       .setOrigin(0, 0)
       .setDisplaySize(this.scale.width, this.scale.height)
-      .setDepth(20)
-    
+      .setDepth(20);
+
     this.flowManager = new CustomerFlowManager(this);
     this.flowManager.startShift();
 
@@ -77,32 +83,41 @@ export default class Store extends Phaser.Scene {
 
   crearAnimacionesPociones() {
     // Animación Amarilla (9 fotogramas: 0 al 8)
-    if (!this.anims.exists('anim_pocion_amarilla')) {
+    if (!this.anims.exists("anim_pocion_amarilla")) {
       this.anims.create({
-        key: 'anim_pocion_amarilla',
-        frames: this.anims.generateFrameNumbers('pocion_amarilla', { start: 0, end: 8 }),
+        key: "anim_pocion_amarilla",
+        frames: this.anims.generateFrameNumbers("pocion_amarilla", {
+          start: 0,
+          end: 8,
+        }),
         frameRate: 8,
-        repeat: -1
+        repeat: -1,
       });
     }
 
     // Animación Roja (8 fotogramas: 0 al 7)
-    if (!this.anims.exists('anim_pocion_roja')) {
+    if (!this.anims.exists("anim_pocion_roja")) {
       this.anims.create({
-        key: 'anim_pocion_roja',
-        frames: this.anims.generateFrameNumbers('pocion_roja', { start: 0, end: 7 }),
+        key: "anim_pocion_roja",
+        frames: this.anims.generateFrameNumbers("pocion_roja", {
+          start: 0,
+          end: 7,
+        }),
         frameRate: 8,
-        repeat: -1
+        repeat: -1,
       });
     }
 
     // Animación Azul (7 fotogramas: 0 al 6)
-    if (!this.anims.exists('anim_pocion_azul')) {
+    if (!this.anims.exists("anim_pocion_azul")) {
       this.anims.create({
-        key: 'anim_pocion_azul',
-        frames: this.anims.generateFrameNumbers('pocion_azul', { start: 0, end: 6 }),
+        key: "anim_pocion_azul",
+        frames: this.anims.generateFrameNumbers("pocion_azul", {
+          start: 0,
+          end: 6,
+        }),
         frameRate: 8,
-        repeat: -1
+        repeat: -1,
       });
     }
   }
@@ -151,6 +166,7 @@ export default class Store extends Phaser.Scene {
       .image(149 * 3, 145 * 3, potionTextureKey)
       .setOrigin(0, 0)
       .setScale(3)
+      .setDepth(15) // AÑADIDO: Profundidad por encima del mostrador (10)
       .setAlpha(0);
 
     // animación de la poción apareciendo
@@ -165,6 +181,7 @@ export default class Store extends Phaser.Scene {
           .sprite(45 * 3, 24 * 3, "thinkingBubble")
           .setOrigin(0, 0)
           .setScale(3)
+          .setDepth(25) // AÑADIDO: Profundidad por encima de la luz general (20)
           .play("think");
 
         // PRIMERA PAUSA entre entrega poción y reacción cliente

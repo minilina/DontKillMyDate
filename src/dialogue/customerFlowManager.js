@@ -58,7 +58,6 @@ export default class CustomerFlowManager {
     } else {
       // scripted
       const specialData = GameState.getSpecialNPC(customerType);
-
       // para estos no necesitmos dificultad en principio
       const scriptedRequest = processScriptedDialogue(specialData);
 
@@ -68,9 +67,15 @@ export default class CustomerFlowManager {
       };
 
       looksNPC = specialData.looks;
+
+      const formattedScriptedLines = [];
+      scriptedRequest.dialogueLines.forEach((line) => {
+        formattedScriptedLines.push(...splitIntoLines(line));
+      });
+
       dialogueData = {
         speakerName: specialData.name,
-        lines: scriptedRequest.dialogueLines,
+        lines: formattedScriptedLines,
       };
 
       this.currentRequest.specialData = specialData;

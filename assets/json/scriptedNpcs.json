@@ -27,7 +27,7 @@
     ],
     "successDialogue": [
       "La pureza de esta poción es deslumbrante... Al beber esto, los velos mágicos se apartarán de sus ojos por fin.",
-      "Si alguna vez exploras la Arboleda Oeste, búscame. Te contaré lo que descubrimos más allá de la niebla."
+      "¿Viste la cueva oculta al oeste de tu morada? La buena fortuna te encontrará si la encuentras. Este es mi consejo como agradecimiento por tu ayuda."
     ]
   },
   "nymph": {
@@ -57,8 +57,8 @@
       "Nuestra magia combinada requiere un catalizador. Tráeme algo {color} que tenga {sabor}. Dásmelo {temperatura}, que la mezcla quede {consistencia} y ponlo {forma_frasco}."
     ],
     "successDialogue": [
-      "¡Oh! Siento palpitar la energía en este frasco. Esta mezcla es perfecta para sanar el Manantial Llorón.",
-      "Pásate por la orilla del Río Norte cuando salgas de la tienda. Mis aliados y yo estaremos en deuda contigo."
+      "¡Oh! Siento palpitar la energía en este frasco. Esta mezcla es perfecta para afianzar nuestra alianza.",
+      "Pásate por la orilla del río cuando salgas de la tienda. Mis aliados y yo estaremos en deuda contigo."
     ]
   },
   "gnomo": {
@@ -120,7 +120,7 @@
     ],
     "successDialogue": [
       "¡Qué maravilla! Brilla con la intensidad de mil luciérnagas. Con esto podremos devolverle la vida a nuestra arboleda.",
-      "Si alguna vez caminas por el Claro Resplandeciente bajo la luna, ven a verme. Te enseñaré a escuchar el canto de la luz."
+      "Si alguna vez caminas por el sendero hacia la ciudad, puede que me encuentres. Te enseñaré a escuchar el canto de la luz."
     ]
   },
   "human": {
@@ -151,7 +151,7 @@
     ],
     "successDialogue": [
       "Increíble... el calor y el aroma por sí solos ya me devuelven la esperanza. Mi gente no olvidará esta deuda, alquimista.",
-      "Si te aventuras por el Camino del Sur en tus expediciones, visita nuestro campamento. Podría conseguirte materiales raros."
+      "Si te aventuras por la zona norte en tus expediciones, visitáme. Podría conseguirte materiales raros."
     ]
   },
   "kitsune": {
@@ -182,7 +182,7 @@
     ],
     "successDialogue": [
       "Ah... qué aroma tan fascinante. Esta esencia es exactamente lo que necesitamos para engañar a las sombras y devolver la luz a nuestros dominios.",
-      "Me has caído bien. Si alguna vez te pierdes en el Bosque de los Cerezos, busca el farol azul. Te enseñaré un par de trucos interesantes."
+      "Me has caído bien. Si alguna vez te pierdes por la ciudad, búscame. Te enseñaré un par de trucos interesantes."
     ]
   }
 }
