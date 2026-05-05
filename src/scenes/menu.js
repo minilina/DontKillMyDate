@@ -66,7 +66,7 @@ export default class Menu extends Phaser.Scene {
         }
       },
       'btnSoundOn',
-      'btnSoundOff');
+      'btnSoundOff',null,() => this.game.sound.mute);
 
     //BOTON FULLSCREEN
 
@@ -74,7 +74,7 @@ export default class Menu extends Phaser.Scene {
       width / 2 + 50,
       height / 2 - 20,
       '⛶',
-      () => { this.scale.toggleFullscreen() },
+      () => { this.alternarPantallaCompleta(); },
       'blankBtn',null,'🗗'
     );
 
@@ -160,4 +160,21 @@ export default class Menu extends Phaser.Scene {
     this.scene.stop(this.parentScene);
     this.scene.start('Start');
   }
+  alternarPantallaCompleta() {
+    const contenedorJuego = document.getElementById('juego'); // El id definido en tu HTML[cite: 3] y CSS
+
+    if (!document.fullscreenElement) {
+        // Entrar en pantalla completa (vía bruta nativa)
+        if (contenedorJuego.requestFullscreen) {
+            contenedorJuego.requestFullscreen();
+        } else if (contenedorJuego.webkitRequestFullscreen) { // Safari/iOS
+            contenedorJuego.webkitRequestFullscreen();
+        }
+    } else {
+        // Salir de pantalla completa
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    }
+}
 }
