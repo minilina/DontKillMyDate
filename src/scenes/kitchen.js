@@ -489,16 +489,22 @@ export default class Kitchen extends Phaser.Scene {
                 this.scene.launch('cuttingMinigame', { ingredient: dropData });
                 isDroppedSuccessfully = true;
 
-            } else if (objectsUnderMouse.includes(this.mortar)) {
-                // DISPARAMOS HOOK "DROP EN MORTERO"
-                console.log("Intentando disparar hook 'kitchen:drop:mortar' con data:", { itemType, dropData });
+            }
+            else if (objectsUnderMouse.includes(this.mortar)) {
                 const dropHook = this.runHook('kitchen:drop:mortar', { itemType, dropData });
-                if (dropHook.cancelled) return false;
+
+
+                if (dropHook && dropHook.cancelled) {
+
+                    return;
+                }
+
 
                 // minijuego machacar
                 this.scene.pause();
                 this.scene.launch('mortarMinigame', { ingredient: dropData });
                 isDroppedSuccessfully = true;
+
 
             } else if (objectsUnderMouse.includes(this.cauldronImg)) {
                 // DISPARAMOS HOOK "DROP EN CALDERO"

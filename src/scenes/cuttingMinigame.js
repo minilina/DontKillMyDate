@@ -7,6 +7,7 @@ export default class CuttingMinigame extends Phaser.Scene {
     }
 
     init(data) {
+        console.log("DATOS RECIBIDOS EN cutin:", data);
         this.isTutorial = data.isTutorial || false;
         this.ingredientId = data.ingredient;
         this.cutsMade = 0;

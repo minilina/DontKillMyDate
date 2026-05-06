@@ -74,6 +74,7 @@ export default class Note extends Phaser.GameObjects.Container {
   }
 
   close() {
+    this.scene.events.emit('note:closed');
     this.setVisible(false);
   }
 }

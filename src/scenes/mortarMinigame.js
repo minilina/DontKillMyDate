@@ -2,14 +2,14 @@ import Phaser from 'phaser';
 import GameState from '../state/GameState.js';
 
 export default class MortarMinigame extends Phaser.Scene {
-
     constructor() {
         super({ key: 'mortarMinigame' });
     }
 
     init(data) {
+        console.log("los datos los datos", data);
         this.isTutorial = data.isTutorial || false;
-        this.ingredientId = data.ingredient; 
+        this.ingredientId = data.ingredient;
         this.score = 0;
         this.misses = 0;
         this.totalTime = 6000;
@@ -31,7 +31,7 @@ export default class MortarMinigame extends Phaser.Scene {
 
         this.ingredientSprite = this.add.sprite(this.scale.width / 2, this.scale.height / 2, this.ingredientId)
             .setScale(this.sc)
-            .setDepth(1); 
+            .setDepth(1);
 
         this.scoreText = this.add.text(20, 20, 'Score: 0', {
             fontFamily: "VT323, monospace",
@@ -42,7 +42,7 @@ export default class MortarMinigame extends Phaser.Scene {
         // Barra de tiempo
         this.barWidth = 20;
         this.barHeight = 400;
-        const barX = this.scale.width - 74; 
+        const barX = this.scale.width - 74;
         const barY = this.scale.height / 2;
 
         this.timeBarBackground = this.add.rectangle(
@@ -55,7 +55,7 @@ export default class MortarMinigame extends Phaser.Scene {
 
         this.timeBar = this.add.rectangle(
             barX,
-            barY + (this.barHeight / 2), 
+            barY + (this.barHeight / 2),
             this.barWidth,
             this.barHeight,
             0x00ff00
@@ -88,7 +88,10 @@ export default class MortarMinigame extends Phaser.Scene {
                 if (!this.gameActive) return;
                 this.timeRemaining -= 1000 / 60;
                 this.updateTimeBar();
-                if (this.timeRemaining <= 0) this.evaluateGame();
+                if (this.timeRemaining <= 0) {
+                    this.evaluateGame();
+
+                }
             }
         });
 
@@ -101,7 +104,7 @@ export default class MortarMinigame extends Phaser.Scene {
 
     updateTimeBar() {
         const ratio = Phaser.Math.Clamp(this.timeRemaining / this.totalTime, 0, 1);
-        
+
         this.timeBar.scaleY = ratio;
         if (ratio > 0.5) this.timeBar.fillColor = 0x00ff00;
         else if (ratio > 0.25) this.timeBar.fillColor = 0xffff00;
@@ -125,7 +128,7 @@ export default class MortarMinigame extends Phaser.Scene {
             overlaps = this.circles.some(c => {
                 const dx = c.sprite.x - x;
                 const dy = c.sprite.y - y;
-                return Math.sqrt(dx*dx + dy*dy) < radius*2 + padding;
+                return Math.sqrt(dx * dx + dy * dy) < radius * 2 + padding;
             });
 
             tries++;
@@ -134,9 +137,9 @@ export default class MortarMinigame extends Phaser.Scene {
         if (overlaps) return;
 
         const circle = this.add.circle(x, y, radius, 0xffffff, 0.3)
-        .setScale(1.3)
-        .setDepth(2)
-        .setInteractive({ useHandCursor: true });
+            .setScale(1.3)
+            .setDepth(2)
+            .setInteractive({ useHandCursor: true });
         const back = this.add.sprite(x, y, this.ingredientId)
             .setScale(1.6)
             .setDepth(3);
@@ -174,37 +177,45 @@ export default class MortarMinigame extends Phaser.Scene {
     }
 
     registerMiss() {
-    if (!this.gameActive) return;
-    
-    this.misses++;
+        if (!this.gameActive) return;
 
-    // Flash rojo
-    this.cameras.main.flash(200, 102, 14, 14); 
+        this.misses++;
 
-    // ❗ Penalización de score
-    this.score = Math.max(0, this.score - 1);
-    this.scoreText.setText('Score: ' + this.score);
+        // Flash rojo
+        this.cameras.main.flash(200, 102, 14, 14);
 
-    // Penalización de la poción (solo fuera del tutorial)
-    if (!this.isTutorial) {
-        GameState.reducePotionQuality(1); 
+        // ❗ Penalización de score
+        this.score = Math.max(0, this.score - 1);
+        this.scoreText.setText('Score: ' + this.score);
+
+        // Penalización de la poción (solo fuera del tutorial)
+        if (!this.isTutorial) {
+            GameState.reducePotionQuality(1);
+        }
     }
-}
 
     evaluateGame() {
-        if (!this.gameActive) return;
+        console.log("Intentando evaluar fin del juego. isTutorial:", this.isTutorial, "gameActive:", this.gameActive);
+
+        // 1. IMPORTANTE: Si es tutorial, queremos que termine aunque gameActive sea false 
+        // por si acaso se llamó dos veces. Pero para el modo normal sí necesitamos el check.
+        if (!this.isTutorial && !this.gameActive) return;
+
+        // 2. Detenemos todo inmediatamente
         this.gameActive = false;
 
         if (this.timerEvent) this.timerEvent.remove(false);
         if (this.spawnEvent) this.spawnEvent.remove(false);
 
+        // Limpiar círculos
         this.circles.forEach(c => this.removeCircle(c));
         this.circles = [];
 
+        // 3. Ahora sí, el flujo de salida
         if (this.isTutorial) {
+            console.log('evaluateGame: Modo tutorial terminado - Mostrando popup'); // <--- AHORA SÍ LLEGARÁ AQUÍ
             this.showTutorialEndOptions();
         } else {
-            // Un pequeño delay visual antes de salir
             this.time.delayedCall(1000, () => {
                 this.exitScene();
             });
@@ -232,6 +243,8 @@ export default class MortarMinigame extends Phaser.Scene {
 
     showTutorialEndOptions() {
         const { width, height } = this.scale;
+
+        this.input.off('pointerdown');
 
         const overlay = this.add.rectangle(0, 0, width, height, 0x000000, 0.6)
             .setOrigin(0)
@@ -287,8 +300,17 @@ export default class MortarMinigame extends Phaser.Scene {
         });
 
         continueButton.on('pointerdown', () => {
+            console.log("1 ---> Botón Continuar pulsado");
             closePopup();
-            this.scene.get('kitchen').events.emit('minigame:tutorial:finished');
+
+            // Capturamos la escena destino explícitamente
+            const targetScene = this.scene.get('kitchen');
+            console.log("2 ---> ¿Existe la escena targetScene?", !!targetScene);
+
+            // Emitimos el evento
+            targetScene.events.emit('minigame:tutorial:finished');
+            console.log("3 ---> Evento emitido hacia 'kitchen'");
+
             this.exitScene();
         });
     }
@@ -297,10 +319,10 @@ export default class MortarMinigame extends Phaser.Scene {
 
     exitScene() {
         let kitchenScene = this.scene.get('kitchen');
-        
+
         // Enviamos la puntuación obtenida a la cocina
         kitchenScene.returnFromMinigame(this.ingredientId, 'mortar');
-        
+
         this.scene.resume('kitchen');
         this.scene.stop();
     }
