@@ -506,6 +506,7 @@ export default class Boot extends Phaser.Scene {
         this.load.image('Wheat', wheat);
         this.load.image('wood', wood);
 
+        this.load.image('arbustoFeo', arbustoFeo);
         this.load.image('arbustoMedio', arbustoMedio);
         this.load.image('arbustoBonito', arbustoBonito);
         this.load.image('farola', farola);
@@ -513,6 +514,13 @@ export default class Boot extends Phaser.Scene {
         this.load.image('papeleraSucia', papeleraSucia);
         this.load.image('papelera', papelera);
         this.load.image('sillaBlanca', sillaBlanca);
+        this.load.image('sillaRosa', sillaRosa);
+        this.load.image('tendederoRosa', tendederoRosa);
+        this.load.image('fuente', fuente);
+        this.load.image('banco', banco);
+        this.load.image('bancoGirado', bancoGirado);
+        this.load.image('hierba amarilla', hierbaAmarilla);
+        this.load.image('semilla arroz', semillaArroz);
         this.load.image('semilla trigo', semillaTrigo);
         this.load.image('trigo', trigo);
         this.load.image('arroz', arroz);
