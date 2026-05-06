@@ -844,7 +844,7 @@
         {
          "draworder":"topdown",
          "id":16,
-         "name":"spawnEstructuras",
+         "name":"SpawnEstructuras",
          "objects":[
                 {
                  "height":0,

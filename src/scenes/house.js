@@ -6,6 +6,8 @@ export default class House extends topDownScene {
         super('house');
     }
 
+    preload() { }
+
     create(data = {}) {
         this.initScene('casa');
 
@@ -27,8 +29,9 @@ export default class House extends topDownScene {
         // Poner al jugador
         const startX = data.spawnX ?? 400;
         const startY = data.spawnY ?? 300;
+        const dir = data.direccion ?? 'down';
 
-        this.setupPlayer(startX, startY); // Crea NavMesh, Player, Camara y Fisicas
+        this.setupPlayer(startX, startY, dir); // Crea NavMesh, Player, Camara y Fisicas
         this.setupUI();                   // Crea el boton de pausa y la tecla ESC
 
         // SONIDO DE PASOS EN HIERBA
@@ -46,7 +49,7 @@ export default class House extends topDownScene {
 
         // HOVER PARA LAS VALLAS Y LA PIEDRA
         this.hover([
-            { capa: capaVallas, ids: [1393, 1394, 1395, 1405, 1406, 1407] },
+            { capa: capaVallas,  ids: [1393, 1394, 1395, 1405, 1406, 1407] },
             { capa: capaPilares, ids: [3852, 3868, 3869, 3870, 3871] }
         ]);
 
@@ -73,7 +76,7 @@ export default class House extends topDownScene {
 
             // ENTRAR A LA CUEVA SI TOCAS LA ZONA
             this.physics.add.overlap(this.player, zonaEntrada, () => {
-                this.cambiarEscena('cueva', { returnX: pX + 8, returnY: pY + 32, cuevaTileX: cX, cuevaTileY: cY });
+                this.cambiarEscena('cueva', { cuevaTileX: cX, cuevaTileY: cY });
             });
 
             // TEMBLOR DE CAMARA
@@ -90,7 +93,7 @@ export default class House extends topDownScene {
             const IDs = { cerrado: [1393, 1394, 1395], abierto: [1405, 1406, 1407], colision: 1210 };
 
             if (IDs.cerrado.includes(tileValla.index)) {
-                this.fenceSound.play(); // <- abrir
+                this.fenceSound.play(); // sonido abrir
                 let sX = tileValla.x - (tileValla.index === 1394 ? 1 : (tileValla.index === 1395 ? 2 : 0));
                 capaTapar?.putTileAt(1399, sX, tileValla.y - 1);
                 capaTapar?.putTileAt(1401, sX + 2, tileValla.y - 1);
@@ -100,7 +103,7 @@ export default class House extends topDownScene {
                 this.capaColisiones?.putTileAt(-1, sX + 1, tileValla.y);
                 this.player.setNavmesh(this.navMeshPlugin.buildMeshFromTilemap("mesh", this.map, [this.capaColisiones]));
             } else if (IDs.abierto.includes(tileValla.index)) {
-                this.fenceSound.play(); // <- cerrar
+                this.fenceSound.play(); // sonido cerrar
                 let sX = tileValla.x - (tileValla.index === 1406 ? 1 : (tileValla.index === 1407 ? 2 : 0));
                 if (this.map.worldToTileX(this.player.x) === sX + 1 && this.map.worldToTileY(this.player.y) === tileValla.y) return;
 
@@ -137,23 +140,23 @@ export default class House extends topDownScene {
 
         // CREACION DE ARBOLES DINAMICOS
         const configArboles = {
-            'grande': { key: 'arbol_grande', w: 16, h: 14, ox: -8, oy: -14, centrarOffset: true, spriteOffsetX: 8 },
-            'mediano': { key: 'arbol_mediano', w: 16, h: 12, ox: -8, oy: -12, centrarOffset: true, spriteOffsetX: 8 },
-            'peque': { key: 'arbol_peque', w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true, spriteOffsetX: 8 },
-            'mushroom1': { key: 'seta_azul', w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true },
-            'mushroom2': { key: 'seta_cyan', w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true },
-            'mushroom3': { key: 'seta_rosa', w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true },
+            'grande':    { key: 'arbol_grande',  w: 16, h: 14, ox: -8, oy: -14, centrarOffset: true, spriteOffsetX: 8 },
+            'mediano':   { key: 'arbol_mediano', w: 16, h: 12, ox: -8, oy: -12, centrarOffset: true, spriteOffsetX: 8 },
+            'peque':     { key: 'arbol_peque',   w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true, spriteOffsetX: 8 },
+            'mushroom1': { key: 'seta_azul',     w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true },
+            'mushroom2': { key: 'seta_cyan',     w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true },
+            'mushroom3': { key: 'seta_rosa',     w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true },
         };
         this.grupoArboles = this.crearObjetos('Objetos/SpawnArboles', configArboles);
 
         // CREACION DE ESTRUCTURAS 
         const configEstructuras = {
-            'pilar1': { w: 19, h: 15, ox: 7, oy: -17 },
-            'pilar2': { w: 19, h: 15, ox: 7, oy: -17 },
-            'roca': { w: 24, h: 14, ox: 6, oy: -16 },
+            'pilar1':  { w: 19, h: 15, ox: 7, oy: -17 },
+            'pilar2':  { w: 19, h: 15, ox: 7, oy: -17 },
+            'roca':    { w: 24, h: 14, ox: 6, oy: -16 },
             'estatua': { w: 29, h: 20, ox: 1, oy: -24 },
             'letrero': { w: 16, h: 10, ox: 7, oy: -10 },
-            'templo': { dw: -16, h: 80, ox: 8, oy: -80, tOffsetY: 80 }
+            'templo':  { dw: -16, h: 80, ox: 8, oy: -80 }
         };
         this.grupoEstructuras = this.crearObjetos('Objetos/SpawnEstructuras', configEstructuras);
 
@@ -161,12 +164,10 @@ export default class House extends topDownScene {
         const spriteTemplo = this.grupoEstructuras.getChildren().find(e => e.tipoObjeto === 'templo');
         if (spriteTemplo) {
             // Creamos la zona en la base del templo
-            const zonaX = spriteTemplo.x;
-            const zonaY = spriteTemplo.y + 5;
-            const z = this.add.zone(zonaX, zonaY, 40, 20).setOrigin(0.5, 1);
+            const z = this.add.zone(spriteTemplo.x, spriteTemplo.y + 5, 40, 20).setOrigin(0.5, 1);
             this.physics.add.existing(z, true);
             this.physics.add.overlap(this.player, z, () => {
-                this.cambiarEscena('store', { returnX: zonaX, returnY: zonaY + 20 });
+                this.cambiarEscena('store', { returnX: spriteTemplo.x, returnY: spriteTemplo.y + 25 });
             });
 
             this.events.on('shutdown', () => {
@@ -176,13 +177,11 @@ export default class House extends topDownScene {
         }
 
         // Transicion a la ciudad
-        const zonaCiudadX = 0; 
-        const zonaCiudadY = 496;
         const anchoCiudad = 640;
-        const zonaCiudad = this.add.zone(zonaCiudadX, zonaCiudadY, 16, 240).setOrigin(0.5, 1);
+        const zonaCiudad = this.add.zone(0, 448, 8, 48).setOrigin(0, 0);
         this.physics.add.existing(zonaCiudad, true);
         this.physics.add.overlap(this.player, zonaCiudad, () => {
-            this.cambiarEscena('city', { spawnX: anchoCiudad - 32, spawnY: 288});
+            this.cambiarEscena('city');
         });
 
         // TRANSPARENCIAS
@@ -190,10 +189,10 @@ export default class House extends topDownScene {
 
         // HERRAMIENTA DE DEBUG: VER IDS TIENE LA VALLA, EL MURO...
         this.debugTiles([
-            { nombre: "VALLA", capa: capaVallas },
-            { nombre: "MURO", capa: this.capaCesped },
+            { nombre: "VALLA",       capa: capaVallas },
+            { nombre: "MURO",        capa: this.capaCesped },
             { nombre: "PIEDRA AGUA", capa: capaPilares },
-            { nombre: "COLISION", capa: this.capaColisiones }
+            { nombre: "COLISION",    capa: this.capaColisiones }
         ]);
     }
 
@@ -202,11 +201,11 @@ export default class House extends topDownScene {
 
         const tileX = this.map.worldToTileX(this.player.x);
         const tileY = this.map.worldToTileY(this.player.y);
-        const moviéndose = this.player.body.speed > 0;
+        const moviendose = this.player.body.speed > 0;
 
-        const inTile = moviéndose && !!this.capaCamino?.getTileAt(tileX, tileY);
-        const inGrass = moviéndose && !inTile && !!this.capaCesped?.getTileAt(tileX, tileY);
-        const inGround = moviéndose && !inTile && !inGrass && !!this.capaTierra?.getTileAt(tileX, tileY);
+        const inTile = moviendose && !!this.capaCamino?.getTileAt(tileX, tileY);
+        const inGrass = moviendose && !inTile && !!this.capaCesped?.getTileAt(tileX, tileY);
+        const inGround = moviendose && !inTile && !inGrass && !!this.capaTierra?.getTileAt(tileX, tileY);
 
         if (inGrass && !this.inGrass) { this.grassSound.play(); this.inGrass = true; }
         else if (!inGrass && this.inGrass) { this.grassSound.stop(); this.inGrass = false; }

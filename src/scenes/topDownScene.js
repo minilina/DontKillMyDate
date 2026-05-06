@@ -40,7 +40,7 @@ export default class TopDownScene extends Phaser.Scene {
         return { map: this.map, tilesets: tilesetsArray };
     }
 
-    setupPlayer(startX, startY) {
+    setupPlayer(startX, startY, direccion = 'down') {
         // NavMesh
         /* const walkableLayer = map.getObjectLayer('Walkable');
         
@@ -68,6 +68,8 @@ export default class TopDownScene extends Phaser.Scene {
         // Jugador
         this.player = new Player(this, startX, startY);
         if (this.navMesh) this.player.setNavmesh(this.navMesh);
+        this.player.zElevacion = 0; // Para el tema de las escaleras de la ciudad
+        if (this.player.setDireccion) { this.player.setDireccion(direccion);}
         
         // Camara
         this.cameras.main.setZoom(3);
@@ -77,7 +79,15 @@ export default class TopDownScene extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.cameras.main.fadeIn(600, 0, 0, 0); // todas las escenas empiezan con un fadeIn
         
-        if (this.capaColisiones) this.physics.add.collider(this.player, this.capaColisiones);
+        if (this.capaColisiones) {
+            this.physics.add.collider(
+                this.player, 
+                this.capaColisiones,
+                null,
+                () => { return this.player.zElevacion === 0; }, // Solo colisionas si no estas elevado (zElevacion)
+                this
+            );
+        }
 
         // Input generico de movimiento
         this.input.on('pointerdown', (pointer) => {
@@ -93,7 +103,7 @@ export default class TopDownScene extends Phaser.Scene {
         this.events.on('update', () => {
             // Solo actualiza si el jugador existe y sigue activo
             if (this.player && this.player.active) {
-                this.player.setDepth(this.player.y + 4);
+                this.player.setDepth(this.player.y + 4 + this.player.zElevacion);
             }
         });
     }
@@ -134,7 +144,7 @@ export default class TopDownScene extends Phaser.Scene {
         });
     }
 
-    crearObjetos(nombreCapaObjetos, configuracionFisicas) {
+    crearObjetos(nombreCapaObjetos, configuracionFisicas, elevacionExtra = 0) {
         const grupo = this.physics.add.staticGroup();
         const capa = this.map.getObjectLayer(nombreCapaObjetos);
 
@@ -155,7 +165,7 @@ export default class TopDownScene extends Phaser.Scene {
                     sprite.x += offsetX;
 
                     // Aplicamos el origen y profundidad
-                    sprite.setOrigin(0.5, 1).setDepth(obj.y);
+                    sprite.setOrigin(0.5, 1).setDepth(obj.y + elevacionExtra);
                     sprite.tipoObjeto = obj.name;
 
                     if (obj.properties?.find(p => p.name === 'flipX')?.value) sprite.setFlipX(true);
@@ -180,36 +190,71 @@ export default class TopDownScene extends Phaser.Scene {
     activarTransparencias(grupos) {
         this.events.on('update', () => {
             if (!this.player || !this.player.active) return;
-            
+            const px = this.player.x;
+            const py = this.player.y + 4; // Ajustamos el punto de prueba al cuerpo del jugador
+
             grupos.forEach(grupo => {
                 if (!grupo || !grupo.children) return;
                 
                 grupo.getChildren().forEach(obj => {
                     if (!obj || !obj.active || !obj.width || !obj.height) return;
 
-                    // Calculamos el centro exacto del objeto
-                    const centroX = obj.x + (obj.originX === 0 ? obj.width / 2 : 0);
-                    const dX = Math.abs(this.player.x - centroX);
-                    
-                    // Aplicamos el Offset si el objeto lo requiere
-                    const offsetY = obj.tOffsetY || 5; 
-                    const dY = (obj.y - offsetY) - this.player.y;
-                    
                     let dif = false;
-                    
-                    // Formula generica que crea un cono detras de cualquier imagen
-                    // dY > 0: El jugador esta por detras
-                    // dX < ... : Crea una forma triangular basada en el ancho y alto del sprite
-                    if (dY > 0 && dY < obj.height && dX < (obj.width * 0.6) * (1 - (dY / obj.height))) {
-                        dif = true;
+
+                    // Comprobamos si el jugador esta por detras del objeto (y menor que la base)
+                    if (this.player.y < obj.y) {
+                        
+                        // Calculamos los bordes reales de la imagen en el mundo
+                        const scaleX = obj.scaleX || 1;
+                        const scaleY = obj.scaleY || 1;
+                        const left = obj.x - (obj.displayOriginX * scaleX);
+                        const right = left + (obj.width * scaleX);
+                        const top = obj.y - (obj.displayOriginY * scaleY);
+                        const bottom = top + (obj.height * scaleY);
+
+                        // Solo hacemos la prueba del pixel si el jugador esta dentro del cuadrado que ocupa la imagen (con un poco de margen)
+                        if (px >= left - 3 && px <= right + 3 && py >= top - 3 && py <= bottom + 3) {
+                            
+                            // Traducimos la posicion del mundo a las coordenadas de la foto (de 0 a Width)
+                            let localX = Math.floor((px - left) / scaleX);
+                            let localY = Math.floor((py - top) / scaleY);
+
+                            // Si le hemos hecho un setFlipX a la imagen, invertimos la X
+                            if (obj.flipX) { localX = obj.width - localX; }
+
+                            const radio = 3; // por si el pixel exacto es transparente, miramos un poco alrededor
+                            const paso = 4; // para no mirar cada pixel y optimizar (miramos cada 4 pixels, es suficiente para detectar si hay algo solido cerca)
+                            let tocoObjeto = false;
+
+                            for (let ix = -radio; ix <= radio; ix += paso) {
+                                for (let iy = -radio; iy <= radio; iy += paso) {
+                                    const checkX = localX + ix;
+                                    const checkY = localY + iy;
+
+                                    // Nos aseguramos de no buscar pixeles fuera de los bordes de la imagen
+                                    if (checkX >= 0 && checkX < obj.width && checkY >= 0 && checkY < obj.height) {
+                                        const pixelAlpha = this.textures.getPixelAlpha(checkX, checkY, obj.texture.key, obj.frame.name);
+                                        
+                                        if (pixelAlpha > 0) {
+                                            tocoObjeto = true;
+                                            break; // Si ya toco uno, paramos el bucle para ahorrar rendimiento
+                                        }
+                                    }
+                                }
+                                if (tocoObjeto) break;
+                            }
+
+                            // Si el radar detecto color, activamos la transparencia
+                            if (tocoObjeto) { dif = true; }
+                        }
                     }
-                    
+
+                    // Aplicamos el cambio de transparencia de forma suave
                     obj.alpha += ((dif ? 0.4 : 1) - obj.alpha) * 0.1;
                 });
             });
         });
     }
-
     openPauseMenu() {
         this.scene.launch("Menu", { parentScene: this.scene.key });
         this.scene.pause();
@@ -223,7 +268,7 @@ export default class TopDownScene extends Phaser.Scene {
     }
 
     // para el depth dinamico
-    crearDecoracionDinamica(nombresCapasObjetos) {
+    crearDecoracionDinamica(nombresCapasObjetos, elevacionExtra = 0) {
         nombresCapasObjetos.forEach(nombreCapa => {
             const capa = this.map.getObjectLayer(nombreCapa);
             if (capa) {
@@ -234,7 +279,7 @@ export default class TopDownScene extends Phaser.Scene {
                         
                         const img = this.add.image(obj.x + offsetCen, obj.y, imgKey);
                         img.setOrigin(0.5, 1);
-                        img.setDepth(obj.y - 7);
+                        img.setDepth(obj.y - 7 + elevacionExtra);
                     }
                 });
             }
