@@ -164,6 +164,7 @@ export default class CuttingMinigame extends Phaser.Scene {
             // crear y ejecutar la animación del corte en esa posición
             let anim = this.add.sprite(finalKnifeX, this.ingredientYBase, 'knife', 'cuchillo_anim-0').setScale(this.sc).setDepth(4);
             anim.play('cut').on('animationcomplete', () => anim.destroy());
+            this.sound.play('knifeSound', { volume: 1 });
 
             // mover hacia la derecha todos los trozos que quedan tras el corte (separación)
             for (let p = cutIndex + 1; p < 4; p++) {
@@ -175,6 +176,7 @@ export default class CuttingMinigame extends Phaser.Scene {
             this.cameras.main.flash(200, 102, 14, 14); // flash rojo
             // penalización por fallo
             GameState.reducePotionQuality(5);
+            this.sound.play('errorSound', { volume: 1 });
         }
 
         // máximo 3 clicks !!

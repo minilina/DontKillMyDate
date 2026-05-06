@@ -25,6 +25,7 @@ export default class MortarMinigame extends Phaser.Scene {
         this.add.image(0, 0, 'mortarBg').setOrigin(0).setDepth(1).setScale(this.sc);
 
         this.bg.on('pointerdown', () => {
+            this.sound.play('errorSound', { volume: 1 });
             if (this.gameActive) this.registerMiss();
         });
 
@@ -180,7 +181,6 @@ export default class MortarMinigame extends Phaser.Scene {
         if (!this.gameActive) return;
 
         this.misses++;
-
         // Flash rojo
         this.cameras.main.flash(200, 102, 14, 14);
 

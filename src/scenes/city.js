@@ -15,6 +15,8 @@ export default class City extends topDownScene {
         const capaSueloPuente = this.map.getLayer('Suelo/Puente')?.tilemapLayer;
         const capaDecoracionPuente = this.map.getLayer('Suelo/Decoracion Puente')?.tilemapLayer;
         const capaColisionesPuente = this.map.getLayer('Colisiones Puente')?.tilemapLayer;
+        this.capaCamino = this.map.getLayer('Suelo/Camino')?.tilemapLayer;
+        this.capaCesped = this.map.getLayer('Suelo/Cesped')?.tilemapLayer;
 
         if (capaMuroPuente) capaMuroPuente.setDepth(2000);
         if (capaSueloPuente) capaSueloPuente.setDepth(2000);
@@ -22,6 +24,11 @@ export default class City extends topDownScene {
 
         this.setupPlayer(this.map.widthInPixels - 32, 288, 'left');
         this.setupUI();
+
+        this.grassSound = this.sound.add('grassSound', { loop: true, volume: 1 });
+        this.tilesSound = this.sound.add('tilesSound', { loop: true, volume: 2 });
+        this.inGrass = false;
+        this.inTile = false;
         this.player.zElevacion = 3000;
 
         if (capaColisionesPuente) {
@@ -34,6 +41,11 @@ export default class City extends topDownScene {
                 () => { return this.player.zElevacion > 0;}, // Solo colisionas si estas elevado (zElevacion)
                 this
             );
+
+            this.events.on('shutdown', () => {
+                this.sound.stopByKey('grassSound');
+                this.sound.stopByKey('tilesSound');
+            });
         }
 
         // ZONA PARA SUBIR
@@ -86,5 +98,23 @@ export default class City extends topDownScene {
         this.grupoEstructuras = this.crearObjetos('Objetos/SpawnEstructuras', configEstructuras);
 
         this.activarTransparencias([this.grupoArboles, this.grupoEstructuras]);
+    }
+    update() {
+        if (!this.player) return;
+
+        const tileX = this.map.worldToTileX(this.player.x);
+        const tileY = this.map.worldToTileY(this.player.y);
+        const moviendose = this.player.body.speed > 0;
+
+        const inTile = moviendose && !!this.capaCamino?.getTileAt(tileX, tileY);
+        const inGrass = moviendose && !inTile && !!this.capaCesped?.getTileAt(tileX, tileY);
+        
+
+        if (inGrass && !this.inGrass) { this.grassSound.play(); this.inGrass = true; }
+        else if (!inGrass && this.inGrass) { this.grassSound.stop(); this.inGrass = false; }
+
+        if (inTile && !this.inTile) { this.tilesSound.play(); this.inTile = true; }
+        else if (!inTile && this.inTile) { this.tilesSound.stop(); this.inTile = false; }
+
     }
 }

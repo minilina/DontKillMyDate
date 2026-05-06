@@ -173,6 +173,8 @@ export default class House extends topDownScene {
             this.events.on('shutdown', () => {
                 this.sound.stopByKey('grassSound');
                 this.sound.stopByKey('fenceSound');
+                this.sound.stopByKey('tilesSound');
+                this.sound.stopByKey('groundSound');
             });
         }
 

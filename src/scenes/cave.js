@@ -14,12 +14,17 @@ export default class Cueva extends topDownScene {
 
         const capaEfectos = this.map.getLayer('Decoracion/Efectos')?.tilemapLayer;
         const capaDecoracionVallas = this.map.getLayer('Decoracion/Decoracion Vallas')?.tilemapLayer;
+        this.capaTierra = this.map.getLayer('Suelo/Tierra')?.tilemapLayer;
 
         if (capaEfectos) capaEfectos.setDepth(9999);
         if (capaDecoracionVallas) capaDecoracionVallas.setDepth(9999);
 
         this.setupPlayer(168, 290, 'up');
         this.setupUI();
+
+        this.groundSound = this.sound.add('groundSound', { loop: true, volume: 1 });
+        this.inGround = false;
+
 
         // Decoracion (valla) con depth dinamico
         this.crearDecoracionDinamica(['Objetos/SpawnValla']);
@@ -57,5 +62,22 @@ export default class Cueva extends topDownScene {
                 obj.setVisible(false);
             }
         });
+
+        this.events.on('shutdown', () => {
+                this.sound.stopByKey('groundSound');
+            });
+    }
+
+    update() {
+        if (!this.player) return;
+
+        const tileX = this.map.worldToTileX(this.player.x);
+        const tileY = this.map.worldToTileY(this.player.y);
+        const moviendose = this.player.body.speed > 0;
+
+        const inGround = moviendose && !!this.capaTierra?.getTileAt(tileX, tileY);
+
+        if (inGround && !this.inGround) { this.groundSound.play(); this.inGround = true; }
+        else if (!inGround && this.inGround) { this.groundSound.stop(); this.inGround = false; }
     }
 }

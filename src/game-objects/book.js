@@ -160,7 +160,7 @@ export default class Book extends Phaser.GameObjects.Container {
             });
 
             icon.on('pointerdown', () => {
-                
+
                 icon.setScale(3.2);
 
                 if (!icon.rebordeVisual) {
@@ -169,10 +169,10 @@ export default class Book extends Phaser.GameObjects.Container {
                         .setScale(3.5)
                         .setTintFill(0xffffff); // Silueta blanca sólida
 
-                    
+
                     if (icon.parentContainer) {
-                        icon.parentContainer.add(reborde); 
-                        icon.parentContainer.moveBelow(reborde, icon); 
+                        icon.parentContainer.add(reborde);
+                        icon.parentContainer.moveBelow(reborde, icon);
                     } else {
                         reborde.setDepth(icon.depth - 1);
                     }
@@ -180,7 +180,7 @@ export default class Book extends Phaser.GameObjects.Container {
                     icon.rebordeVisual = reborde;
                 }
 
-                
+
                 this.selections.push(element);
                 this.iconosTocados.push(icon);
 
@@ -443,7 +443,7 @@ export default class Book extends Phaser.GameObjects.Container {
             }
         ).setOrigin(0.5);
 
-         const title5 = scene.add.text(
+        const title5 = scene.add.text(
             640,
             100,
             "Vestimenta",
@@ -455,8 +455,9 @@ export default class Book extends Phaser.GameObjects.Container {
             }
         ).setOrigin(0.5);
 
-        const descCauldron = scene.add.text(180, 160, "Para cocinar la poción enciende \nel fuego pulsando el caldero.", estiloDesc).setOrigin(0, 0.5);
-        const cauldron = scene.add.image(318, 240, 'cauldron').setScale(1.5);
+        const descCauldron = scene.add.text(180, 160, "Para cocinar la poción enciende \nel fuego chocando las piedras.", estiloDesc).setOrigin(0, 0.5);
+        const cauldron = scene.add.image(250, 240, 'cauldron').setScale(1.5);
+        const stone = scene.add.image(390, 240, 'stone').setScale(0.3);
         const descHeat = scene.add.text(180, 320, "Apaga el fuego cuando la \nflecha llegue a la temperatura \ndeseada.", estiloDesc).setOrigin(0, 0.5);
         const heatBar = scene.add.image(318, 380, 'heatBar').setScale(4);
         const frio = scene.add.text(
@@ -495,6 +496,31 @@ export default class Book extends Phaser.GameObjects.Container {
             }
         );
 
+        const baseX = 560;
+        const baseY = 150; // más arriba
+
+        const spacingY = 90; // más espaciado
+
+        // columna izquierda
+        const ropa_elfo = scene.add.image(baseX, baseY, 'ropa_elfo').setScale(1);
+        const title_elfo = scene.add.text(baseX - 20, baseY + 50, "Elfo", { fontFamily: "VT323, monospace", fontSize: "25px", color: "#4f342d", fontStyle: "bold" });
+
+        const ropa_hada = scene.add.image(baseX, baseY + spacingY, 'ropa_hada').setScale(1);
+        const title_hada = scene.add.text(baseX - 20, baseY + spacingY + 50, "Hada", { fontFamily: "VT323, monospace", fontSize: "25px", color: "#4f342d", fontStyle: "bold" });
+
+        const ropa_kit = scene.add.image(baseX, baseY + spacingY * 2, 'ropa_kitsune').setScale(1);
+        const title_kit = scene.add.text(baseX - 33, baseY + spacingY * 2 + 50, "Kitsune", { fontFamily: "VT323, monospace", fontSize: "25px", color: "#4f342d", fontStyle: "bold" });
+
+        // columna derecha
+        const ropa_gnomo = scene.add.image(baseX + 160, baseY, 'ropa_gnomo').setScale(1);
+        const title_gnomo = scene.add.text(baseX + 137, baseY + 50, "Gnomo", { fontFamily: "VT323, monospace", fontSize: "25px", color: "#4f342d", fontStyle: "bold" });
+
+        const ropa_ninfa = scene.add.image(baseX + 160, baseY + spacingY, 'ropa_ninfa').setScale(1);
+        const title_ninfa = scene.add.text(baseX + 137, baseY + spacingY + 50, "Ninfa", { fontFamily: "VT323, monospace", fontSize: "25px", color: "#4f342d", fontStyle: "bold" });
+
+        const ropa_humano = scene.add.image(baseX + 160, baseY + spacingY * 2, 'ropa_humano').setScale(1);
+        const title_humano = scene.add.text(baseX + 132, baseY + spacingY * 2 + 50, "Humano", { fontFamily: "VT323, monospace", fontSize: "25px", color: "#4f342d", fontStyle: "bold" });
+
         page4.add(cauldron);
         page4.add(descCauldron)
         page4.add(heatBar);
@@ -502,6 +528,19 @@ export default class Book extends Phaser.GameObjects.Container {
         page4.add(frio);
         page4.add(templado);
         page4.add(caliente);
+        page4.add(stone);
+        page4.add(ropa_elfo);
+        page4.add(ropa_hada);
+        page4.add(ropa_kit);
+        page4.add(ropa_gnomo);
+        page4.add(ropa_ninfa);
+        page4.add(ropa_humano);
+        page4.add(title_elfo);
+        page4.add(title_hada);
+        page4.add(title_kit);
+        page4.add(title_gnomo);
+        page4.add(title_ninfa);
+        page4.add(title_humano);
 
 
         page4.add(title4);
@@ -549,6 +588,9 @@ export default class Book extends Phaser.GameObjects.Container {
             blueTagButton.setTexture('blueTag1');
             greenTagButton.setTexture('greenTag1');
             purpleTagButton.setTexture('purpleTag1');
+            const bookSounds = ['bookSound1', 'bookSound2'];
+            const randomSound = Phaser.Math.RND.pick(bookSounds);
+            this.scene.sound.play(randomSound, { volume: 1 });
         });
 
         redTagButton.on("pointerover", () => {
@@ -567,6 +609,9 @@ export default class Book extends Phaser.GameObjects.Container {
             redTagButton.setTexture('redTag1');
             greenTagButton.setTexture('greenTag1');
             purpleTagButton.setTexture('purpleTag1');
+            const bookSounds = ['bookSound1', 'bookSound2'];
+            const randomSound = Phaser.Math.RND.pick(bookSounds);
+            this.scene.sound.play(randomSound, { volume: 1 });
         });
 
         blueTagButton.on("pointerover", () => {
@@ -585,6 +630,9 @@ export default class Book extends Phaser.GameObjects.Container {
             blueTagButton.setTexture('blueTag1');
             greenTagButton.setTexture('greenTag2');
             purpleTagButton.setTexture('purpleTag1');
+            const bookSounds = ['bookSound1', 'bookSound2'];
+            const randomSound = Phaser.Math.RND.pick(bookSounds);
+            this.scene.sound.play(randomSound, { volume: 1 });
         });
 
         greenTagButton.on("pointerover", () => {
@@ -603,6 +651,9 @@ export default class Book extends Phaser.GameObjects.Container {
             blueTagButton.setTexture('blueTag1');
             greenTagButton.setTexture('greenTag1');
             purpleTagButton.setTexture('purpleTag2');
+            const bookSounds = ['bookSound1', 'bookSound2'];
+            const randomSound = Phaser.Math.RND.pick(bookSounds);
+            this.scene.sound.play(randomSound, { volume: 1 });
         });
 
         purpleTagButton.on("pointerover", () => {
@@ -658,8 +709,9 @@ export default class Book extends Phaser.GameObjects.Container {
     }
 
     open() { this.setVisible(true); }
-    close() { 
-        this.scene.events.emit('book:closed'); 
-        this.setVisible(false); }
+    close() {
+        this.scene.events.emit('book:closed');
+        this.setVisible(false);
+    }
 
 }

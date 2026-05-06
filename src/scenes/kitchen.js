@@ -82,7 +82,7 @@ export default class Kitchen extends Phaser.Scene {
 
         this.note = this.createKitchenItem(150, 44, "note", "noteB");
 
-        this.cauldronImg = this.createKitchenItem(129, 86, 'cauldron', 'cauldronB');
+        this.cauldronImg = this.createKitchenItem(129, 86, 'cauldron', 'cauldronB', false);
         this.bookImg = this.createKitchenItem(205, 125, 'bookOnTable', 'bookOnTableB');
 
 
@@ -101,8 +101,20 @@ export default class Kitchen extends Phaser.Scene {
             }
         });
 
-        this.stone = this.createKitchenItem(170, 120, 'stone', 'stone');
-        this.stone.setScale(.2);
+        this.stone = this.createKitchenItem(170, 120, 'stone', 'stone', false);
+        this.stone.setScale(0.2).setDepth(1);
+
+        // crear el gráfico del borde (empieza invisible)
+        this.stoneBorder = this.add.graphics();
+
+        this.stone.on('pointerover', () => {
+            if (this.isDraggingItem) return;
+            this.stone.postFX.addGlow(0xffffff, 4, 0, false);
+        });
+
+        this.stone.on('pointerout', () => {
+            this.stone.postFX.clear();
+        });
 
 
         this.stone.on('pointerdown', () => {
@@ -122,6 +134,7 @@ export default class Kitchen extends Phaser.Scene {
                     this.isClickLocked = false;
                 });
             }
+            this.sound.play('flintSound', { volume: 1 });
         });
 
         this.cauldron = new Cauldron(this, this.cauldronImg);
@@ -139,7 +152,9 @@ export default class Kitchen extends Phaser.Scene {
             // DISPARAMOS HOOK "ABRIR LIBRO"
             const bookHook = this.runHook('kitchen:book:open');
             if (bookHook.cancelled) return;
-
+            const bookSounds = ['bookSound1', 'bookSound2'];
+            const randomSound = Phaser.Math.RND.pick(bookSounds);
+            this.sound.play(randomSound, { volume: 1 });
             this.book.open();
         });
 
@@ -147,6 +162,9 @@ export default class Kitchen extends Phaser.Scene {
         this.note.on("pointerdown", () => {
             this.hideIndicators();
             this.noteUI.open();
+            const bookSounds = ['bookSound1', 'bookSound2'];
+            const randomSound = Phaser.Math.RND.pick(bookSounds);
+            this.sound.play(randomSound, { volume: 1 });
         });
 
         // sistema mezcla colores cuencos
@@ -334,18 +352,20 @@ export default class Kitchen extends Phaser.Scene {
             let currentDropData = itemData;
             let currentDragItemKey = dragItemKey;
 
-            // platito de mezclas
-            if (itemType === 'color' && !itemData) {
-                // si está vacío, no hacer nada
-                if (this.selectedColors.size === 0) return;
+            if (itemType === 'color') {
+                if (!itemData) {
+                    // si está vacío, no hacer nada
+                    if (this.selectedColors.size === 0) return;
 
-                // coger polvos y quitar color platito
-                currentDropData = this.currentMixedColor;
-                currentDragItemKey = this.currentMixedColor + 'Powder'; // ej. 'purplePowder'
+                    // coger polvos y quitar color platito
+                    currentDropData = this.currentMixedColor;
+                    currentDragItemKey = this.currentMixedColor + 'Powder'; // ej. 'purplePowder'
 
-                this.selectedColors.clear();
-                this.currentMixedColor = null;
-                this.mixPlateColor.setVisible(false);
+                    this.selectedColors.clear();
+                    this.currentMixedColor = null;
+                    this.mixPlateColor.setVisible(false);
+                }
+                this.sound.play('colorDustSound', { volume: 1 });
             }
 
             this.isDraggingItem = true;
@@ -362,9 +382,10 @@ export default class Kitchen extends Phaser.Scene {
 
             // crear el sprite que sigue al cursor
             let dragItem;
-            if (itemType === 'processedTaste' && currentDropData.cuts) {
-                const borderKey = currentDragItemKey + 'B';
 
+            if (itemType === 'processedTaste' && currentDropData.cuts) {
+
+                const borderKey = currentDragItemKey + 'B';
                 dragItem = this.createChoppedContainer(
                     pointer.x,
                     pointer.y,
@@ -373,9 +394,20 @@ export default class Kitchen extends Phaser.Scene {
                 );
                 dragItem.setDepth(100);
 
-            } else {
+
+            }
+
+            if (itemType === 'shape') {
+
+                this.sound.play('bottleSound', { volume: 1 });
+                dragItem = this.add.image(pointer.x, pointer.y, currentDragItemKey).setScale(3).setDepth(100);
+
+            }
+            else {
+
                 // para el resto de objetos (jarra, botes, etc.)
                 dragItem = this.add.image(pointer.x, pointer.y, currentDragItemKey).setScale(3).setDepth(100);
+
             }
 
             // arrastar
@@ -445,6 +477,7 @@ export default class Kitchen extends Phaser.Scene {
                     dragItem.setTexture(newTexture);
                     this.cauldronImg.setTexture('cauldron'); // quitar borde caldero para que no confunda con la poción
                     this.cauldron.liquidSprite.setVisible(false);
+                    this.sound.play('fillBottleSound', { volume: 1 });
 
                     // mostrar indicador de entrega
                     this.hideIndicators();

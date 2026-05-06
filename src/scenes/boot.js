@@ -398,6 +398,12 @@ import groundSound from '../../assets/sound/ground.mp3';
 import dropCauldronSound from '../../assets/sound/dropCauldron.mp3';
 import mortarSound from '../../assets/sound/mortar.mp3';
 import testTubeSound from '../../assets/sound/testTube.mp3';
+import colorDustSound from '../../assets/sound/colorDust.mp3';
+import bottleSound from '../../assets/sound/bottle.mp3';
+import flintSound from '../../assets/sound/flint.mp3';
+import knifeSound from '../../assets/sound/knife.mp3'; 
+import fillBottleSound from '../../assets/sound/fillBottle.mp3';
+import errorSound from '../../assets/sound/error.mp3';
 
 //UI
 import pauseBtn from '../../assets/sprites/pauseBtn.png';
@@ -794,6 +800,12 @@ export default class Boot extends Phaser.Scene {
         this.load.audio('dropCauldronSound', dropCauldronSound);
         this.load.audio('mortarSound', mortarSound);
         this.load.audio('testTubeSound', testTubeSound);
+        this.load.audio('colorDustSound', colorDustSound);
+        this.load.audio('bottleSound', bottleSound);
+        this.load.audio('flintSound', flintSound);
+        this.load.audio('knifeSound', knifeSound);
+        this.load.audio('fillBottleSound', fillBottleSound);
+        this.load.audio('errorSound', errorSound);
 
         this.load.image('pauseBtn', pauseBtn);
         this.load.image('pauseBtnPressed', pauseBtnPressed);
