@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="26" nextobjectid="34">
+ <editorsettings>
+  <export target="ciudad2.json" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" source="Tileset Grass Spring.tsx"/>
  <tileset firstgid="961" source="Path tiles.tsx"/>
  <tileset firstgid="1345" source="Extra Village Tilesets.tsx"/>
@@ -611,7 +614,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="16" name="spawnEstructuras">
+ <objectgroup id="16" name="SpawnEstructuras">
   <object id="7" name="agua" x="304" y="368">
    <point/>
   </object>

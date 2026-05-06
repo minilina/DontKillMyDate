@@ -364,7 +364,7 @@
   </layer>
  </group>
  <group id="25" name="Objetos">
-  <objectgroup id="23" name="spawnCosas" visible="0">
+  <objectgroup id="23" name="SpawnCosas" visible="0">
    <object id="1" name="barril" x="64" y="96">
     <point/>
    </object>
@@ -396,7 +396,7 @@
     <point/>
    </object>
   </objectgroup>
-  <objectgroup id="27" name="spawnValla" visible="0">
+  <objectgroup id="27" name="SpawnValla" visible="0">
    <object id="11" name="vallaMina" x="160" y="305">
     <point/>
    </object>
@@ -415,7 +415,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,4264,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,4264,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2025,2026,2027,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4260,4261,2059,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4262,4263,0,0,0,

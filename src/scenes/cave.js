@@ -9,7 +9,7 @@ export default class Cueva extends topDownScene {
     preload() { }
 
     create(data = {}) {
-        this.datosDeLaCasa = data;
+        this.datosEscenaAnterior = data;
         this.initScene('cueva');
 
         const capaEfectos = this.map.getLayer('Decoracion/Efectos')?.tilemapLayer;
@@ -18,21 +18,22 @@ export default class Cueva extends topDownScene {
         if (capaEfectos) capaEfectos.setDepth(9999);
         if (capaDecoracionVallas) capaDecoracionVallas.setDepth(9999);
 
-        this.setupPlayer(168, 290);
+        this.setupPlayer(168, 290, 'up');
         this.setupUI();
 
         // Decoracion (valla) con depth dinamico
         this.crearDecoracionDinamica(['Objetos/SpawnValla']);
 
         // Zona salida
-        const zonaSalida = this.add.zone(168, 318, 48, 16).setOrigin(0.5, 0.5);
+        const zonaSalida = this.add.zone(160, 312, 16, 8).setOrigin(0, 0);
         this.physics.add.existing(zonaSalida, true);
         this.physics.add.overlap(this.player, zonaSalida, () => {
             this.cambiarEscena('house', {
-                spawnX: this.datosDeLaCasa.returnX,
-                spawnY: this.datosDeLaCasa.returnY,
-                cuevaTileX: this.datosDeLaCasa.cuevaTileX,
-                cuevaTileY: this.datosDeLaCasa.cuevaTileY
+                spawnX: 328,
+                spawnY: 96,
+                cuevaTileX: this.datosEscenaAnterior.cuevaTileX,
+                cuevaTileY: this.datosEscenaAnterior.cuevaTileY,
+                direccion: 'down'
             });
         });
 

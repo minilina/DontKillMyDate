@@ -95,6 +95,29 @@ import waterFountain from '../../assets/tiled/Water fountain.png';
 import wheat from '../../assets/tiled/Wheat.png';
 import wood from '../../assets/tiled/wood.png';
 
+// objetos ciudad
+import arbustoFeo from '../../assets/tiled/arbustoFeo.png';
+import arbustoMedio from '../../assets/tiled/arbustoMedio.png';
+import arbustoBonito from '../../assets/tiled/arbustoBonito.png';
+import farola from '../../assets/tiled/farola.png';
+import farolaBonita from '../../assets/tiled/farolaBonita.png';
+import papeleraSucia from '../../assets/tiled/papeleraSucia.png';
+import papelera from '../../assets/tiled/papelera.png';
+import sillaBlanca from '../../assets/tiled/sillaBlanca.png';
+import sillaRosa from '../../assets/tiled/sillaRosa.png';
+import tendederoRosa from '../../assets/tiled/tendedero Rosa.png';
+import fuente from '../../assets/tiled/fuente.png';
+import banco from '../../assets/tiled/banco.png';
+import bancoGirado from '../../assets/tiled/banco girado.png';
+
+// flores y decoracion
+import hierbaAmarilla from '../../assets/tiled/hierba amarilla.png';
+import semillaArroz from '../../assets/tiled/semilla arroz.png';
+import semillaTrigo from '../../assets/tiled/semilla trigo.png';
+import trigo from '../../assets/tiled/trigo.png';
+import arroz from '../../assets/tiled/arroz.png';
+import arrozMedio from '../../assets/tiled/arroz medio.png';
+
 import playerRun from '../../assets/anims/run.png';
 import playerIdle from '../../assets/anims/idle.png';
 import casa from '../../assets/tiled/casa.json';
@@ -482,6 +505,26 @@ export default class Boot extends Phaser.Scene {
         this.load.image('Water fountain', waterFountain);
         this.load.image('Wheat', wheat);
         this.load.image('wood', wood);
+
+        this.load.image('arbustoFeo', arbustoFeo);
+        this.load.image('arbustoMedio', arbustoMedio);
+        this.load.image('arbustoBonito', arbustoBonito);
+        this.load.image('farola', farola);
+        this.load.image('farolaBonita', farolaBonita);
+        this.load.image('papeleraSucia', papeleraSucia);
+        this.load.image('papelera', papelera);
+        this.load.image('sillaBlanca', sillaBlanca);
+        this.load.image('sillaRosa', sillaRosa);
+        this.load.image('tendederoRosa', tendederoRosa);
+        this.load.image('fuente', fuente);
+        this.load.image('banco', banco);
+        this.load.image('bancoGirado', bancoGirado);
+        this.load.image('hierba amarilla', hierbaAmarilla);
+        this.load.image('semilla arroz', semillaArroz);
+        this.load.image('semilla trigo', semillaTrigo);
+        this.load.image('trigo', trigo);
+        this.load.image('arroz', arroz);
+        this.load.image('arroz medio', arrozMedio);
 
         this.load.tilemapTiledJSON('ciudad', ciudad);
         this.load.tilemapTiledJSON('ciudad2', ciudad2);

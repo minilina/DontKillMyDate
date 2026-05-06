@@ -180,4 +180,20 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.targetIndex = 0;
         this.isFollowingPath = true;
     }
+
+    // Direccion para la animacion inicial al entrar en una escena
+    setDireccion(direccion) {
+        this.lastDirection = direccion;
+        
+        if (direccion === 'left') {
+            this.setFlipX(true);
+            this.anims.play('idle-right', true);
+        } else if (direccion === 'right') {
+            this.setFlipX(false);
+            this.anims.play('idle-right', true);
+        } else {
+            this.setFlipX(false);
+            this.anims.play('idle-' + direccion, true);
+        }
+    }
 }

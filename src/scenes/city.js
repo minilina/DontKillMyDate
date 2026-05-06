@@ -11,89 +11,80 @@ export default class City extends topDownScene {
     create(data = {}) {
         this.initScene('ciudad');
 
-        // CONFIGURAR PROFUNDIDADES (Lo que vaya por encima del jugador)
+        const capaMuroPuente = this.map.getLayer('Delimitacion Mundo/Muro Puente')?.tilemapLayer;
+        const capaSueloPuente = this.map.getLayer('Suelo/Puente')?.tilemapLayer;
+        const capaDecoracionPuente = this.map.getLayer('Suelo/Decoracion Puente')?.tilemapLayer;
+        const capaColisionesPuente = this.map.getLayer('Colisiones Puente')?.tilemapLayer;
 
-        // 3. JUGADOR Y UI
-        const startX = data.spawnX ?? 800; // Coordenadas por defecto al entrar al juego
-        const startY = data.spawnY ?? 600;
+        if (capaMuroPuente) capaMuroPuente.setDepth(2000);
+        if (capaSueloPuente) capaSueloPuente.setDepth(2000);
+        if (capaDecoracionPuente) capaDecoracionPuente.setDepth(2000);
 
-        this.setupPlayer(startX, startY);
-        this.setupUI(); 
+        this.setupPlayer(this.map.widthInPixels - 32, 288, 'left');
+        this.setupUI();
+        this.player.zElevacion = 3000;
 
-        // 4. DECORACIÓN DINÁMICA (Si tienes capas de flores, etc.)
-        // this.crearDecoracionDinamica(['Objetos/SpawnFlores']);
+        if (capaColisionesPuente) {
+            capaColisionesPuente.setCollisionByExclusion([-1]);
+            capaColisionesPuente.setVisible(false);
+            this.physics.add.collider(
+                this.player,
+                capaColisionesPuente,
+                null,
+                () => { return this.player.zElevacion > 0;}, // Solo colisionas si estas elevado (zElevacion)
+                this
+            );
+        }
 
-        // =======================================================
-        // 5. HOVER DEL RATÓN
-        // =======================================================
-        this.hover([
-            // Ejemplo: { capa: capaEdificios, ids: [100, 101] } // Puertas
-        ]);
+        // ZONA PARA SUBIR
+        const zonaSubir = this.add.zone(512, 344, 48, 8).setOrigin(0, 0);
+        this.physics.add.existing(zonaSubir, true);
+        this.physics.add.overlap(this.player, zonaSubir, () => { this.player.zElevacion = 3000; });
 
-        // =======================================================
-        // 6. SISTEMA UNIVERSAL DE INTERACCIONES (BOTÓN [E] Y CLIC)
-        // =======================================================
-        this.crearSistemaInteraccion([
-            /* EJEMPLO DE PUERTA A LA TIENDA
-            {
-                capa: capaEdificios,
-                ids: [500], // ID de la puerta para la E
-                idsClic: [500, 501, 502], // IDs de la puerta para el ratón
-                tipo: 'tienda',
-                offsetX: 0, 
-                offsetY: -10
-            },
-            EJEMPLO DE CARTEL
-            {
-                capa: capaEdificios,
-                ids: [600],
-                tipo: 'cartel',
-                offsetX: 0, 
-                offsetY: -20
-            }
-            */
-        ], (tipo, tile) => {
-            // Lógica de lo que pasa al interactuar
-            if (tipo === 'tienda') {
-                // this.cambiarEscena('store', { returnX: tile.x, returnY: tile.y + 30 });
-            } else if (tipo === 'cartel') {
-                // Lógica para mostrar un texto en pantalla
-                console.log("Leyendo cartel...");
-            }
-        });
+        // ZONA PARA BAJAR
+        const zonaBajar = this.add.zone(512, 360, 48, 8).setOrigin(0, 0);
+        this.physics.add.existing(zonaBajar, true);
+        this.physics.add.overlap(this.player, zonaBajar, () => { this.player.zElevacion = 0; });
 
-        // =======================================================
-        // 7. CREACIÓN DE OBJETOS DINÁMICOS CON COLISIONES
-        // =======================================================
-        const configObjetosCiudad = {
-            /* EJEMPLOS:
-            'farola': { key: 'farola_img', w: 10, h: 10, ox: -5, oy: -5, centrarOffset: true },
-            'banco':  { key: 'banco_img',  w: 32, h: 16, ox: -16, oy: -8, centrarOffset: true }
-            */
-        };
-        // Si tienes una capa de objetos en Tiled llamada 'SpawnCiudad'
-        // this.grupoObjetosCiudad = this.crearObjetos('Objetos/SpawnCiudad', configObjetosCiudad);
+        // Decoracion (hierba y cultivos) con depth dinamico
+        this.crearDecoracionDinamica(['Objetos/SpawnFlores']);
+        this.crearDecoracionDinamica(['Objetos/SpawnFloresPuente'], 3000);
 
-        // =======================================================
-        // 8. TRANSPARENCIAS
-        // =======================================================
-        // this.activarTransparencias([this.grupoObjetosCiudad]);
-
-        // =======================================================
-        // ZONA DE TRANSICIÓN A LA CASA (Borde Izquierdo)
-        // =======================================================
-        // Creamos una zona invisible pegada al borde izquierdo del mapa
-        const zonaCasaX = this.map.widthInPixels; 
-        const zonaCasaY = 320;
-        const zonaCasa = this.add.zone(zonaCasaX, zonaCasaY, 16, 48).setOrigin(0.5, 1);
+        // Creamos una zona para la transicion a la casa
+        const zonaCasa = this.add.zone(this.map.widthInPixels - 8, 272, 8, 48).setOrigin(0, 0);
         this.physics.add.existing(zonaCasa, true);
         this.physics.add.overlap(this.player, zonaCasa, () => {
-            this.cambiarEscena('house', { spawnX: 32, spawnY: 464});
+            this.cambiarEscena('house', { spawnX: 32, spawnY: 464, direccion: 'right' });
         });
 
-        // HERRAMIENTA DE DEBUG
-        this.debugTiles([
-            // { nombre: "EDIFICIOS", capa: capaEdificios }
-        ]);
+        // CREACION DE ARBOLES DINAMICOS
+        const configArboles = {
+            'arbustoFeo':       { key: 'arbustoFeo',    w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true },
+            'arbusto':          { key: 'arbustoMedio',  w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true },
+            'arbustoBonito':    { key: 'arbustoBonito', w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true },
+            'peque':            { key: 'arbol_peque',   w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true, spriteOffsetX: 8 },
+            'grande':           { key: 'arbol_grande',  w: 16, h: 14, ox: -8, oy: -14, centrarOffset: true, spriteOffsetX: 8 }
+        };
+        this.grupoArboles = this.crearObjetos('Objetos/SpawnArboles', configArboles);
+
+        // CREACION DE ESTRUCTURAS
+        const configEstructuras = {
+            'luz':              { key: 'farola',         w: 11, h: 10, ox: -5,  oy: -19, centrarOffset: true},
+            'luzBonita':        { key: 'farolaBonita',   w: 11, h: 10, ox: -5,  oy: -19, centrarOffset: true },
+            'papeleraSucia':    { key: 'papeleraSucia',  w: 15, h: 10, ox: -8,  oy: -13, centrarOffset: true },
+            'papelera':         { key: 'papelera',       w: 15, h: 10, ox: -8,  oy: -13, centrarOffset: true },
+            'sillaBlanca':      { key: 'sillaBlanca',    w: 15, h: 13, ox: -7,  oy: -14, centrarOffset: true },
+            'sillaRosa':        { key: 'sillaRosa',      w: 15, h: 13, ox: -7,  oy: -14, centrarOffset: true },
+            'agua':             { key: 'water box',      w: 26, h: 25, ox: -13, oy: -28, centrarOffset: true },
+            'tendedero rosa':   { key: 'tendederoRosa',  w: 36, h: 10, ox: -18, oy: -10, centrarOffset: true },
+            'fuente':           { key: 'fuente',         w: 45, h: 40, ox: -23, oy: -41, centrarOffset: true },
+            'banco':            { key: 'banco',          w: 24, h: 12, ox: -12, oy: -14, centrarOffset: true },
+            'banco girado':     { key: 'bancoGirado',    w: 12, h: 24, ox: -6,  oy: -24, centrarOffset: true },
+            'casaRota':         { key: '2',              dw: -14, h: 52, ox: 8, oy: -53 }
+        };
+
+        this.grupoEstructuras = this.crearObjetos('Objetos/SpawnEstructuras', configEstructuras);
+
+        this.activarTransparencias([this.grupoArboles, this.grupoEstructuras]);
     }
 }
