@@ -457,7 +457,7 @@ export default class Book extends Phaser.GameObjects.Container {
 
         const descCauldron = scene.add.text(180, 160, "Para cocinar la poción enciende \nel fuego chocando las piedras.", estiloDesc).setOrigin(0, 0.5);
         const cauldron = scene.add.image(250, 240, 'cauldron').setScale(1.5);
-        const stone = scene.add.image(390, 240, 'stone').setScale(0.3);
+        const stones = scene.add.image(390, 240, 'stones').setScale(1.5);
         const descHeat = scene.add.text(180, 320, "Apaga el fuego cuando la \nflecha llegue a la temperatura \ndeseada.", estiloDesc).setOrigin(0, 0.5);
         const heatBar = scene.add.image(318, 380, 'heatBar').setScale(4);
         const frio = scene.add.text(
@@ -528,7 +528,7 @@ export default class Book extends Phaser.GameObjects.Container {
         page4.add(frio);
         page4.add(templado);
         page4.add(caliente);
-        page4.add(stone);
+        page4.add(stones);
         page4.add(ropa_elfo);
         page4.add(ropa_hada);
         page4.add(ropa_kit);

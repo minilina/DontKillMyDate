@@ -80,7 +80,7 @@ export default class KitchenTutorial {
             this.k.trash, this.k.delivery, this.k.note,
             this.k.cauldronImg, this.k.bookImg,
             this.k.emptyStarPotion, this.k.emptyHeartPotion, this.k.emptyNormalPotion,
-            this.k.stone,
+            this.k.stones,
         ];
 
         itemsToDisable.forEach(item => {
@@ -458,10 +458,10 @@ export default class KitchenTutorial {
         this.say("Los clientes también pueden pedirte que la temperatura sea una específica. Para ajustar la temperatura haz clic sobre las piedras que encuentras al lado del caldero. Pero, ¡cuidado! La temperatura solo sube, no puede bajar así que estate atento de no pasarte.", () => {
             this.showHelp("Haz clic en las piedras para subir la temperatura");
 
-            this.k.stone.setInteractive();
+            this.k.stones.setInteractive();
             //this.highlight(this.k.stone);
 
-            this.k.stone.once('pointerdown', () => {
+            this.k.stones.once('pointerdown', () => {
                 this.stop();
                 this.say("¡Perfecto! Ya sabes cómo ajustar la temperatura. ", () => {
                     this.step8();

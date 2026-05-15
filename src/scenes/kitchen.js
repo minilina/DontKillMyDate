@@ -82,10 +82,21 @@ export default class Kitchen extends Phaser.Scene {
 
         this.note = this.createKitchenItem(150, 44, "note", "noteB");
 
-        this.cauldronImg = this.createKitchenItem(129, 86, 'cauldron', 'cauldronB', false);
+        this.cauldronImg = this.createKitchenItem(129, 86, 'cauldron', 'cauldronB', false).setDepth(1);
         this.bookImg = this.createKitchenItem(205, 125, 'bookOnTable', 'bookOnTableB');
 
+        this.stones = this.createKitchenItem(125, 119, 'stones', 'stonesB').setDepth(2);
 
+        this.stones.on('pointerdown', () => {
+            if (!this.isDraggingItem) {
+                const heatHook = this.runHook('kitchen:cauldron:heat');
+                
+                if (!heatHook.cancelled) {
+                    this.cauldron.toggleFire();
+                    this.sound.play('flintSound', { volume: 1 });
+                }
+            }
+        });
 
         this.mixPlateColor = this.add.image(93 * 3, 146 * 3, 'redPlate').setOrigin(0, 0).setScale(3).setVisible(false).setDepth(1);
         this.mixPlate = this.createKitchenItem(88, 141, 'plate', 'plateB', false);
@@ -101,51 +112,7 @@ export default class Kitchen extends Phaser.Scene {
             }
         });
 
-        this.stone = this.createKitchenItem(170, 120, 'stone', 'stone', false);
-        this.stone.setScale(0.2).setDepth(1);
-
-        // crear el gráfico del borde (empieza invisible)
-        this.stoneBorder = this.add.graphics();
-
-        this.stone.on('pointerover', () => {
-            if (this.isDraggingItem) return;
-            this.stone.postFX.addGlow(0xffffff, 4, 0, false);
-        });
-
-        this.stone.on('pointerout', () => {
-            this.stone.postFX.clear();
-        });
-
-
-        this.stone.on('pointerdown', () => {
-            // Si acaba de hacer clic hace un instante, ignoramos este clic extra
-            if (this.isClickLocked) return;
-
-            if (!this.isDraggingItem) {
-                this.isClickLocked = true; // Bloqueamos temporalmente
-
-                const heatHook = this.runHook('kitchen:cauldron:heat');
-                if (!heatHook.cancelled) {
-                    this.cauldron.toggleFire(); // Llamamos al caldero directamente
-                }
-
-                // Desbloqueamos después de 250 milisegundos (1/4 de segundo)
-                this.time.delayedCall(250, () => {
-                    this.isClickLocked = false;
-                });
-            }
-            this.sound.play('flintSound', { volume: 1 });
-        });
-
         this.cauldron = new Cauldron(this, this.cauldronImg);
-
-        /* Escuchamos el evento del caldero y lo convertimos en un hook
-        this.events.on('cauldron:tryheat', () => {
-            const heatHook = this.runHook('kitchen:cauldron:heat');
-            if (!heatHook.cancelled) {
-                this.cauldron.toggleFire();
-            }
-        });*/
 
         this.book = new Book(this);
         this.bookImg.on('pointerdown', () => {
@@ -446,19 +413,24 @@ export default class Kitchen extends Phaser.Scene {
         const objectsUnderMouse = this.input.hitTestPointer(ptr);
         this.resetBorders();
 
+        if (objectsUnderMouse.includes(this.cauldronImg)) {
+            this.cauldronImg.setTexture('cauldronB');
+            this.cauldronImg.setDepth(3);
+        } else {
+            this.cauldronImg.setTexture('cauldron');
+            this.cauldronImg.setDepth(1);
+        }
+
         if (itemType === 'taste') {
             this.cuttingBoard.setTexture(objectsUnderMouse.includes(this.cuttingBoard) ? 'cuttingBoardB' : 'cuttingBoard');
             this.mortar.setTexture(objectsUnderMouse.includes(this.mortar) ? 'mortarB' : 'mortar');
-            this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
 
         } else if (itemType === 'processedTaste' || itemType === 'color' || itemType === 'smell') {
-            this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
             if (itemType === 'color') {
                 this.mixPlate.setTexture(objectsUnderMouse.includes(this.mixPlate) ? 'plateB' : 'plate');
             }
 
         } else if (itemType === 'shape') {
-            this.cauldronImg.setTexture(objectsUnderMouse.includes(this.cauldronImg) ? 'cauldronB' : 'cauldron');
             this.delivery.setTexture(objectsUnderMouse.includes(this.delivery) ? 'deliveryB' : 'delivery');
 
             // si está sobre el caldero y el sprite actual es una poción vacía
@@ -476,6 +448,7 @@ export default class Kitchen extends Phaser.Scene {
                     const newTexture = cauldronColor + dropData + 'PotionB'; // ej: 'blue' + 'Heart' + 'PotionB'
                     dragItem.setTexture(newTexture);
                     this.cauldronImg.setTexture('cauldron'); // quitar borde caldero para que no confunda con la poción
+                    this.cauldronImg.setDepth(1);
                     this.cauldron.liquidSprite.setVisible(false);
                     this.sound.play('fillBottleSound', { volume: 1 });
 
@@ -503,6 +476,8 @@ export default class Kitchen extends Phaser.Scene {
         this.mortar.setTexture('mortar');
         this.cauldronImg.setTexture('cauldron');
         this.mixPlate.setTexture('plate');
+
+        this.cauldronImg.setDepth(1);
     }
 
     // mirar dónde ha soltado el jugador el item y qué pasa en cada caso

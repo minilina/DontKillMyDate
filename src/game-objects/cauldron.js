@@ -5,7 +5,7 @@ export default class Cauldron {
     constructor(scene, cauldronSprite) {
         this.scene = scene;
         this.cauldronSprite = cauldronSprite;
-        this.liquidSprite = this.scene.add.image(140 * 3, 96 * 3, 'redLiquid').setOrigin(0, 0).setScale(3).setVisible(false);
+        this.liquidSprite = this.scene.add.image(140 * 3, 96 * 3, 'redLiquid').setOrigin(0, 0).setScale(3).setVisible(false).setDepth(4);
 
         // requisitos poción
         this.currentPotion = {
@@ -26,28 +26,15 @@ export default class Cauldron {
             });
         }
 
-        this.fire = this.scene.add.sprite(126 * 3, 115 * 3, 'hotFire').setOrigin(0, 0).setScale(3).setVisible(false);
+        this.fire = this.scene.add.sprite(126 * 3, 113 * 3, 'hotFire').setOrigin(0, 0).setScale(3).setVisible(false).setDepth(4);
 
         // barra de temperatura
         this.borderOffset = 3;
-        this.heatBar = this.scene.add.image(133 * 3, 151 * 3, 'heatBar').setOrigin(0, 0).setScale(3).setVisible(false);
-        this.heatArrow = this.scene.add.image((133 * 3) + this.borderOffset, (151 * 3) + 18, 'heatArrow').setOrigin(0.5, 0).setScale(3).setVisible(false);
+        this.heatBar = this.scene.add.image(133 * 3, 155 * 3, 'heatBar').setOrigin(0, 0).setScale(3).setVisible(false);
+        this.heatArrow = this.scene.add.image((133 * 3) + this.borderOffset, (155 * 3) + 18, 'heatArrow').setOrigin(0.5, 0).setScale(3).setVisible(false);
         this.temperatureValue = 0;
 
         this.scene.events.on('update', this.updateTemperature, this);
-        /*
-                this.cauldronSprite.on('pointerdown', () => {
-        
-                    this.toggleFire();
-                });
-        */
-        /*
-        this.cauldronSprite.on('pointerdown', () => {
-            if (!this.scene.isDraggingItem) {
-                this.scene.events.emit('cauldron:tryheat'); 
-            }
-        });
-        */
 
         this.scene.events.on('pause', () => {
             if (this.fire.visible) {
