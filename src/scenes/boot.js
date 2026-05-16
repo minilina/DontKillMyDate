@@ -266,6 +266,7 @@ import redLiquid from '../../assets/sprites/kitchen/liquido_rojo.png';
 import greenLiquid from '../../assets/sprites/kitchen/liquido_verde.png';
 import purpleLiquid from '../../assets/sprites/kitchen/liquido_morado.png';
 import orangeLiquid from '../../assets/sprites/kitchen/liquido_naranja.png';
+import noColorLiquid from '../../assets/sprites/kitchen/liquido_sincolor.png';
 import plate from '../../assets/sprites/kitchen/platito.png';
 import plateB from '../../assets/sprites/kitchen/platito_b.png';
 import yellowPlate from '../../assets/sprites/kitchen/platito_amarillo.png';
@@ -297,6 +298,8 @@ import orangeNormalPotion from '../../assets/sprites/kitchen/pocion_normal_naran
 import orangeNormalPotionB from '../../assets/sprites/kitchen/pocion_normal_naranja_b.png';
 import yellowNormalPotion from '../../assets/sprites/kitchen/pocion_normal_amarilla.png';
 import yellowNormalPotionB from '../../assets/sprites/kitchen/pocion_normal_amarilla_b.png';
+import noColorNormalPotion from '../../assets/sprites/kitchen/pocion_normal_sincolor.png';
+import noColorNormalPotionB from '../../assets/sprites/kitchen/pocion_normal_sincolor_b.png';
 import emptyHeartPotion from '../../assets/sprites/kitchen/pocion_corazon_vacia.png';
 import emptyHeartPotionB from '../../assets/sprites/kitchen/pocion_corazon_vacia_b.png';
 import blueHeartPotion from '../../assets/sprites/kitchen/pocion_corazon_azul.png';
@@ -311,6 +314,8 @@ import orangeHeartPotion from '../../assets/sprites/kitchen/pocion_corazon_naran
 import orangeHeartPotionB from '../../assets/sprites/kitchen/pocion_corazon_naranja_b.png';
 import yellowHeartPotion from '../../assets/sprites/kitchen/pocion_corazon_amarilla.png';
 import yellowHeartPotionB from '../../assets/sprites/kitchen/pocion_corazon_amarilla_b.png';
+import noColorHeartPotion from '../../assets/sprites/kitchen/pocion_corazon_sincolor.png';
+import noColorHeartPotionB from '../../assets/sprites/kitchen/pocion_corazon_sincolor_b.png';
 import emptyStarPotion from '../../assets/sprites/kitchen/pocion_estrella_vacia.png';
 import emptyStarPotionB from '../../assets/sprites/kitchen/pocion_estrella_vacia_b.png';
 import blueStarPotion from '../../assets/sprites/kitchen/pocion_estrella_azul.png';
@@ -325,6 +330,8 @@ import orangeStarPotion from '../../assets/sprites/kitchen/pocion_estrella_naran
 import orangeStarPotionB from '../../assets/sprites/kitchen/pocion_estrella_naranja_b.png';
 import yellowStarPotion from '../../assets/sprites/kitchen/pocion_estrella_amarilla.png';
 import yellowStarPotionB from '../../assets/sprites/kitchen/pocion_estrella_amarilla_b.png';
+import noColorStarPotion from '../../assets/sprites/kitchen/pocion_estrella_sincolor.png';
+import noColorStarPotionB from '../../assets/sprites/kitchen/pocion_estrella_sincolor_b.png';
 import heatBar from '../../assets/sprites/kitchen/barra_calor.png';
 import heatArrow from '../../assets/sprites/kitchen/flecha_barra_calor.png';
 import nota from "../../assets/sprites/carta.png";
@@ -622,6 +629,8 @@ export default class Boot extends Phaser.Scene {
         this.load.image('pelo_3_rubio', npcPelo3Rubio);
         this.load.image('pelo_3_verde', npcPelo3Verde);
 
+
+        // COCINA
         this.load.image('kitchen', kitchen);
         this.load.image('bookOnTable', bookOnTable);
         this.load.image('bookOnTableB', bookOnTableB);
@@ -674,6 +683,7 @@ export default class Boot extends Phaser.Scene {
         this.load.image('greenLiquid', greenLiquid);
         this.load.image('purpleLiquid', purpleLiquid);
         this.load.image('orangeLiquid', orangeLiquid);
+        this.load.image('noColorLiquid', noColorLiquid);
         this.load.image('plate', plate);
         this.load.image('plateB', plateB);
         this.load.image('yellowPlate', yellowPlate);
@@ -705,6 +715,8 @@ export default class Boot extends Phaser.Scene {
         this.load.image('orangeNormalPotionB', orangeNormalPotionB);
         this.load.image('yellowNormalPotion', yellowNormalPotion);
         this.load.image('yellowNormalPotionB', yellowNormalPotionB);
+        this.load.image('noColorNormalPotion', noColorNormalPotion);
+        this.load.image('noColorNormalPotionB', noColorNormalPotionB);
         this.load.image('emptyHeartPotion', emptyHeartPotion);
         this.load.image('emptyHeartPotionB', emptyHeartPotionB);
         this.load.image('blueHeartPotion', blueHeartPotion);
@@ -719,6 +731,8 @@ export default class Boot extends Phaser.Scene {
         this.load.image('orangeHeartPotionB', orangeHeartPotionB);
         this.load.image('yellowHeartPotion', yellowHeartPotion);
         this.load.image('yellowHeartPotionB', yellowHeartPotionB);
+        this.load.image('noColorHeartPotion', noColorHeartPotion);
+        this.load.image('noColorHeartPotionB', noColorHeartPotionB);
         this.load.image('emptyStarPotion', emptyStarPotion);
         this.load.image('emptyStarPotionB', emptyStarPotionB);
         this.load.image('blueStarPotion', blueStarPotion);
@@ -733,6 +747,8 @@ export default class Boot extends Phaser.Scene {
         this.load.image('orangeStarPotionB', orangeStarPotionB);
         this.load.image('yellowStarPotion', yellowStarPotion);
         this.load.image('yellowStarPotionB', yellowStarPotionB);
+        this.load.image('noColorStarPotion', noColorStarPotion);
+        this.load.image('noColorStarPotionB', noColorStarPotionB);
         this.load.image('heatBar', heatBar);
         this.load.image('heatArrow', heatArrow);
         this.load.image("open_note", nota);

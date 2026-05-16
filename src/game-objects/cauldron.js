@@ -5,7 +5,8 @@ export default class Cauldron {
     constructor(scene, cauldronSprite) {
         this.scene = scene;
         this.cauldronSprite = cauldronSprite;
-        this.liquidSprite = this.scene.add.image(140 * 3, 96 * 3, 'redLiquid').setOrigin(0, 0).setScale(3).setVisible(false).setDepth(4);
+        this.hasLiquid = true;
+        this.liquidSprite = this.scene.add.image(140 * 3, 96 * 3, 'noColorLiquid').setOrigin(0, 0).setScale(3).setVisible(true).setDepth(4);
 
         // requisitos poción
         this.currentPotion = {
@@ -120,7 +121,9 @@ export default class Cauldron {
             temperature: 'cold'
         };
 
-        this.liquidSprite.setVisible(false);
+        this.hasLiquid = true;
+        this.liquidSprite.setTexture('noColorLiquid');
+        this.liquidSprite.setVisible(true);
 
         this.heatBar.setVisible(false);
         this.heatArrow.setVisible(false);
