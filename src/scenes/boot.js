@@ -834,9 +834,24 @@ export default class Boot extends Phaser.Scene {
         
     }
 
-    create() {
+    create(data) {
         GameState.initData(daysConfig, scriptedNpcs);
         
-        this.scene.start('Letter');
+        if (data && data.loadSave && data.saveData) {
+            GameState.currentDay = data.saveData.currentDay;
+            GameState.reputation = data.saveData.reputation;
+            
+            if (data.saveData.specialNpcRecords) {
+                GameState.specialNpcRecords = data.saveData.specialNpcRecords;
+            }
+
+            if (data.saveData.tutorialDone) {
+                this.registry.set('tutorialDone', true);
+            }
+            
+            this.scene.start('house');
+        } else {
+            this.scene.start('Letter');
+        }
     }
 }

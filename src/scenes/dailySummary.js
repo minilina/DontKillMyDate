@@ -122,7 +122,35 @@ export default class DailySummary extends Phaser.Scene {
    
     this.input.once("pointerdown", () => {
       GameState.advanceDay();
-      this.scene.start("house");
+
+      const saveData = {
+        currentDay: GameState.currentDay,
+        reputation: GameState.reputation,
+        specialNpcRecords: GameState.specialNpcRecords,
+        tutorialDone: true
+      };
+
+      localStorage.setItem('potionGameSave', JSON.stringify(saveData));
+      
+      const saveText = this.add.text(centerX, this.scale.height - 30, "¡Progreso guardado!", {
+          fontFamily: "VT323, monospace",
+          fontSize: "26px",
+          color: "#ffffff",
+          shadow: { offsetX: 2, offsetY: 2, color: '#000000', blur: 0, stroke: false, fill: true }
+      }).setOrigin(0.5).setAlpha(0);
+
+      this.tweens.add({
+          targets: saveText,
+          alpha: 1,
+          y: '-=10',
+          duration: 700,
+          ease: 'Power2',
+          onComplete: () => {
+              this.time.delayedCall(3000, () => {
+                  this.scene.start("house"); // cambio de escena
+              });
+          }
+      });
     });
   }
 

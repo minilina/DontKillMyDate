@@ -21,7 +21,8 @@ export default class Kitchen extends Phaser.Scene {
         if (tutorialDone) {
             this.shouldStartInTutorialMode = false;
         } else {
-            this.shouldStartInTutorialMode = data?.startInTutorialMode || false;
+            // si es el Día 1 se activa automáticamente, si no, depende de lo que mande el data
+            this.shouldStartInTutorialMode = (GameState.currentDay === 1) || (data?.startInTutorialMode || false);
         }
 
         // limpiar la variable para que Phaser no la recicle si la escena se reinicia
