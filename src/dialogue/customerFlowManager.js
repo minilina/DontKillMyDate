@@ -8,6 +8,9 @@ import { buildDialogueFromRequest, splitIntoLines } from "./dialogueScripts.js";
 import NPCGenerator from "../utils/npcGenerator.js";
 import GameState from "../state/GameState.js";
 
+// Importamos el JSON de NPCs especiales para leer los datos del inspector
+import ScriptedNPCs from "../../assets/json/scriptedNpcs.json";
+
 export default class CustomerFlowManager {
   constructor(scene) {
     this.scene = scene;
@@ -18,6 +21,10 @@ export default class CustomerFlowManager {
     this.isShowingResult = false;
     this.onResultComplete = null;
 
+    // Variable para saber si estamos en el diálogo de final de partida
+    this.isShowingGameOver = false;
+    this.isKnocking = false; // Variable para los golpes en la puerta
+
     this._onDialogueFinished = this._onDialogueFinished.bind(this);
     this.scene.events.on("dialogue:finished", this._onDialogueFinished);
   }
@@ -27,8 +34,13 @@ export default class CustomerFlowManager {
   }
 
   spawnNextCustomer() {
+    // Comprobamos si el día ha terminado
     if (GameState.isDayOver()) {
-      this._finishShift();
+      if (GameState.reputation <= - 60) {
+        this.startGameOverSequence();
+      } else {
+        this._finishShift();
+      }
       return;
     }
 
@@ -38,10 +50,7 @@ export default class CustomerFlowManager {
 
     GameState.prepareNewCustomer();
 
-    // si es npc o scripted
     const customerType = GameState.getCurrentCustomerType();
-
-    // dificultad actual para generar diálogos acorde a ella
     const difficulty = GameState.getCurrentDifficulty
       ? GameState.getCurrentDifficulty()
       : "facil";
@@ -50,20 +59,17 @@ export default class CustomerFlowManager {
     let dialogueData;
 
     if (customerType === "npc") {
-      // le pasamos la dificultad al generador aleatorio
       this.currentRequest = generateRandomRequest(difficulty);
       const chosenRace = this.currentRequest.requirements.raza;
       looksNPC = NPCGenerator.generateLooks(chosenRace);
       dialogueData = buildDialogueFromRequest(this.currentRequest);
     } else {
-      // scripted
       const specialData = GameState.getSpecialNPC(customerType);
-      // para estos no necesitmos dificultad en principio
       const scriptedRequest = processScriptedDialogue(specialData);
 
       this.currentRequest = {
-        requirements: scriptedRequest.requirements, // requisitos reales: traducciones
-        literalWords: scriptedRequest.literalWords, // palabras literales para mostrar en la UI
+        requirements: scriptedRequest.requirements,
+        literalWords: scriptedRequest.literalWords,
       };
 
       looksNPC = specialData.looks;
@@ -81,7 +87,6 @@ export default class CustomerFlowManager {
       this.currentRequest.specialData = specialData;
     }
 
-    // creamos NPC
     this.currentCustomer = new NPC(
       this.scene,
       this.scene.scale.width / 4,
@@ -98,7 +103,69 @@ export default class CustomerFlowManager {
     this.dialogueManager.start(dialogueData);
   }
 
+  // Secuencia inicial de los golpes en la puerta
+  startGameOverSequence() {
+    if (this.currentCustomer) {
+      this.currentCustomer.destroy();
+      this.currentCustomer = null;
+    }
+
+    this.isKnocking = true;
+
+    this.dialogueManager.start({
+      speakerName: "???",
+      lines: [
+        "*¡PUM! ¡PUM! ¡PUM!*",
+        "¡GUARDIA REAL! ¡ABRAN LA PUERTA EN NOMBRE DEL REY!",
+      ],
+    });
+  }
+
+  // Crea al inspector leyendo desde el archivo JSON
+  spawnGameOverNPC() {
+    if (this.currentCustomer) {
+      this.currentCustomer.destroy();
+    }
+
+    const dataInspector = ScriptedNPCs.inspector;
+
+    this.currentCustomer = new NPC(
+      this.scene,
+      this.scene.scale.width / 4,
+      this.scene.scale.height * 0.85,
+      dataInspector.looks,
+      {},
+    );
+
+    this.isShowingGameOver = true;
+
+    // Procesamos sus frases por si contienen saltos o marcas
+    const formattedInspectorLines = [];
+    dataInspector.dialogue.forEach((line) => {
+      formattedInspectorLines.push(...splitIntoLines(line));
+    });
+
+    this.dialogueManager.start({
+      speakerName: dataInspector.name,
+      lines: formattedInspectorLines,
+    });
+  }
+
   _onDialogueFinished() {
+    // Si acababa de hablar la voz de la puerta, hacemos aparecer al NPC físico
+    if (this.isKnocking) {
+      this.isKnocking = false;
+      this.spawnGameOverNPC();
+      return;
+    }
+
+    // Si acababa de hablar el Inspector, saltamos a la pantalla de Game Over
+    if (this.isShowingGameOver) {
+      this.scene.scene.stop("store");
+      this.scene.scene.start("gameOver");
+      return;
+    }
+
     if (this.isShowingResult) {
       this.isShowingResult = false;
       if (this.onResultComplete) {
@@ -149,7 +216,6 @@ export default class CustomerFlowManager {
   update() {
     this.dialogueManager.update();
   }
-
   destroy() {
     this.scene.events.off("dialogue:finished", this._onDialogueFinished);
   }

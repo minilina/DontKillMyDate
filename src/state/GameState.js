@@ -239,9 +239,6 @@ const GameState = {
 
     this.reputation += change;
 
-    if (this.reputation <= 0) {
-      this.reputation = 0;
-    }
 
     this.dailyStats.served++; // sumamos un cliente atendido
 

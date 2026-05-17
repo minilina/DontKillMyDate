@@ -215,7 +215,7 @@ export default class Store extends Phaser.Scene {
                 .text(630, 210, `Reputación: ${GameState.reputation}`, {
                   fontFamily: "VT323, monospace",
                   fontSize: "30px",
-                  color: "#000000",
+                  color: GameState.reputation < 0 ? "#9d2121" : "#000000",
                 })
                 .setOrigin(0.5)
                 .setDepth(101)
@@ -227,6 +227,17 @@ export default class Store extends Phaser.Scene {
                 alpha: 1,
                 duration: 500,
                 onComplete: () => {
+
+                  if (GameState.reputation < 0) {
+                    this.tweens.add({
+                      targets: repText,
+                      alpha: 0,
+                      duration: 150,
+                      yoyo: true,
+                      repeat: -1,
+                    });
+                  }
+                  
                   this.time.delayedCall(2000, () => {
                     overlay.destroy();
                     qualityText.destroy();

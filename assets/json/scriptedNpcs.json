@@ -184,5 +184,24 @@
       "Ah... qué aroma tan fascinante. Esta esencia es exactamente lo que necesitamos para engañar a las sombras y devolver la luz a nuestros dominios.",
       "Me has caído bien. Si alguna vez te pierdes por la ciudad, búscame. Te enseñaré un par de trucos interesantes."
     ]
+  },
+  "inspector": {
+    "name": "Inspector Real",
+    "looks": {
+      "base": "cuerpo_3",
+      "boca": "boca_normal_3",
+      "nariz": "nariz_3",
+      "ojos": "ojos_marrones",
+      "pelo": "pelo_3_negro",
+      "ropa": "ropa_humano",
+      "orejas": null,
+      "rasgoFrente": "gorro_inspector",
+      "rasgoDetras": null
+    },
+    "dialogue": [
+      "Por orden del alcalde, esta tienda queda clausurada de inmediato.",
+      "Tus pociones son un peligro para la salud pública y tu reputación es inaceptable.",
+      "Recoge tus cosas. Estás desterrado de este pueblo para siempre."
+    ]
   }
 }

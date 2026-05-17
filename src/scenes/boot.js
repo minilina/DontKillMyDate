@@ -205,6 +205,8 @@ import npcPelo3Rojo from '../../assets/sprites/npcs/pelo_3_rojo.png';
 import npcPelo3Rosa from '../../assets/sprites/npcs/pelo_3_rosa.png';
 import npcPelo3Rubio from '../../assets/sprites/npcs/pelo_3_rubio.png';
 import npcPelo3Verde from '../../assets/sprites/npcs/pelo_3_verde.png';
+import npcGorroInspector from '../../assets/sprites/npcs/gorro_inspector.png';
+import npcBigoteInspector from '../../assets/sprites/npcs/bigote_inspector.png'
 
 import dialog from "../../assets/sprites/dialog.png";
 import dialog2 from "../../assets/sprites/dialog2.png";
@@ -633,6 +635,9 @@ export default class Boot extends Phaser.Scene {
         this.load.image('pelo_3_rosa', npcPelo3Rosa);
         this.load.image('pelo_3_rubio', npcPelo3Rubio);
         this.load.image('pelo_3_verde', npcPelo3Verde);
+        this.load.image('gorro_inspector', npcGorroInspector);
+        this.load.image('bigote_inspector', npcBigoteInspector);
+
 
 
         // COCINA
