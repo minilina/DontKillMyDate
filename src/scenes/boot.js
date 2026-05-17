@@ -363,10 +363,15 @@ import smashedMushroom from '../../assets/sprites/kitchen/seta_machacada.png';
 import smashedRoot from '../../assets/sprites/kitchen/raiz_machacada.png';
 import smashedCrystal from '../../assets/sprites/kitchen/cristal_machacado.png';
 import algaeInMortar from '../../assets/sprites/kitchen/alga_mortero.png';
+import algaeInMortarB from '../../assets/sprites/kitchen/alga_mortero_b.png';
 import berriesInMortar from '../../assets/sprites/kitchen/baya_mortero.png';
+import berriesInMortarB from '../../assets/sprites/kitchen/baya_mortero_b.png';
 import mushroomInMortar from '../../assets/sprites/kitchen/seta_mortero.png';
+import mushroomInMortarB from '../../assets/sprites/kitchen/seta_mortero_b.png';
 import rootInMortar from '../../assets/sprites/kitchen/raiz_mortero.png';
+import rootInMortarB from '../../assets/sprites/kitchen/raiz_mortero_b.png';
 import crystalInMortar from '../../assets/sprites/kitchen/cristal_mortero.png';
+import crystalInMortarB from '../../assets/sprites/kitchen/cristal_mortero_b.png';
 
 // sprites libro abierto cocina
 import openBook from '../../assets/sprites/libro.png';
@@ -758,10 +763,15 @@ export default class Boot extends Phaser.Scene {
         this.load.image('smashedRoot', smashedRoot);
         this.load.image('smashedCrystal', smashedCrystal);
         this.load.image('algaeInMortar', algaeInMortar);
+        this.load.image('algaeInMortarB', algaeInMortarB);
         this.load.image('berriesInMortar', berriesInMortar);
+        this.load.image('berriesInMortarB', berriesInMortarB);
         this.load.image('mushroomInMortar', mushroomInMortar);
+        this.load.image('mushroomInMortarB', mushroomInMortarB);
         this.load.image('rootInMortar', rootInMortar);
+        this.load.image('rootInMortarB', rootInMortarB);
         this.load.image('crystalInMortar', crystalInMortar);
+        this.load.image('crystalInMortarB', crystalInMortarB);
 
         this.load.image('stones', stones);
         this.load.image('stonesB', stonesB);

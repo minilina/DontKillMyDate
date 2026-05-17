@@ -64,15 +64,23 @@ export default class Book extends Phaser.GameObjects.Container {
             }
         ).setOrigin(0.5);
 
-        const afin = scene.add.image(555, 150, 'afin').setScale(3);
-        const igual = scene.add.image(555, 255, 'igual').setScale(3);
-        const hostil = scene.add.image(555, 360, 'hostil').setScale(3);
-        const nextButton1 = scene.add.image(645, 150, 'next').setScale(3);
-        const nextButton2 = scene.add.image(645, 255, 'next').setScale(3);
-        const nextButton3 = scene.add.image(645, 360, 'next').setScale(3);
-        const verde = scene.add.image(725, 150, 'greenTestTube').setScale(3);
-        const gris = scene.add.image(725, 255, 'grayTestTube').setScale(3);
-        const rojo = scene.add.image(725, 360, 'redTestTube').setScale(3);
+        const instruccion = scene.add.text(640, 100, "¡Selecciona 2 razas para\nsaber la afinidad entre ellas!", 
+            {
+                fontFamily: "VT323, monospace",
+                fontSize: "22px",
+                color: "#4f342d",
+            }
+        ).setOrigin(0.5);
+        
+        const afin = scene.add.image(555, 180, 'afin').setScale(3);
+        const igual = scene.add.image(555, 275, 'igual').setScale(3);
+        const hostil = scene.add.image(555, 370, 'hostil').setScale(3);
+        const nextButton1 = scene.add.image(645, 180, 'next').setScale(3);
+        const nextButton2 = scene.add.image(645, 275, 'next').setScale(3);
+        const nextButton3 = scene.add.image(645, 370, 'next').setScale(3);
+        const verde = scene.add.image(725, 180, 'greenTestTube').setScale(3);
+        const gris = scene.add.image(725, 275, 'grayTestTube').setScale(3);
+        const rojo = scene.add.image(725, 370, 'redTestTube').setScale(3);
 
 
         const elements = ['humanos', 'kitsunes', 'ninfas', 'hadas', 'elfos', 'gnomos'];
@@ -225,6 +233,7 @@ export default class Book extends Phaser.GameObjects.Container {
             page1.add(icon);
             page1.add(label);
             page1.add(title1);
+            page1.add(instruccion);
             page1.add(afin);
             page1.add(igual);
             page1.add(hostil);
@@ -398,16 +407,16 @@ export default class Book extends Phaser.GameObjects.Container {
         ).setOrigin(0.5);
 
         const descTintes = scene.add.text(180, 180, "Para determinar el color de la \npoción puedes utilizar los \ntintes disponibles directamente \nen el caldero.", estiloDesc).setOrigin(0, 0.5);
-        const esqColor = scene.add.image(643, 270, 'esqColor').setScale(3);
+        const esqColor = scene.add.image(643, 230, 'esqColor').setScale(3);
         const redBowl = scene.add.image(268, 260, 'redBowl').setScale(3);
         const blueBowl = scene.add.image(318, 260, 'blueBowl').setScale(3);
         const yellowBowl = scene.add.image(368, 260, 'yellowBowl').setScale(3);
-        const descTintesMez = scene.add.text(180, 325, "Para crear colores más complejos \nmezcla los tintes en el plato \ny luego añadelos al caldero", estiloDesc).setOrigin(0, 0.5);
+        const descTintesMez = scene.add.text(180, 325, "Para crear colores más complejos \nmezcla los tintes en el plato \ny luego añadelos al caldero.", estiloDesc).setOrigin(0, 0.5);
         const plate = scene.add.image(318, 395, 'plate').setScale(3);
 
         const esq = scene.add.text(
             640,
-            120,
+            90,
             "Leyenda de colores",
             {
                 fontFamily: "VT323, monospace",
@@ -417,6 +426,12 @@ export default class Book extends Phaser.GameObjects.Container {
             }
         ).setOrigin(0.5);
 
+        const notaTintes = scene.add.text(643, 385, "¡Cuidado! Una vez añadas un color al\ncaldero no se puede cambiar, tendrás\nque tirar la poción metiéndola en\nun frasco.", {
+            fontFamily: "VT323, monospace",
+            fontSize: "19px",
+            color: "#4f342d"
+        }).setOrigin(0.5);
+
         page3.add(title3);
         page3.add(esqColor);
         page3.add(plate);
@@ -425,6 +440,7 @@ export default class Book extends Phaser.GameObjects.Container {
         page3.add(blueBowl);
         page3.add(yellowBowl);
         page3.add(descTintesMez);
+        page3.add(notaTintes);
         page3.add(esq);
 
         // =========================

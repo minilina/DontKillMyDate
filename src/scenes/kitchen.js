@@ -89,10 +89,9 @@ export default class Kitchen extends Phaser.Scene {
         this.trash = this.createKitchenItem(294, 113, 'trash', 'trashB', false);
         this.delivery = this.createKitchenItem(281, 133, 'delivery', 'deliveryB', false);
 
-        this.note = this.createKitchenItem(150, 44, "note", "noteB");
-
+        this.note = this.createKitchenItem(150, 44, "note", "noteB", true, true);
         this.cauldronImg = this.createKitchenItem(129, 86, 'cauldron', 'cauldronB', false).setDepth(1);
-        this.bookImg = this.createKitchenItem(205, 125, 'bookOnTable', 'bookOnTableB');
+        this.bookImg = this.createKitchenItem(205, 125, 'bookOnTable', 'bookOnTableB', true, true);
 
         this.stones = this.createKitchenItem(125, 119, 'stones', 'stonesB').setDepth(2);
 
@@ -113,7 +112,7 @@ export default class Kitchen extends Phaser.Scene {
         this.mixPlate = this.createKitchenItem(88, 141, 'plate', 'plateB', false);
         this.mixPlate.on('pointerover', () => {
             // se pone el borde en el plato solo si NO estamos arrastrando algo y SÍ tiene algún color dentro
-            if (!this.isDraggingItem && this.selectedColors.size > 0) {
+            if (!this.isDraggingItem && !this.isPotionPending && this.selectedColors.size > 0) {
                 this.mixPlate.setTexture('plateB');
             }
         });
@@ -288,7 +287,7 @@ export default class Kitchen extends Phaser.Scene {
     }
 
     // crea un item interactivo de la cocina
-    createKitchenItem(x, y, normalKey, borderKey, border = true) {
+    createKitchenItem(x, y, normalKey, borderKey, border = true, alwaysHover = false) {
         const scale = 3;
 
         // añadir imagen
@@ -301,14 +300,13 @@ export default class Kitchen extends Phaser.Scene {
             });
 
         if (border) {
-            // efecto ratón encima del objeto
             item.on('pointerover', () => {
-                if (!this.isDraggingItem) {
-                    item.setTexture(borderKey);
-                }
+                if (this.isDraggingItem) return;
+                if (this.isPotionPending && !alwaysHover) return;
+
+                item.setTexture(borderKey);
             });
 
-            // efecto ratón fuera del objeto
             item.on('pointerout', () => {
                 item.setTexture(normalKey);
             });
@@ -517,7 +515,9 @@ export default class Kitchen extends Phaser.Scene {
         const objectsUnderMouse = this.input.hitTestPointer(ptr);
         this.resetBorders();
 
-        if (objectsUnderMouse.includes(this.cauldronImg)) {
+        const isCauldronBlocked = (itemType === 'color' && this.cauldron.currentPotion.color !== null);
+
+        if (objectsUnderMouse.includes(this.cauldronImg) && !isCauldronBlocked) {
             this.cauldronImg.setTexture('cauldronB');
             this.cauldronImg.setDepth(3);
         } else {
@@ -526,15 +526,18 @@ export default class Kitchen extends Phaser.Scene {
         }
 
         if (itemType === 'taste') {
-            this.cuttingBoard.setTexture(objectsUnderMouse.includes(this.cuttingBoard) ? 'cuttingBoardB' : 'cuttingBoard');
-            this.mortar.setTexture(objectsUnderMouse.includes(this.mortar) ? 'mortarB' : 'mortar');
+            this.cuttingBoard.setTexture(objectsUnderMouse.includes(this.cuttingBoard) && !this.isCuttingBoardOccupied ? 'cuttingBoardB' : 'cuttingBoard');
+            this.mortar.setTexture(objectsUnderMouse.includes(this.mortar) && !this.isMortarOccupied ? 'mortarB' : 'mortar');
 
         } else if (itemType === 'processedTaste' || itemType === 'color' || itemType === 'smell') {
             if (itemType === 'processedTaste' || itemType === 'color') {
                 this.trash.setTexture(objectsUnderMouse.includes(this.trash) ? 'trashB' : 'trash');
             }
             if (itemType === 'color') {
-                this.mixPlate.setTexture(objectsUnderMouse.includes(this.mixPlate) ? 'plateB' : 'plate');
+                const isPlateFull = (this.selectedColors.size >= this.maxColors) || 
+                                    (this.currentMixedColor && !['red', 'blue', 'yellow'].includes(this.currentMixedColor));
+                                    
+                this.mixPlate.setTexture(objectsUnderMouse.includes(this.mixPlate) && !isPlateFull ? 'plateB' : 'plate');
             }
 
         } else if (itemType === 'shape') {
@@ -717,10 +720,18 @@ export default class Kitchen extends Phaser.Scene {
         this.hideIndicators();
         // si es un SABOR: flechas en mortero, caldero y tabla
         if (itemType === 'taste') {
-            const arrow1 = this.add.sprite(this.mortar.x + 36, this.mortar.y - 15, 'indicator').setDepth(100).setScale(3);
+            // SOLO mostrar si no están ocupados
+            if (!this.isMortarOccupied) {
+                const arrow1 = this.add.sprite(this.mortar.x + 36, this.mortar.y - 15, 'indicator').setDepth(100).setScale(3);
+                this.indicatorArrows.push(arrow1);
+            }
+            if (!this.isCuttingBoardOccupied) {
+                const arrow3 = this.add.sprite(this.cuttingBoard.x + 99, this.cuttingBoard.y - 15, 'indicator').setDepth(100).setScale(3);
+                this.indicatorArrows.push(arrow3);
+            }
+            // el caldero siempre
             const arrow2 = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
-            const arrow3 = this.add.sprite(this.cuttingBoard.x + 99, this.cuttingBoard.y - 15, 'indicator').setDepth(100).setScale(3);
-            this.indicatorArrows.push(arrow1, arrow2, arrow3);
+            this.indicatorArrows.push(arrow2);
 
         } else if (itemType === 'processedTaste') {
             // si es un SABOR PROCESADO: flecha en caldero y BASURA
@@ -730,13 +741,19 @@ export default class Kitchen extends Phaser.Scene {
 
         } else if (itemType === 'color') {
             // si es un COLOR: flechas en platito (si no viene de él), caldero y BASURA
-            const arrowCauldron = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
-            this.indicatorArrows.push(arrowCauldron);
-
+            if (this.cauldron.currentPotion.color === null) {
+                const arrowCauldron = this.add.sprite(this.cauldronImg.x + 100, this.cauldronImg.y - 15, 'indicator').setDepth(100).setScale(3);
+                this.indicatorArrows.push(arrowCauldron);
+            }
             if (sourceSprite !== this.mixPlate) {
-                // si viene del CUENCO: indicamos el platito para mezclar
-                const arrowPlate = this.add.sprite(this.mixPlate.x + 30, this.mixPlate.y - 15, 'indicator').setDepth(100).setScale(3);
-                this.indicatorArrows.push(arrowPlate);
+                const isPlateFull = (this.selectedColors.size >= this.maxColors) || 
+                                    (this.currentMixedColor && !['red', 'blue', 'yellow'].includes(this.currentMixedColor));
+                
+                // si viene del CUENCO: indicamos el platito para mezclar (solo si NO está lleno)
+                if (!isPlateFull) {
+                    const arrowPlate = this.add.sprite(this.mixPlate.x + 30, this.mixPlate.y - 15, 'indicator').setDepth(100).setScale(3);
+                    this.indicatorArrows.push(arrowPlate);
+                }
             } else {
                 // si viene del PLATO: indicamos la BASURA por si quiere limpiar la mezcla fallida
                 const arrowTrash = this.add.sprite(this.trash.x + 40, this.trash.y - 15, 'indicator').setDepth(100).setScale(3);
@@ -831,7 +848,7 @@ export default class Kitchen extends Phaser.Scene {
             ingredientContainer.input.cursor = 'pointer';
 
             ingredientContainer.on('pointerover', () => {
-                if (!this.isDraggingItem) {
+                if (!this.isDraggingItem && !this.isPotionPending) {
                     ingredientContainer.iterate(child => child.setTexture(borderKey));
                 }
             });
@@ -867,13 +884,23 @@ export default class Kitchen extends Phaser.Scene {
             const spriteKeys = mortarSprites[baseName];
 
             // crear el sprite del ingrediente machacado sobre el mortero
-            const mashedIngredient = this.add.sprite(14 * 3, 112 * 3, spriteKeys.inMortar)
+            const mashedIngredient = this.add.sprite(14 * 3, 111 * 3, spriteKeys.inMortar)
                 .setOrigin(0, 0)
                 .setScale(3)
                 .setInteractive({
                     useHandCursor: true,
                     pixelPerfect: true
                 });
+            
+            mashedIngredient.on('pointerover', () => {
+                if (!this.isDraggingItem && !this.isPotionPending) {
+                    mashedIngredient.setTexture(spriteKeys.inMortar + 'B');
+                }
+            });
+
+            mashedIngredient.on('pointerout', () => {
+                mashedIngredient.setTexture(spriteKeys.inMortar);
+            });
 
             this.isMortarOccupied = true;
             this.mortarItem = mashedIngredient;
