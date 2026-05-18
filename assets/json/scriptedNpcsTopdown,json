@@ -1,26 +1,7 @@
 {
   "elf": {
     "name": "Aelion, Guardián del Alba",
-    "looks": {
-      "base": "cuerpo_1",
-      "boca": "boca_normal_1",
-      "nariz": "nariz_1",
-      "ojos": "ojos_verdes",
-      "pelo": "pelo_1_rubiol",
-      "ropa": "ropa_elfo",
-      "orejas": "orejas_1_elfo_hada",
-      "rasgoFrente": null,
-      "rasgoDetras": null
-    },
-    "requirements": {
-      "raza": "elfos",
-      "raza_objetivo": "elfos",
-      "sabor": "dulce",
-      "color": "rojo",
-      "consistencia": "entera",
-      "temperatura": "frio",
-      "forma_frasco": "estrella"
-    },
+    "anim": "NPCelfo",
     "dialogue": [
       "Saludos, alquimista. Hace siglos que perdimos los caminos de nuestro propio bosque, pero deseo abrirle los ojos a los {raza_objetivo}.",
       "Necesito que vean la verdad oculta tras la niebla. Prepárame una esencia {color} y con {sabor}. Asegúrate de que la textura quede {consistencia}, que esté {temperatura} y guárdala {forma_frasco}."
