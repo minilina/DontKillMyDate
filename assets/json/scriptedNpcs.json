@@ -95,15 +95,15 @@
   "fairy": {
     "name": "Lirael, Tejedora de Luz",
     "looks": {
-      "base": "cuerpo_4",
-      "boca": "boca_normal_4",
-      "nariz": "nariz_4",
-      "ojos": "ojos_dorados",
-      "pelo": "pelo_4_rosa",
+      "base": "cuerpo_1",
+      "boca": "boca_feliz",
+      "nariz": "nariz_1",
+      "ojos": "ojos_amarillos",
+      "pelo": "pelo_2_rubio",
       "ropa": "ropa_hada",
       "orejas": "orejas_1_elfo_hada",
-      "rasgoFrente": "alas_hada",
-      "rasgoDetras": null
+      "rasgoFrente": "ninfa_feautures",
+      "rasgoDetras": "hada_feautures"
     },
     "requirements": {
       "raza": "hadas",
@@ -126,15 +126,15 @@
   "human": {
     "name": "Kaelen el Errante",
     "looks": {
-      "base": "cuerpo_5",
-      "boca": "boca_normal_5",
-      "nariz": "nariz_5",
-      "ojos": "ojos_marrones",
-      "pelo": "pelo_5_castano",
+      "base": "cuerpo_1",
+      "boca": "boca_feliz",
+      "nariz": "nariz_1",
+      "ojos": "ojos_azules",
+      "pelo": "pelo_3_negro",
       "ropa": "ropa_humano",
       "orejas": null,
       "rasgoFrente": null,
-      "rasgoDetras": "capa_viajero"
+      "rasgoDetras": null
     },
     "requirements": {
       "raza": "humanos",
@@ -142,7 +142,7 @@
       "sabor": "amargo",
       "color": "verde",
       "consistencia": "machacada",
-      "temperatura": "caliente",
+      "temperatura": "calor",
       "forma_frasco": "normal"
     },
     "dialogue": [
@@ -157,15 +157,15 @@
   "kitsune": {
     "name": "Akira, Sombra del Templo",
     "looks": {
-      "base": "cuerpo_6",
-      "boca": "boca_normal_6",
-      "nariz": "nariz_6",
-      "ojos": "ojos_rasgados",
-      "pelo": "pelo_6_blanco",
+      "base": "cuerpo_3",
+      "boca": "boca_enfadada",
+      "nariz": "nariz_3",
+      "ojos": "ojos_enfadados",
+      "pelo": "pelo_1_negro",
       "ropa": "ropa_kitsune",
-      "orejas": "orejas_kitsune",
-      "rasgoFrente": "marcas_kitsune",
-      "rasgoDetras": "colas_kitsune"
+      "orejas": "orejas_3_elfo_hada",
+      "rasgoFrente": null,
+      "rasgoDetras": "kitsune_feautures_negro"
     },
     "requirements": {
       "raza": "kitsunes",
@@ -173,7 +173,7 @@
       "sabor": "umami",
       "color": "naranja",
       "consistencia": "cortada",
-      "temperatura": "caliente",
+      "temperatura": "calor",
       "forma_frasco": "estrella"
     },
     "dialogue": [
