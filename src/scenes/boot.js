@@ -212,6 +212,8 @@ import dialog from "../../assets/sprites/dialog.png";
 import dialog2 from "../../assets/sprites/dialog2.png";
 import dialogArrow from "../../assets/sprites/dialog_arrow.png";
 
+import speechBubble from "../../assets/sprites/kitchen/bocadillo_hablar.png"
+
 import thinkingBubbleAnim from '../../assets/anims/bocadillo_pensar.png'
 import thinkingBubbleAnimJson from '../../assets/anims/bocadillo_pensar_atlas.json'
 
@@ -345,6 +347,8 @@ import lightOverlay from '../../assets/sprites/kitchen/capa_luz.png';
 
 import hotFireAnim from '../../assets/anims/fuego_caliente.png';
 import hotFireAnimJson from '../../assets/anims/fuego_caliente_atlas.json';
+import fireEyesAnim from '../../assets/anims/ojos.png';
+import fireEyesAnimJson from '../../assets/anims/ojos_atlas.json';
 
 import cuttingBg from '../../assets/sprites/kitchen/tabla_bg.png';
 import cuttingBar from '../../assets/sprites/kitchen/barra.png';
@@ -567,6 +571,7 @@ export default class Boot extends Phaser.Scene {
         this.load.image('dialog', dialog);
         this.load.image('dialog2', dialog2);
         this.load.image('dialogArrow', dialogArrow);
+        this.load.image('speechBubble', speechBubble);
         this.load.atlas('thinkingBubble', thinkingBubbleAnim, thinkingBubbleAnimJson);
 
         // --- CARGA DE CAPAS DE NPCs ---
@@ -674,6 +679,7 @@ export default class Boot extends Phaser.Scene {
         this.load.image('grayTestTube', grayTestTube);
         this.load.image('grayTestTubeB', grayTestTubeB);
         this.load.atlas('hotFire', hotFireAnim, hotFireAnimJson);
+        this.load.atlas('fireEyes', fireEyesAnim, fireEyesAnimJson);
         this.load.image('mushroom', mushroom);
         this.load.image('mushroomB', mushroomB);
         this.load.image('berry', berry);
