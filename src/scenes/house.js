@@ -18,10 +18,8 @@ export default class House extends topDownScene {
         const capaFondoFalso = this.map.getLayer('Suelo/Fondo Falso')?.tilemapLayer;
         const capaTapar = this.map.getLayer('Mas Colisiones/Tapar')?.tilemapLayer;
         const capaHierbaEncima = this.map.getLayer('Suelo/Hierba Encima Agua')?.tilemapLayer;
-        this.capaCamino = this.map.getLayer('Suelo/Camino')?.tilemapLayer;
-        this.capaCesped = this.map.getLayer('Suelo/Cesped')?.tilemapLayer;
-        this.capaTierra = this.map.getLayer('Suelo/Tierra')?.tilemapLayer;
-
+        const capaCamino = this.map.getLayer('Suelo/Camino')?.tilemapLayer;
+        
         // CONFIGURAR PROFUNDIDADES (DEPTH / Z-INDEX)
         if (capaTapar) capaTapar.setDepth(9999);
         if (capaHierbaEncima) capaHierbaEncima.setDepth(9999);
@@ -35,13 +33,10 @@ export default class House extends topDownScene {
         this.setupUI();                   // Crea el boton de pausa y la tecla ESC
 
         // SONIDO DE PASOS EN HIERBA
-        this.grassSound = this.sound.add('grassSound', { loop: true, volume: 1 });
+
         this.fenceSound = this.sound.add('fenceSound', { volume: 1 });
-        this.tilesSound = this.sound.add('tilesSound', { loop: true, volume: 2 });
-        this.groundSound = this.sound.add('groundSound', { loop: true, volume: 1 });
-        this.inGrass = false;
-        this.inTile = false;
-        this.inGround = false;
+
+        this.setupDefaultFootstepSounds();
 
 
         // Decoracion (flores y demas) con depth dinamico
@@ -198,24 +193,4 @@ export default class House extends topDownScene {
         ]);
     }
 
-    update() {
-        if (!this.player) return;
-
-        const tileX = this.map.worldToTileX(this.player.x);
-        const tileY = this.map.worldToTileY(this.player.y);
-        const moviendose = this.player.body.speed > 0;
-
-        const inTile = moviendose && !!this.capaCamino?.getTileAt(tileX, tileY);
-        const inGrass = moviendose && !inTile && !!this.capaCesped?.getTileAt(tileX, tileY);
-        const inGround = moviendose && !inTile && !inGrass && !!this.capaTierra?.getTileAt(tileX, tileY);
-
-        if (inGrass && !this.inGrass) { this.grassSound.play(); this.inGrass = true; }
-        else if (!inGrass && this.inGrass) { this.grassSound.stop(); this.inGrass = false; }
-
-        if (inTile && !this.inTile) { this.tilesSound.play(); this.inTile = true; }
-        else if (!inTile && this.inTile) { this.tilesSound.stop(); this.inTile = false; }
-
-        if (inGround && !this.inGround) { this.groundSound.play(); this.inGround = true; }
-        else if (!inGround && this.inGround) { this.groundSound.stop(); this.inGround = false; }
-    }
 }
