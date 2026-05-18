@@ -85,13 +85,12 @@ export default class NPC extends Phaser.GameObjects.Container {
         if (this.id === "gnomo") {
           this.scene.tweens.add({
             targets: this,
-            y: this.scene.scale.height * 0.85,  // Sube a la altura normal de los NPCs
+            y: this.scene.scale.height * 0.85,
             duration: 1000,
-            ease: "Back.easeOut", // Efecto de rebote al subir
+            ease: "Back.easeOut",
           });
           
       } else {
-        // Saltito de alegría normal para el resto de personajes (y para el gnomo si la poción no es de 80+)
         this.scene.tweens.add({
           targets: this,
           y: this.y - 20,

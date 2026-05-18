@@ -53,8 +53,8 @@
       "forma_frasco": "corazon"
     },
     "dialogue": [
-      "Las raíces oscuras están envenenando el río... He forjado una alianza secreta con los {raza_objetivo} para purificar los manantiales antes de que sea tarde.",
-      "Nuestra magia combinada requiere un catalizador. Tráeme algo {color} que tenga {sabor}. Dásmelo {temperatura}, que la mezcla quede {consistencia} y ponlo {forma_frasco}."
+      "Las raíces oscuras están envenenando el río... He forjado una alianza secreta con {raza_objetivo} para purificar los manantiales antes de que sea tarde.",
+      "Nuestra magia combinada requiere un catalizador. Tráeme algo {color} que tenga {sabor}. Dámelo {temperatura}, que la mezcla quede {consistencia} y ponlo {forma_frasco}."
     ],
     "successDialogue": [
       "¡Oh! Siento palpitar la energía en este frasco. Esta mezcla es perfecta para afianzar nuestra alianza.",
@@ -84,7 +84,7 @@
       "forma_frasco": "estrella"
     },
     "dialogue": [
-      "¡Ey! ¡HOLA! Soy ese cono parlante de ahí abajo. Si si... como ves, tengo un problema de altura... Estoy enamorado de alguien de los {raza_objetivo}, pero literalmente me pasa por alto.",
+      "¡Ey! ¡HOLA! Soy ese cono parlante de ahí abajo. Si si... Como ves, tengo un problema de altura... Estoy enamorado de alguien de los {raza_objetivo}, pero literalmente me pasa por alto.",
       "Necesito un estirón mágico. Prepárame algo {color} y {sabor}. Déjala {consistencia}. Que esté {temperatura} y ponlo {forma_frasco}."
     ],
     "successDialogue": [
@@ -151,7 +151,8 @@
     ],
     "successDialogue": [
       "Increíble... el calor y el aroma por sí solos ya me devuelven la esperanza. Mi gente no olvidará esta deuda, alquimista.",
-      "Si te aventuras por la zona norte en tus expediciones, visitáme. Podría conseguirte materiales raros."
+      "La compasión de tus ojos me recuerda a una chica que solía vivir en mi aldea hace mucho tiempo. Qué habrá sido de ella...",
+      "En fin, me quedaré un tiempo en el pueblo de al lado, búscame si te apetece charlar alguna vez"
     ]
   },
   "kitsune": {

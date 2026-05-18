@@ -10,39 +10,47 @@ export default class Note extends Phaser.GameObjects.Container {
     const width = scene.scale.width;
     const height = scene.scale.height;
 
-    // 1. Overlay oscuro de fondo que ocupa TODA la pantalla
     const overlay = scene.add
       .rectangle(width / 2, height / 2, width, height, 0x000000, 0.4)
       .setInteractive();
 
-    // Como el overlay ocupa toda la pantalla, cualquier click lo cerrará
     overlay.on("pointerdown", () => {
       this.close();
     });
 
     this.add(overlay);
 
-    // 2. Carta tamaño pantalla
-    // ¡OJO! Le hemos QUITADO el .setInteractive().
-    // Ahora el papel es "transparente" a los clicks, dejando que golpeen el overlay.
     const paperImg = scene.add
       .image(width / 2, height / 2, "open_note")
       .setDisplaySize(width, height);
 
     this.add(paperImg);
 
-    // 3. TEXTO DE LAS PISTAS (Mismas medidas y área que en letter.js)
     const textAreaX = width / 2 - 130;
     const textAreaY = height / 2 - 175;
-    const textAreaWidth = 260;
+    const textAreaWidth = 300;
+
+
+    this.titleText = scene.add
+      .text(textAreaX, textAreaY, "NOTAS ALQUÍMICAS:", {
+        fontFamily: "VT323, monospace",
+        fontSize: "28px",
+        color: "#f9ce2a",
+        stroke: "#623100",
+        strokeThickness: 5,
+        align: "left",
+      })
+      .setOrigin(0, 0);
+
+    this.add(this.titleText);
 
     this.orderText = scene.add
-      .text(textAreaX, textAreaY, "", {
+      .text(textAreaX, textAreaY + 65, "", {
         fontFamily: "VT323, monospace",
         fontSize: "25px",
-        color: "#4f342d",
+        color: "#623100",
         align: "left",
-        lineSpacing: 5,
+        lineSpacing: 18,
         wordWrap: { width: textAreaWidth },
       })
       .setOrigin(0, 0);
@@ -54,13 +62,14 @@ export default class Note extends Phaser.GameObjects.Container {
 
   open() {
     const currentOrder = this.scene.registry.get("currentOrder");
+
+    // Ahora el "noteTextContent" solo guarda la parte de los ingredientes
     let noteTextContent = "No hay pedidos actuales.";
 
     if (currentOrder && currentOrder.literalWords) {
       const w = currentOrder.literalWords;
 
       noteTextContent =
-        `NOTAS DEL HECHICERO:\n\n` +
         `- "${w.raza_objetivo}"\n` +
         `- "${w.color}"\n` +
         `- "${w.sabor}"\n` +
@@ -74,7 +83,7 @@ export default class Note extends Phaser.GameObjects.Container {
   }
 
   close() {
-    this.scene.events.emit('note:closed');
+    this.scene.events.emit("note:closed");
     this.setVisible(false);
   }
 }
