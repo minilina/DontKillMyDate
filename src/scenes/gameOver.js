@@ -25,8 +25,8 @@ export default class GameOver extends Phaser.Scene {
     // Cambiamos el fondo al de dailySummary
     this.add.image(centerX, centerY, "resumenBg").setScale(bgScale);
 
-    const titleColor = "#f9ce2a";
-    const textColor = "#623100";
+    const titleColor = "#ffcc00";
+    const textColor = "#2b1d10";
 
 
     this.add

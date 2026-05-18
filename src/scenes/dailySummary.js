@@ -10,7 +10,6 @@ export default class DailySummary extends Phaser.Scene {
     const centerX = this.scale.width / 2;
     const centerY = this.scale.height / 2;
 
-    // 1. CONFIGURACIÓN VISUAL
     const bgScale = 3;
     const iconScale = 1.6;
     const starScale = 1.3;
