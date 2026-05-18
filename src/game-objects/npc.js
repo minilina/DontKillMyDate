@@ -97,6 +97,7 @@ export default class NPC extends Phaser.GameObjects.Container {
           yoyo: true,
           duration: 250,
         });
+        this.scene.sound.play("successSound");
       }
     } else if (calidad < 50) {
       this.spriteOjos.setTexture("ojos_enfadados"); 
@@ -108,6 +109,7 @@ export default class NPC extends Phaser.GameObjects.Container {
         repeat: 3,
         duration: 50,
       });
+      this.scene.sound.play("errorSound");
     }
   }
 

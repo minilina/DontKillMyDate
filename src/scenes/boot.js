@@ -419,6 +419,7 @@ import flintSound from '../../assets/sound/flint.mp3';
 import knifeSound from '../../assets/sound/knife.mp3'; 
 import fillBottleSound from '../../assets/sound/fillBottle.mp3';
 import errorSound from '../../assets/sound/error.mp3';
+import successSound from '../../assets/sound/success.mp3';
 
 //UI
 import pauseBtn from '../../assets/sprites/pauseBtn.png';
@@ -838,6 +839,7 @@ export default class Boot extends Phaser.Scene {
         this.load.audio('knifeSound', knifeSound);
         this.load.audio('fillBottleSound', fillBottleSound);
         this.load.audio('errorSound', errorSound);
+        this.load.audio('successSound', successSound);
 
         this.load.image('pauseBtn', pauseBtn);
         this.load.image('pauseBtnPressed', pauseBtnPressed);

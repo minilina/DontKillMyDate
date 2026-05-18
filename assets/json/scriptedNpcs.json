@@ -204,5 +204,25 @@
       "Tus pociones son un peligro para la salud pública y tu reputación es inaceptable.",
       "Recoge tus cosas. Estás desterrado de este pueblo para siempre."
     ]
+  },
+
+  "aunt": {
+    "name": "Tía Agatha",
+    "looks": {
+      "base": "cuerpo_1",
+      "boca": "boca_feliz",
+      "nariz": "nariz_3",
+      "ojos": "ojos_marrones",
+      "pelo": "pelo_1_rubiol",
+      "ropa": "ropa_elfo",
+      "orejas": null,
+      "rasgoFrente": null,
+      "rasgoDetras": null
+    },
+    "dialogue": [
+      "Hola, querida, muchas gracias por quedarte a cargo de la tienda. No sabes cuánto significa para mí.",
+      "Ya veo que te has ganado al pueblo con tu amabilidad y tus pociones. Estoy muy orgullosa de ti.",
+      "Creo que es hora de que esta tienda pase a ser tuya. No te preocupes, no me voy a ningún lado. Seguiré por aquí para lo que necesites."
+    ]
   }
 }
