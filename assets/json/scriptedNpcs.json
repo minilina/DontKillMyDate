@@ -84,12 +84,12 @@
       "forma_frasco": "estrella"
     },
     "dialogue": [
-      "Muchacho, en las profundidades de la mina hemos despertado algo antiguo... Los {raza_objetivo} son los únicos con la luz suficiente para sellar la grieta.",
-      "Para forjar el sello necesito una mezcla {color} y {sabor}. Déjala {consistencia}. Que esté {temperatura} y ponlo {forma_frasco}."
+      "¡Ey! ¡HOLA! Soy ese cono parlante de ahí abajo. Si si... como ves, tengo un problema de altura... Estoy enamorado de alguien de los {raza_objetivo}, pero literalmente me pasa por alto.",
+      "Necesito un estirón mágico. Prepárame algo {color} y {sabor}. Déjala {consistencia}. Que esté {temperatura} y ponlo {forma_frasco}."
     ],
     "successDialogue": [
-      "¡Por las barbas de piedra! Tiene la potencia exacta. Con esto conseguiremos sellar la grieta antes de que esa cosa escape.",
-      "Te has ganado el respeto de las profundidades. Búscame en la entrada de la cueva en tu tiempo libre, tengo algo importante que mostrarte."
+      "¡Por las barbas de piedra! ¡Mírame, estoy enorme! Con esta estatura seguro que por fin se fija en mí. Ojalá me veas por la ciudad acompañado...",
+      "Te debo una grande, alquimista. Nunca mejor dicho."
     ]
   },
   "fairy": {

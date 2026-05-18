@@ -34,7 +34,6 @@ export default class CustomerFlowManager {
   }
 
   spawnNextCustomer() {
-    // Comprobamos si el día ha terminado
     if (GameState.isDayOver()) {
       if (GameState.reputation <= - 60) {
         this.startGameOverSequence();
@@ -98,6 +97,11 @@ export default class CustomerFlowManager {
     if (this.currentRequest.specialData) {
       this.currentCustomer.npcData = this.currentRequest.specialData;
       this.currentCustomer.id = customerType;
+
+      if (customerType === "gnomo") {
+        this.currentCustomer.y += 240;
+      }
+
     }
 
     this.dialogueManager.start(dialogueData);
