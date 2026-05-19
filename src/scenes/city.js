@@ -24,6 +24,7 @@ export default class City extends topDownScene {
 
         this.setupPlayer(this.map.widthInPixels - 32, 288, 'left');
         this.setupUI();
+        this.crearNPCs();
 
         this.dialogueManager = new DialogueManager(this);
 

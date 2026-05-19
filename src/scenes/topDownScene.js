@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import Player from '../game-objects/player.js';
+import NPC from '../game-objects/topdownNPC.js';
+import npcData from "../../assets/json/scriptedNpcsTopdown.json";
 
 export default class TopDownScene extends Phaser.Scene {
     constructor(key) {
@@ -19,7 +21,7 @@ export default class TopDownScene extends Phaser.Scene {
         // Carga de capas
         this.map.layers.forEach(layerData => {
             const capa = this.map.createLayer(layerData.name, tilesetsArray, 0, 0);
-            
+
             if (layerData.name === 'Colisiones') {
                 capa.setCollisionByExclusion([-1]);
                 capa.setVisible(false);
@@ -48,7 +50,7 @@ export default class TopDownScene extends Phaser.Scene {
             "mesh",
             walkableLayer//,5 //shrink amount (opcional)
         ); */
-        
+
         if (this.capaColisiones) {
             this.navMesh = this.navMeshPlugin.buildMeshFromTilemap("mesh", this.map, [this.capaColisiones], null, 4.5);
         }
@@ -69,8 +71,8 @@ export default class TopDownScene extends Phaser.Scene {
         this.player = new Player(this, startX, startY);
         if (this.navMesh) this.player.setNavmesh(this.navMesh);
         this.player.zElevacion = 0; // Para el tema de las escaleras de la ciudad
-        if (this.player.setDireccion) { this.player.setDireccion(direccion);}
-        
+        if (this.player.setDireccion) { this.player.setDireccion(direccion); }
+
         // Camara
         this.cameras.main.setZoom(3);
         this.cameras.main.roundPixels = true;
@@ -78,10 +80,10 @@ export default class TopDownScene extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.cameras.main.fadeIn(600, 0, 0, 0); // todas las escenas empiezan con un fadeIn
-        
+
         if (this.capaColisiones) {
             this.physics.add.collider(
-                this.player, 
+                this.player,
                 this.capaColisiones,
                 null,
                 () => { return this.player.zElevacion === 0; }, // Solo colisionas si no estas elevado (zElevacion)
@@ -216,7 +218,7 @@ export default class TopDownScene extends Phaser.Scene {
     update() {
         this.updateFootstepSounds();
     }
-    
+
     // UI Y MENU DE PAUSA
     setupUI() {
         this.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
@@ -234,13 +236,13 @@ export default class TopDownScene extends Phaser.Scene {
         this.pauseBtnBg = this.add.image(btnX, btnY, 'pauseBtn')
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5)
-            .setScale(3 / zoom) 
+            .setScale(3 / zoom)
             .setDepth(10000)
             .setScrollFactor(0);
 
         this.pauseBtnBg.on('pointerover', () => this.pauseBtnBg.setTexture('pauseBtnPressed'));
         this.pauseBtnBg.on('pointerout', () => this.pauseBtnBg.setTexture('pauseBtn'));
-        
+
         this.pauseBtnBg.on('pointerdown', () => {
             this.sound.play('buttonSound', { volume: 0.2 });
             this.openPauseMenu();
@@ -261,7 +263,7 @@ export default class TopDownScene extends Phaser.Scene {
             capa.objects.forEach(obj => {
                 // Buscamos la configuracion de este objeto en el diccionario
                 const config = configuracionFisicas[obj.name];
-                
+
                 if (config) {
                     // La key de la imagen (si no la hemos especificado, usamos el propio obj.name)
                     const imgKey = config.key || obj.name;
@@ -284,15 +286,15 @@ export default class TopDownScene extends Phaser.Scene {
                     // Si no, lo calcula desde la izquierda (para las estructuras)
                     const anchoFisica = config.dw !== undefined ? sprite.width + config.dw : config.w;
                     const finalOffsetX = config.centrarOffset ? (sprite.width / 2) + config.ox : config.ox;
-                    
+
                     sprite.body.setSize(anchoFisica, config.h).setOffset(finalOffsetX, sprite.height + config.oy);
-                               
+
                     if (config.tOffsetY !== undefined) sprite.tOffsetY = config.tOffsetY;
                 }
             });
         }
         this.physics.add.collider(this.player, grupo);
-        
+
         return grupo; // Devolvemos el grupo por si la escena quiere añadir cosas
     }
 
@@ -304,7 +306,7 @@ export default class TopDownScene extends Phaser.Scene {
 
             grupos.forEach(grupo => {
                 if (!grupo || !grupo.children) return;
-                
+
                 grupo.getChildren().forEach(obj => {
                     if (!obj || !obj.active || !obj.width || !obj.height) return;
 
@@ -312,7 +314,7 @@ export default class TopDownScene extends Phaser.Scene {
 
                     // Comprobamos si el jugador esta por detras del objeto (y menor que la base)
                     if (this.player.y < obj.y) {
-                        
+
                         // Calculamos los bordes reales de la imagen en el mundo
                         const scaleX = obj.scaleX || 1;
                         const scaleY = obj.scaleY || 1;
@@ -323,7 +325,7 @@ export default class TopDownScene extends Phaser.Scene {
 
                         // Solo hacemos la prueba del pixel si el jugador esta dentro del cuadrado que ocupa la imagen (con un poco de margen)
                         if (px >= left - 3 && px <= right + 3 && py >= top - 3 && py <= bottom + 3) {
-                            
+
                             // Traducimos la posicion del mundo a las coordenadas de la foto (de 0 a Width)
                             let localX = Math.floor((px - left) / scaleX);
                             let localY = Math.floor((py - top) / scaleY);
@@ -343,7 +345,7 @@ export default class TopDownScene extends Phaser.Scene {
                                     // Nos aseguramos de no buscar pixeles fuera de los bordes de la imagen
                                     if (checkX >= 0 && checkX < obj.width && checkY >= 0 && checkY < obj.height) {
                                         const pixelAlpha = this.textures.getPixelAlpha(checkX, checkY, obj.texture.key, obj.frame.name);
-                                        
+
                                         if (pixelAlpha > 0) {
                                             tocoObjeto = true;
                                             break; // Si ya toco uno, paramos el bucle para ahorrar rendimiento
@@ -382,10 +384,10 @@ export default class TopDownScene extends Phaser.Scene {
             const capa = this.map.getObjectLayer(nombreCapa);
             if (capa) {
                 capa.objects.forEach(obj => {
-                    const imgKey = obj.name; 
+                    const imgKey = obj.name;
                     if (imgKey) {
-                        const offsetCen = obj.width ? obj.width / 2 : 8; 
-                        
+                        const offsetCen = obj.width ? obj.width / 2 : 8;
+
                         const img = this.add.image(obj.x + offsetCen, obj.y, imgKey);
                         img.setOrigin(0.5, 1);
                         img.setDepth(obj.y - 7 + elevacionExtra);
@@ -406,7 +408,7 @@ export default class TopDownScene extends Phaser.Scene {
             if (distancia <= 40) {
                 for (const config of configuraciones) {
                     if (!config.capa) continue; // Si la capa no existe, pasamos a la siguiente
-                    
+
                     const tile = config.capa.getTileAtWorldXY(worldPoint.x, worldPoint.y);
                     if (tile && config.ids.includes(tile.index)) {
                         esInteractivo = true;
@@ -422,7 +424,7 @@ export default class TopDownScene extends Phaser.Scene {
     debugTiles(configuracionesCapas) {
         this.input.on('pointerdown', (pointer) => {
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
-            
+
             configuracionesCapas.forEach(obj => {
                 if (!obj.capa) return;
                 const tile = obj.capa.getTileAtWorldXY(worldPoint.x, worldPoint.y);
@@ -430,9 +432,9 @@ export default class TopDownScene extends Phaser.Scene {
             });
         });
     }
-    
+
     crearSistemaInteraccion(configuraciones, onInteract) {
-         // Boton E
+        // Boton E
         this.teclaE_icono = this.add.image(0, 0, 'eBtn').setOrigin(0.5, 0.5).setDepth(10000).setVisible(false);
         this.estadoBotonE = false;
 
@@ -440,7 +442,7 @@ export default class TopDownScene extends Phaser.Scene {
         this.time.addEvent({
             delay: 400, loop: true,
             callback: () => {
-                if (!this.teclaE_icono.visible) return; 
+                if (!this.teclaE_icono.visible) return;
                 this.estadoBotonE = !this.estadoBotonE;
                 this.teclaE_icono.setTexture(this.estadoBotonE ? 'eBtnPressed' : 'eBtn');
             }
@@ -450,10 +452,10 @@ export default class TopDownScene extends Phaser.Scene {
 
         this.events.on('update', () => {
             if (!this.sys || !this.sys.settings.active || !this.player || !this.player.active) return;
-            
+
             const px = this.player.x;
             const py = this.player.y;
-            const distMax = 40; 
+            const distMax = 40;
 
             let tileMasCercano = null;
             let minDist = distMax;
@@ -466,13 +468,13 @@ export default class TopDownScene extends Phaser.Scene {
                 // Si le pasamos una condicion y es falsa (la cueva ya esta abierta) lo ignoramos
                 if (config.condicion !== undefined && !config.condicion()) continue;
 
-                const tiles = config.capa.getTilesWithinWorldXY(px - distMax, py - distMax, distMax*2, distMax*2);
+                const tiles = config.capa.getTilesWithinWorldXY(px - distMax, py - distMax, distMax * 2, distMax * 2);
                 tiles?.forEach(t => {
                     if (config.ids.includes(t.index)) {
                         const d = Phaser.Math.Distance.Between(px, py, t.pixelX + 8, t.pixelY + 8);
-                        if (d < minDist) { 
-                            minDist = d; 
-                            tileMasCercano = t; 
+                        if (d < minDist) {
+                            minDist = d;
+                            tileMasCercano = t;
                             tipoInteractable = config.tipo;
                             offsetBoton = { x: config.offsetX || 0, y: config.offsetY || 0 };
                         }
@@ -501,7 +503,7 @@ export default class TopDownScene extends Phaser.Scene {
         // Raton
         this.input.on('pointerdown', (pointer) => {
             if (!this.player || !this.player.active) return;
-            
+
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
             const dist = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
 
@@ -513,13 +515,204 @@ export default class TopDownScene extends Phaser.Scene {
 
                 const tile = config.capa.getTileAtWorldXY(worldPoint.x, worldPoint.y);
                 // Si no tiene idsClic definidos usa los de la E
-                const idsPermitidos = config.idsClic || config.ids; 
+                const idsPermitidos = config.idsClic || config.ids;
 
                 if (tile && idsPermitidos.includes(tile.index)) {
                     onInteract(config.tipo, tile);
                     return;
                 }
             }
+        });
+    }
+    crearNPCs(nombreCapa = 'Objetos/NPCs') {
+
+        this.npcs = [];
+
+        const capaNPCs =
+            this.map.getObjectLayer(nombreCapa);
+
+        if (!capaNPCs) return;
+
+        // Grupo físico
+        this.grupoNPCs =
+            this.physics.add.staticGroup();
+
+        capaNPCs.objects.forEach(obj => {
+
+            const npcId = obj.name;
+
+            const data = npcData[npcId];
+
+            if (!data) {
+
+                console.warn(
+                    `NPC '${npcId}' no existe en scriptedNpcsTopdown.json`
+                );
+
+                return;
+            }
+
+            // Crear NPC
+            const npc = new NPC(
+                this,
+                obj.x,
+                obj.y,
+                npcId,
+                data
+            );
+
+            this.npcs.push(npc);
+
+            this.grupoNPCs.add(npc);
+        });
+
+        // Colisión jugador/NPC
+        this.physics.add.collider(
+            this.player,
+            this.grupoNPCs
+        );
+
+        // Interacción
+        this.crearSistemaInteraccionNPCs();
+    }
+    crearSistemaInteraccionNPCs() {
+
+        // Botón E
+        this.teclaE_npc = this.add.image(
+            0,
+            0,
+            'eBtn'
+        )
+            .setOrigin(0.5)
+            .setDepth(10000)
+            .setVisible(false);
+
+        this.estadoBotonENPC = false;
+
+        // Parpadeo
+        this.time.addEvent({
+
+            delay: 400,
+
+            loop: true,
+
+            callback: () => {
+
+                if (!this.teclaE_npc.visible) return;
+
+                this.estadoBotonENPC =
+                    !this.estadoBotonENPC;
+
+                this.teclaE_npc.setTexture(
+
+                    this.estadoBotonENPC
+                        ? 'eBtnPressed'
+                        : 'eBtn'
+                );
+            }
+        });
+
+        this.npcCercano = null;
+
+        this.events.on('update', () => {
+
+            if (!this.player || !this.player.active) return;
+
+            let npcMasCercano = null;
+
+            let minDist = 40;
+
+            this.npcs?.forEach(npc => {
+
+                if (!npc.active) return;
+
+                const dist =
+                    Phaser.Math.Distance.Between(
+                        this.player.x,
+                        this.player.y,
+                        npc.x,
+                        npc.y
+                    );
+
+                if (dist < minDist) {
+
+                    minDist = dist;
+
+                    npcMasCercano = npc;
+                }
+            });
+
+            if (npcMasCercano) {
+
+                this.npcCercano = npcMasCercano;
+
+                this.teclaE_npc.setVisible(true);
+
+                this.teclaE_npc.setPosition(
+                    npcMasCercano.x,
+                    npcMasCercano.y - 24
+                );
+
+            } else {
+
+                this.npcCercano = null;
+
+                this.teclaE_npc.setVisible(false);
+
+                this.estadoBotonENPC = false;
+
+                this.teclaE_npc.setTexture('eBtn');
+            }
+        });
+
+        // TECLA E
+        this.input.keyboard.on('keydown-E', () => {
+
+            if (!this.npcCercano) return;
+
+            if (this.dialogueManager?.active) return;
+
+            this.npcCercano.interact();
+        });
+
+        // CLICK
+        this.input.on('pointerdown', (pointer) => {
+
+            if (!this.player || !this.player.active) return;
+
+            const worldPoint =
+                this.cameras.main.getWorldPoint(
+                    pointer.x,
+                    pointer.y
+                );
+
+            const dist =
+                Phaser.Math.Distance.Between(
+                    this.player.x,
+                    this.player.y,
+                    worldPoint.x,
+                    worldPoint.y
+                );
+
+            if (dist > 40) return;
+
+            this.npcs?.forEach(npc => {
+
+                const bounds = npc.getBounds();
+
+                if (
+                    Phaser.Geom.Rectangle.Contains(
+                        bounds,
+                        worldPoint.x,
+                        worldPoint.y
+                    )
+                ) {
+
+                    if (!this.dialogueManager?.active) {
+                        npc.interact();
+                    }
+                }
+            });
         });
     }
 }

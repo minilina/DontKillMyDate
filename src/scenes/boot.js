@@ -120,6 +120,15 @@ import arrozMedio from '../../assets/tiled/arroz medio.png';
 
 import playerRun from '../../assets/anims/run.png';
 import playerIdle from '../../assets/anims/idle.png';
+import NPCmadre from '../../assets/anims/NPCmadre.png';
+import NPCelf from '../../assets/anims/NPCelfo.png';
+import NPChada from '../../assets/anims/NPChada.png';
+import NPCkitsune from '../../assets/anims/NPCkitsune.png';
+import NPCninfa from '../../assets/anims/NPCninfa.png';
+import NPCgnomo from '../../assets/anims/NPCgnomo.png';
+import NPChumano from '../../assets/anims/NPChumano.png';
+
+
 import casa from '../../assets/tiled/casa.json';
 import cueva from '../../assets/tiled/cueva.json';
 import ciudad from '../../assets/tiled/ciudad.json';

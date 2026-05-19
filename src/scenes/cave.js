@@ -21,6 +21,7 @@ export default class Cueva extends topDownScene {
 
         this.setupPlayer(168, 290, 'up');
         this.setupUI();
+        this.crearNPCs();
 
         this.setupDefaultFootstepSounds();
 
