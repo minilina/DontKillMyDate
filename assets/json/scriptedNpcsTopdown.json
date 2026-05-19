@@ -1,0 +1,76 @@
+{
+    "elf": {
+        "name": "Aelion, Guardián del Alba",
+        "anim": "NPCelfo",
+        "dialogue": [
+            "Sigo pensando que no hay mejor lugar que el bosque, pero en esta ciudad no se está tan mal. Espero que mucha más gente sepa apreciar este lugar en el futuro."
+        ],
+        "firstDialogue": [
+            "Finalmente has venido. Muchas gracias por abrirme las puertas de tu tienda aquella vez.","Tu ayuda fue definitivamente crucial a la hora de conseguir las alianzas que buscábamos entre razas. Te lo agradezco de corazón, alquimista."
+        ]
+    },
+    "nymph": {
+        "name": "Thalassa de las Aguas Claras",
+        "anim": "NPCninfa",
+        "dialogue": [
+            "Desde que estoy aquí no puedo evitar mirar a Aelion con otros ojos... Es un tipo genial, aunque a veces se le va la cabeza con sus teorías sobre el bosque.","Me alegro de haber encontrado a alguien tan amable como tú en esta ciudad, me has hecho sentir como en casa."
+        ],
+        "firstDialogue": [
+            "¡Anda alquimista! No sabes la ilusión que me hace verte por aquí. Gracias por tu ayuda, de verdad. Sin ti no habría podido ayudar a mi especie con el río.",
+            "Tengo ganas de volver a las aguas cristalinas de las que provengo, pero me gusta mucho esta ciudad. Si alguna vez quieres venir a visitarme, búscame por aquí, ¡estare esperando tu regreso!"
+        ]
+    },
+    "gnomo": {
+        "name": "Bramok Picoférreo",
+        "anim": "NPCgnomo",
+        "dialogue": [
+            "Muchacha ¿que tal se te da el trabajo físico? Como se te dé igual de bien que la alquimia me vendrías genial en la mina. Estoy intentando que alguien de por aquí venga a ayudar, pero no hay manera...","Si algun humano apareciera por esta ciudad seguro que podríamos entendernos bien y me podría ayudar con mis tareas. Ser tan pequeño no es fácil, ¿sabes?"
+        ],
+        "firstDialogue": [
+            "Que tal muchacha! Por fin apareces por aquí. Yo ya me he presentado con la gente de aquí y la verdad que son todos muy apañados. Estaré intentando que alguien de por aquí venga a ayudar en la mina.",
+             "¡Gracias por tu ayuda! No sabes lo importante que es para nosotros haber podido cerrar esa grieta. Sin tu ayuda no lo habríamos conseguido, de verdad. ¡Eres un crack!"
+             
+        ]
+    },
+    "fairy": {
+        "name": "Lirael, Tejedora de Luz",
+        "anim": "NPChada",
+        "dialogue": [
+            "La verdad que los elfos son muy atractivos... No tendrás alguna poción de las tuyas por ahí, ¿no?","Quien me ha visto y quien me ve... Antes era una hada de los bosques, ahora estoy aquí en esta ciudad... Pero la verdad que no me está yendo tan mal, la gente es muy maja."
+        ],
+        "firstDialogue": [
+            "¡Alquimista! Ya he ayudado a mi pueblo gracias a tu poción, la verdad que la ayuda de otras razas a sido clave para nuestra supervivencia...",
+            "Es verdad que somos los más luminosos de entre todos los seres, pero al final he aprendido a apreciar la diversidad de esta ciudad. Si alguna vez quieres venir a visitarme, búscame por aquí, ¡estare esperando tu regreso!"
+        ]
+    },
+    "human": {
+        "name": "Kaelen el Errante",
+        "anim": "NPChumano",
+        "dialogue": [
+            "Las verduras que cultivan en este pueblo estan bastante buenas, aunque echo de menos la comida de mi tierra...","He oido que la comida de los gnomos no tiene comparación... Igual debería acercarme a sus minas a probarla, aunque no se yo si me van a dejar entrar..."
+        ],
+        "firstDialogue": [
+            "¡Hola alquimista! Vaya ciudad tan agradable teneis aquí montada, me gusta mucho. Gracias por tu ayuda, de verdad. Sin ti no habría podido ayudar a mi pueblo con la plaga."
+        ]
+    },
+    "kitsune": {
+        "name": "Akira, Sombra del Templo",
+        "anim": "NPCkitsune",
+        "dialogue": [
+            "Esta ciudad es demasiado ruidosa para mí, echo de menos la tranquilidad de mi templo...","No es fácil ser un kitsune en un mundo lleno de humanos, aunque la gente de aquí es bastante agradable."
+        ],
+        "firstDialogue": [
+            "Anda, eres tu joven. No sabes cuanto me costó ir a pedirle ayuda a alguien como tú, pero al final lo conseguí. Agradezco tu impecable desempeño. No volveré a dudar de las demás especies que habitan este reino."
+        ]
+    },
+    "madre": {
+        "name": "Mujer misteriosa",
+        "anim": "NPCmadre",
+        "dialogue": [
+            "Tu cara me resulta muy familiar... ¿No serás por casualidad la sobrina de Agatha, verdad?","¡Vaya! No esperaba encontrar a una cara conocida, aunque me alegra que hayas decidido quedarte a cuidar esta tienda. Seguro que tu tía estaría orgullosa de ti."
+        ],
+        "firstDialogue": [
+            "Anda, alguien viniendo a visitar mi escondite en la cueva, como supiste entrar?","Bueno, no importa, de todas formas me resultas muy familiar...(no será ella... ¿verdad?)"
+        ]
+    }
+}

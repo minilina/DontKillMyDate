@@ -12,17 +12,17 @@
   {
     "day": 3,
     "difficulty": "facil",
-    "customers": ["npc", "nymph"]
+    "customers": ["npc", "npc"]
   },
   {
     "day": 4,
     "difficulty": "medio",
-    "customers": ["npc", "npc", "npc"]
+    "customers": ["nymph", "npc", "npc"]
   },
   {
     "day": 5,
     "difficulty": "medio",
-    "customers": ["npc", "nymph", "npc"]
+    "customers": ["npc", "npc", "npc"]
   },
   {
     "day": 6,
