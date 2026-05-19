@@ -1,16 +1,16 @@
-
 const GameState = {
   // VARIABLES GLOBALES
-  reputation: 50, // reputación inicial
-  currentDay: 1,
-  currentCustomer: 0, // índice del cliente en la cola
+  reputation: 1000,
+  currentDay: 15,
+  currentCustomer: 0,
   daysData: null,
   specialNpcsData: null,
   currentPotion: {
     quality: 100,
   },
 
-  // Puntuación que obtiene cada npc scripted para pasarsela al topdown
+  hasCompletedSpecialEvent: false,
+
   specialNpcRecords: {
     elf: null,
     nymph: null,
@@ -20,7 +20,6 @@ const GameState = {
     kitsune: null,
   },
 
-  // Con esta función guardamos la puntuación en el diccionario de arriba
   saveSpecialNpcRecord(npcId, score) {
     if (this.specialNpcRecords[npcId] !== undefined) {
       this.specialNpcRecords[npcId] = score;
@@ -41,17 +40,25 @@ const GameState = {
 
   getCurrentDifficulty() {
     const todayConfig = this.daysData[this.currentDay - 1];
-
     if (todayConfig && todayConfig.difficulty) {
       return todayConfig.difficulty;
     }
-
     return "facil";
   },
 
   isDayOver() {
     const today = this.daysData[this.currentDay - 1];
+    if (!today) return true; // día fuera de rango → juego terminado
     return this.currentCustomer >= today.customers.length;
+  },
+
+  isGameOver() {
+    return this.currentDay > this.daysData.length;
+  },
+
+  // Devuelve true si el jugador no hizo el evento especial → final intermedio
+  isNeutralEnding() {
+    return !this.hasCompletedSpecialEvent;
   },
 
   getCurrentCustomerType() {
@@ -72,7 +79,6 @@ const GameState = {
     this.currentCustomer = 0;
 
     this.dailyStats = {
-      // reiniciamos las stats diarias
       served: 0,
       good: 0,
       bad: 0,
@@ -82,47 +88,38 @@ const GameState = {
 
   reducePotionQuality(penalty) {
     this.currentPotion.quality -= penalty;
-
     if (this.currentPotion.quality < 0) {
       this.currentPotion.quality = 0;
     }
   },
 
-  // función para calcular calidad poción
   evaluatePotion(cauldronPotion, expectedOrder, potionShape) {
     let quality = 100;
     const req = expectedOrder.requirements;
 
-    // diccionario de traducción palabras caldero - palabras json
     const dict = {
-      // sabores
       sweet: "dulce",
       bitter: "amargo",
       salty: "salado",
       umami: "umami",
       sour: "acido",
-      // colores
       red: "rojo",
       blue: "azul",
       yellow: "amarillo",
       green: "verde",
       orange: "naranja",
       purple: "morado",
-      // consistencias
       whole: "entera",
       chopped: "cortada",
       mashed: "machacada",
-      // temperaturas
       cold: "frio",
       hot: "calor",
       warm: "tiempo",
-      // formas frascos
       Star: "estrella",
       Heart: "corazon",
       Normal: "normal",
     };
 
-    // calculadora de olores (compatiqbilidad razas)
     const getExpectedTestTube = (raza1, raza2) => {
       if (!raza1 || !raza2) return null;
 
@@ -159,7 +156,6 @@ const GameState = {
       return "grayTestTube";
     };
 
-    // función para validar categorías que son arrays (sabor, consistencia, olor)
     const checkArrayCategory = (actualArray, requiredValue) => {
       const translatedArray = actualArray.map((item) => dict[item] || item);
       if (!translatedArray.includes(requiredValue)) {
@@ -171,7 +167,6 @@ const GameState = {
       quality -= 20 * extraIngredients.length;
     };
 
-    // validar color
     if (req.color) {
       let finalColor = cauldronPotion.color
         ? cauldronPotion.color.replace("Liquid", "")
@@ -182,23 +177,19 @@ const GameState = {
       }
     }
 
-    // validar sabor
     if (req.sabor) {
       checkArrayCategory(cauldronPotion.taste, req.sabor);
     }
 
-    // validar consistencia
     if (req.consistencia) {
       checkArrayCategory(cauldronPotion.consistency, req.consistencia);
     }
 
-    // validar olor / compatibilidad razas
     const probetaRequerida = getExpectedTestTube(req.raza, req.raza_objetivo);
     if (probetaRequerida) {
       checkArrayCategory(cauldronPotion.smell, probetaRequerida);
     }
 
-    // validar temperatura
     if (req.temperatura) {
       let translatedTemp =
         dict[cauldronPotion.temperature] || cauldronPotion.temperature;
@@ -207,7 +198,6 @@ const GameState = {
       }
     }
 
-    // validar forma frasco
     if (req.forma_frasco) {
       let translatedShape = dict[potionShape] || potionShape;
       if (translatedShape !== req.forma_frasco) {
@@ -216,11 +206,9 @@ const GameState = {
     }
 
     this.currentPotion.quality = Math.max(0, quality);
-
     return this.currentPotion.quality;
   },
 
-  // función para entregar poción y actualizar reputación
   deliverPotion() {
     const q = this.currentPotion.quality;
     let change = 0;
@@ -239,22 +227,19 @@ const GameState = {
 
     this.reputation += change;
 
-
-    this.dailyStats.served++; // sumamos un cliente atendido
+    this.dailyStats.served++;
 
     if (q >= 50) {
-      this.dailyStats.repChange += change; // gurado rep
-      this.dailyStats.good++; // sumamos un éxito
+      this.dailyStats.repChange += change;
+      this.dailyStats.good++;
     } else {
-      this.dailyStats.repChange += change; // guardamos rep
-      this.dailyStats.bad++; // sumamos un fallo
+      this.dailyStats.repChange += change;
+      this.dailyStats.bad++;
     }
 
-    // avanzar al siguiente cliente
     this.currentCustomer++;
   },
 
-  // funciones para el resumen diario
   getDailyStars() {
     if (this.dailyStats.served === 0) return 0;
     const ratio = this.dailyStats.good / this.dailyStats.served;
@@ -262,7 +247,7 @@ const GameState = {
   },
 
   getReputationHearts() {
-    const maxRep = 100; // lo ajustaremos cd sepamos el maximo real
+    const maxRep = 100;
     const clampedRep = Math.max(0, Math.min(this.reputation, maxRep));
     return Math.round((clampedRep / maxRep) * 5);
   },

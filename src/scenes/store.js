@@ -46,7 +46,7 @@ export default class Store extends Phaser.Scene {
       .image(0, 0, "mostrador")
       .setOrigin(0, 0)
       .setDisplaySize(this.scale.width, this.scale.height)
-      .setDepth(10);
+      .setDepth(40);
 
     this.add
       .image(0, 0, "luzStore")

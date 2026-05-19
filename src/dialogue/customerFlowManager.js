@@ -8,7 +8,6 @@ import { buildDialogueFromRequest, splitIntoLines } from "./dialogueScripts.js";
 import NPCGenerator from "../utils/npcGenerator.js";
 import GameState from "../state/GameState.js";
 
-// Importamos el JSON de NPCs especiales para leer los datos del inspector
 import ScriptedNPCs from "../../assets/json/scriptedNpcs.json";
 
 export default class CustomerFlowManager {
@@ -21,9 +20,11 @@ export default class CustomerFlowManager {
     this.isShowingResult = false;
     this.onResultComplete = null;
 
-    // Variable para saber si estamos en el diálogo de final de partida
     this.isShowingGameOver = false;
-    this.isKnocking = false; // Variable para los golpes en la puerta
+    this.isKnocking = false;
+
+    this.isShowingNeutralEnding = false;
+    this.isKnockingNeutral = false;
 
     this._onDialogueFinished = this._onDialogueFinished.bind(this);
     this.scene.events.on("dialogue:finished", this._onDialogueFinished);
@@ -34,15 +35,24 @@ export default class CustomerFlowManager {
   }
 
   spawnNextCustomer() {
-    // Comprobamos si el día ha terminado
-    if (GameState.isDayOver()) {
-      if (GameState.reputation <= - 60) {
-        this.startGameOverSequence();
+  if (GameState.isDayOver()) {
+    if (GameState.reputation <= -60) {
+      this.startGameOverSequence();
+      return;
+    }
+
+    if (GameState.currentDay >= GameState.daysData.length) {
+      if (GameState.isNeutralEnding()) {
+        this.startNeutralEndingSequence();
       } else {
-        this._finishShift();
+        this._finishShift(); // buen final
       }
       return;
     }
+
+    this._finishShift();
+    return;
+  }
 
     if (this.currentCustomer) {
       this.currentCustomer.destroy();
@@ -98,12 +108,18 @@ export default class CustomerFlowManager {
     if (this.currentRequest.specialData) {
       this.currentCustomer.npcData = this.currentRequest.specialData;
       this.currentCustomer.id = customerType;
+
+      if (customerType === "gnomo") {
+        this.currentCustomer.y += 240;
+      }
+
     }
 
     this.dialogueManager.start(dialogueData);
   }
 
-  // Secuencia inicial de los golpes en la puerta
+  // ── GAME OVER ──────────────────────────────────────────────────────────────
+
   startGameOverSequence() {
     if (this.currentCustomer) {
       this.currentCustomer.destroy();
@@ -121,7 +137,6 @@ export default class CustomerFlowManager {
     });
   }
 
-  // Crea al inspector leyendo desde el archivo JSON
   spawnGameOverNPC() {
     if (this.currentCustomer) {
       this.currentCustomer.destroy();
@@ -139,7 +154,6 @@ export default class CustomerFlowManager {
 
     this.isShowingGameOver = true;
 
-    // Procesamos sus frases por si contienen saltos o marcas
     const formattedInspectorLines = [];
     dataInspector.dialogue.forEach((line) => {
       formattedInspectorLines.push(...splitIntoLines(line));
@@ -151,18 +165,84 @@ export default class CustomerFlowManager {
     });
   }
 
+  // ── FINAL INTERMEDIO ───────────────────────────────────────────────────────
+
+  startNeutralEndingSequence() {
+    if (this.currentCustomer) {
+      this.currentCustomer.destroy();
+      this.currentCustomer = null;
+    }
+
+    this.isKnockingNeutral = true;
+
+    // Llamada más suave a la puerta, tono ambiguo
+    this.dialogueManager.start({
+      speakerName: "???",
+      lines: [
+        "*toc... toc... toc...*",
+        "Sobrina, ¿Estás ahí?.",
+      ],
+    });
+  }
+
+  spawnNeutralEndingNPC() {
+    if (this.currentCustomer) {
+      this.currentCustomer.destroy();
+    }
+
+    // Apunta a la entrada "neutralEnding" en scriptedNpcs.json
+    const dataNeutralNPC = ScriptedNPCs.aunt;
+
+    this.currentCustomer = new NPC(
+      this.scene,
+      this.scene.scale.width / 4,
+      this.scene.scale.height * 0.85,
+      dataNeutralNPC.looks,
+      {},
+    );
+
+    this.isShowingNeutralEnding = true;
+
+    const formattedLines = [];
+    dataNeutralNPC.dialogue.forEach((line) => {
+      formattedLines.push(...splitIntoLines(line));
+    });
+
+    this.dialogueManager.start({
+      speakerName: dataNeutralNPC.name,
+      lines: formattedLines,
+    });
+  }
+
+  // ── EVENTOS DE DIÁLOGO ─────────────────────────────────────────────────────
+
   _onDialogueFinished() {
-    // Si acababa de hablar la voz de la puerta, hacemos aparecer al NPC físico
+    // Golpes del Game Over → aparece el Inspector
     if (this.isKnocking) {
       this.isKnocking = false;
       this.spawnGameOverNPC();
       return;
     }
 
-    // Si acababa de hablar el Inspector, saltamos a la pantalla de Game Over
+    // Inspector termina → pantalla Game Over
     if (this.isShowingGameOver) {
       this.scene.scene.stop("store");
       this.scene.scene.start("gameOver");
+      return;
+    }
+
+    // Golpes del final intermedio → aparece el NPC especial
+    if (this.isKnockingNeutral) {
+      this.isKnockingNeutral = false;
+      this.spawnNeutralEndingNPC();
+      return;
+    }
+
+    // NPC del final intermedio termina → pantalla de final intermedio
+    if (this.isShowingNeutralEnding) {
+      this.isShowingNeutralEnding = false;
+      this.scene.scene.stop("store");
+      this.scene.scene.start("gameOver"); // ← antes ponía "neutralEnding"
       return;
     }
 
@@ -180,6 +260,8 @@ export default class CustomerFlowManager {
     this.scene.scene.sleep("store");
     this.scene.scene.launch("kitchen");
   }
+
+  // ── RESTO ──────────────────────────────────────────────────────────────────
 
   showResultDialogue(dialogueLines, callback) {
     this.isShowingResult = true;
@@ -216,6 +298,7 @@ export default class CustomerFlowManager {
   update() {
     this.dialogueManager.update();
   }
+
   destroy() {
     this.scene.events.off("dialogue:finished", this._onDialogueFinished);
   }

@@ -2,7 +2,7 @@
   "sabores": {
     "dulce": {
       "facil": ["un sabor dulce", "un gusto azucarado", "un gusto dulzón"],
-      "medio": ["un toque afrutado", "un regusto a miel", "un matiz azucarado"],
+      "medio": ["un toque empalagoso", "un regusto a miel", "un matiz azucarado"],
       "dificil": [
         "un dulzor que empalague",
         "notas de néctar celestial",
@@ -32,25 +32,25 @@
       ]
     },
     "umami": {
-      "facil": ["un sabor sabroso", "un gusto a caldo", "un regusto sabroso"],
+      "facil": ["el reconfortante sabor umami", "una esencia umami que llene la boca", "un sabor terroso, umami"],
       "medio": [
-        "un toque terroso",
+        "algo sabroso",
         "sabor reconfortante",
         "un matiz a carne o setas"
       ],
       "dificil": [
         "un gusto profundo y sustancioso",
-        "el inconfundible sabor umami",
-        "una esencia umami que llene la boca"
+        "un toque terroso",
+        "un sabor que llene la boca"
       ]
     },
     "acido": {
-      "facil": ["un sabor ácido", "un gusto avinagrado", "un regusto ácido"],
+      "facil": ["una acidez que despierte hasta a los muertos", "una acidez que despierte los sentidos", "un regusto ácido"],
       "medio": ["un toque cítrico", "un regusto punzante", "un matiz agrio"],
       "dificil": [
         "un gusto que haga fruncir el ceño",
-        "una acidez que despierte los sentidos",
-        "una acidez que despierte hasta a los muertos"
+        "un gusto avinagrado",
+        "un gusto mordaz"
       ]
     }
   },
@@ -183,14 +183,14 @@
       ]
     },
     "tiempo": {
-      "facil": ["del tiempo", "natural", "fresca pero sin helar"],
+      "facil": ["del tiempo", "templada", "a temperatura ambiente"],
       "medio": [
-        "a temperatura ambiente",
-        "ni muy fría ni caliente",
-        "con un calor natural"
+        "a una temperatura equilibrada",
+        "ni muy fría ni muy caliente",
+        "fresca pero sin helar"
       ],
       "dificil": [
-        "sin alterar su temperatura",
+        "en el equilibrio entre el cielo y el infierno",
         "templada por la brisa",
         "tal y como manda la naturaleza"
       ]
@@ -234,11 +234,11 @@
     "normal": {
       "facil": [
         "en un frasco normal",
-        "en un bote redondo",
+        "en un bote triangular",
         "en un frasco sin más"
       ],
       "medio": [
-        "en cristal liso",
+        "en reciptáculo normal",
         "en un recipiente estándar",
         "en una botella estándar"
       ],
@@ -272,9 +272,9 @@
       ]
     },
     "humanos": {
-      "facil": ["un humano", "una humana", "una persona normal"],
+      "facil": ["un humano", "una humana", "un simple mortal"],
       "medio": [
-        "un simple mortal",
+        "una persona sin poderes",
         "un pueblerino",
         "un habitante de la ciudad"
       ],
@@ -293,7 +293,7 @@
       ],
       "dificil": [
         "un ser de colas mágicas",
-        "una ilusión del bosque",
+        "una ilusión del país del fuego",
         "un ser de magia ilusoria"
       ]
     },
@@ -306,7 +306,7 @@
       ],
       "dificil": [
         "una criatura feérica",
-        "alguien que baila entre las hojas",
+        "alguien que baila entre las brisas",
         "una tejedora de polvo de hadas"
       ]
     },
@@ -377,7 +377,7 @@
     "Que te vaya bien.",
     "No me hagas esperar.",
     "Será mejor que salga bien.",
-    "Te lo pagaré bien si sale perfecto.",
+    "Te lo agradeceré infinitamente si la perfecto.",
     "¡Suerte!",
     "Hazlo con cuidado."
   ],

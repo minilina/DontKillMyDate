@@ -4,15 +4,15 @@ import Phaser from "phaser";
 // Definimos la profundidad de cada capa 
 const LAYER_DEPTH = {
   RASGO_DETRAS: 5,
-  BASE: 10,
-  BOCA: 15,
-  NARIZ: 15,
-  CEJAS: 18,
-  OJOS: 20,
-  ROPA: 25,
+  BASE: 25,
+  BOCA: 26,
+  NARIZ: 26,
+  CEJAS: 27,
+  OJOS: 28,
+  ROPA: 29,
   PELO: 30,
-  OREJAS: 35, 
-  RASGO_FRENTE: 40,
+  OREJAS: 31, 
+  RASGO_FRENTE: 32,
 };
 
 export default class NPC extends Phaser.GameObjects.Container {
@@ -81,12 +81,24 @@ export default class NPC extends Phaser.GameObjects.Container {
     if (calidad >= 70) {
       this.spriteOjos.setTexture("ojos_felices"); 
       this.spriteBoca.setTexture("boca_feliz");
-      this.scene.tweens.add({
-        targets: this,
-        y: this.y - 20,
-        yoyo: true,
-        duration: 250,
-      });
+
+        if (this.id === "gnomo") {
+          this.scene.tweens.add({
+            targets: this,
+            y: this.scene.scale.height * 0.85,
+            duration: 1000,
+            ease: "Back.easeOut",
+          });
+          
+      } else {
+        this.scene.tweens.add({
+          targets: this,
+          y: this.y - 20,
+          yoyo: true,
+          duration: 250,
+        });
+        this.scene.sound.play("successSound");
+      }
     } else if (calidad < 50) {
       this.spriteOjos.setTexture("ojos_enfadados"); 
       this.spriteBoca.setTexture("boca_enfadada");
@@ -97,6 +109,7 @@ export default class NPC extends Phaser.GameObjects.Container {
         repeat: 3,
         duration: 50,
       });
+      this.scene.sound.play("errorSound");
     }
   }
 

@@ -269,10 +269,15 @@ export default class Kitchen extends Phaser.Scene {
                 finalQuality = 0;
                 GameState.currentPotion.quality = 0;
             } else {
-                finalQuality = GameState.evaluatePotion(this.cauldron.currentPotion, currentOrder, potionShape);
+                const potionData = this.bottledPotion ? this.bottledPotion : this.cauldron.currentPotion;
+
+                console.log('Entregando poción con estos datos:', JSON.stringify(potionData, null, 2));
+                
+                finalQuality = GameState.evaluatePotion(potionData, currentOrder, potionShape);
             }
 
             this.resetKitchen(); 
+            this.bottledPotion = null;
 
             let storeScene = this.scene.get("store");
             storeScene.scene.wake();
@@ -551,6 +556,8 @@ export default class Kitchen extends Phaser.Scene {
                 // DISPARAMOS HOOK "RELLENAR POCION"
                 const fillHook = this.runHook('kitchen:potion:fill', { color: cauldronColor, shape: dropData });
                 if (fillHook.cancelled) return;
+
+                this.bottledPotion = JSON.parse(JSON.stringify(this.cauldron.currentPotion));
 
                 this.cauldron.hasLiquid = false;
 

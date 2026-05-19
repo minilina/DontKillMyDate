@@ -10,7 +10,6 @@ export default class DailySummary extends Phaser.Scene {
     const centerX = this.scale.width / 2;
     const centerY = this.scale.height / 2;
 
-    // 1. CONFIGURACIÓN VISUAL
     const bgScale = 3;
     const iconScale = 1.6;
     const starScale = 1.3;
@@ -20,8 +19,8 @@ export default class DailySummary extends Phaser.Scene {
     this.add.image(centerX, centerY, "resumenBg").setScale(bgScale);
 
     const stats = GameState.dailyStats;
-    const titleColor = "#3e2723";
-    const textColor = "#2b1d10";
+    const titleColor = "#f9ce2a";
+    const textColor = "#623100";
 
    
     this.add
@@ -29,6 +28,8 @@ export default class DailySummary extends Phaser.Scene {
         fontFamily: "VT323, monospace",
         fontSize: "42px",
         color: titleColor,
+        stroke: "#623100",
+        strokeThickness: 6,
         fontWeight: "bold",
       })
       .setOrigin(0.5);
@@ -59,7 +60,7 @@ export default class DailySummary extends Phaser.Scene {
       .text(centerX, centerY + 25, repLabel, {
         fontFamily: "VT323, monospace",
         fontSize: "26px",
-        color: titleColor,
+        color: textColor,
       })
       .setOrigin(0.5);
 

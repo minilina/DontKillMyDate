@@ -108,6 +108,115 @@ export default class TopDownScene extends Phaser.Scene {
         });
     }
 
+    setupDefaultFootstepSounds() {
+
+        this.capaCamino =
+            this.map.getLayer('Suelo/Camino')?.tilemapLayer;
+
+        this.capaCesped =
+            this.map.getLayer('Suelo/Cesped')?.tilemapLayer;
+
+        this.capaTierra =
+            this.map.getLayer('Suelo/Tierra')?.tilemapLayer;
+
+        this.setupFootstepSounds({
+
+            camino: {
+                layer: this.capaCamino,
+                key: 'tilesSound',
+                volume: 2
+            },
+
+            cesped: {
+                layer: this.capaCesped,
+                key: 'grassSound',
+                volume: 1
+            },
+
+            tierra: {
+                layer: this.capaTierra,
+                key: 'groundSound',
+                volume: 1
+            }
+        });
+    }
+
+    setupFootstepSounds(config) {
+
+        this.footstepConfigs = config;
+
+        this.currentFootstep = null;
+
+        Object.values(this.footstepConfigs).forEach(cfg => {
+
+            cfg.sound = this.sound.add(cfg.key, {
+                loop: true,
+                volume: cfg.volume ?? 1
+            });
+        });
+
+        // Limpiar sonidos
+        this.events.on('shutdown', () => {
+
+            Object.values(this.footstepConfigs).forEach(cfg => {
+                cfg.sound.stop();
+            });
+        });
+    }
+
+    updateFootstepSounds() {
+
+        if (!this.player || !this.footstepConfigs) return;
+
+        const tileX =
+            this.map.worldToTileX(this.player.x);
+
+        const tileY =
+            this.map.worldToTileY(this.player.y);
+
+        const moviendose =
+            this.player.body.speed > 0;
+
+        let nuevoSonido = null;
+
+        for (const cfg of Object.values(this.footstepConfigs)) {
+
+            const enCapa =
+                moviendose &&
+                !!cfg.layer?.getTileAt(tileX, tileY);
+
+            if (enCapa) {
+                nuevoSonido = cfg;
+                break;
+            }
+        }
+
+        // Cambio de suelo
+        if (this.currentFootstep !== nuevoSonido) {
+
+            if (this.currentFootstep) {
+                this.currentFootstep.sound.stop();
+            }
+
+            if (nuevoSonido) {
+                nuevoSonido.sound.play();
+            }
+
+            this.currentFootstep = nuevoSonido;
+        }
+
+        // Parado
+        if (!moviendose && this.currentFootstep) {
+
+            this.currentFootstep.sound.stop();
+            this.currentFootstep = null;
+        }
+    }
+
+    update() {
+        this.updateFootstepSounds();
+    }
+    
     // UI Y MENU DE PAUSA
     setupUI() {
         this.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);

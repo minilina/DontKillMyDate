@@ -53,8 +53,8 @@
       "forma_frasco": "corazon"
     },
     "dialogue": [
-      "Las raíces oscuras están envenenando el río... He forjado una alianza secreta con los {raza_objetivo} para purificar los manantiales antes de que sea tarde.",
-      "Nuestra magia combinada requiere un catalizador. Tráeme algo {color} que tenga {sabor}. Dásmelo {temperatura}, que la mezcla quede {consistencia} y ponlo {forma_frasco}."
+      "Las raíces oscuras están envenenando el río... He forjado una alianza secreta con {raza_objetivo} para purificar los manantiales antes de que sea tarde.",
+      "Nuestra magia combinada requiere un catalizador. Tráeme algo {color} que tenga {sabor}. Dámelo {temperatura}, que la mezcla quede {consistencia} y ponlo {forma_frasco}."
     ],
     "successDialogue": [
       "¡Oh! Siento palpitar la energía en este frasco. Esta mezcla es perfecta para afianzar nuestra alianza.",
@@ -84,12 +84,12 @@
       "forma_frasco": "estrella"
     },
     "dialogue": [
-      "Muchacho, en las profundidades de la mina hemos despertado algo antiguo... Los {raza_objetivo} son los únicos con la luz suficiente para sellar la grieta.",
-      "Para forjar el sello necesito una mezcla {color} y {sabor}. Déjala {consistencia}. Que esté {temperatura} y ponlo {forma_frasco}."
+      "¡Ey! ¡HOLA! Soy ese cono parlante de ahí abajo. Si si... Como ves, tengo un problema de altura... Estoy enamorado de alguien de los {raza_objetivo}, pero literalmente me pasa por alto.",
+      "Necesito un estirón mágico. Prepárame algo {color} y {sabor}. Déjala {consistencia}. Que esté {temperatura} y ponlo {forma_frasco}."
     ],
     "successDialogue": [
-      "¡Por las barbas de piedra! Tiene la potencia exacta. Con esto conseguiremos sellar la grieta antes de que esa cosa escape.",
-      "Te has ganado el respeto de las profundidades. Búscame en la entrada de la cueva en tu tiempo libre, tengo algo importante que mostrarte."
+      "¡Por las barbas de piedra! ¡Mírame, estoy enorme! Con esta estatura seguro que por fin se fija en mí. Ojalá me veas por la ciudad acompañado...",
+      "Te debo una grande, alquimista. Nunca mejor dicho."
     ]
   },
   "fairy": {
@@ -151,7 +151,8 @@
     ],
     "successDialogue": [
       "Increíble... el calor y el aroma por sí solos ya me devuelven la esperanza. Mi gente no olvidará esta deuda, alquimista.",
-      "Si te aventuras por la zona norte en tus expediciones, visitáme. Podría conseguirte materiales raros."
+      "La compasión de tus ojos me recuerda a una chica que solía vivir en mi aldea hace mucho tiempo. Qué habrá sido de ella...",
+      "En fin, me quedaré un tiempo en el pueblo de al lado, búscame si te apetece charlar alguna vez"
     ]
   },
   "kitsune": {
@@ -202,6 +203,26 @@
       "Por orden del alcalde, esta tienda queda clausurada de inmediato.",
       "Tus pociones son un peligro para la salud pública y tu reputación es inaceptable.",
       "Recoge tus cosas. Estás desterrado de este pueblo para siempre."
+    ]
+  },
+
+  "aunt": {
+    "name": "Tía Agatha",
+    "looks": {
+      "base": "cuerpo_1",
+      "boca": "boca_feliz",
+      "nariz": "nariz_3",
+      "ojos": "ojos_marrones",
+      "pelo": "pelo_1_rubiol",
+      "ropa": "ropa_elfo",
+      "orejas": null,
+      "rasgoFrente": null,
+      "rasgoDetras": null
+    },
+    "dialogue": [
+      "Hola, querida, muchas gracias por quedarte a cargo de la tienda. No sabes cuánto significa para mí.",
+      "Ya veo que te has ganado al pueblo con tu amabilidad y tus pociones. Estoy muy orgullosa de ti.",
+      "Creo que es hora de que esta tienda pase a ser tuya. No te preocupes, no me voy a ningún lado. Seguiré por aquí para lo que necesites."
     ]
   }
 }
