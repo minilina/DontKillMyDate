@@ -168,6 +168,8 @@ import npcRopaNinfa from '../../assets/sprites/npcs/ropa_ninfa.png';
 import npcRopaKitsune from '../../assets/sprites/npcs/ropa_kitsune.png';
 import npcRopaHumano from '../../assets/sprites/npcs/ropa_humano.png';
 import npcRopaGnomo from '../../assets/sprites/npcs/ropa_gnomo.png';
+import npcRopaMadre from '../../assets/sprites/npcs/ropa_madre.png';
+import npcGafas from '../../assets/sprites/npcs/gafas.png';
 import npcHadaFeautures from '../../assets/sprites/npcs/hada_feautures.png';
 import npcKitsuneFeauturesAzul from '../../assets/sprites/npcs/kitsune_feautures_azul.png';
 import npcKitsuneFeauturesNegro from '../../assets/sprites/npcs/kitsune_feautures_negro.png';
@@ -216,6 +218,7 @@ import npcPelo3Rubio from '../../assets/sprites/npcs/pelo_3_rubio.png';
 import npcPelo3Verde from '../../assets/sprites/npcs/pelo_3_verde.png';
 import npcGorroInspector from '../../assets/sprites/npcs/gorro_inspector.png';
 import npcBigoteInspector from '../../assets/sprites/npcs/bigote_inspector.png'
+import npcPelo2Gris from '../../assets/sprites/npcs/pelo_2_gris.png';
 
 import dialog from "../../assets/sprites/dialog.png";
 import dialog2 from "../../assets/sprites/dialog2.png";
@@ -652,6 +655,9 @@ export default class Boot extends Phaser.Scene {
         this.load.image('pelo_3_verde', npcPelo3Verde);
         this.load.image('gorro_inspector', npcGorroInspector);
         this.load.image('bigote_inspector', npcBigoteInspector);
+        this.load.image('ropa_madre', npcRopaMadre);
+        this.load.image('gafas', npcGafas);
+        this.load.image('pelo_2_gris', npcPelo2Gris);
 
 
 

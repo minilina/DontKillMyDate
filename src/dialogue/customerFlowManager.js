@@ -35,24 +35,24 @@ export default class CustomerFlowManager {
   }
 
   spawnNextCustomer() {
-  if (GameState.isDayOver()) {
-    if (GameState.reputation <= -60) {
-      this.startGameOverSequence();
-      return;
-    }
-
-    if (GameState.currentDay >= GameState.daysData.length) {
-      if (GameState.isNeutralEnding()) {
-        this.startNeutralEndingSequence();
-      } else {
-        this._finishShift(); // buen final
+    if (GameState.isDayOver()) {
+      if (GameState.reputation <= -60) {
+        this.startGameOverSequence();
+        return;
       }
+
+      if (GameState.currentDay >= GameState.daysData.length) {
+        if (GameState.isNeutralEnding()) {
+          this.startNeutralEndingSequence();
+        } else {
+          this._finishShift(); // buen final
+        }
+        return;
+      }
+
+      this._finishShift();
       return;
     }
-
-    this._finishShift();
-    return;
-  }
 
     if (this.currentCustomer) {
       this.currentCustomer.destroy();
@@ -97,22 +97,27 @@ export default class CustomerFlowManager {
       this.currentRequest.specialData = specialData;
     }
 
+    // --- DISEÑO BASADO EN DATOS ---
+    // Le pasamos this.currentRequest.specialData directamente en el constructor
     this.currentCustomer = new NPC(
       this.scene,
       this.scene.scale.width / 4,
       this.scene.scale.height * 0.85,
       looksNPC,
       this.currentRequest.requirements,
+      this.currentRequest.specialData, // <-- NUEVO PARÁMETRO AÑADIDO
     );
 
     if (this.currentRequest.specialData) {
       this.currentCustomer.npcData = this.currentRequest.specialData;
       this.currentCustomer.id = customerType;
 
-      if (customerType === "gnomo") {
-        this.currentCustomer.y += 240;
+      // Aplicamos ajustes físicos genéricos al entrar (Si los tiene en el JSON)
+      if (this.currentRequest.specialData.ajustesEntrada) {
+        const ajustes = this.currentRequest.specialData.ajustesEntrada;
+        if (ajustes.offsetY) this.currentCustomer.y += ajustes.offsetY;
+        if (ajustes.depth) this.currentCustomer.setDepth(ajustes.depth);
       }
-
     }
 
     this.dialogueManager.start(dialogueData);
@@ -178,10 +183,7 @@ export default class CustomerFlowManager {
     // Llamada más suave a la puerta, tono ambiguo
     this.dialogueManager.start({
       speakerName: "???",
-      lines: [
-        "*toc... toc... toc...*",
-        "Sobrina, ¿Estás ahí?.",
-      ],
+      lines: ["*toc... toc... toc...*", "Sobrina, ¿Estás ahí?."],
     });
   }
 

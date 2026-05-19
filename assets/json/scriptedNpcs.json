@@ -1,6 +1,6 @@
 {
   "elf": {
-    "name": "Aelion, Guardián del Alba",
+    "name": "Ezarel, el Casanova",
     "looks": {
       "base": "cuerpo_1",
       "boca": "boca_normal_1",
@@ -22,12 +22,20 @@
       "forma_frasco": "estrella"
     },
     "dialogue": [
-      "Saludos, alquimista. Hace siglos que perdimos los caminos de nuestro propio bosque, pero deseo abrirle los ojos a los {raza_objetivo}.",
-      "Necesito que vean la verdad oculta tras la niebla. Prepárame una esencia {color} y con {sabor}. Asegúrate de que la textura quede {consistencia}, que esté {temperatura} y guárdala {forma_frasco}."
+      "Saludos, Agatha. Espera... ¿quién eres tú? Ah, un pariente... En fin, espero que tengas el mismo talento que ella. Vengo a por mi pedido habitual antes de una cita. ¡Ah claro! Te tengo que decir las especificaciones. Te lo diré bien machacadito, pero no esperes esto de otros clientes.",
+      "Mi cita es con {raza_objetivo}. Prepárame una esencia {color} y con {sabor}. Asegúrate de que la textura quede {consistencia}, que esté {temperatura} y guárdala {forma_frasco}. Demuéstrame lo que vales, joven alquimista."
     ],
     "successDialogue": [
-      "La pureza de esta poción es deslumbrante... Al beber esto, los velos mágicos se apartarán de sus ojos por fin.",
+      "Esto es PERFECTO... Es de los mejores brebajes que he tenido la oportunidad de degustar.",
       "¿Viste la cueva oculta al oeste de tu morada? La buena fortuna te encontrará si la encuentras. Este es mi consejo como agradecimiento por tu ayuda."
+    ],
+    "neutralDialogue": [
+      "Hm, veo que le falta un poco de pureza a la mezcla...",
+      "Tendré que sacar mi encanto natural para que salga bien. Al menos no me ha dejado mal aliento..."
+    ],
+    "failDialogue": [
+      "Esto es un completo desastre. Mi cita va a llorar de desesperación cuando me vea.",
+      "Confiaba en que llenaras los zapatos de Agatha... Qué decepción."
     ]
   },
   "nymph": {
@@ -59,10 +67,18 @@
     "successDialogue": [
       "¡Oh! Siento palpitar la energía en este frasco. Esta mezcla es perfecta para afianzar nuestra alianza.",
       "Pásate por la orilla del río cuando salgas de la tienda. Mis aliados y yo estaremos en deuda contigo."
+    ],
+    "neutralDialogue": [
+      "No está mal... Ojalá fuera un poco más potente.",
+      "Con suerte, servirá de ayuda en los rápidos del río."
+    ],
+    "failDialogue": [
+      "¡Ugh! Esto huele a fango de la peor ciénaga.",
+      "¿Pretendes envenenarnos más? Me marcho inmediatamente."
     ]
   },
   "gnomo": {
-    "name": "Bramok Picoférreo",
+    "name": "David, ¿el gnomo?",
     "looks": {
       "base": "cuerpo_3",
       "boca": "boca_normal_3",
@@ -74,12 +90,16 @@
       "rasgoFrente": "gnomo_features",
       "rasgoDetras": null
     },
+    "ajustesEntrada": {
+      "offsetY": 240,
+      "depth": 9
+    },
     "requirements": {
       "raza": "gnomos",
       "raza_objetivo": "elfos",
       "sabor": "dulce",
       "color": "rojo",
-      "consistencia": "entera",
+      "consistencia": "cortada",
       "temperatura": "frio",
       "forma_frasco": "estrella"
     },
@@ -90,10 +110,23 @@
     "successDialogue": [
       "¡Por las barbas de piedra! ¡Mírame, estoy enorme! Con esta estatura seguro que por fin se fija en mí. Ojalá me veas por la ciudad acompañado...",
       "Te debo una grande, alquimista. Nunca mejor dicho."
-    ]
+    ],
+    "neutralDialogue": [
+      "Creo que esto no es suficiente... No sabe mal, pero como ves, no ha tenido ningún efecto... Espero que tengas más éxito con tu siguiente clinete"
+    ],
+    "failDialogue": [
+      "¡Pero qué me has dado! ¡Siento que me he encogido aún más!",
+      "¡Esto es una estafa! Le diré a todo el mundo que tus pociones son agua sucia."
+    ],
+    "animacionExito": {
+      "y": "-=240",
+      "duration": 1000,
+      "ease": "Back.easeOut",
+      "resetDepth": true
+    }
   },
   "fairy": {
-    "name": "Lirael, Tejedora de Luz",
+    "name": "Campanita, Tejedora de Luz",
     "looks": {
       "base": "cuerpo_1",
       "boca": "boca_feliz",
@@ -105,23 +138,57 @@
       "rasgoFrente": null,
       "rasgoDetras": "hada_feautures"
     },
+    "animacionConstante": {
+      "target": "rasgoDetrasSprite",
+      "tween": {
+        "scaleX": 0.5,
+        "duration": 800,
+        "yoyo": true,
+        "repeat": -1,
+        "ease": "Sine.easeInOut"
+      }
+    },
     "requirements": {
       "raza": "hadas",
       "raza_objetivo": "gnomos",
       "sabor": "acido",
       "color": "amarillo",
-      "consistencia": "entera",
+      "consistencia": "machacada",
       "temperatura": "frio",
       "forma_frasco": "estrella"
     },
     "dialogue": [
-      "El polvo de estrellas de nuestro hogar se está apagando... Los ancianos creen que los cristales de los {raza_objetivo} pueden reflejar la luz que hemos perdido.",
-      "Para despertar esa magia, requiero una poción {color} y con {sabor}. Mantén la esencia {consistencia}. Sírvela {temperatura} y guárdala {forma_frasco}."
+      "Buenas joven alquimista. Tengo un problema terrible... Mis alas se han vuelto rígidas y he perdido la capacidad de alzar el vuelo.",
+      "Tengo una cita con {raza_objetivo} en un sitio muy alto... No me preguntes como habrá llegado ahí. Sino recupero el aleteo habitual de mis alas, no podré llegar a tiempo. Prepárame algo {color} y con {sabor}. Mantén la mezcla {consistencia}, sírvela {temperatura} y guárdala {forma_frasco}."
     ],
     "successDialogue": [
-      "¡Qué maravilla! Brilla con la intensidad de mil luciérnagas. Con esto podremos devolverle la vida a nuestra arboleda.",
-      "Si alguna vez caminas por el sendero hacia la ciudad, puede que me encuentres. Te enseñaré a escuchar el canto de la luz."
-    ]
+      "¡Siento una calidez increíble recorriendo mi espalda!",
+      "Mira, alquimista... ¡Mis alas han vuelto a la normalidad! ¡Has salvado mi cita! Si te pasas por la aldea, te contaré como ha ido, jijiji. Bueno, ¡me voy volando!"
+    ],
+    "neutralDialogue": [
+      "Mmmm... Siento que nada ha cambiado, pero al menos no he empeorado... No esperes que recomiende esta tienda"
+    ],
+    "failDialogue": [
+      "¡Ay! Siento mis alas mucho más pesadas que antes...",
+      "Me tocará ir caminando y llegaré tardísimo. ¡Qué desastre!"
+    ],
+    "animacionExito": {
+      "modificarConstante": {
+        "target": "rasgoDetrasSprite",
+        "tween": {
+          "scaleX": 0.1,
+          "duration": 60,
+          "yoyo": true,
+          "repeat": -1,
+          "ease": "Sine.easeInOut"
+        }
+      }
+    },
+    "animacionSalida": {
+      "y": -300,
+      "duration": 1500,
+      "ease": "Quad.easeIn"
+    }
   },
   "human": {
     "name": "Kaelen el Errante",
@@ -153,6 +220,14 @@
       "Increíble... el calor y el aroma por sí solos ya me devuelven la esperanza. Mi gente no olvidará esta deuda, alquimista.",
       "La compasión de tus ojos me recuerda a una chica que solía vivir en mi aldea hace mucho tiempo. Qué habrá sido de ella...",
       "En fin, me quedaré un tiempo en el pueblo de al lado, búscame si te apetece charlar alguna vez"
+    ],
+    "neutralDialogue": [
+      "El aroma es pasable... Con suerte servirá para al menos salvar parte de la cosecha.",
+      "Llevaremos esta esperanza a medias a mi aldea."
+    ],
+    "failDialogue": [
+      "Esto huele a hierbajo podrido... Me da miedo hasta probarlo.",
+      "Mi pueblo está condenado si esto es lo mejor que puedes ofrecer."
     ]
   },
   "kitsune": {
@@ -184,6 +259,14 @@
     "successDialogue": [
       "Ah... qué aroma tan fascinante. Esta esencia es exactamente lo que necesitamos para engañar a las sombras y devolver la luz a nuestros dominios.",
       "Me has caído bien. Si alguna vez te pierdes por la ciudad, búscame. Te enseñaré un par de trucos interesantes."
+    ],
+    "neutralDialogue": [
+      "Tiene un ligero toque espiritual. No creo que encienda todo el templo, pero iluminará el sendero.",
+      "Algo es algo, mortal."
+    ],
+    "failDialogue": [
+      "¿De verdad crees que esto engañará a los espíritus? Es casi un insulto a nuestras tradiciones.",
+      "Tendré que buscar a un verdadero maestro de pócimas."
     ]
   },
   "inspector": {
@@ -205,18 +288,17 @@
       "Recoge tus cosas. Estás desterrado de este pueblo para siempre."
     ]
   },
-
   "aunt": {
     "name": "Tía Agatha",
     "looks": {
       "base": "cuerpo_1",
-      "boca": "boca_feliz",
-      "nariz": "nariz_3",
+      "boca": "boca_normal_1",
+      "nariz": "nariz_1",
       "ojos": "ojos_marrones",
-      "pelo": "pelo_1_rubiol",
-      "ropa": "ropa_elfo",
+      "pelo": "pelo_2_gris",
+      "ropa": "ropa_madre",
       "orejas": null,
-      "rasgoFrente": null,
+      "rasgoFrente": "gafas",
       "rasgoDetras": null
     },
     "dialogue": [

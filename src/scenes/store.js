@@ -227,7 +227,6 @@ export default class Store extends Phaser.Scene {
                 alpha: 1,
                 duration: 500,
                 onComplete: () => {
-
                   if (GameState.reputation < 0) {
                     this.tweens.add({
                       targets: repText,
@@ -237,7 +236,7 @@ export default class Store extends Phaser.Scene {
                       repeat: -1,
                     });
                   }
-                  
+
                   this.time.delayedCall(2000, () => {
                     overlay.destroy();
                     qualityText.destroy();
@@ -258,21 +257,30 @@ export default class Store extends Phaser.Scene {
             if (customer.id && customer.id !== "npc") {
               GameState.saveSpecialNpcRecord(customer.id, quality);
 
-              if (
-                quality >= 80 &&
-                customer.npcData &&
-                customer.npcData.successDialogue
-              ) {
-                customer.reaccionar(quality);
+              // 1. Ejecutamos la reacción visual (animación y cara)
+              customer.reaccionar(quality);
 
-                this.flowManager.showResultDialogue(
-                  customer.npcData.successDialogue,
-                  () => {
-                    mostrarPuntuacionFinal();
-                  },
-                );
+              // 2. Decidimos qué diálogo toca según la puntuación
+              let dialogueToDisplay = null;
+
+              if (quality >= 80 && customer.npcData.successDialogue) {
+                dialogueToDisplay = customer.npcData.successDialogue;
+              } else if (
+                quality >= 50 &&
+                quality < 80 &&
+                customer.npcData.neutralDialogue
+              ) {
+                dialogueToDisplay = customer.npcData.neutralDialogue;
+              } else if (quality < 50 && customer.npcData.failDialogue) {
+                dialogueToDisplay = customer.npcData.failDialogue;
+              }
+
+              // 3. Mostramos el diálogo si existe, o saltamos al final directo
+              if (dialogueToDisplay) {
+                this.flowManager.showResultDialogue(dialogueToDisplay, () => {
+                  mostrarPuntuacionFinal();
+                });
               } else {
-                customer.reaccionar(quality);
                 mostrarPuntuacionFinal();
               }
             } else {
