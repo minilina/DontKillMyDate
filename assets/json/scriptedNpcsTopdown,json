@@ -25,7 +25,7 @@
     },
     "gnomo": {
         "name": "Bramok Picoférreo",
-        "anim": "NPCninfa",
+        "anim": "NPCgnomo",
         "dialogue": [
             "Muchacho, en las profundidades de la mina hemos despertado algo antiguo... Los {raza_objetivo} son los únicos con la luz suficiente para sellar la grieta.",
             "Para forjar el sello necesito una mezcla {color} y {sabor}. Déjala {consistencia}. Que esté {temperatura} y ponlo {forma_frasco}."
@@ -37,7 +37,7 @@
     },
     "fairy": {
         "name": "Lirael, Tejedora de Luz",
-        "anim": "NPCninfa",
+        "anim": "NPChada",
         "dialogue": [
             "El polvo de estrellas de nuestro hogar se está apagando... Los ancianos creen que los cristales de los {raza_objetivo} pueden reflejar la luz que hemos perdido.",
             "Para despertar esa magia, requiero una poción {color} y con {sabor}. Mantén la esencia {consistencia}. Sírvela {temperatura} y guárdala {forma_frasco}."
@@ -49,7 +49,7 @@
     },
     "human": {
         "name": "Kaelen el Errante",
-        "anim": "NPCninfa",
+        "anim": "NPChumano",
         "dialogue": [
             "Las cosechas de mi aldea se marchitan bajo una extraña plaga. He viajado semanas buscando el poder purificador de las {raza_objetivo} para salvar a mi pueblo.",
             "El remedio debe ser {color} y de un intenso sabor {sabor}. Asegúrate de dejarlo bien {consistencia}. Prepáralo {temperatura} y entrégamelo {forma_frasco}."
@@ -61,7 +61,7 @@
     },
     "kitsune": {
         "name": "Akira, Sombra del Templo",
-        "anim": "NPCninfa",
+        "anim": "NPCkitsune",
         "dialogue": [
             "Saludos, mortal. Los faroles de nuestro santuario ancestral se han apagado, y se dice que la chispa de las {raza_objetivo} es la única capaz de encender el fuego espiritual de nuevo.",
             "Necesito una ofrenda de color {color} y con sabor {sabor}. Deja que la textura quede {consistencia}. Sírvela bien {temperatura} y guárdala {forma_frasco}."
