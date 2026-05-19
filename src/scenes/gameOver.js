@@ -3,27 +3,8 @@ import Phaser from "phaser";
 import button from "../../assets/sprites/UI/button.png";
 import buttonSound from "../../assets/sound/button.mp3";
 import GameState from "../state/GameState.js";
-
-const ENDINGS = {
-  bad: {
-    title: "ORDEN REAL: CLAUSURA DE TIENDA",
-    body: "Tu reputación ha caído DEMASIADO.\n\nEl camino de la alquimia es duro, y los habitantes de los 6 reinos han dejado de confiar en ti.\n\nPresta más atención a sus peticiones en la próxima vida...",
-    titleColor: "#ffcc00",
-    buttonLabel: "REINTENTAR",
-  },
-  neutral: {
-    title: "UN CAPÍTULO SIN CERRAR",
-    body: "Los días han pasado, pero algo quedó pendiente.\n\nTu tía apareció al final de la jornada con una mirada que lo decía todo.\n\n¿Qué hubiera pasado si hubieras seguido el hilo hasta el final?",
-    titleColor: "#aaddff",
-    buttonLabel: "REINTENTAR",
-  },
-  good: {
-    title: "EL ALBA DE UN NUEVO REINO",
-    body: "Lo lograste. Los 6 reinos hablan de ti con respeto.\n\nCada poción que preparaste fue un paso hacia algo más grande.\n\nEl futuro de la alquimia está en tus manos.",
-    titleColor: "#aaffaa",
-    buttonLabel: "VOLVER AL MENÚ",
-  },
-};
+// --- NUEVO IMPORT PARA EL DISEÑO BASADO EN DATOS ---
+import ENDINGS from "../../assets/json/endings.json";
 
 export default class GameOver extends Phaser.Scene {
   constructor() {

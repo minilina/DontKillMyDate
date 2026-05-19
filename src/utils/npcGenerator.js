@@ -1,80 +1,4 @@
-// 1. DEPENDENCIAS DE PIEL (Cuerpo, Orejas, Boca y Nariz van siempre juntos)
-const TONOS_PIEL = [
-  {
-    base: "cuerpo_1",
-    orejas_elfo_hada: "orejas_1_elfo_hada",
-    orejas_ninfa: "orejas_ninfa_1",
-    boca: "boca_normal_1",
-    nariz: "nariz_1",
-  },
-  {
-    base: "cuerpo_2",
-    orejas_elfo_hada: "orejas_2_elfo_hada",
-    orejas_ninfa: "orejas_ninfa_2",
-    boca: "boca_normal_2",
-    nariz: "nariz_2",
-  },
-  {
-    base: "cuerpo_3",
-    orejas_elfo_hada: "orejas_3_elfo_hada",
-    orejas_ninfa: "orejas_ninfa_3",
-    boca: "boca_normal_3",
-    nariz: "nariz_3",
-  },
-];
-
-// 2. DEPENDENCIAS DE COLOR (El color de pelo dicta el color de la cola)
-const COLORES_MAGICOS = [
-  {
-    pelos: ["pelo_1_azul", "pelo_2_azul", "pelo_3_azul"],
-    cejas: "cejas_normales_azules",
-    cola: "kitsune_feautures_azul",
-  },
-  {
-    pelos: ["pelo_1_negro", "pelo_2_negro", "pelo_3_negro"],
-    cejas: "cejas_normales_negras",
-    cola: "kitsune_feautures_negro",
-  },
-  {
-    pelos: ["pelo_1_rojo", "pelo_2_rojo", "pelo_3_rojo"],
-    cejas: "cejas_normales_rojas",
-    cola: "kitsune_feautures_rojol",
-  },
-  {
-    pelos: ["pelo_1_rosa", "pelo_2_rosa", "pelo_3_rosa"],
-    cejas: "cejas_normales_rosas",
-    cola: "kitsune_feautures_rosa",
-  },
-  {
-    pelos: ["pelo_1_rubiol", "pelo_2_rubio", "pelo_3_rubio"],
-    cejas: "cejas_normales_rubias",
-    cola: "kitsune_feautures_rubiol",
-  },
-  {
-    pelos: ["pelo_1_verde", "pelo_2_verde", "pelo_3_verde"],
-    cejas: "cejas_normales_verdes",
-    cola: "kitsune_feautures_verde",
-  },
-];
-
-// 3. ELEMENTOS UNIVERSALES
-const UNIVERSAL_EYES = [
-  "ojos_amarillos",
-  "ojos_azules",
-  "ojos_marrones",
-  "ojos_rojos",
-  "ojos_rosas",
-  "ojos_verdes",
-];
-
-const OUTFITS =[
-  "ropa_elfo",
-  "ropa_hada",
-  "ropa_ninfa", 
-  "ropa_kitsune",
-  "ropa_humano",
-  "ropa_gnomo",
-];
+import NPCParts from "../../assets/json/npc_parts.json";
 
 export default class NPCGenerator {
   static generateLooks(raza) {
@@ -82,9 +6,9 @@ export default class NPCGenerator {
     const pickRandom = (array) =>
       array[Math.floor(Math.random() * array.length)];
 
-    // 1. ELEGIMOS EL ADN BÁSICO DEL PERSONAJE
-    let adnPiel = pickRandom(TONOS_PIEL);
-    let adnColor = pickRandom(COLORES_MAGICOS);
+    // 1. ELEGIMOS EL ADN BÁSICO DEL PERSONAJE desde el JSON
+    let adnPiel = pickRandom(NPCParts.TONOS_PIEL);
+    let adnColor = pickRandom(NPCParts.COLORES_MAGICOS);
 
     // 2. CONSTRUIMOS EL ASPECTO BASE
     let aspecto = {
@@ -92,7 +16,7 @@ export default class NPCGenerator {
       boca: adnPiel.boca,
       nariz: adnPiel.nariz,
       orejas: null,
-      ojos: pickRandom(UNIVERSAL_EYES),
+      ojos: pickRandom(NPCParts.UNIVERSAL_EYES),
       cejas: adnColor.cejas,
       pelo: pickRandom(adnColor.pelos), // Elegimos un peinado del color seleccionado
       ropa: null,
@@ -113,7 +37,7 @@ export default class NPCGenerator {
 
       case "ninfas":
         aspecto.orejas = adnPiel.orejas_ninfa; // Tienen sus orejas
-        aspecto.rasgoFrente = "ninfa_feautures"; 
+        aspecto.rasgoFrente = "ninfa_feautures";
         aspecto.ropa = "ropa_ninfa";
         break;
 
@@ -127,9 +51,10 @@ export default class NPCGenerator {
         aspecto.rasgoDetras = "hada_feautures"; // Y sus alas detrás
         aspecto.ropa = "ropa_hada";
         break;
+
       case "gnomos":
-        aspecto.ropa = "ropa_gnomo"; 
-        aspecto.rasgoFrente = "gnomo_features"; 
+        aspecto.ropa = "ropa_gnomo";
+        aspecto.rasgoFrente = "gnomo_features";
         break;
     }
 

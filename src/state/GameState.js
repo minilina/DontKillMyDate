@@ -1,7 +1,7 @@
 const GameState = {
   // VARIABLES GLOBALES
-  reputation: 1000,
-  currentDay: 15,
+  reputation: 50,
+  currentDay: 1,
   currentCustomer: 0,
   daysData: null,
   specialNpcsData: null,

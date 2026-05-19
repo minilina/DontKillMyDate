@@ -1,0 +1,20 @@
+{
+  "bad": {
+    "title": "ORDEN REAL: CLAUSURA DE TIENDA",
+    "body": "Tu reputación ha caído DEMASIADO.\n\nEl camino de la alquimia es duro, y los habitantes de los 6 reinos han dejado de confiar en ti.\n\nPresta más atención a sus peticiones en la próxima vida...",
+    "titleColor": "#ffcc00",
+    "buttonLabel": "REINTENTAR"
+  },
+  "neutral": {
+    "title": "UN CAPÍTULO SIN CERRAR",
+    "body": "Los días han pasado, pero algo quedó pendiente.\n\nTu tía apareció al final de la jornada con una mirada que lo decía todo.\n\n¿Qué hubiera pasado si hubieras seguido el hilo hasta el final?",
+    "titleColor": "#ffcc00",
+    "buttonLabel": "REINTENTAR"
+  },
+  "good": {
+    "title": "EL ALBA DE UN NUEVO REINO",
+    "body": "Lo lograste. Los 6 reinos hablan de ti con respeto.\n\nCada poción que preparaste fue un paso hacia algo más grande.\n\nEl futuro de la alquimia está en tus manos.",
+    "titleColor": "#ffcc00",
+    "buttonLabel": "VOLVER AL MENÚ"
+  }
+}

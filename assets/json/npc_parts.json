@@ -1,0 +1,73 @@
+{
+  "TONOS_PIEL": [
+    {
+      "base": "cuerpo_1",
+      "orejas_elfo_hada": "orejas_1_elfo_hada",
+      "orejas_ninfa": "orejas_ninfa_1",
+      "boca": "boca_normal_1",
+      "nariz": "nariz_1"
+    },
+    {
+      "base": "cuerpo_2",
+      "orejas_elfo_hada": "orejas_2_elfo_hada",
+      "orejas_ninfa": "orejas_ninfa_2",
+      "boca": "boca_normal_2",
+      "nariz": "nariz_2"
+    },
+    {
+      "base": "cuerpo_3",
+      "orejas_elfo_hada": "orejas_3_elfo_hada",
+      "orejas_ninfa": "orejas_ninfa_3",
+      "boca": "boca_normal_3",
+      "nariz": "nariz_3"
+    }
+  ],
+  "COLORES_MAGICOS": [
+    {
+      "pelos": ["pelo_1_azul", "pelo_2_azul", "pelo_3_azul"],
+      "cejas": "cejas_normales_azules",
+      "cola": "kitsune_feautures_azul"
+    },
+    {
+      "pelos": ["pelo_1_negro", "pelo_2_negro", "pelo_3_negro"],
+      "cejas": "cejas_normales_negras",
+      "cola": "kitsune_feautures_negro"
+    },
+    {
+      "pelos": ["pelo_1_rojo", "pelo_2_rojo", "pelo_3_rojo"],
+      "cejas": "cejas_normales_rojas",
+      "cola": "kitsune_feautures_rojol"
+    },
+    {
+      "pelos": ["pelo_1_rosa", "pelo_2_rosa", "pelo_3_rosa"],
+      "cejas": "cejas_normales_rosas",
+      "cola": "kitsune_feautures_rosa"
+    },
+    {
+      "pelos": ["pelo_1_rubiol", "pelo_2_rubio", "pelo_3_rubio"],
+      "cejas": "cejas_normales_rubias",
+      "cola": "kitsune_feautures_rubiol"
+    },
+    {
+      "pelos": ["pelo_1_verde", "pelo_2_verde", "pelo_3_verde"],
+      "cejas": "cejas_normales_verdes",
+      "cola": "kitsune_feautures_verde"
+    }
+  ],
+  "UNIVERSAL_EYES": [
+    "ojos_amarillos",
+    "ojos_azules",
+    "ojos_marrones",
+    "ojos_rojos",
+    "ojos_rosas",
+    "ojos_verdes"
+  ],
+  "OUTFITS": [
+    "ropa_elfo",
+    "ropa_hada",
+    "ropa_ninfa",
+    "ropa_kitsune",
+    "ropa_humano",
+    "ropa_gnomo"
+  ]
+}
