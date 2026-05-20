@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="29" nextobjectid="12">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="30" nextobjectid="15">
  <editorsettings>
   <export target="cueva.json" format="json"/>
  </editorsettings>
@@ -398,6 +398,11 @@
   </objectgroup>
   <objectgroup id="27" name="SpawnValla" visible="0">
    <object id="11" name="vallaMina" x="160" y="305">
+    <point/>
+   </object>
+  </objectgroup>
+  <objectgroup id="29" name="NPCs">
+   <object id="12" name="madre" x="48" y="112">
     <point/>
    </object>
   </objectgroup>

@@ -1694,6 +1694,89 @@
                  "y":0
                 }, 
                 {
+                 "draworder":"topdown",
+                 "id":35,
+                 "name":"NPCs",
+                 "objects":[
+                        {
+                         "height":0,
+                         "id":93,
+                         "name":"gnomo",
+                         "point":true,
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":0,
+                         "x":80,
+                         "y":288
+                        }, 
+                        {
+                         "height":0,
+                         "id":94,
+                         "name":"humano",
+                         "point":true,
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":0,
+                         "x":80,
+                         "y":192
+                        }, 
+                        {
+                         "height":0,
+                         "id":95,
+                         "name":"elf",
+                         "point":true,
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":0,
+                         "x":176,
+                         "y":144
+                        }, 
+                        {
+                         "height":0,
+                         "id":98,
+                         "name":"kitsune",
+                         "point":true,
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":0,
+                         "x":544,
+                         "y":208
+                        }, 
+                        {
+                         "height":0,
+                         "id":99,
+                         "name":"fairy",
+                         "point":true,
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":0,
+                         "x":432,
+                         "y":288
+                        }, 
+                        {
+                         "height":0,
+                         "id":100,
+                         "name":"nymph",
+                         "point":true,
+                         "rotation":0,
+                         "type":"",
+                         "visible":true,
+                         "width":0,
+                         "x":256,
+                         "y":224
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
                  "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1905,8 +1988,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":35,
- "nextobjectid":89,
+ "nextlayerid":36,
+ "nextobjectid":101,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
@@ -2823,7 +2906,7 @@
          "margin":0,
          "name":"2",
          "spacing":0,
-         "tilecount":35,
+         "tilecount":30,
          "tileheight":16,
          "tilewidth":16
         }],

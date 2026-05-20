@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="35" nextobjectid="89">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="36" nextobjectid="101">
  <editorsettings>
   <export target="ciudad.json" format="json"/>
  </editorsettings>
@@ -850,6 +850,26 @@
     <point/>
    </object>
    <object id="88" name="banco" x="432" y="48">
+    <point/>
+   </object>
+  </objectgroup>
+  <objectgroup id="35" name="NPCs">
+   <object id="93" name="gnomo" x="80" y="288">
+    <point/>
+   </object>
+   <object id="94" name="humano" x="80" y="192">
+    <point/>
+   </object>
+   <object id="95" name="elf" x="176" y="144">
+    <point/>
+   </object>
+   <object id="98" name="kitsune" x="544" y="208">
+    <point/>
+   </object>
+   <object id="99" name="fairy" x="432" y="288">
+    <point/>
+   </object>
+   <object id="100" name="nymph" x="256" y="224">
     <point/>
    </object>
   </objectgroup>
