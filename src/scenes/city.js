@@ -1,7 +1,5 @@
 import Phaser from 'phaser';
 import topDownScene from './topDownScene.js';
-import DialogueManager from '../dialogue/dialogueManager.js';
-import NPCManager from '../game-objects/NPCManager.js';
 
 export default class City extends topDownScene {
     constructor() {
@@ -26,14 +24,6 @@ export default class City extends topDownScene {
         this.setupUI();
         this.crearNPCs();
 
-        this.dialogueManager = new DialogueManager(this);
-
-        this.npcManager = new NPCManager(
-            this,
-            this.dialogueManager
-        );
-
-        this.npcManager.createFromLayer('Objetos/NPCs');
 
         this.setupDefaultFootstepSounds();
         this.player.zElevacion = 3000;
