@@ -25,8 +25,8 @@ export default class House extends topDownScene {
         if (capaHierbaEncima) capaHierbaEncima.setDepth(9999);
 
         // Poner al jugador
-        const startX = data.spawnX ?? 400;
-        const startY = data.spawnY ?? 300;
+        const startX = data.spawnX ?? 730;
+        const startY = data.spawnY ?? 230;
         const dir = data.direccion ?? 'down';
 
         this.setupPlayer(startX, startY, dir); // Crea NavMesh, Player, Camara y Fisicas
