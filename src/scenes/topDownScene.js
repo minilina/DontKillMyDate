@@ -8,7 +8,8 @@ export default class TopDownScene extends Phaser.Scene {
         super({ key });
     }
 
-    // Metodo generico para inicializar mapas topDown
+    // Metodo generico para inicializar mapas t
+    // opDown
     initScene(mapKey) {
         this.map = this.make.tilemap({ key: mapKey });
         this.isTransitioning = false;
