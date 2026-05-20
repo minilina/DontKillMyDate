@@ -121,7 +121,7 @@ import arrozMedio from '../../assets/tiled/arroz medio.png';
 import playerRun from '../../assets/anims/run.png';
 import playerIdle from '../../assets/anims/idle.png';
 import NPCmadre from '../../assets/anims/NPCmadre.png';
-import NPCelf from '../../assets/anims/NPCelfo.png';
+import NPCelfo from '../../assets/anims/NPCelfo.png';
 import NPChada from '../../assets/anims/NPChada.png';
 import NPCkitsune from '../../assets/anims/NPCkitsune.png';
 import NPCninfa from '../../assets/anims/NPCninfa.png';
@@ -456,6 +456,13 @@ export default class Boot extends Phaser.Scene {
         // TOPDOWN 
         this.load.spritesheet('player-run', playerRun, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('player-idle', playerIdle, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('NPCmadre', NPCmadre, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('NPCelfo', NPCelfo, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('NPChada', NPChada, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('NPCkitsune', NPCkitsune, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('NPCninfa', NPCninfa, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('NPCgnomo', NPCgnomo, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('NPChumano', NPChumano, { frameWidth: 32, frameHeight: 32 });
 
         // CASA
         this.load.image('ALL props seasons', allPropsSeasons); 
