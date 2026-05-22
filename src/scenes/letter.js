@@ -202,7 +202,7 @@ export default class Letter extends Phaser.Scene {
 
   }
   createPauseButton() {
-    const btnX = this.scale.width -25;
+    const btnX = this.scale.width - 25;
     const btnY = 25;
 
     // Sprite botón
@@ -362,7 +362,7 @@ export default class Letter extends Phaser.Scene {
   onConfirmName() {
     const raw = this.nameInput.node.value ?? "";
 
-    const cleanLower = raw.replace(/\d+/g, "").trim().toLowerCase() || "jugador";
+    const cleanLower = raw.replace(/\d+/g, "").trim().toLowerCase() || "sobrina";
     const nameForLetter = this.capitalizeFirstLetter(cleanLower);
 
     this.registry.set("playerName", nameForLetter);

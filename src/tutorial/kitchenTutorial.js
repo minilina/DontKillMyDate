@@ -1,6 +1,3 @@
-// ruta: src/tutorial/kitchenTutorial.js
-
-// Asegúrate de que esta ruta de importación es correcta para tu proyecto
 import { splitIntoLines } from "../dialogue/dialogueScripts.js";
 
 export default class KitchenTutorial {
@@ -118,19 +115,16 @@ export default class KitchenTutorial {
     highlight(obj) {
         if (!obj) return;
 
-        // 1. En lugar de this.stop(), solo quitamos el brillo 
-        // si ESTE objeto específico ya lo tenía puesto.
         this.activeTweens = this.activeTweens.filter(t => {
             if (t.targets && t.targets[0] === obj) {
                 obj.clearTint();
-                obj.setScale(3); // Tu escala base
+                obj.setScale(3);
                 t.destroy();
-                return false; // Lo eliminamos de la lista
+                return false;
             }
             return true;
         });
 
-        // 2. Aplicamos el efecto (manteniendo tu estilo de brillo)
         const tween = this.k.tweens.add({
             targets: obj,
             scaleX: 3.15,
@@ -139,7 +133,7 @@ export default class KitchenTutorial {
             yoyo: true,
             repeat: -1,
             onStart: () => {
-                obj.setTint(0xF7EB9C); // O el color que prefieras
+                obj.setTint(0xF7EB9C);
             }
         });
 
@@ -165,17 +159,14 @@ export default class KitchenTutorial {
     showHelp(text) {
         if (this.activeHelp) this.activeHelp.destroy();
 
-        // 1. Posición: Lo subimos un poco más para que no tape los objetos de la mesa
+        // 1. Posición
         const x = 512;
         const y = 420;
 
         const container = this.k.add.container(x, y);
 
-        // 2. PROFUNDIDAD CRÍTICA: 
-        // Los frascos suelen tener depths altos. Ponemos 10000 para asegurar que esté por encima de TODO.
         container.setDepth(10000);
 
-        // 3. Texto primero para medirlo
         const txt = this.k.add.text(0, 0, text, {
             fontFamily: 'VT323, monospace',
             fontSize: '24px',
@@ -183,20 +174,18 @@ export default class KitchenTutorial {
             padding: { x: 10, y: 5 }
         }).setOrigin(0.5);
 
-        // 4. Fondo Dinámico: Usamos las medidas del texto para dibujar el rectángulo
         const bg = this.k.add.graphics();
         const width = txt.width + 20;
         const height = txt.height + 10;
 
-        bg.fillStyle(0x000000, 0.8); // Un poco más oscuro para que resalte
+        bg.fillStyle(0x000000, 0.8);
         bg.fillRoundedRect(-width / 2, -height / 2, width, height, 8);
-        bg.lineStyle(2, 0xffffff, 0.3); // Un borde sutil queda profesional
+        bg.lineStyle(2, 0xffffff, 0.3);
         bg.strokeRoundedRect(-width / 2, -height / 2, width, height, 8);
 
-        // Añadimos al contenedor (el fondo primero para que esté detrás del texto)
         container.add([bg, txt]);
 
-        // Animación de flotación
+        // Animación
         this.k.tweens.add({
             targets: container,
             y: y - 8,
@@ -217,16 +206,95 @@ export default class KitchenTutorial {
         }
     }
 
+    showStartPopup(onConfirm) {
+        const { width, height } = this.k.scale;
+        const overlay = this.k.add.rectangle(0, 0, width, height, 0x000000, 0.6)
+            .setOrigin(0)
+            .setInteractive();
+
+        const panelW = 300;
+        const panelH = 150;
+
+        const border = this.k.add.rectangle(width / 2, height / 2, panelW + 8, panelH + 8, 0xf2e3d3, 1);
+        const panel = this.k.add.rectangle(width / 2, height / 2, panelW, panelH, 0x2b1b16, 0.95);
+
+        const title = this.k.add.text(width / 2, height / 2 - 35, "COMENZAR TUTORIAL", {
+            fontFamily: "VT323, monospace",
+            fontSize: "30px",
+            color: "#ffffff",
+            stroke: "#000000",
+            strokeThickness: 5
+        }).setOrigin(0.5);
+
+        const btnStyle = {
+            fontFamily: "VT323, monospace",
+            fontSize: "28px",
+            backgroundColor: "#4f342d",
+            color: "#ffffff",
+            padding: { x: 20, y: 10 }
+        };
+
+        const startButton = this.k.add.text(width / 2, height / 2 + 30, "¡VAMOS!", btnStyle)
+            .setOrigin(0.5)
+            .setInteractive({ useHandCursor: true });
+
+        startButton.on('pointerover', () => startButton.setTint(0xdddddd));
+        startButton.on('pointerout', () => startButton.clearTint());
+
+        const popup = this.k.add.container(0, 0, [overlay, border, panel, title, startButton]).setDepth(20000);
+
+        popup.setScale(0.9);
+        popup.setAlpha(0);
+        this.k.tweens.add({
+            targets: popup,
+            scale: 1,
+            alpha: 1,
+            duration: 140,
+            ease: 'Sine.Out'
+        });
+
+        startButton.once('pointerdown', () => {
+            popup.destroy(true);
+            onConfirm();
+        });
+    }
 
     // --- LÓGICA DE LOS TUTORIALES ---
 
     startFullFlow() {
         this.createSkipButton();
-
         this.disableAllInteractions();
-        this.say("¡Bienvenida a la cocina! Me llamo Castiel y hoy seré el encargado de enseñarte todo lo que necesitas saber para comenzar a preparar tu primera poción.", () => {
-            // PASO 1: HACER UBICAR LAS BAYAS
-            this.step1();
+
+        let playerName = this.k.registry.get("playerName");
+        if (!playerName || playerName.toLowerCase() === "sobrina") {
+            playerName = "la sobrina de Agatha";
+        }
+
+        this.k.cauldronImg.setInteractive({ useHandCursor: true });
+        this.burbujaPensar = this.k.add.sprite(
+            this.k.cauldronImg.x + 60,
+            this.k.cauldronImg.y - 80,
+            "thinkingBubble"
+        );
+
+        this.burbujaPensar.setDepth(2000); // Para que se vea POR ENCIMA de todo
+        this.burbujaPensar.setScale(3);    // Tu escala
+        this.burbujaPensar.play("think")
+
+        this.k.cauldronImg.once('pointerdown', () => {
+
+            if (this.burbujaPensar) {
+                this.burbujaPensar.destroy();
+                this.burbujaPensar = null;
+            }
+            this.disableAllInteractions();
+
+            this.say(`¡Hola! Tú debes de ser ${playerName}. Me llamo Castiel y tu tía me ha encomendado la tarea de enseñarte todo lo que necesitas saber para comenzar a preparar tu primera poción. ¿Comenzamos?`, () => {
+                // POP UP TUTORIAL + PASO 1: HACER UBICAR LAS BAYAS
+                this.showStartPopup(() => {
+                    this.step1();
+                });
+            });
         });
     }
 
@@ -256,7 +324,7 @@ export default class KitchenTutorial {
     step2() {
         this.disableAllInteractions();
         this.stop();
-        this.k.tutorialMode = true; // stop() lo pone a false, lo reactivamos.
+        this.k.tutorialMode = true;
 
         this.say("¡Perfecto! Ahora arrastra las bayas hasta la *tabla de cortar*.", () => {
             this.showHelp("Arrastra las bayas hasta la tabla de cortar");
