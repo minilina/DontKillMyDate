@@ -4,7 +4,8 @@ import Book from '../game-objects/book.js';
 import Cauldron from '../game-objects/cauldron.js';
 import Note from '../game-objects/note.js';
 import KitchenTutorial from '../tutorial/kitchenTutorial.js';
-import DialogueManager from '../dialogue/dialogueManager.js';
+//import DialogueManager from '../dialogue/dialogueManager.js';
+import TutorialDialogueManager from '../tutorial/tutorialDialogueManager.js';
 import GameState from '../state/GameState.js';
 
 
@@ -50,7 +51,7 @@ export default class Kitchen extends Phaser.Scene {
         this.mortarItem = null;
         this.isCuttingBoardOccupied = false;
         this.isMortarOccupied = false;
-        
+
         this.bg = this.add.image(0, 0, 'kitchen').setOrigin(0, 0).setScale(3);
         this.lightOverlay = this.add.image(0, 0, 'lightOverlay').setOrigin(0, 0).setScale(3).setDepth(200);
 
@@ -100,7 +101,7 @@ export default class Kitchen extends Phaser.Scene {
 
             if (!this.isDraggingItem) {
                 const heatHook = this.runHook('kitchen:cauldron:heat');
-                
+
                 if (!heatHook.cancelled) {
                     this.cauldron.toggleFire();
                     this.sound.play('flintSound', { volume: 1 });
@@ -186,15 +187,12 @@ export default class Kitchen extends Phaser.Scene {
             Phaser.Input.Keyboard.KeyCodes.ESC
         );
 
-        this.dialogue = new DialogueManager(this);
-        this.kitchenTutorial = new KitchenTutorial(this, this.dialogue);
 
-        console.log("Kitchen.create() -> Comprobando si hay que iniciar el tutorial...");
         if (startTutorial) {
-            console.log("Kitchen.create() -> SÍ, iniciando tutorial 'full'.");
+            this.dialogue = this.dialogue = new TutorialDialogueManager(this);
+            this.kitchenTutorial = new KitchenTutorial(this, this.dialogue);
             this.startTutorial('full');
         } else {
-            console.log("Kitchen.create() -> NO, modo de juego normal.");
             const noteArrow = this.add.sprite(this.note.x + 18, this.note.y - 15, 'indicator').setDepth(100).setScale(3);
             this.indicatorArrows.push(noteArrow);
 
@@ -270,13 +268,10 @@ export default class Kitchen extends Phaser.Scene {
                 GameState.currentPotion.quality = 0;
             } else {
                 const potionData = this.bottledPotion ? this.bottledPotion : this.cauldron.currentPotion;
-
-                console.log('Entregando poción con estos datos:', JSON.stringify(potionData, null, 2));
-                
                 finalQuality = GameState.evaluatePotion(potionData, currentOrder, potionShape);
             }
 
-            this.resetKitchen(); 
+            this.resetKitchen();
             this.bottledPotion = null;
 
             let storeScene = this.scene.get("store");
@@ -327,7 +322,7 @@ export default class Kitchen extends Phaser.Scene {
             if (this.isDraggingItem) return;
 
             // si hay una poción en la mesa esperando decisión, no puedes coger nada más
-            if (this.isPotionPending && sourceSprite !== this.tablePotion) return; 
+            if (this.isPotionPending && sourceSprite !== this.tablePotion) return;
 
             // DISPARAMOS HOOK "GRAB:START"
             const grabHook = this.runHook('kitchen:grab:start', { sourceSprite, itemType, itemData });
@@ -352,7 +347,7 @@ export default class Kitchen extends Phaser.Scene {
                     isFromPlate = true;
                     // coger polvos
                     currentDropData = this.currentMixedColor;
-                    currentDragItemKey = this.currentMixedColor + 'Powder'; 
+                    currentDragItemKey = this.currentMixedColor + 'Powder';
                     this.mixPlateColor.setVisible(false);
                 }
                 this.sound.play('colorDustSound', { volume: 1 });
@@ -447,7 +442,7 @@ export default class Kitchen extends Phaser.Scene {
                     if (success) {
                         // si se entregó o se tiró a la basura y venía de la mesa...
                         if (sourceSprite === this.tablePotion) {
-                            this.tablePotion.destroy(); 
+                            this.tablePotion.destroy();
                             this.tablePotion = null;
                             this.isPotionPending = false;
                         }
@@ -465,13 +460,13 @@ export default class Kitchen extends Phaser.Scene {
 
                             const potionOnTable = this.add.image(ptr.x, ptr.y, currentKey).setScale(3).setDepth(2);
                             this.tablePotion = potionOnTable;
-                            
+
                             this.isPotionPending = true;
 
                             // animación volando a la mesa
                             this.tweens.add({
                                 targets: potionOnTable,
-                                x: 266 * 3, 
+                                x: 266 * 3,
                                 y: 148 * 3,
                                 duration: 300,
                                 ease: 'Power2',
@@ -485,7 +480,7 @@ export default class Kitchen extends Phaser.Scene {
                                     potionOnTable.setTexture(currentKey + 'B');
                                 }
                             });
-                            
+
                             potionOnTable.on('pointerout', () => {
                                 if (!this.isDraggingItem) {
                                     potionOnTable.setTexture(currentKey);
@@ -493,7 +488,7 @@ export default class Kitchen extends Phaser.Scene {
                             });
 
                             this.grab(potionOnTable, currentKey + 'B', 'shape', currentDropData);
-                            
+
                         } else {
                             // poción que ya estaba en la mesa y se ha soltado mal, volver a ponerla encima de la mesa
                             sourceSprite.setVisible(true);
@@ -539,9 +534,9 @@ export default class Kitchen extends Phaser.Scene {
                 this.trash.setTexture(objectsUnderMouse.includes(this.trash) ? 'trashB' : 'trash');
             }
             if (itemType === 'color') {
-                const isPlateFull = (this.selectedColors.size >= this.maxColors) || 
-                                    (this.currentMixedColor && !['red', 'blue', 'yellow'].includes(this.currentMixedColor));
-                                    
+                const isPlateFull = (this.selectedColors.size >= this.maxColors) ||
+                    (this.currentMixedColor && !['red', 'blue', 'yellow'].includes(this.currentMixedColor));
+
                 this.mixPlate.setTexture(objectsUnderMouse.includes(this.mixPlate) && !isPlateFull ? 'plateB' : 'plate');
             }
 
@@ -564,10 +559,10 @@ export default class Kitchen extends Phaser.Scene {
                 let colorPrefix = cauldronColor ? cauldronColor.replace('Liquid', '') : 'noColor';
                 const newTexture = colorPrefix + dropData + 'PotionB'; // ej: 'noColorHeartPotionB'
                 dragItem.setTexture(newTexture);
-                
+
                 this.cauldronImg.setTexture('cauldron'); // quitar borde caldero
                 this.cauldronImg.setDepth(1);
-                
+
                 this.cauldron.liquidSprite.setVisible(false);
                 this.sound.play('fillBottleSound', { volume: 1 });
 
@@ -753,9 +748,9 @@ export default class Kitchen extends Phaser.Scene {
                 this.indicatorArrows.push(arrowCauldron);
             }
             if (sourceSprite !== this.mixPlate) {
-                const isPlateFull = (this.selectedColors.size >= this.maxColors) || 
-                                    (this.currentMixedColor && !['red', 'blue', 'yellow'].includes(this.currentMixedColor));
-                
+                const isPlateFull = (this.selectedColors.size >= this.maxColors) ||
+                    (this.currentMixedColor && !['red', 'blue', 'yellow'].includes(this.currentMixedColor));
+
                 // si viene del CUENCO: indicamos el platito para mezclar (solo si NO está lleno)
                 if (!isPlateFull) {
                     const arrowPlate = this.add.sprite(this.mixPlate.x + 30, this.mixPlate.y - 15, 'indicator').setDepth(100).setScale(3);
@@ -898,7 +893,7 @@ export default class Kitchen extends Phaser.Scene {
                     useHandCursor: true,
                     pixelPerfect: true
                 });
-            
+
             mashedIngredient.on('pointerover', () => {
                 if (!this.isDraggingItem && !this.isPotionPending) {
                     mashedIngredient.setTexture(spriteKeys.inMortar + 'B');
