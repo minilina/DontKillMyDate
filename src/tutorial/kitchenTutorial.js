@@ -17,11 +17,15 @@ export default class KitchenTutorial {
         this.stop();
         this.k.tutorialMode = true;
 
+        if (this.k.cauldron) {
+            this.k.cauldron.isTutorial = true;
+        }
+
         if (tutorialId === 'full') {
             this.startFullFlow();
-        } else if (tutorialId === 'knife') {
+        }/* else if (tutorialId === 'knife') {
             this.startKnifeTutorial();
-        }
+        }*/
     }
 
     stop() {
@@ -48,6 +52,10 @@ export default class KitchenTutorial {
         this.stop();
         this.enableAllInteractions();
         this.k.tutorialMode = false;
+
+        if (this.k.cauldron) {
+            this.k.cauldron.isTutorial = false;
+        }
 
         // ¡Sello puesto! El juego recordará que ya pasamos el tutorial
         this.k.registry.set('tutorialDone', true);
@@ -97,7 +105,9 @@ export default class KitchenTutorial {
             this.k.mixPlate,
             this.k.redTestTube, this.k.greenTestTube, this.k.grayTestTube,
             this.k.trash, this.k.delivery, this.k.note,
-            this.k.cauldronImg, this.k.bookImg
+            this.k.cauldronImg, this.k.bookImg,
+            this.k.emptyStarPotion, this.k.emptyHeartPotion, this.k.emptyNormalPotion,
+            this.k.stones,
         ];
 
         itemsToEnable.forEach(item => {
@@ -166,7 +176,7 @@ export default class KitchenTutorial {
 
         // 1. Posición
         const x = 512;
-        const y = 420;
+        const y = 490;
 
         const container = this.k.add.container(x, y);
 
@@ -250,12 +260,13 @@ export default class KitchenTutorial {
 
         popup.setScale(0.9);
         popup.setAlpha(0);
+
         this.k.tweens.add({
             targets: popup,
-            scale: 1,
             alpha: 1,
-            duration: 140,
-            ease: 'Sine.Out'
+            scale: 1,
+            duration: 300,
+            ease: 'Back.easeOut'
         });
 
         startButton.once('pointerdown', () => {
@@ -270,43 +281,55 @@ export default class KitchenTutorial {
         this.createSkipButton();
         this.disableAllInteractions();
 
-        let playerName = this.k.registry.get("playerName");
-        if (!playerName || playerName.toLowerCase() === "sobrina") {
-            playerName = "la sobrina de Agatha";
-        }
+        /* Burbuja de pensar para despertar al caldero
+        const bX = this.k.cauldronImg.x + 60;
+        const bY = this.k.cauldronImg.y - 100;
 
+        this.burbujaPensar = this.k.add.sprite(bX, bY, 'thinkingBubble', 'pensar-0');
+        this.burbujaPensar.setScale(3).setDepth(10000);
+        this.burbujaPensar.play('think');
+        */
+
+        // Queremos que al hacer clic sobre el caldero, se despierte
         this.k.cauldronImg.setInteractive({ useHandCursor: true });
-        this.burbujaPensar = this.k.add.sprite(
-            this.k.cauldronImg.x + 60,
-            this.k.cauldronImg.y - 80,
-            "thinkingBubble"
-        );
-
-        this.burbujaPensar.setDepth(2000); // Para que se vea POR ENCIMA de todo
-        this.burbujaPensar.setScale(3);    // Tu escala
-        this.burbujaPensar.play("think")
-
         this.k.cauldronImg.once('pointerdown', () => {
 
+            /*
             if (this.burbujaPensar) {
                 this.burbujaPensar.destroy();
-                this.burbujaPensar = null;
-            }
+            }*/
             this.disableAllInteractions();
 
-            this.say(`¡Hola! Tú debes de ser ${playerName}. Me llamo Castiel y tu tía me ha encomendado la tarea de enseñarte todo lo que necesitas saber para comenzar a preparar tu primera poción. ¿Comenzamos?`, 200, 100, () => {
-                // POP UP TUTORIAL + PASO 1: HACER UBICAR LAS BAYAS
-                this.showStartPopup(() => {
-                    this.step1();
+            if (this.k.cauldron) {
+                this.k.cauldron.toggleFire(false);
+
+                // Ahora inicia el diálogo de bienvenida
+
+                // Tomamos el nombre del jugador para dirigirnos a el, en caso de que anteriormente no haya
+                // seleccionado nombre, nos dirijimos por defecto como "sobrina de Agatha"
+                let playerName = this.k.registry.get("playerName");
+                if (!playerName || playerName.toLowerCase() === "sobrina") {
+                    playerName = "la sobrina de Agatha";
+                }
+
+                const saludo = `¡Hola! Tú debes de ser ${playerName}. Me llamo Castiel y tu tía me ha encomendado la tarea de enseñarte todo lo que necesitas saber para preparar tu primera poción. ¿Comenzamos?`
+
+                this.k.cauldron.forceSpeech(saludo, 5000);
+
+
+                this.k.events.once('cauldron:speech:finished', () => {
+                    this.showStartPopup(() => {
+                        this.step9();
+                    });
                 });
-            });
+            };
         });
     }
 
     // PASO 1: HACER UBICAR LAS BAYAS
     step1() {
         this.disableAllInteractions();
-        this.say("Primero, vamos a familiarizarnos con los ingredientes. Las *bayas* están en la estantería de la izquierda. Intenta cogerlas.", 100, 100, () => {
+        this.say("Primero, vamos a familiarizarnos con los ingredientes. Las *bayas* están en la estantería de la izquierda. Intenta cogerlas.", -100, -50, () => {
             this.showHelp("Haz clic en el frasco de bayas");
 
             // Desactivamos la interacción con TODO excepto las bayas
@@ -318,7 +341,9 @@ export default class KitchenTutorial {
                     // Una vez coja las bayas, indicaremos que debe colocarlas en la tabla de cortar
                     this.clearHelp();
                     this.stop();
-                    this.step2();
+                    this.say("¡Perfecto!", -100, -50, () => {
+                        this.step2();
+                    });
                 }
             });
         });
@@ -331,7 +356,7 @@ export default class KitchenTutorial {
         this.stop();
         this.k.tutorialMode = true;
 
-        this.say("¡Perfecto! Ahora arrastra las bayas hasta la *tabla de cortar*.", 100, 200, () => {
+        this.say("¡Ahora arrastra las bayas hasta la *tabla de cortar*.", -176, 235, () => {
             this.showHelp("Arrastra las bayas hasta la tabla de cortar");
             this.k.cuttingBoard.setInteractive();
             this.k.berriesJar.setInteractive();
@@ -350,7 +375,7 @@ export default class KitchenTutorial {
                         this.stop();
 
                         // Al terminar, continuamos con el siguiente paso del tutorial.
-                        this.say("¡Genial! Ya sabes cómo usar la tabla. Vamos al siguiente paso. Ahora vamos a utilizar el mortero.", 100, 200, () => {
+                        this.say("¡Genial! Ya sabes cómo usar la tabla. Vamos al siguiente paso. Ahora vamos a utilizar el mortero.", -176, 235, () => {
                             this.step3();
                         });
                     });
@@ -367,7 +392,7 @@ export default class KitchenTutorial {
         this.disableAllInteractions();
         this.k.tutorialMode = true;
 
-        this.say("Para practicar con el mortero necesito que me traigas unas *raíces*. Cógelas de su frasco y arrástralas al mortero.", 100, 150, () => {
+        this.say("Para practicar con el mortero necesito que me traigas unas *raíces*. Cógelas de su frasco y arrástralas al mortero.", -279, 176, () => {
             this.showHelp("Arrastra las raíces al mortero");
             this.k.rootsJar.setInteractive();
             this.k.mortar.setInteractive();
@@ -378,15 +403,12 @@ export default class KitchenTutorial {
             this.hook('kitchen:drop:mortar', (payload) => {
 
                 if (payload.dropData === 'cutRoot') {
-                    console.log("B ---> Condición cumplida. Lanzando minijuego.");
                     this.k.scene.launch('mortarMinigame', { isTutorial: true, ingredient: payload.dropData });
 
-                    console.log("C ---> Adjuntando el 'listener' para esperar a que termine.");
                     this.k.events.once('minigame:tutorial:finished', () => {
-                        console.log("D ---> ¡¡¡BINGO!!! Evento recibido en el tutorial");
                         this.clearHelp();
                         this.stop();
-                        this.say("¡Estupendo! Ahora ya sabes cómo usar las dos herramientas...", 100, 150, () => this.step4());
+                        this.say("¡Estupendo! Ahora ya sabes cómo usar las dos herramientas.", -279, 176, () => this.step4());
                     });
 
                     return { cancel: true };
@@ -400,7 +422,7 @@ export default class KitchenTutorial {
         this.disableAllInteractions();
         this.stop();
         this.k.tutorialMode = true;
-        this.say("El libro de recetas es tu mejor amigo. En él podrás consultar qué ingredientes hay, las afinidades entre las distintas razas y para qué sirve cada herramienta. También podrás regresar a los tutoriales siempre que necesites practicar o que te refresquen la memoria.", 250, 100, () => {
+        this.say("El libro de recetas es tu mejor amigo. En él podrás consultar qué ingredientes hay, afinidades entre  razas y muchas cosas más.", 176, 118, () => {
             this.showHelp("Abre el libro de recetas");
 
             this.k.bookImg.setInteractive();
@@ -410,7 +432,7 @@ export default class KitchenTutorial {
                 this.stop();
                 this.k.events.emit('book');
                 this.k.events.once('book:closed', () => {
-                    this.say("¡Perfecto! Ahora que ya sabes dónde mirar las compatibilidades entre razas podemos pasar a las tres probetas que se encuentran a mi derecha. Dependiendo de la afinidad que obtengamos, deberás elegir una u otra y arrastrarlas al caldero.", 250, 50, () => {
+                    this.say("¡Perfecto! Ahora podemos pasar a las tres probetas que se encuentran a mi derecha. Dependiendo de la afinidad que obtengamos, deberás elegir una u otra y arrastrarlas al caldero.", 176, 35, () => {
 
                         this.stop();
                         this.step5();
@@ -426,7 +448,7 @@ export default class KitchenTutorial {
         this.stop();
         this.k.tutorialMode = true;
 
-        this.say("Cada probeta representa un tipo de afinidad. Cuando tengas dudas entre las afinidades de dos razas, consúltalo en el libro. Vamos a practicar esto, por ejemplo, comprueba la afinidad entre gnomos y hadas, selecciona la probeta adecuada y arrástrala hacia el caldero", 100, 50, () => {
+        this.say("Cada probeta representa un tipo de afinidad. Puedes consultar en el libro estas afinidades. Vamos a practicar: comprueba la afinidad entre gnomos y hadas, selecciona la probeta adecuada y arrástrala en el caldero", 176, 35, () => {
             this.showHelp("Comprueba la afinidad entre gnomos y hadas y arrastra la probeta hacia el caldero");
 
             this.k.bookImg.setInteractive();
@@ -452,10 +474,7 @@ export default class KitchenTutorial {
                     this.highlight(this.k.grayTestTube);
                     this.highlight(this.k.cauldronImg);
 
-                    // 👇 AHORA SÍ: CREAMOS EL HOOK AQUÍ ADENTRO, A SALVO DEL 'STOP'
                     this.hook('kitchen:drop:cauldron', ({ itemType, dropData }) => {
-                        console.log("Hook de drop en caldero disparado. itemType:", itemType, "dropData:", dropData);
-
                         if (dropData !== expected) {
                             // Si se equivoca de probeta, devolvemos cancel: false 
                             // para que la cocina normal no haga nada (o le lance el error normal)
@@ -463,13 +482,12 @@ export default class KitchenTutorial {
                         }
 
                         // Correcto: avanzamos
-                        this.say("¡Perfecto! Has elegido la probeta correcta.", 100, 50, () => {
+                        this.say("¡Perfecto! Has elegido la probeta correcta.", 176, 35, () => {
                             this.clearHelp();
                             this.stop(); // Limpiamos la pantalla para el siguiente paso
                             this.step6();
                         });
 
-                        // IMPORTANTE: Frenamos a la cocina base para evitar doble lanzamiento
                         return { cancel: true };
                     });
                 });
@@ -483,13 +501,15 @@ export default class KitchenTutorial {
         this.stop();
         this.k.tutorialMode = true;
 
-        this.say("¡Ánimo que ya queda poco! Vamos con el siguiente paso: los colores. ¿Ves los 3 pequeños polvos de colores a mi izquierda? Estos sirven para aportar color a la poción. Puedes poner un solo color (rojo, azul o amarillo) o bien mezclarlos en el plato de abajo para crear un nuevo color (morado, verde o naranja). Vamos a probar esto, utiliza el rojo y el amarillo para crear naranja y échalo al caldero", 50, 100, () => {
+        this.say("Vamos con el siguiente paso: los colores. ¿Ves los 3 pequeños polvos de colores a mi izquierda? Estos sirven para aportar color a la poción. Puedes poner un solo color o bien mezclarlos en el plato de abajo para crear uno nuevo. Vamos a probar esto, utiliza el rojo y el amarillo para crear naranja y échalo al caldero", -275, 74, () => {
 
             this.showHelp("Echa polvos naranjas en el caldero");
 
 
             this.k.redBowl.setInteractive();
             this.k.yellowBowl.setInteractive();
+            this.k.blueBowl.setInteractive();
+
             this.k.mixPlate.setInteractive();
             this.k.cauldronImg.setInteractive();
 
@@ -505,13 +525,15 @@ export default class KitchenTutorial {
                 if (dropData === 'orange') {
                     locked = true;
                     this.stop();
-                    this.say("¡Perfecto! Has creado naranja y lo has añadido al caldero.", 50, 100, () => {
+                    this.clearHelp();
+                    this.say("¡Perfecto! Has creado naranja y lo has añadido al caldero.", -275, 74, () => {
                         // siguiente paso:
                         this.step7();
                     });
                 } else {
                     locked = true;
-                    this.say("Ese no es el color correcto. Recuerda: rojo + amarillo = *naranja*. Vuelve a intentarlo.", 50, 100, () => {
+                    this.say("Ese no es el color correcto. Recuerda: rojo + amarillo = *naranja*. Vuelve a intentarlo.", -275, 74, () => {
+                        this.k.cauldron.resetInside();
                         locked = false;
                     });
                     return { cancel: true };
@@ -525,15 +547,19 @@ export default class KitchenTutorial {
         this.stop();
         this.k.tutorialMode = true;
 
-        this.say("Los clientes también pueden pedirte que la temperatura sea una específica. Para ajustar la temperatura haz clic sobre las piedras que encuentras al lado del caldero. Pero, ¡cuidado! La temperatura solo sube, no puede bajar así que estate atento de no pasarte.", 50, 200, () => {
-            this.showHelp("Haz clic en las piedras para subir la temperatura");
+        this.say("Los clientes también pueden pedirte una temperatura específica. Para ajustar la temperatura haz clic sobre las piedras alrededor del caldero. Pero, ¡cuidado! La temperatura sube con el fuego encendido y baja cuando lo apagas. ¡Uy espera! Para que puedas probar esto voy a apagarme primero", -368, 221, () => {
+            this.showHelp("Haz clic en las piedras para encender el fuego");
+            this.k.cauldron.resetCauldron();
 
             this.k.stones.setInteractive();
-            //this.highlight(this.k.stone);
+            this.highlight(this.k.stones);
 
             this.k.stones.once('pointerdown', () => {
+                this.clearHelp();
+                this.disableAllInteractions();
                 this.stop();
-                this.say("¡Perfecto! Ya sabes cómo ajustar la temperatura. ", 50, 200, () => {
+                this.say("¡Perfecto! Ya sabes cómo ajustar la temperatura. ", -368, 221, () => {
+
                     this.step8();
                 });
             });
@@ -545,13 +571,14 @@ export default class KitchenTutorial {
         this.stop();
         this.k.tutorialMode = true;
 
-        this.say("Si alguna vez no recuerdas la petición del cliente solo tienes que hacer clic en la comanda que encuentras colgada frente a ti. Aquí tendrás las notas resaltando lo importante que te ha pedido el cliente", 100, 200, () => {
+        this.say("Si alguna vez no recuerdas la petición del cliente solo tienes que hacer clic en la comanda que encuentras colgada frente a ti. Aquí tendrás las notas más relevantes", 100, 44, () => {
             this.showHelp("Haz clic en la comanda para revisar la petición del cliente");
 
             this.k.note.setInteractive();
             this.highlight(this.k.note);
 
             this.k.note.once('pointerdown', () => {
+                this.clearHelp();
                 this.stop();
                 this.k.events.emit('note');
                 this.k.events.once('note:closed', () => {
@@ -568,23 +595,49 @@ export default class KitchenTutorial {
         this.k.tutorialMode = true;
 
         this.say(
-            "Y llegamos al último paso: Rellenar la poción y entregarla al cliente. Para vaciar el contenido del caldero y poder entregarlo, arrastra una de las pociones vacías de formas que puedes encontrar en la balda superior. Tan solo tendrás que arrastrar la elegida sobre el caldero (¡sin soltarla!). Esta automáticamente se rellenará y deberás colocarla en la estación de entrega de la parte inferior derecha. Nota: Esto solo funcionará si el caldero contiene ingredientes. Rellena la poción y déjala en la estación de entrega.", 150, 150,
+            "Para recoger el contenido del caldero, debes utilizar los recipientes vacíos de la balda superior. Arrastrarlo sobre el caldero (¡sin soltarlo!). Una vez en el matraz podrás realizar dos acciones con él. Deshecharlo en la papelera o entregalo al cliente desde la estación de entrega que está justo debajo. Si sin querer se te escapa la poción, regresará automáticamente a la mesa y podrás volver a cogerla. Vamos a probar esto.", 191, -59,
             () => {
-                this.showHelp("Rellena una poción vacía y colócala en la estación de entrega");
+                this.showHelp("Rellena una poción vacía y colócala en la papelera");
                 // Habilitar lo necesario
                 this.k.cauldronImg.setInteractive();
-                this.k.delivery.setInteractive();
+                this.k.trash.setInteractive();
 
                 // formas (pociones vacías)
                 this.k.emptyNormalPotion.setInteractive();
                 this.k.emptyHeartPotion.setInteractive();
                 this.k.emptyStarPotion.setInteractive();
 
+                // Esperar a que se desheche UNA poción
+                this.hook('kitchen:trash', ({ shape }) => {
+                    this.say("¡Perfecto!", 191, -59, () => {
+                        this.clearHelp();
+                        this.stop();
+                        this.step10();
+                    });
+                });
+            }
+        );
+    }
 
+    step10() {
+        this.disableAllInteractions();
+        this.stop();
+        this.k.tutorialMode = true;
+
+        this.say(
+            "Y llegamos al último paso: entregar al cliente. Rellena otra poción y déjala esta vez en la estación de entrega", 191, -59,
+            () => {
+                this.showHelp("Rellena una poción vacía y colócala en la estación de entrega");
+                this.k.cauldronImg.setInteractive();
+                this.k.delivery.setInteractive();
+
+                this.k.emptyNormalPotion.setInteractive();
+                this.k.emptyHeartPotion.setInteractive();
+                this.k.emptyStarPotion.setInteractive();
 
                 // Esperar a que entregue UNA poción
                 this.hook('kitchen:deliver', ({ shape }) => {
-                    this.say("¡Perfecto! Has completado el tutorial. Ya puedes preparar y entregar pociones por tu cuenta.", 50, 200, () => {
+                    this.say("¡Perfecto! Has completado el tutorial. Ya puedes preparar y entregar pociones por tu cuenta.", 191, -59, () => {
                         this.finish();
 
                         // LIMPAMOS EL CALDERO PARA LA PARTIDA REAL

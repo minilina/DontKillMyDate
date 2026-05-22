@@ -7,8 +7,9 @@ export default class MortarMinigame extends Phaser.Scene {
     }
 
     init(data) {
-        console.log("los datos los datos", data);
         this.isTutorial = data.isTutorial || false;
+        this.isRetry = data.isRetry || false;
+
         this.ingredientId = data.ingredient;
         this.score = 0;
         this.misses = 0;
@@ -228,14 +229,15 @@ export default class MortarMinigame extends Phaser.Scene {
     // ---------------------------
 
     runTutorialFlow() {
+        const waitTime = this.isRetry ? 1500 : 8000;
         // Mostramos el texto de instrucciones
         const instructions = this.add.text(
-            this.scale.width / 2, this.scale.height / 2 + 100, "¡Haz clic en los círculos antes de que desaparezcan!",
+            this.scale.width / 2, 70, "¡Haz clic en los círculos antes de que desaparezcan!",
             { fontFamily: "VT323, monospace", fontSize: '32px', color: '#ffffff', stroke: '#000000', strokeThickness: 5, align: 'center' }
         ).setOrigin(0.5).setDepth(100);
 
-        // Esperamos 3 segundos y luego empezamos el minijuego con la cuenta atrás
-        this.time.delayedCall(2000, () => {
+        // Esperamos 8 segundos y luego empezamos el minijuego con la cuenta atrás
+        this.time.delayedCall(waitTime, () => {
             instructions.destroy();
             this.startCountdown();
         });
@@ -296,7 +298,11 @@ export default class MortarMinigame extends Phaser.Scene {
 
         retryButton.on('pointerdown', () => {
             closePopup();
-            this.scene.restart({ isTutorial: true, ingredient: this.ingredientId });
+            this.scene.restart({
+                isTutorial: true,
+                ingredient: this.ingredientId,
+                isRetry: true
+            });
         });
 
         continueButton.on('pointerdown', () => {

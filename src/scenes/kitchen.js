@@ -708,6 +708,10 @@ export default class Kitchen extends Phaser.Scene {
                 isDroppedSuccessfully = true;
 
             } else if (objectsUnderMouse.includes(this.trash)) {
+                // DISPARAMOS HOOK "TIRAR POCION"
+                const trashHook = this.runHook('kitchen:trash', { shape: dropData });
+                if (trashHook.cancelled) return false;
+
                 if (!this.cauldron.hasLiquid) {
                     this.resetKitchen();
                 }

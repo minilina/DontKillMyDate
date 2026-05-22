@@ -432,7 +432,7 @@ import testTubeSound from '../../assets/sound/testTube.mp3';
 import colorDustSound from '../../assets/sound/colorDust.mp3';
 import bottleSound from '../../assets/sound/bottle.mp3';
 import flintSound from '../../assets/sound/flint.mp3';
-import knifeSound from '../../assets/sound/knife.mp3'; 
+import knifeSound from '../../assets/sound/knife.mp3';
 import fillBottleSound from '../../assets/sound/fillBottle.mp3';
 import errorSound from '../../assets/sound/error.mp3';
 import successSound from '../../assets/sound/success.mp3';
@@ -465,7 +465,7 @@ export default class Boot extends Phaser.Scene {
         this.load.spritesheet('NPChumano', NPChumano, { frameWidth: 32, frameHeight: 32 });
 
         // CASA
-        this.load.image('ALL props seasons', allPropsSeasons); 
+        this.load.image('ALL props seasons', allPropsSeasons);
         this.load.image('best fish point 2', bestFishPoint);
         this.load.image('deep forest stones', deepForestStones);
         this.load.image('Duck Mallad', duckMallad);
@@ -578,7 +578,7 @@ export default class Boot extends Phaser.Scene {
 
         this.load.image('resumenBg', resumenBg);
         this.load.image('estrella', estrella);
-        this.load.image('corazon', corazon);    
+        this.load.image('corazon', corazon);
 
         this.load.image('store', store);
         this.load.image('mostrador', mostrador);
@@ -598,7 +598,7 @@ export default class Boot extends Phaser.Scene {
         this.load.image('boca_normal_2', npcBocaNormal2);
         this.load.image('boca_normal_3', npcBocaNormal3);
         this.load.image('boca_feliz', npcBocaFeliz);
-        this.load.image('boca_enfadada', npcBocaEnfadada);  
+        this.load.image('boca_enfadada', npcBocaEnfadada);
         this.load.image('cejas_normales_azules', npcCejasNormalesAzules);
         this.load.image('cejas_normales_negras', npcCejasNormalesNegras);
         this.load.image('cejas_normales_rojas', npcCejasNormalesRojas);
@@ -812,7 +812,7 @@ export default class Boot extends Phaser.Scene {
 
         this.load.image('indicator', indicator);
         this.load.image('lightOverlay', lightOverlay);
- 
+
         this.load.image('openBook', openBook);
         this.load.image('humanos', normal);
         this.load.image('kitsunes', fuego);
@@ -822,9 +822,9 @@ export default class Boot extends Phaser.Scene {
         this.load.image('elfos', planta);
         this.load.image('afin', afin);
         this.load.image('igual', igual);
-        this.load.image('hostil', hostil);     
+        this.load.image('hostil', hostil);
         this.load.image('next', next);
-        this.load.image('prev', prev); 
+        this.load.image('prev', prev);
         this.load.image('redTag1', redTag1);
         this.load.image('redTag2', redTag2);
         this.load.image('purpleTag1', purpleTag1);
@@ -876,16 +876,16 @@ export default class Boot extends Phaser.Scene {
         this.load.image('blankBtn', blankBtn);
         this.load.image('eBtn', eBtn);
         this.load.image('eBtnPressed', eBtnPressed);
-        
+
     }
 
     create(data) {
         GameState.initData(daysConfig, scriptedNpcs);
-        
+
         if (data && data.loadSave && data.saveData) {
             GameState.currentDay = data.saveData.currentDay;
             GameState.reputation = data.saveData.reputation;
-            
+
             if (data.saveData.specialNpcRecords) {
                 GameState.specialNpcRecords = data.saveData.specialNpcRecords;
             }
@@ -893,7 +893,7 @@ export default class Boot extends Phaser.Scene {
             if (data.saveData.tutorialDone) {
                 this.registry.set('tutorialDone', true);
             }
-            
+
             this.scene.start('house');
         } else {
             this.scene.start('Letter');

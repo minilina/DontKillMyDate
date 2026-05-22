@@ -8,6 +8,10 @@ export default class Cauldron {
         this.hasLiquid = true;
         this.liquidSprite = this.scene.add.image(140 * 3, 96 * 3, 'noColorLiquid').setOrigin(0, 0).setScale(3).setVisible(true).setDepth(4);
 
+        // Durante el tutorial no debe soltar frases aleatorias
+        this.isHotSceneActive = false;
+
+
         // requisitos poción
         this.currentPotion = {
             color: null,
@@ -29,26 +33,28 @@ export default class Cauldron {
 
         // animaciones cara fuego
         if (!this.scene.anims.exists('fireEyesBlink')) {
-            this.scene.anims.create({ 
-                key: 'fireEyesBlink', 
+            this.scene.anims.create({
+                key: 'fireEyesBlink',
                 frames: [
-                    { key: 'fireEyes', frame: 'ojos-0' }, 
-                    { key: 'fireEyes', frame: 'ojos-1' }, 
-                    { key: 'fireEyes', frame: 'ojos-2' }, 
-                    { key: 'fireEyes', frame: 'ojos-1' }, 
+                    { key: 'fireEyes', frame: 'ojos-0' },
+                    { key: 'fireEyes', frame: 'ojos-1' },
+                    { key: 'fireEyes', frame: 'ojos-2' },
+                    { key: 'fireEyes', frame: 'ojos-1' },
                     { key: 'fireEyes', frame: 'ojos-0' }],
-                    frameRate: 8, repeat: 0 });
+                frameRate: 8, repeat: 0
+            });
         }
 
         if (!this.scene.anims.exists('fireEyesTalk')) {
-            this.scene.anims.create({ 
-                key: 'fireEyesTalk', 
+            this.scene.anims.create({
+                key: 'fireEyesTalk',
                 frames: [
-                    { key: 'fireEyes', frame: 'ojos-0' }, 
-                    { key: 'fireEyes', frame: 'ojos-5' }, 
-                    { key: 'fireEyes', frame: 'ojos-6' }, 
-                    { key: 'fireEyes', frame: 'ojos-5' }], 
-                    frameRate: 5, repeat: -1 });
+                    { key: 'fireEyes', frame: 'ojos-0' },
+                    { key: 'fireEyes', frame: 'ojos-5' },
+                    { key: 'fireEyes', frame: 'ojos-6' },
+                    { key: 'fireEyes', frame: 'ojos-5' }],
+                frameRate: 5, repeat: -1
+            });
         }
 
         this.generalPhrases = [
@@ -71,7 +77,7 @@ export default class Cauldron {
         this.blinkTimer = null;
         this.midHeatingTimer = null;
         this.hasTriggeredHotScene = false;
-        this.isHotSceneActive = false; 
+        this.isHotSceneActive = false;
         this.hasSpokenThisSession = false;
 
         // inicialización sprites fuego
@@ -84,9 +90,9 @@ export default class Cauldron {
         this.speechBubble = this.scene.add.nineslice(
             bubbleX,
             bubbleY,
-            'speechBubble', 
-            0, 
-            100, 50, 
+            'speechBubble',
+            0,
+            100, 50,
             7, 6, 6, 7
         ).setOrigin(0, 1).setScale(3).setVisible(false).setDepth(205);
 
@@ -95,14 +101,14 @@ export default class Cauldron {
             bubbleY - 32,
             '',
             {
-                fontFamily: 'VT323, monospace', 
-                fontSize: '22px', 
-                color: '#000000', 
+                fontFamily: 'VT323, monospace',
+                fontSize: '22px',
+                color: '#000000',
                 align: 'left',
                 wordWrap: { width: 200 }
             }
         ).setOrigin(0, 1).setVisible(false).setDepth(206);
-        
+
         this.fireEyes.on('animationcomplete', (anim) => {
             if (anim.key === 'fireEyesBlink' && !this.isHotSceneActive) {
                 this.fireEyes.setFrame('ojos-0');
@@ -131,7 +137,7 @@ export default class Cauldron {
     }
 
     // activar/desactivar fuego
-    toggleFire() {
+    toggleFire(temperature = true) {
         if (this.fire.visible) {
             this.fire.setVisible(false);
             this.fire.stop();
@@ -144,8 +150,11 @@ export default class Cauldron {
             this.scene.sound.play('fireSound', { volume: 1.5, loop: true });
 
             // mostrar barra de temperatura al encender el fuego
-            this.heatBar.setVisible(true);
-            this.heatArrow.setVisible(true);
+            // la ocultamos durante el principio del tutorial
+            if (temperature) {
+                this.heatBar.setVisible(true);
+                this.heatArrow.setVisible(true);
+            }
 
             // activar sistema de cara del fuego
             this.fireEyes.setVisible(true);
@@ -157,7 +166,7 @@ export default class Cauldron {
 
     // actualizar movimiento de la flecha y temperatura
     updateTemperature(time, delta) {
-        
+
         // si el fuego ya no existe porque hemos cambiado de escena, cortamos la función aquí
         if (!this.fire || !this.fireEyes || !this.fireEyes.active) return;
 
@@ -167,7 +176,7 @@ export default class Cauldron {
             this.temperatureValue -= 0.005 * delta;
         }
 
-        this.temperatureValue = Phaser.Math.Clamp(this.temperatureValue, 0, 100); 
+        this.temperatureValue = Phaser.Math.Clamp(this.temperatureValue, 0, 100);
 
         const innerWidth = this.heatBar.displayWidth - (this.borderOffset * 2);
 
@@ -184,7 +193,7 @@ export default class Cauldron {
             this.currentPotion.temperature = 'hot';
             if (this.temperatureValue === 100 && !this.hasTriggeredHotScene && this.fire.visible) {
                 this.triggerHotScene();
-            } else if (!this.isHotSceneActive) { 
+            } else if (!this.isHotSceneActive) {
                 const isTalking = this.fireEyes.anims?.currentAnim?.key === 'fireEyesTalk';
                 if (!this.fireEyes.anims?.isPlaying && !isTalking && this.fireEyes.frame.name !== 'ojos-0') {
                     this.fireEyes.setFrame('ojos-0');
@@ -245,6 +254,19 @@ export default class Cauldron {
         this.deactivateFaceSystem();
     }
 
+    resetInside() {
+        this.currentPotion = {
+            color: null,
+            smell: [],
+            taste: [],
+            consistency: [],
+            temperature: 'cold'
+        };
+        this.hasLiquid = true;
+        this.liquidSprite.setTexture('noColorLiquid');
+        this.liquidSprite.setVisible(true);
+    }
+
     // desactivar sistema de cara del fuego
     deactivateFaceSystem() {
         this.fireEyes.setVisible(false);
@@ -253,7 +275,7 @@ export default class Cauldron {
         this.hasSpokenThisSession = false;
         this.hasTriggeredHotScene = false;
         this.isHotSceneActive = false;
-        
+
         if (this.blinkTimer) { this.blinkTimer.remove(); this.blinkTimer = null; }
         if (this.midHeatingTimer) { this.midHeatingTimer.remove(); this.midHeatingTimer = null; }
     }
@@ -262,7 +284,7 @@ export default class Cauldron {
     startBlinkLoop() {
         if (this.blinkTimer) this.blinkTimer.remove();
         this.blinkTimer = this.scene.time.addEvent({
-            delay: 4000, 
+            delay: 4000,
             callback: () => {
                 // si el temporizador salta justo cuando salimos de la cocina, no hace nada
                 if (!this.fireEyes || !this.fireEyes.active) return;
@@ -280,11 +302,11 @@ export default class Cauldron {
         this.scene.tweens.killTweensOf([this.speechBubble, this.speechText]);
 
         this.speechText.setText(textPhrase);
-        this.speechBubble.width = (this.speechText.width / 3) + 15; 
+        this.speechBubble.width = (this.speechText.width / 3) + 15;
         this.speechBubble.height = (this.speechText.height / 3) + 15;
-        
+
         const bubbleY = (90 * 3);
-        
+
         this.speechBubble.y = bubbleY + 15;
         this.speechText.y = bubbleY - 24 + 15;
 
@@ -311,17 +333,18 @@ export default class Cauldron {
 
     // diálogo sorpresa a mitad de calentamiento
     triggerMidHeatingDialogue() {
+        if (this.isTutorial) return;
         if (Phaser.Math.Between(0, 1) === 0) return;
-        
+
         this.midHeatingTimer = this.scene.time.delayedCall(Phaser.Math.Between(3000, 7000), () => {
             // si sigue encendido, no está al máximo y no ha hablado ya en este turno
             if (this.fire.visible && this.currentPotion.temperature !== 'hot' && !this.hasSpokenThisSession && !this.isHotSceneActive) {
 
                 if (this.blinkTimer) this.blinkTimer.remove();
 
-                this.hasSpokenThisSession = true; 
+                this.hasSpokenThisSession = true;
                 this.fireEyes.play('fireEyesTalk');
-                
+
                 this.showSpeech(Phaser.Math.RND.pick(this.generalPhrases));
 
                 this.scene.time.delayedCall(4000, () => {
@@ -337,9 +360,11 @@ export default class Cauldron {
 
     // ojos sorpresa al alcanzar temperatura "hot"
     triggerHotScene() {
+        if (this.isTutorial) return;
+
         this.hasTriggeredHotScene = true;
-        this.isHotSceneActive = true; 
-        
+        this.isHotSceneActive = true;
+
         if (this.blinkTimer) this.blinkTimer.remove();
         this.hideSpeech();
 
@@ -349,25 +374,25 @@ export default class Cauldron {
 
         this.scene.time.delayedCall(2500, () => {
             // por si el jugador apaga el fuego justo en el susto
-            if (!this.fire.visible) return this.deactivateFaceSystem(); 
-                
+            if (!this.fire.visible) return this.deactivateFaceSystem();
+
             // si no ha hablado antes, dice una frase
             if (!this.hasSpokenThisSession) {
                 this.hasSpokenThisSession = true;
                 this.fireEyes.play('fireEyesTalk');
-                
+
                 this.showSpeech(Phaser.Math.RND.pick(this.hotPhrases));
 
                 this.scene.time.delayedCall(4000, () => {
                     this.hideSpeech();
-                    this.finishTalkingWithSmile(true); 
+                    this.finishTalkingWithSmile(true);
                 });
             } else {
                 // si ya habló, vuelve a la normalidad
                 this.fireEyes.setFrame('ojos-0');
                 this.isHotSceneActive = false;
                 this.fireEyes.play('fireEyesBlink');
-                this.startBlinkLoop(); 
+                this.startBlinkLoop();
             }
         });
     }
@@ -384,12 +409,73 @@ export default class Cauldron {
             // vuelve a la normalidad
             if (this.fire.visible) {
                 this.fireEyes.setFrame('ojos-0');
-                if (isHotScene) this.isHotSceneActive = false; 
+                if (isHotScene) this.isHotSceneActive = false;
                 this.fireEyes.play('fireEyesBlink');
-                this.startBlinkLoop(); 
+                this.startBlinkLoop();
             } else {
                 if (isHotScene) this.isHotSceneActive = false;
             }
+        });
+    }
+
+    // Poder acceder al speech del caldero de de fuera
+    forceSpeech(text, duration = 60000) {
+        this.showSpeech();
+
+        // Ancho del texto
+        const anchoMaximo = 300;
+
+        this.speechText.setOrigin(0, 0);
+        this.speechText.setFixedSize(anchoMaximo, 0); // Forzamos el ancho del contenedor de texto
+        this.speechText.setStyle({
+            wordWrap: { width: anchoMaximo, useAdvancedWrap: true }
+        });
+
+        const offsetX = 20; // Ajusta para centrar horizontalmente y verticalmente
+        const offsetY = -160;
+
+        this.speechText.setPosition(
+            this.speechBubble.x + offsetX,
+            this.speechBubble.y + offsetY
+        );
+
+        // Ajustamos la burbuja al nuevo ancho 
+        if (this.speechBubble) {
+            this.speechBubble.width = anchoMaximo - 180;
+            this.speechBubble.height = 60; // Ajusta el alto si el texto es largo
+        }
+        // ---------------------------------------
+
+        if (this.typewriterTimer) this.typewriterTimer.remove();
+        this.speechText.setText('');
+        let characterIndex = 0;
+        let isFinished = false;
+
+        this.typewriterTimer = this.scene.time.addEvent({
+            delay: 50,
+            repeat: text.length - 1,
+            callback: () => {
+                this.speechText.text += text[characterIndex];
+                characterIndex++;
+                if (characterIndex === text.length) isFinished = true;
+            }
+        });
+
+        // Gestión de clics (igual que antes)
+        this.scene.time.delayedCall(150, () => {
+            const handlePointerDown = () => {
+                if (!isFinished) {
+                    if (this.typewriterTimer) this.typewriterTimer.remove();
+                    this.speechText.setText(text);
+                    isFinished = true;
+                    this.scene.input.once('pointerdown', handlePointerDown);
+                } else {
+                    this.hideSpeech();
+                    console.log('Diálogo del caldero finalizado');
+                    this.scene.events.emit('cauldron:speech:finished');
+                }
+            };
+            this.scene.input.once('pointerdown', handlePointerDown);
         });
     }
 }
