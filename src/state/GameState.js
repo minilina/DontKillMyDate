@@ -15,7 +15,7 @@ const GameState = {
     elf: null,
     nymph: null,
     gnomo: null,
-    fairy: 81,
+    fairy: null,
     human: null,
     kitsune: null,
     madre: null,
