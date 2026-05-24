@@ -119,10 +119,12 @@ Son la principal fuente de ingresos y reputación durante el bucle de juego diar
 
 Aquí una tabla con todas los sprites utilizados para los clientes:
 
+---
+
 ##### Cuerpos Base
 
 | Capa | Opción 1 | Opción 2 | Opción 3 |
-| :---: | :---: | :---: |
+| :--- | :---: | :---: | :---: |
 | **Cuerpos** | <img src="assets/sprites/npcs/cuerpo_1.png" width="64"> | <img src="assets/sprites/npcs/cuerpo_2.png" width="64"> | <img src="assets/sprites/npcs/cuerpo_3.png" width="64"> |
 
 ---
@@ -130,7 +132,7 @@ Aquí una tabla con todas los sprites utilizados para los clientes:
 ##### Ropa por Raza
 
 | Raza | Vista |
-| :---: |
+| :--- | :---: |
 | **Elfo** | <img src="assets/sprites/npcs/ropa_elfo.png" width="64"> |
 | **Gnomo** | <img src="assets/sprites/npcs/ropa_gnomo.png" width="64"> |
 | **Hada** | <img src="assets/sprites/npcs/ropa_hada.png" width="64"> |
@@ -144,7 +146,7 @@ Aquí una tabla con todas los sprites utilizados para los clientes:
 ##### Features Especiales por Raza
 
 | Raza | Vista |
-| :---: |
+| :--- | :---: |
 | **Gnomo** | <img src="assets/sprites/npcs/gnomo_features.png" width="64"> |
 | **Hada** | <img src="assets/sprites/npcs/hada_feautures.png" width="64"> |
 | **Ninfa** | <img src="assets/sprites/npcs/ninfa_feautures.png" width="64"> |
@@ -157,10 +159,10 @@ Aquí una tabla con todas los sprites utilizados para los clientes:
 
 ---
 
-#####  Ojos
+##### Ojos
 
 | Capa / Color | Vista |
-| :---: |
+| :--- | :---: |
 | **Amarillos** | <img src="assets/sprites/npcs/ojos_amarillos.png" width="64"> |
 | **Azules** | <img src="assets/sprites/npcs/ojos_azules.png" width="64"> |
 | **Marrones** | <img src="assets/sprites/npcs/ojos_marrones.png" width="64"> |
@@ -175,7 +177,7 @@ Aquí una tabla con todas los sprites utilizados para los clientes:
 ##### Pelo — Estilo 1
 
 | Color | Vista |
-| :---: |
+| :--- | :---: |
 | **Base** | <img src="assets/sprites/npcs/pelo_1.png" width="64"> |
 | **Azul** | <img src="assets/sprites/npcs/pelo_1_azul.png" width="64"> |
 | **Negro** | <img src="assets/sprites/npcs/pelo_1_negro.png" width="64"> |
@@ -184,10 +186,10 @@ Aquí una tabla con todas los sprites utilizados para los clientes:
 | **Rubio** | <img src="assets/sprites/npcs/pelo_1_rubiol.png" width="64"> |
 | **Verde** | <img src="assets/sprites/npcs/pelo_1_verde.png" width="64"> |
 
-#####  Pelo — Estilo 2
+##### Pelo — Estilo 2
 
 | Color | Vista |
-| :---: |
+| :--- | :---: |
 | **Azul** | <img src="assets/sprites/npcs/pelo_2_azul.png" width="64"> |
 | **Gris** | <img src="assets/sprites/npcs/pelo_2_gris.png" width="64"> |
 | **Negro** | <img src="assets/sprites/npcs/pelo_2_negro.png" width="64"> |
@@ -196,10 +198,10 @@ Aquí una tabla con todas los sprites utilizados para los clientes:
 | **Rubio** | <img src="assets/sprites/npcs/pelo_2_rubio.png" width="64"> |
 | **Verde** | <img src="assets/sprites/npcs/pelo_2_verde.png" width="64"> |
 
-#####  Pelo — Estilo 3
+##### Pelo — Estilo 3
 
 | Color | Vista |
-| :---: |
+| :--- | :---: |
 | **Azul** | <img src="assets/sprites/npcs/pelo_3_azul.png" width="64"> |
 | **Negro** | <img src="assets/sprites/npcs/pelo_3_negro.png" width="64"> |
 | **Rojo** | <img src="assets/sprites/npcs/pelo_3_rojo.png" width="64"> |
@@ -209,10 +211,10 @@ Aquí una tabla con todas los sprites utilizados para los clientes:
 
 ---
 
-#####  Cejas
+##### Cejas
 
 | Color | Vista |
-| :---: |
+| :--- | :---: |
 | **Azules** | <img src="assets/sprites/npcs/cejas_normales_azules.png" width="64"> |
 | **Negras** | <img src="assets/sprites/npcs/cejas_normales_negras.png" width="64"> |
 | **Rojas** | <img src="assets/sprites/npcs/cejas_normales_rojas.png" width="64"> |
@@ -222,10 +224,10 @@ Aquí una tabla con todas los sprites utilizados para los clientes:
 
 ---
 
-#####  Bocas
+##### Bocas
 
 | Expresión | Vista |
-| :---: |
+| :--- | :---: |
 | **Feliz** | <img src="assets/sprites/npcs/boca_feliz.png" width="64"> |
 | **Enfadada** | <img src="assets/sprites/npcs/boca_enfadada.png" width="64"> |
 | **Normal 1** | <img src="assets/sprites/npcs/boca_normal_1.png" width="64"> |
@@ -234,10 +236,10 @@ Aquí una tabla con todas los sprites utilizados para los clientes:
 
 ---
 
-#####  Narices
+##### Narices
 
 | Variante | Vista |
-| :---: |
+| :--- | :---: |
 | **Base** | <img src="assets/sprites/npcs/nariz.png" width="64"> |
 | **Variante 1** | <img src="assets/sprites/npcs/nariz_1.png" width="64"> |
 | **Variante 2** | <img src="assets/sprites/npcs/nariz_2.png" width="64"> |
@@ -245,25 +247,24 @@ Aquí una tabla con todas los sprites utilizados para los clientes:
 
 ---
 
-#####  Orejas
+##### Orejas
 
 | Tipo | Opción 1 | Opción 2 | Opción 3 |
-| :---: | :---: | :---: |
+| :--- | :---: | :---: | :---: |
 | **Elfo / Hada** | <img src="assets/sprites/npcs/orejas_1_elfo_hada.png" width="64"> | <img src="assets/sprites/npcs/orejas_2_elfo_hada.png" width="64"> | <img src="assets/sprites/npcs/orejas_3_elfo_hada.png" width="64"> |
 | **Ninfa** | <img src="assets/sprites/npcs/orejas_ninfa_1.png" width="64"> | <img src="assets/sprites/npcs/orejas_ninfa_2.png" width="64"> | <img src="assets/sprites/npcs/orejas_ninfa_3.png" width="64"> |
 
 ---
 
-#####  Accesorios Especiales
+##### Accesorios Especiales
 
 | Accesorio | Vista |
-| :---: |
+| :--- | :---: |
 | **Bigote Inspector** | <img src="assets/sprites/npcs/bigote_inspector.png" width="64"> |
 | **Gafas** | <img src="assets/sprites/npcs/gafas.png" width="64"> |
 | **Gorro Inspector** | <img src="assets/sprites/npcs/gorro_inspector.png" width="64"> |
 
 ---
-
 
 * **Construcción por Plantillas Aleatorias:** Los requisitos de su poción se deciden completamente al azar. Para generar su texto de presentación, el juego elige y une plantillas aleatorias. Una vez montada la estructura, se le aplica el sistema general de sustitución de sinónimos.
 * **Reacción:** Sus respuestas al recibir la poción son puramente visuales y mecánicas (animaciones genéricas de celebración o enfado), **sin requerir diálogos de desenlace**.
