@@ -281,49 +281,31 @@ export default class KitchenTutorial {
         this.createSkipButton();
         this.disableAllInteractions();
 
-        /* Burbuja de pensar para despertar al caldero
-        const bX = this.k.cauldronImg.x + 60;
-        const bY = this.k.cauldronImg.y - 100;
 
-        this.burbujaPensar = this.k.add.sprite(bX, bY, 'thinkingBubble', 'pensar-0');
-        this.burbujaPensar.setScale(3).setDepth(10000);
-        this.burbujaPensar.play('think');
-        */
+        if (this.k.cauldron) {
+            this.k.cauldron.toggleFire(false);
 
-        // Queremos que al hacer clic sobre el caldero, se despierte
-        this.k.cauldronImg.setInteractive({ useHandCursor: true });
-        this.k.cauldronImg.once('pointerdown', () => {
+            // Ahora inicia el diálogo de bienvenida
 
-            /*
-            if (this.burbujaPensar) {
-                this.burbujaPensar.destroy();
-            }*/
-            this.disableAllInteractions();
+            // Tomamos el nombre del jugador para dirigirnos a el, en caso de que anteriormente no haya
+            // seleccionado nombre, nos dirijimos por defecto como "sobrina de Agatha"
+            let playerName = this.k.registry.get("playerName");
+            if (!playerName || playerName.toLowerCase() === "sobrina") {
+                playerName = "la sobrina de Agatha";
+            }
 
-            if (this.k.cauldron) {
-                this.k.cauldron.toggleFire(false);
+            const saludo = `¡Hola! Tú debes de ser ${playerName}. Me llamo Castiel y tu tía me ha encomendado la tarea de enseñarte todo lo que necesitas saber para preparar tu primera poción. ¿Comenzamos?`
 
-                // Ahora inicia el diálogo de bienvenida
-
-                // Tomamos el nombre del jugador para dirigirnos a el, en caso de que anteriormente no haya
-                // seleccionado nombre, nos dirijimos por defecto como "sobrina de Agatha"
-                let playerName = this.k.registry.get("playerName");
-                if (!playerName || playerName.toLowerCase() === "sobrina") {
-                    playerName = "la sobrina de Agatha";
-                }
-
-                const saludo = `¡Hola! Tú debes de ser ${playerName}. Me llamo Castiel y tu tía me ha encomendado la tarea de enseñarte todo lo que necesitas saber para preparar tu primera poción. ¿Comenzamos?`
-
-                this.k.cauldron.forceSpeech(saludo, 5000);
+            this.k.cauldron.forceSpeech(saludo, 5000);
 
 
-                this.k.events.once('cauldron:speech:finished', () => {
-                    this.showStartPopup(() => {
-                        this.step9();
-                    });
+            this.k.events.once('cauldron:speech:finished', () => {
+                this.showStartPopup(() => {
+                    this.step1();
                 });
-            };
-        });
+            });
+        };
+
     }
 
     // PASO 1: HACER UBICAR LAS BAYAS
