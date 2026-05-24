@@ -5,6 +5,7 @@ import Letter from './scenes/letter.js';
 import Store from './scenes/store.js';
 import Kitchen from './scenes/kitchen.js';
 import Menu from './scenes/menu.js';
+import DialogueScene from './scenes/dialogueScene.js';
 import House from './scenes/house.js';
 import Cave from './scenes/cave.js';
 import City from './scenes/city.js';
@@ -28,7 +29,7 @@ const config = {
     pixelArt: true,
     roundPixels: true,
     physics: { default: 'arcade', arcade: { gravity: { y: 0 }, debug: true } },
-    scene: [Start, Boot, Letter, Store, Kitchen, CuttingMinigame, MortarMinigame, Menu, DailySummary, House, Cave, City, GameOver, End],
+    scene: [Start, Boot, Letter, Store, Kitchen, CuttingMinigame, MortarMinigame, Menu,DialogueScene, DailySummary, House, Cave, City, GameOver, End],
     // npm install phaser-animated-tiles tuve que hacer para la animacion de las tiles
     // npm install phaser-navmesh tuve que hacer para el point and go del jugador
     plugins: {

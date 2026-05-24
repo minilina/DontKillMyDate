@@ -15,11 +15,19 @@ const GameState = {
     elf: null,
     nymph: null,
     gnomo: null,
-    fairy: null,
+    fairy: 81,
     human: null,
     kitsune: null,
     madre: null,
   },
+
+  /**
+   * Registro de si el jugador ya habló por primera vez con cada NPC en el topdown.
+   * La clave es el npcId (igual que en specialNpcRecords).
+   * false = aún no ha hablado → se usará firstDialogueTopdown
+   * true  = ya habló → se usará dialogueTopdown
+   */
+  topdownNpcFirstDialogueDone: {},
 
   timesMotherTalkedToPlayer: 0,
 
@@ -27,6 +35,20 @@ const GameState = {
     if (this.specialNpcRecords[npcId] !== undefined) {
       this.specialNpcRecords[npcId] = score;
     }
+  },
+
+  /**
+   * Devuelve true si ya se habló con este NPC en el topdown al menos una vez.
+   */
+  hasTopdownNpcTalked(npcId) {
+    return !!this.topdownNpcFirstDialogueDone[npcId];
+  },
+
+  /**
+   * Marca que el jugador ya habló con este NPC en el topdown.
+   */
+  markTopdownNpcTalked(npcId) {
+    this.topdownNpcFirstDialogueDone[npcId] = true;
   },
 
   dailyStats: {
@@ -51,7 +73,7 @@ const GameState = {
 
   isDayOver() {
     const today = this.daysData[this.currentDay - 1];
-    if (!today) return true; // día fuera de rango → juego terminado
+    if (!today) return true;
     return this.currentCustomer >= today.customers.length;
   },
 
@@ -59,7 +81,6 @@ const GameState = {
     return this.currentDay > this.daysData.length;
   },
 
-  // Devuelve true si el jugador no hizo el evento especial → final intermedio
   isNeutralEnding() {
     return !this.hasCompletedSpecialEvent;
   },

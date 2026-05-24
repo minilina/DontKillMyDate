@@ -528,198 +528,134 @@ export default class TopDownScene extends Phaser.Scene {
             }
         });
     }
+    // ─────────────────────────────────────────────────────────────────────────────
+    // PARCHE PARA topDownScene.js
+    // Sustituye los métodos crearNPCs y crearSistemaInteraccionNPCs por estos.
+    // El resto del archivo NO cambia.
+    // ─────────────────────────────────────────────────────────────────────────────
+
+    // ELIMINAR esta importación del archivo original (ya no se usa aquí):
+    //   import DialogueManager from '../dialogue/dialogueManager.js';
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // PARCHE PARA topDownScene.js
+    // Sustituye los métodos crearNPCs y crearSistemaInteraccionNPCs por estos.
+    // El resto del archivo NO cambia.
+    //
+    // TAMBIÉN: elimina la importación de DialogueManager del archivo original:
+    //   import DialogueManager from '../dialogue/dialogueManager.js';  ← BORRAR
+    // ─────────────────────────────────────────────────────────────────────────────
+
     crearNPCs(nombreCapa = 'Objetos/NPCs') {
 
         this.npcs = [];
-        this.dialogueManager = new DialogueManager(this, {
-            followCamera: true
-        });
-        const capaNPCs =
-            this.map.getObjectLayer(nombreCapa);
+        // DialogueManager ya no vive aquí → lo gestiona DialogueScene
 
+        const capaNPCs = this.map.getObjectLayer(nombreCapa);
         if (!capaNPCs) return;
 
-        // Grupo físico
-        this.grupoNPCs =
-            this.physics.add.staticGroup();
+        this.grupoNPCs = this.physics.add.staticGroup();
 
         capaNPCs.objects.forEach(obj => {
 
             const npcId = obj.name;
-
             const data = npcData[npcId];
 
             if (!data) {
-
-                console.warn(
-                    `NPC '${npcId}' no existe en scriptedNpcsTopdown.json`
-                );
-
+                console.warn(`NPC '${npcId}' no existe en scriptedNpcs.json`);
                 return;
             }
-            //solo aparecen si el jugador ha conseguido una buena puntuacion con ellos en la tienda o si es la madre, que siempre aparece
+
             if (GameState.specialNpcRecords[npcId] > 80 || npcId === "madre") {
-                // Crear NPC
-                const npc = new NPC(
-                    this,
-                    obj.x,
-                    obj.y,
-                    npcId,
-                    data
-                );
-
+                const npc = new NPC(this, obj.x, obj.y, npcId, data);
                 this.npcs.push(npc);
-
                 this.grupoNPCs.add(npc);
             }
-
         });
 
-        // Colisión jugador/NPC
-        this.physics.add.collider(
-            this.player,
-            this.grupoNPCs
-        );
-
-        // Interacción
+        this.physics.add.collider(this.player, this.grupoNPCs);
         this.crearSistemaInteraccionNPCs();
     }
+
     crearSistemaInteraccionNPCs() {
 
-        // Botón E
-        this.teclaE_npc = this.add.image(
-            0,
-            0,
-            'eBtn'
-        )
+        // ── Icono E ────────────────────────────────────────────────────────────────
+        this.teclaE_npc = this.add.image(0, 0, 'eBtn')
             .setOrigin(0.5)
             .setDepth(10000)
             .setVisible(false);
 
         this.estadoBotonENPC = false;
 
-        // Parpadeo
         this.time.addEvent({
-
             delay: 400,
-
             loop: true,
-
             callback: () => {
-
                 if (!this.teclaE_npc.visible) return;
-
-                this.estadoBotonENPC =
-                    !this.estadoBotonENPC;
-
-                this.teclaE_npc.setTexture(
-
-                    this.estadoBotonENPC
-                        ? 'eBtnPressed'
-                        : 'eBtn'
-                );
-            }
+                this.estadoBotonENPC = !this.estadoBotonENPC;
+                this.teclaE_npc.setTexture(this.estadoBotonENPC ? 'eBtnPressed' : 'eBtn');
+            },
         });
 
         this.npcCercano = null;
 
+        // ── Detección del NPC más cercano ──────────────────────────────────────────
         this.events.on('update', () => {
 
             if (!this.player || !this.player.active) return;
 
-            let npcMasCercano = null;
+            // Si DialogueScene está activa, ocultamos el icono y no hacemos nada
+            if (this.scene.manager.isActive("DialogueScene")) {
+                this.teclaE_npc.setVisible(false);
+                return;
+            }
 
+            let npcMasCercano = null;
             let minDist = 40;
 
             this.npcs?.forEach(npc => {
-
                 if (!npc.active) return;
-
-                const dist =
-                    Phaser.Math.Distance.Between(
-                        this.player.x,
-                        this.player.y,
-                        npc.x,
-                        npc.y
-                    );
-
-                if (dist < minDist) {
-
-                    minDist = dist;
-
-                    npcMasCercano = npc;
-                }
+                const dist = Phaser.Math.Distance.Between(
+                    this.player.x, this.player.y, npc.x, npc.y
+                );
+                if (dist < minDist) { minDist = dist; npcMasCercano = npc; }
             });
 
             if (npcMasCercano) {
-
                 this.npcCercano = npcMasCercano;
-
                 this.teclaE_npc.setVisible(true);
-
-                this.teclaE_npc.setPosition(
-                    npcMasCercano.x,
-                    npcMasCercano.y - 24
-                );
-
+                this.teclaE_npc.setPosition(npcMasCercano.x, npcMasCercano.y - 24);
             } else {
-
                 this.npcCercano = null;
-
                 this.teclaE_npc.setVisible(false);
-
                 this.estadoBotonENPC = false;
-
                 this.teclaE_npc.setTexture('eBtn');
             }
         });
 
-        // TECLA E
+        // ── Tecla E ────────────────────────────────────────────────────────────────
         this.input.keyboard.on('keydown-E', () => {
-
             if (!this.npcCercano) return;
-
-            if (this.dialogueManager?.active) return;
-
-            this.npcCercano.interact(this.dialogueManager);
+            if (this.scene.manager.isActive("DialogueScene")) return;
+            this.npcCercano.interact(this);
         });
 
-        // CLICK
+        // ── Click ──────────────────────────────────────────────────────────────────
         this.input.on('pointerdown', (pointer) => {
 
             if (!this.player || !this.player.active) return;
+            if (this.scene.manager.isActive("DialogueScene")) return;
 
-            const worldPoint =
-                this.cameras.main.getWorldPoint(
-                    pointer.x,
-                    pointer.y
-                );
-
-            const dist =
-                Phaser.Math.Distance.Between(
-                    this.player.x,
-                    this.player.y,
-                    worldPoint.x,
-                    worldPoint.y
-                );
-
+            const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
+            const dist = Phaser.Math.Distance.Between(
+                this.player.x, this.player.y, worldPoint.x, worldPoint.y
+            );
             if (dist > 40) return;
 
             this.npcs?.forEach(npc => {
-
                 const bounds = npc.getBounds();
-
-                if (
-                    Phaser.Geom.Rectangle.Contains(
-                        bounds,
-                        worldPoint.x,
-                        worldPoint.y
-                    )
-                ) {
-
-                    if (!this.dialogueManager?.active) {
-                        npc.interact(this.dialogueManager);
-                    }
+                if (Phaser.Geom.Rectangle.Contains(bounds, worldPoint.x, worldPoint.y)) {
+                    this.npcCercano.interact(this);
                 }
             });
         });
