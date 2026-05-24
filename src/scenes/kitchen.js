@@ -33,6 +33,8 @@ export default class Kitchen extends Phaser.Scene {
     }
 
     create() {
+        // asegurarnos de que el cursor es el correcto al entrar en la cocina
+        this.game.canvas.style.cursor = 'default';
 
         // variables tutorial
         this.hooks = {};
@@ -317,6 +319,16 @@ export default class Kitchen extends Phaser.Scene {
 
     // coger ingrediente para arrastrarlo
     grab(sourceSprite, dragItemKey, itemType, itemData = null) {
+        sourceSprite.on('pointerover', () => {
+            if (!this.isDraggingItem) {
+                this.game.canvas.classList.add('cursor-takeable');
+            }
+        });
+
+        sourceSprite.on('pointerout', () => {
+            this.game.canvas.classList.remove('cursor-takeable');
+        });
+
         sourceSprite.on('pointerdown', (pointer) => {
 
             if (this.isDraggingItem) return;
@@ -354,6 +366,9 @@ export default class Kitchen extends Phaser.Scene {
             }
 
             this.isDraggingItem = true;
+
+            this.game.canvas.classList.remove('cursor-takeable');
+            this.game.canvas.classList.add('cursor-take');
 
             if (itemType === 'smell') {
                 sourceSprite.setVisible(false);
@@ -401,6 +416,14 @@ export default class Kitchen extends Phaser.Scene {
             // soltar
             const onPointerUp = (ptr) => {
                 this.isDraggingItem = false;
+
+                this.game.canvas.classList.remove('cursor-take');
+                this.game.canvas.classList.remove('cursor-takeable');
+
+                if (sourceSprite && sourceSprite.active && sourceSprite.getBounds().contains(ptr.x, ptr.y)) {
+                    this.game.canvas.classList.add('cursor-takeable');
+                }
+                
                 this.hideIndicators();
                 this.input.off('pointermove', onPointerMove);
                 this.resetBorders();
@@ -507,6 +530,14 @@ export default class Kitchen extends Phaser.Scene {
 
             this.input.on('pointermove', onPointerMove);
             this.input.once('pointerup', onPointerUp);
+        });
+
+        this.input.on('pointermove', (pointer, gameObjects) => {
+            // Si no estamos tocando ningún objeto interactivo y tampoco estamos arrastrando nada...
+            if (gameObjects.length === 0 && !this.isDraggingItem) {
+                // Forzamos a que vuelva a la normalidad
+                this.game.canvas.style.cursor = 'default';
+            }
         });
     }
 

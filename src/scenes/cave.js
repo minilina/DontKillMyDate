@@ -61,9 +61,5 @@ export default class Cueva extends topDownScene {
                 obj.setVisible(false);
             }
         });
-
-        
     }
-
-   
 }

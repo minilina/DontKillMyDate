@@ -9,8 +9,7 @@ export default class TopDownScene extends Phaser.Scene {
         super({ key });
     }
 
-    // Metodo generico para inicializar mapas t
-    // opDown
+    // Metodo generico para inicializar mapas topDown
     initScene(mapKey) {
         this.map = this.make.tilemap({ key: mapKey });
         this.isTransitioning = false;
@@ -94,7 +93,10 @@ export default class TopDownScene extends Phaser.Scene {
         }
 
         // Input generico de movimiento
-        this.input.on('pointerdown', (pointer) => {
+        this.input.on('pointerdown', (pointer, gameObjects) => {
+            const tocandoUI = gameObjects.some(obj => obj.scrollFactorX === 0 || obj.scrollFactorY === 0); // Si el click es sobre un objeto con scrollFactor 0 (UI), no hacemos nada
+            if (tocandoUI) return;
+
             const worldPoint = pointer.positionToCamera(this.cameras.main);
             const path = this.player.navMesh.findPath(
                 { x: this.player.x, y: this.player.y },
@@ -377,6 +379,7 @@ export default class TopDownScene extends Phaser.Scene {
     cambiarEscena(nuevaEscena, datos = {}) {
         if (this.isTransitioning) return;
         this.isTransitioning = true;
+        this.game.canvas.style.cursor = 'default'; // Por si cambiamos de escena mientras el cursor es de interactuar, lo reseteamos
         this.scene.start(nuevaEscena, datos);
     }
 
@@ -400,21 +403,25 @@ export default class TopDownScene extends Phaser.Scene {
     }
     // HOVER PARA LAS VALLAS Y LA PIEDRA
     hover(configuraciones) {
-        this.input.on('pointermove', (pointer) => {
+        this.input.on('pointermove', (pointer, gameObjects) => {
+            if (gameObjects.length > 0) return;
+
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
             let esInteractivo = false;
 
-            // Calculamos a que distancia esta el raton del jugador
-            const distancia = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
+            if (this.player && this.player.active) {
+                // Calculamos a que distancia esta el raton del jugador
+                const distancia = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
 
-            if (distancia <= 40) {
-                for (const config of configuraciones) {
-                    if (!config.capa) continue; // Si la capa no existe, pasamos a la siguiente
+                if (distancia <= 40) {
+                    for (const config of configuraciones) {
+                        if (!config.capa) continue; // Si la capa no existe, pasamos a la siguiente
 
-                    const tile = config.capa.getTileAtWorldXY(worldPoint.x, worldPoint.y);
-                    if (tile && config.ids.includes(tile.index)) {
-                        esInteractivo = true;
-                        break; // Si ya hemos encontrado algo interactivo, dejamos de buscar
+                        const tile = config.capa.getTileAtWorldXY(worldPoint.x, worldPoint.y);
+                        if (tile && config.ids.includes(tile.index)) {
+                            esInteractivo = true;
+                            break; // Si ya hemos encontrado algo interactivo, dejamos de buscar
+                        }
                     }
                 }
             }
