@@ -1,11 +1,14 @@
 import Phaser from 'phaser';
 import Player from '../game-objects/player.js';
 import NPC from '../game-objects/topdownNPC.js';
-import npcData from "../../assets/json/scriptedNpcsTopdown.json";
+import npcData from "../../assets/json/scriptedNpcs.json";
+import DialogueManager from '../dialogue/dialogueManager.js';
+import GameState from "../state/GameState.js";
 
 export default class TopDownScene extends Phaser.Scene {
     constructor(key) {
         super({ key });
+        this.dialogueManager = null;
     }
 
     // Metodo generico para inicializar mapas t
@@ -528,7 +531,9 @@ export default class TopDownScene extends Phaser.Scene {
     crearNPCs(nombreCapa = 'Objetos/NPCs') {
 
         this.npcs = [];
-
+        this.dialogueManager = new DialogueManager(this, {
+            followCamera: true
+        });
         const capaNPCs =
             this.map.getObjectLayer(nombreCapa);
 
@@ -552,19 +557,22 @@ export default class TopDownScene extends Phaser.Scene {
 
                 return;
             }
+            //solo aparecen si el jugador ha conseguido una buena puntuacion con ellos en la tienda o si es la madre, que siempre aparece
+            if (GameState.specialNpcRecords[npcId] > 80 || npcId === "madre") {
+                // Crear NPC
+                const npc = new NPC(
+                    this,
+                    obj.x,
+                    obj.y,
+                    npcId,
+                    data
+                );
 
-            // Crear NPC
-            const npc = new NPC(
-                this,
-                obj.x,
-                obj.y,
-                npcId,
-                data
-            );
+                this.npcs.push(npc);
 
-            this.npcs.push(npc);
+                this.grupoNPCs.add(npc);
+            }
 
-            this.grupoNPCs.add(npc);
         });
 
         // Colisión jugador/NPC
@@ -673,7 +681,7 @@ export default class TopDownScene extends Phaser.Scene {
 
             if (this.dialogueManager?.active) return;
 
-            this.npcCercano.interact();
+            this.npcCercano.interact(this.dialogueManager);
         });
 
         // CLICK
@@ -710,7 +718,7 @@ export default class TopDownScene extends Phaser.Scene {
                 ) {
 
                     if (!this.dialogueManager?.active) {
-                        npc.interact();
+                        npc.interact(this.dialogueManager);
                     }
                 }
             });

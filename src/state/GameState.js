@@ -18,7 +18,10 @@ const GameState = {
     fairy: null,
     human: null,
     kitsune: null,
+    madre: null,
   },
+
+  timesMotherTalkedToPlayer: 0,
 
   saveSpecialNpcRecord(npcId, score) {
     if (this.specialNpcRecords[npcId] !== undefined) {

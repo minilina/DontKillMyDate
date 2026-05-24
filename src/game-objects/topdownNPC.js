@@ -61,17 +61,22 @@ export default class topdownNPC extends Phaser.Physics.Arcade.Sprite {
         });
     }
 
-    interact() {
+    interact(dialogueManager) {
 
         const lines = !this.firstDialogueDone
-            ? this.npcData.firstDialogue
-            : this.npcData.dialogue;
+            ? this.npcData.firstDialogueTopdown
+            : this.npcData.dialogueTopdown;
 
-        this.scene.dialogueManager.start({
+        dialogueManager.start({
 
             speakerName: this.npcData.name,
 
-            lines
+            lines,
+
+            x: this.x,
+
+            y: this.y 
+
         });
 
         this.firstDialogueDone = true;
