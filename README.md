@@ -117,9 +117,9 @@ Todos los personajes que entran a la tienda interactúan con el jugador a travé
 Son la principal fuente de ingresos y reputación durante el bucle de juego diario, manteniendo el flujo constante de la consulta.
 * **Generación Modular:** Su aspecto se construye de forma dinámica. El sistema ensambla partes intercambiables. Primero el tono de piel, que se usa para elegir cuerpo, nariz y boca; un peinado; un color para pelo, cejas y otros features que lo requieran, color de ojos y ropa de la raza seleccionada aleatoriamente.
 
-Aquí una tabla con todas las piezas utilizadas para la gener:
+Aquí una tabla con todas los sprites utilizados para los clientes:
 
-## Cuerpos Base
+##### Cuerpos Base
 
 | Capa | Opción 1 | Opción 2 | Opción 3 |
 | :---: | :---: | :---: |
@@ -127,7 +127,7 @@ Aquí una tabla con todas las piezas utilizadas para la gener:
 
 ---
 
-## Ropa por Raza
+##### Ropa por Raza
 
 | Raza | Vista |
 | :---: |
@@ -141,7 +141,7 @@ Aquí una tabla con todas las piezas utilizadas para la gener:
 
 ---
 
-## Features Especiales por Raza
+##### Features Especiales por Raza
 
 | Raza | Vista |
 | :---: |
@@ -157,7 +157,7 @@ Aquí una tabla con todas las piezas utilizadas para la gener:
 
 ---
 
-## Ojos
+#####  Ojos
 
 | Capa / Color | Vista |
 | :---: |
@@ -172,7 +172,7 @@ Aquí una tabla con todas las piezas utilizadas para la gener:
 
 ---
 
-## Pelo — Estilo 1
+##### Pelo — Estilo 1
 
 | Color | Vista |
 | :---: |
@@ -184,7 +184,7 @@ Aquí una tabla con todas las piezas utilizadas para la gener:
 | **Rubio** | <img src="assets/sprites/npcs/pelo_1_rubiol.png" width="64"> |
 | **Verde** | <img src="assets/sprites/npcs/pelo_1_verde.png" width="64"> |
 
-## Pelo — Estilo 2
+#####  Pelo — Estilo 2
 
 | Color | Vista |
 | :---: |
@@ -196,7 +196,7 @@ Aquí una tabla con todas las piezas utilizadas para la gener:
 | **Rubio** | <img src="assets/sprites/npcs/pelo_2_rubio.png" width="64"> |
 | **Verde** | <img src="assets/sprites/npcs/pelo_2_verde.png" width="64"> |
 
-## Pelo — Estilo 3
+#####  Pelo — Estilo 3
 
 | Color | Vista |
 | :---: |
@@ -209,7 +209,7 @@ Aquí una tabla con todas las piezas utilizadas para la gener:
 
 ---
 
-## Cejas
+#####  Cejas
 
 | Color | Vista |
 | :---: |
@@ -222,7 +222,7 @@ Aquí una tabla con todas las piezas utilizadas para la gener:
 
 ---
 
-## Bocas
+#####  Bocas
 
 | Expresión | Vista |
 | :---: |
@@ -234,17 +234,18 @@ Aquí una tabla con todas las piezas utilizadas para la gener:
 
 ---
 
-## Narices
+#####  Narices
 
 | Variante | Vista |
 | :---: |
+| **Base** | <img src="assets/sprites/npcs/nariz.png" width="64"> |
 | **Variante 1** | <img src="assets/sprites/npcs/nariz_1.png" width="64"> |
 | **Variante 2** | <img src="assets/sprites/npcs/nariz_2.png" width="64"> |
 | **Variante 3** | <img src="assets/sprites/npcs/nariz_3.png" width="64"> |
 
 ---
 
-## Orejas
+#####  Orejas
 
 | Tipo | Opción 1 | Opción 2 | Opción 3 |
 | :---: | :---: | :---: |
@@ -253,10 +254,11 @@ Aquí una tabla con todas las piezas utilizadas para la gener:
 
 ---
 
-## Accesorios Especiales
+#####  Accesorios Especiales
 
 | Accesorio | Vista |
 | :---: |
+| **Bigote Inspector** | <img src="assets/sprites/npcs/bigote_inspector.png" width="64"> |
 | **Gafas** | <img src="assets/sprites/npcs/gafas.png" width="64"> |
 | **Gorro Inspector** | <img src="assets/sprites/npcs/gorro_inspector.png" width="64"> |
 
