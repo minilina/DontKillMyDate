@@ -2,13 +2,11 @@ import Phaser from 'phaser';
 import Player from '../game-objects/player.js';
 import NPC from '../game-objects/topdownNPC.js';
 import npcData from "../../assets/json/scriptedNpcs.json";
-import DialogueManager from '../dialogue/dialogueManager.js';
 import GameState from "../state/GameState.js";
 
 export default class TopDownScene extends Phaser.Scene {
     constructor(key) {
         super({ key });
-        this.dialogueManager = null;
     }
 
     // Metodo generico para inicializar mapas t
@@ -528,28 +526,10 @@ export default class TopDownScene extends Phaser.Scene {
             }
         });
     }
-    // ─────────────────────────────────────────────────────────────────────────────
-    // PARCHE PARA topDownScene.js
-    // Sustituye los métodos crearNPCs y crearSistemaInteraccionNPCs por estos.
-    // El resto del archivo NO cambia.
-    // ─────────────────────────────────────────────────────────────────────────────
-
-    // ELIMINAR esta importación del archivo original (ya no se usa aquí):
-    //   import DialogueManager from '../dialogue/dialogueManager.js';
-
-    // ─────────────────────────────────────────────────────────────────────────────
-    // PARCHE PARA topDownScene.js
-    // Sustituye los métodos crearNPCs y crearSistemaInteraccionNPCs por estos.
-    // El resto del archivo NO cambia.
-    //
-    // TAMBIÉN: elimina la importación de DialogueManager del archivo original:
-    //   import DialogueManager from '../dialogue/dialogueManager.js';  ← BORRAR
-    // ─────────────────────────────────────────────────────────────────────────────
 
     crearNPCs(nombreCapa = 'Objetos/NPCs') {
 
         this.npcs = [];
-        // DialogueManager ya no vive aquí → lo gestiona DialogueScene
 
         const capaNPCs = this.map.getObjectLayer(nombreCapa);
         if (!capaNPCs) return;

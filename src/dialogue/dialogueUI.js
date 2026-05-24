@@ -2,9 +2,8 @@
  * UI del cuadro de diálogo clientes
  */
 export default class DialogueUI {
-  constructor(scene,topDown = false) {
+  constructor(scene) {
     this.scene = scene;
-    this.topDown = topDown;
     this.container = scene.add.container(0, 0).setDepth(1000);
     this.container.setVisible(false);
 

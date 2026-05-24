@@ -6,8 +6,8 @@ export default class topdownNPC extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, npcId, npcData) {
         super(scene, x, y, npcData.anim);
 
-        this.scene  = scene;
-        this.npcId  = npcId;
+        this.scene = scene;
+        this.npcId = npcId;
         this.npcData = npcData;
 
         scene.add.existing(this);
@@ -47,19 +47,36 @@ export default class topdownNPC extends Phaser.Physics.Arcade.Sprite {
      * @param {Phaser.Scene} callerScene  La TopDownScene que inicia la interacción.
      */
     interact(callerScene) {
-        const yaHabló = GameState.hasTopdownNpcTalked(this.npcId);
+        let lines = null;
 
-        const lines = !yaHabló
-            ? this.npcData.firstDialogueTopdown
-            : this.npcData.dialogueTopdown;
+        if (this.npcId == "madre") {
 
-        // Marcamos como "ya habló" en GameState antes de lanzar la escena
-        // (así si el jugador recarga la escena topdown, sigue marcado)
-        GameState.markTopdownNpcTalked(this.npcId);
+            GameState.talkToMother();
+            let timesTalked = GameState.getTimesTalkedToMother()-1;
+
+            const dialogues = this.npcData.dialogueTopdown;
+
+            // Si existe diálogo para ese número, lo usamos.
+            // Si no, usamos el último disponible.
+            lines = dialogues[timesTalked] ||
+                dialogues[Object.keys(dialogues).length - 1];
+
+            
+
+        } else {
+
+            const alreadyTalked = GameState.hasTopdownNpcTalked(this.npcId);
+
+            lines = !alreadyTalked
+                ? this.npcData.firstDialogueTopdown
+                : this.npcData.dialogueTopdown;
+
+            GameState.markTopdownNpcTalked(this.npcId);
+        }
 
         callerScene.scene.launch("DialogueScene", {
             parentScene: callerScene.scene.key,
-            npcData:     this.npcData,   // lleva .looks, .name, etc.
+            npcData: this.npcData,
             dialogue: {
                 speakerName: this.npcData.name,
                 lines,

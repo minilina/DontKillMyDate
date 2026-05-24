@@ -71,7 +71,7 @@ export default class DialogueScene extends Phaser.Scene {
     // Traemos esta escena al frente del renderizado (igual que Menu.js)
     this.scene.bringToTop();
 
-    this.dialogueManager = new DialogueManager(this, { topDown: false });
+    this.dialogueManager = new DialogueManager(this);
 
     // Escuchamos el fin del diálogo
     this.events.once("dialogue:finished", () => this._onFinished());

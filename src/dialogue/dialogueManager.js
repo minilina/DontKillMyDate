@@ -11,8 +11,7 @@ export default class DialogueManager {
    */
   constructor(scene, opts = {}) {
     this.scene = scene;
-    this.topDown = opts.topDown ?? false;
-    this.ui = opts.ui ?? new DialogueUI(scene, this.topDown);
+    this.ui = opts.ui ?? new DialogueUI(scene);
 
     this.active = false;
     this.lines = [];
@@ -37,13 +36,6 @@ export default class DialogueManager {
     this.speakerName = dialogue?.speakerName ?? "";
     this.ui.setName(this.speakerName);
 
-    if(this.topDown) {
-      this.x = dialogue?.x ?? 0;
-      this.y = dialogue?.y ?? 0;
-
-      // Reposicionamos el UI para que esté cerca del NPC
-      this.ui.container.setPosition(this.x - 10, this.y - 15);
-    }
 
     this.ui.show();
     this._showCurrentLine();

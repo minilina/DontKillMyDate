@@ -342,13 +342,19 @@
   "madre": {
     "name": "Mujer misteriosa",
     "anim": "NPCmadre",
-    "dialogueTopdown": [
-      "Tu cara me resulta muy familiar... ¿No serás por casualidad la sobrina de Agatha, verdad?",
-      "¡Vaya! No esperaba encontrar a una cara conocida, aunque me alegra que hayas decidido quedarte a cuidar esta tienda. Seguro que tu tía estaría orgullosa de ti."
-    ],
-    "firstDialogueTopdown": [
-      "Anda, alguien viniendo a visitar mi escondite en la cueva, como supiste entrar?",
-      "Bueno, no importa, de todas formas me resultas muy familiar...(no será ella... ¿verdad?)"
+    "dialogueTopdown": {
+      "0" : ["Anda, alguien viniendo a visitar mi escondite en la cueva, ¿como supiste entrar? Bueno, no importa, de todas formas no deberías entrar en sitios como este, aunque me alegr... Nada olvídalo."],
+      "1" : ["¿Otro día vienes a verme? Bueno mientras solo seas tú no tengo problema... Pero ten cuidado de que nadie te vea entrar aquí."],
+      "2" : ["¿Sigues viniendo? Bueno, no me molesta, me gusta tener compañía por aquí, aunque no se si es seguro que sigas viniendo a este lugar tan peligroso..."],
+      "3" : ["Me he atrevido a salir un poco de la cueva, y he visto que las relaciones entre las razas de este reino han mejorado enormemente, no será gracias a tí ¿no?"],
+      "4" : ["Estoy pensando en si sería buena idea contarte un pequeño secreto, pero eso me pondría en peligro... Bueno en verdad te has preocupado mucho por mi viniendome a visitar tantos días a esta cueva..."],
+      "5" : ["Bueno, te contaré la verdad.. En realidad yo soy tu madre, pero tuve que esconderme aquí para protegerme de un gran peligro que se cierne sobre mí. Eres mi hija junto con el anterior rey de los elfos, y pese a que nos amabamos profundamente, los compatriotas de tu padre acabaron matándole por tener descendencia con una humana como yo. Desde entonces me he escondido aquí para vigilarte escondida. Tu tía Agatha y yo te protegeremos siempre que sea necesario, pero gracias a todo lo que estas haciendo por mejorar las relaciones entre las razas ya no parece necesario esconderme. Muchisimas gracias por todo hija mía estoy orgullosísima de tí y de tu trabajo en estas tierras"],
+      "6" : ["Mi querida hija. Que orgullosa estoy de tí. Has hecho un gran trabajo por todos los seres de este reino. Ven a visitarme a menudo anda, ¡que me aburro mucho aquí! Dentro de poco me mudaré a la ciudad, que las cosas están mejorando mucho."],
+      "7" : ["Hola cariño, ¿qué tal estás hoy? Me alegro muchísimo de verte, ¿qué tal las cosas por la tienda?"]
+
+    },
+    "READMEMADRE": [
+      "en el caso de madre, el dialogo que se leera cada vez que hablemos con ella sera dialogueTopdown[vez]"
     ]
   },
   "aunt": {

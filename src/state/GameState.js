@@ -30,6 +30,18 @@ const GameState = {
   topdownNpcFirstDialogueDone: {},
 
   timesMotherTalkedToPlayer: 0,
+  lastDayTalkedToMother: 0,
+
+  getTimesTalkedToMother() {
+    return this.timesMotherTalkedToPlayer;
+  },
+  talkToMother() {
+    //solo incrementamos las veces habladas con la madre si es un dia nuevo
+    if(this.lastDayTalkedToMother !== this.currentDay) {
+      this.timesMotherTalkedToPlayer++;
+      this.lastDayTalkedToMother = this.currentDay;
+    }
+  },
 
   saveSpecialNpcRecord(npcId, score) {
     if (this.specialNpcRecords[npcId] !== undefined) {
