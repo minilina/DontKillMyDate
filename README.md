@@ -105,7 +105,186 @@ PUEBLO: Vista top-down.
 
 > 🟢 = Buena <br/> ⚪ = Neutra <br/> 🔴 = Mala
 
-### 5.2 Clientes
+#### 5.2. Clientes
+Los clientes son el motor narrativo y mecánico de la tienda. Acuden a la consulta buscando ayuda mágica para sus problemas y se dividen en dos grandes categorías, compartiendo un mismo núcleo para procesar sus textos.
+
+#### 5.2.1. Sistema de Diálogos Dinámicos (General)
+Todos los personajes que entran a la tienda interactúan con el jugador a través del mismo sistema base de diálogo para plantear su encargo.
+* **Petición Inicial:** El cliente camufla los 5 requisitos de la poción (olor/raza objetivo, sabor, consistencia, temperatura y forma del frasco) dentro de su discurso.
+* **Sustitución de Sinónimos por Dificultad:** El texto base contiene etiquetas dinámicas (como `{sabor}` o `{color}`). El motor del juego lee la dificultad actual ("fácil", "media", "difícil") y sustituye automáticamente esas etiquetas por un sinónimo del ingrediente. En niveles fáciles se insertan palabras muy evidentes y directas, mientras que en dificultades altas se eligen sinónimos crípticos o metafóricos para obligar al jugador a deducir la receta.
+
+#### 5.2.2. Clientes Procedimentales (Aldeanos)
+Son la principal fuente de ingresos y reputación durante el bucle de juego diario, manteniendo el flujo constante de la consulta.
+* **Generación Modular:** Su aspecto se construye de forma dinámica. El sistema ensambla partes intercambiables. Primero el tono de piel, un peinado, luego un color para pelo, cejas y otros features que lo requieran, color de ojos y ropa de la raza seleccionada aleatoriamente.
+
+Aquí un ejemplo de las piezas modulares:
+
+# 🧬 Generación Procedimental de NPCs
+
+Los NPCs se generan dinámicamente combinando capas de pixel art modulares según la raza y personalidad de cada personaje. A continuación se muestran todas las piezas disponibles organizadas por categoría.
+
+---
+
+## 🫀 Cuerpos Base
+
+| Capa | Opción 1 | Opción 2 | Opción 3 |
+| :--- | :---: | :---: | :---: |
+| **Cuerpos** | <img src="assets/sprites/npcs/cuerpo_1.png" width="64"> | <img src="assets/sprites/npcs/cuerpo_2.png" width="64"> | <img src="assets/sprites/npcs/cuerpo_3.png" width="64"> |
+| | `cuerpo_1` | `cuerpo_2` | `cuerpo_3` |
+
+---
+
+## 👗 Ropa por Raza
+
+| Raza | Vista | Archivo |
+| :--- | :---: | :--- |
+| **Elfo** | <img src="assets/sprites/npcs/ropa_elfo.png" width="64"> | `assets/sprites/npcs/ropa_elfo.png` |
+| **Gnomo** | <img src="assets/sprites/npcs/ropa_gnomo.png" width="64"> | `assets/sprites/npcs/ropa_gnomo.png` |
+| **Hada** | <img src="assets/sprites/npcs/ropa_hada.png" width="64"> | `assets/sprites/npcs/ropa_hada.png` |
+| **Humano** | <img src="assets/sprites/npcs/ropa_humano.png" width="64"> | `assets/sprites/npcs/ropa_humano.png` |
+| **Kitsune** | <img src="assets/sprites/npcs/ropa_kitsune.png" width="64"> | `assets/sprites/npcs/ropa_kitsune.png` |
+| **Madre** | <img src="assets/sprites/npcs/ropa_madre.png" width="64"> | `assets/sprites/npcs/ropa_madre.png` |
+| **Ninfa** | <img src="assets/sprites/npcs/ropa_ninfa.png" width="64"> | `assets/sprites/npcs/ropa_ninfa.png` |
+
+---
+
+## ✨ Features Especiales por Raza
+
+| Raza | Vista | Archivo |
+| :--- | :---: | :--- |
+| **Gnomo** | <img src="assets/sprites/npcs/gnomo_features.png" width="64"> | `assets/sprites/npcs/gnomo_features.png` |
+| **Hada** | <img src="assets/sprites/npcs/hada_feautures.png" width="64"> | `assets/sprites/npcs/hada_feautures.png` |
+| **Ninfa** | <img src="assets/sprites/npcs/ninfa_feautures.png" width="64"> | `assets/sprites/npcs/ninfa_feautures.png` |
+| **Kitsune** — Azul | <img src="assets/sprites/npcs/kitsune_feautures_azul.png" width="64"> | `assets/sprites/npcs/kitsune_feautures_azul.png` |
+| **Kitsune** — Negro | <img src="assets/sprites/npcs/kitsune_feautures_negro.png" width="64"> | `assets/sprites/npcs/kitsune_feautures_negro.png` |
+| **Kitsune** — Rojo | <img src="assets/sprites/npcs/kitsune_feautures_rojol.png" width="64"> | `assets/sprites/npcs/kitsune_feautures_rojol.png` |
+| **Kitsune** — Rosa | <img src="assets/sprites/npcs/kitsune_feautures_rosa.png" width="64"> | `assets/sprites/npcs/kitsune_feautures_rosa.png` |
+| **Kitsune** — Rubio | <img src="assets/sprites/npcs/kitsune_feautures_rubiol.png" width="64"> | `assets/sprites/npcs/kitsune_feautures_rubiol.png` |
+| **Kitsune** — Verde | <img src="assets/sprites/npcs/kitsune_feautures_verde.png" width="64"> | `assets/sprites/npcs/kitsune_feautures_verde.png` |
+
+---
+
+## 👁️ Ojos
+
+| Capa / Color | Vista | Archivo |
+| :--- | :---: | :--- |
+| **Amarillos** | <img src="assets/sprites/npcs/ojos_amarillos.png" width="64"> | `assets/sprites/npcs/ojos_amarillos.png` |
+| **Azules** | <img src="assets/sprites/npcs/ojos_azules.png" width="64"> | `assets/sprites/npcs/ojos_azules.png` |
+| **Marrones** | <img src="assets/sprites/npcs/ojos_marrones.png" width="64"> | `assets/sprites/npcs/ojos_marrones.png` |
+| **Rojos** | <img src="assets/sprites/npcs/ojos_rojos.png" width="64"> | `assets/sprites/npcs/ojos_rojos.png` |
+| **Rosas** | <img src="assets/sprites/npcs/ojos_rosas.png" width="64"> | `assets/sprites/npcs/ojos_rosas.png` |
+| **Verdes** | <img src="assets/sprites/npcs/ojos_verdes.png" width="64"> | `assets/sprites/npcs/ojos_verdes.png` |
+| **Enfadados** | <img src="assets/sprites/npcs/ojos_enfadados.png" width="64"> | `assets/sprites/npcs/ojos_enfadados.png` |
+| **Felices** | <img src="assets/sprites/npcs/ojos_felices.png" width="64"> | `assets/sprites/npcs/ojos_felices.png` |
+
+---
+
+## 💇 Pelo — Estilo 1
+
+| Color | Vista | Archivo |
+| :--- | :---: | :--- |
+| **Base** | <img src="assets/sprites/npcs/pelo_1.png" width="64"> | `assets/sprites/npcs/pelo_1.png` |
+| **Azul** | <img src="assets/sprites/npcs/pelo_1_azul.png" width="64"> | `assets/sprites/npcs/pelo_1_azul.png` |
+| **Negro** | <img src="assets/sprites/npcs/pelo_1_negro.png" width="64"> | `assets/sprites/npcs/pelo_1_negro.png` |
+| **Rojo** | <img src="assets/sprites/npcs/pelo_1_rojo.png" width="64"> | `assets/sprites/npcs/pelo_1_rojo.png` |
+| **Rosa** | <img src="assets/sprites/npcs/pelo_1_rosa.png" width="64"> | `assets/sprites/npcs/pelo_1_rosa.png` |
+| **Rubio** | <img src="assets/sprites/npcs/pelo_1_rubiol.png" width="64"> | `assets/sprites/npcs/pelo_1_rubiol.png` |
+| **Verde** | <img src="assets/sprites/npcs/pelo_1_verde.png" width="64"> | `assets/sprites/npcs/pelo_1_verde.png` |
+
+## 💇 Pelo — Estilo 2
+
+| Color | Vista | Archivo |
+| :--- | :---: | :--- |
+| **Azul** | <img src="assets/sprites/npcs/pelo_2_azul.png" width="64"> | `assets/sprites/npcs/pelo_2_azul.png` |
+| **Gris** | <img src="assets/sprites/npcs/pelo_2_gris.png" width="64"> | `assets/sprites/npcs/pelo_2_gris.png` |
+| **Negro** | <img src="assets/sprites/npcs/pelo_2_negro.png" width="64"> | `assets/sprites/npcs/pelo_2_negro.png` |
+| **Rojo** | <img src="assets/sprites/npcs/pelo_2_rojo.png" width="64"> | `assets/sprites/npcs/pelo_2_rojo.png` |
+| **Rosa** | <img src="assets/sprites/npcs/pelo_2_rosa.png" width="64"> | `assets/sprites/npcs/pelo_2_rosa.png` |
+| **Rubio** | <img src="assets/sprites/npcs/pelo_2_rubio.png" width="64"> | `assets/sprites/npcs/pelo_2_rubio.png` |
+| **Verde** | <img src="assets/sprites/npcs/pelo_2_verde.png" width="64"> | `assets/sprites/npcs/pelo_2_verde.png` |
+
+## 💇 Pelo — Estilo 3
+
+| Color | Vista | Archivo |
+| :--- | :---: | :--- |
+| **Azul** | <img src="assets/sprites/npcs/pelo_3_azul.png" width="64"> | `assets/sprites/npcs/pelo_3_azul.png` |
+| **Negro** | <img src="assets/sprites/npcs/pelo_3_negro.png" width="64"> | `assets/sprites/npcs/pelo_3_negro.png` |
+| **Rojo** | <img src="assets/sprites/npcs/pelo_3_rojo.png" width="64"> | `assets/sprites/npcs/pelo_3_rojo.png` |
+| **Rosa** | <img src="assets/sprites/npcs/pelo_3_rosa.png" width="64"> | `assets/sprites/npcs/pelo_3_rosa.png` |
+| **Rubio** | <img src="assets/sprites/npcs/pelo_3_rubio.png" width="64"> | `assets/sprites/npcs/pelo_3_rubio.png` |
+| **Verde** | <img src="assets/sprites/npcs/pelo_3_verde.png" width="64"> | `assets/sprites/npcs/pelo_3_verde.png` |
+
+---
+
+## 🤨 Cejas
+
+| Color | Vista | Archivo |
+| :--- | :---: | :--- |
+| **Azules** | <img src="assets/sprites/npcs/cejas_normales_azules.png" width="64"> | `assets/sprites/npcs/cejas_normales_azules.png` |
+| **Negras** | <img src="assets/sprites/npcs/cejas_normales_negras.png" width="64"> | `assets/sprites/npcs/cejas_normales_negras.png` |
+| **Rojas** | <img src="assets/sprites/npcs/cejas_normales_rojas.png" width="64"> | `assets/sprites/npcs/cejas_normales_rojas.png` |
+| **Rosas** | <img src="assets/sprites/npcs/cejas_normales_rosas.png" width="64"> | `assets/sprites/npcs/cejas_normales_rosas.png` |
+| **Rubias** | <img src="assets/sprites/npcs/cejas_normales_rubias.png" width="64"> | `assets/sprites/npcs/cejas_normales_rubias.png` |
+| **Verdes** | <img src="assets/sprites/npcs/cejas_normales_verdes.png" width="64"> | `assets/sprites/npcs/cejas_normales_verdes.png` |
+
+---
+
+## 👄 Bocas
+
+| Expresión | Vista | Archivo |
+| :--- | :---: | :--- |
+| **Feliz** | <img src="assets/sprites/npcs/boca_feliz.png" width="64"> | `assets/sprites/npcs/boca_feliz.png` |
+| **Enfadada** | <img src="assets/sprites/npcs/boca_enfadada.png" width="64"> | `assets/sprites/npcs/boca_enfadada.png` |
+| **Normal 1** | <img src="assets/sprites/npcs/boca_normal_1.png" width="64"> | `assets/sprites/npcs/boca_normal_1.png` |
+| **Normal 2** | <img src="assets/sprites/npcs/boca_normal_2.png" width="64"> | `assets/sprites/npcs/boca_normal_2.png` |
+| **Normal 3** | <img src="assets/sprites/npcs/boca_normal_3.png" width="64"> | `assets/sprites/npcs/boca_normal_3.png` |
+
+---
+
+## 👃 Narices
+
+| Variante | Vista | Archivo |
+| :--- | :---: | :--- |
+| **Base** | <img src="assets/sprites/npcs/nariz.png" width="64"> | `assets/sprites/npcs/nariz.png` |
+| **Variante 1** | <img src="assets/sprites/npcs/nariz_1.png" width="64"> | `assets/sprites/npcs/nariz_1.png` |
+| **Variante 2** | <img src="assets/sprites/npcs/nariz_2.png" width="64"> | `assets/sprites/npcs/nariz_2.png` |
+| **Variante 3** | <img src="assets/sprites/npcs/nariz_3.png" width="64"> | `assets/sprites/npcs/nariz_3.png` |
+
+---
+
+## 👂 Orejas
+
+| Tipo | Opción 1 | Opción 2 | Opción 3 |
+| :--- | :---: | :---: | :---: |
+| **Elfo / Hada** | <img src="assets/sprites/npcs/orejas_1_elfo_hada.png" width="64"> | <img src="assets/sprites/npcs/orejas_2_elfo_hada.png" width="64"> | <img src="assets/sprites/npcs/orejas_3_elfo_hada.png" width="64"> |
+| | `orejas_1_elfo_hada` | `orejas_2_elfo_hada` | `orejas_3_elfo_hada` |
+| **Ninfa** | <img src="assets/sprites/npcs/orejas_ninfa_1.png" width="64"> | <img src="assets/sprites/npcs/orejas_ninfa_2.png" width="64"> | <img src="assets/sprites/npcs/orejas_ninfa_3.png" width="64"> |
+| | `orejas_ninfa_1` | `orejas_ninfa_2` | `orejas_ninfa_3` |
+
+---
+
+## 🕵️ Accesorios Especiales
+
+| Accesorio | Vista | Archivo |
+| :--- | :---: | :--- |
+| **Bigote Inspector** | <img src="assets/sprites/npcs/bigote_inspector.png" width="64"> | `assets/sprites/npcs/bigote_inspector.png` |
+| **Gafas** | <img src="assets/sprites/npcs/gafas.png" width="64"> | `assets/sprites/npcs/gafas.png` |
+| **Gorro Inspector** | <img src="assets/sprites/npcs/gorro_inspector.png" width="64"> | `assets/sprites/npcs/gorro_inspector.png` |
+
+---
+
+* **Construcción por Plantillas Aleatorias:** Los requisitos de su poción se deciden completamente al azar. Para generar su texto de presentación, el juego elige y une plantillas aleatorias. Una vez montada la estructura, se le aplica el sistema general de sustitución de sinónimos.
+* **Reacción:** Sus respuestas al recibir la poción son puramente visuales y mecánicas (animaciones genéricas de celebración o enfado), **sin requerir diálogos de desenlace**.
+
+#### 5.2.3. Clientes Especiales (Scriptados)
+Personajes únicos con diseños fijos y motivaciones específicas que aportan lore, misiones clave y animaciones a medida. Toda su lógica narrativa se controla desde archivos de configuración centralizados.
+* **Textos Fijos Escritos a Mano:** A diferencia de los aldeanos, estos personajes no eligen una plantilla aleatoria; su diálogo de presentación está completamente escrito a mano para narrar su trasfondo e historia personal. Sin embargo, **sí que utilizan el sistema general de sinónimos**: sus textos contienen las mismas etiquetas dinámicas para que las pistas de los ingredientes cambien según la dificultad seleccionada.
+* **Diálogos de Resolución (Post-Poción):** Cuentan con líneas de texto adicionales tras recibir el encargo. El sistema evalúa la calidad de la mezcla y desencadena una de tres respuestas exclusivas:
+  * **Éxito (Calidad >= 80%):** El cliente resuelve su problema de forma óptima y su historia avanza positivamente.
+  * **Neutral (Calidad 50% - 79%):** El resultado es pasable. Soluciona el problema a medias, dejando una sensación agridulce.
+  * **Fracaso (Calidad < 50%):** La poción resulta perjudicial, empeorando la situación del cliente y afectando gravemente la reputación.
+* **Animaciones Únicas:** Ejecutan comportamientos físicos exclusivos según la situación, como animaciones en bucle durante su espera o salidas animadas.
+
 #### 5.2.1.	Hechicer@
 #### 5.2.2.	Mamá
 #### 5.2.3.	David (Gnomo)
