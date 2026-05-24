@@ -113,7 +113,7 @@ Todos los personajes que entran a la tienda interactúan con el jugador a travé
 * **Petición Inicial:** El cliente camufla los 5 requisitos de la poción (olor/raza objetivo, sabor, consistencia, temperatura y forma del frasco) dentro de su discurso.
 * **Sustitución de Sinónimos por Dificultad:** El texto base contiene etiquetas dinámicas (como `{sabor}` o `{color}`). El motor del juego lee la dificultad actual ("fácil", "media", "difícil") y sustituye automáticamente esas etiquetas por un sinónimo del ingrediente. En niveles fáciles se insertan palabras muy evidentes y directas, mientras que en dificultades altas se eligen sinónimos crípticos o metafóricos para obligar al jugador a deducir la receta.
 
-#### 5.2.2. Clientes Procedimentales (Aldeanos)
+#### 5.2.2. Clientes Normales
 Son la principal fuente de ingresos y reputación durante el bucle de juego diario, manteniendo el flujo constante de la consulta.
 * **Generación Modular:** Su aspecto se construye de forma dinámica. El sistema ensambla partes intercambiables. Primero el tono de piel, que se usa para elegir cuerpo, nariz y boca; un peinado; un color para pelo, cejas y otros features que lo requieran, color de ojos y ropa de la raza seleccionada aleatoriamente.
 
@@ -178,7 +178,6 @@ Aquí una tabla con todas los sprites utilizados para los clientes:
 
 | Color | Vista |
 | :--- | :---: |
-| **Base** | <img src="assets/sprites/npcs/pelo_1.png" width="64"> |
 | **Azul** | <img src="assets/sprites/npcs/pelo_1_azul.png" width="64"> |
 | **Negro** | <img src="assets/sprites/npcs/pelo_1_negro.png" width="64"> |
 | **Rojo** | <img src="assets/sprites/npcs/pelo_1_rojo.png" width="64"> |
@@ -240,7 +239,6 @@ Aquí una tabla con todas los sprites utilizados para los clientes:
 
 | Variante | Vista |
 | :--- | :---: |
-| **Base** | <img src="assets/sprites/npcs/nariz.png" width="64"> |
 | **Variante 1** | <img src="assets/sprites/npcs/nariz_1.png" width="64"> |
 | **Variante 2** | <img src="assets/sprites/npcs/nariz_2.png" width="64"> |
 | **Variante 3** | <img src="assets/sprites/npcs/nariz_3.png" width="64"> |
@@ -260,7 +258,6 @@ Aquí una tabla con todas los sprites utilizados para los clientes:
 
 | Accesorio | Vista |
 | :--- | :---: |
-| **Bigote Inspector** | <img src="assets/sprites/npcs/bigote_inspector.png" width="64"> |
 | **Gafas** | <img src="assets/sprites/npcs/gafas.png" width="64"> |
 | **Gorro Inspector** | <img src="assets/sprites/npcs/gorro_inspector.png" width="64"> |
 
@@ -270,9 +267,9 @@ Aquí una tabla con todas los sprites utilizados para los clientes:
 * **Reacción:** Sus respuestas al recibir la poción son puramente visuales y mecánicas (animaciones genéricas de celebración o enfado), **sin requerir diálogos de desenlace**.
 
 #### 5.2.3. Clientes Especiales (Scriptados)
-Personajes únicos con diseños fijos y motivaciones específicas que aportan lore, misiones clave y animaciones a medida. Toda su lógica narrativa se controla desde archivos de configuración centralizados.
-* **Textos Fijos Escritos a Mano:** A diferencia de los aldeanos, estos personajes no eligen una plantilla aleatoria; su diálogo de presentación está completamente escrito a mano para narrar su trasfondo e historia personal. Sin embargo, **sí que utilizan el sistema general de sinónimos**: sus textos contienen las mismas etiquetas dinámicas para que las pistas de los ingredientes cambien según la dificultad seleccionada.
-* **Diálogos de Resolución (Post-Poción):** Cuentan con líneas de texto adicionales tras recibir el encargo. El sistema evalúa la calidad de la mezcla y desencadena una de tres respuestas exclusivas:
+Personajes únicos con diseños fijos y motivaciones específicas que aportan lore y contexto sobre el mundo del juego. Toda su lógica narrativa se controla desde archivos de configuración centralizados.
+* **Textos Fijos Escritos a Mano:** A diferencia de los clientes normales[#clientes-normales], estos personajes no eligen una plantilla aleatoria; su diálogo de presentación está completamente escrito a mano para narrar su trasfondo e historia personal. Sin embargo, **sí que utilizan el sistema general de sinónimos**: sus textos contienen las mismas etiquetas dinámicas para que las pistas de los ingredientes cambien según la dificultad seleccionada.
+* **Diálogos de Resolución:** Cuentan con líneas de texto adicionales tras recibir el encargo. El sistema evalúa la calidad de la mezcla y desencadena una de tres respuestas exclusivas:
   * **Éxito (Calidad >= 80%):** El cliente resuelve su problema de forma óptima y su historia avanza positivamente.
   * **Neutral (Calidad 50% - 79%):** El resultado es pasable. Soluciona el problema a medias, dejando una sensación agridulce.
   * **Fracaso (Calidad < 50%):** La poción resulta perjudicial, empeorando la situación del cliente y afectando gravemente la reputación.
