@@ -109,12 +109,42 @@ PUEBLO: Vista top-down.
 Los clientes son el motor narrativo y mecánico de la tienda. Acuden a la consulta buscando ayuda mágica para sus problemas y se dividen en dos grandes categorías, compartiendo un mismo núcleo para procesar sus textos.
 
 #### 5.2.1. Sistema de Diálogos Dinámicos (General)
-Todos los personajes que entran a la tienda interactúan con el jugador a través del mismo sistema base de diálogo para plantear su encargo.
-* **Petición Inicial:** El cliente camufla los 5 requisitos de la poción (olor/raza objetivo, sabor, consistencia, temperatura y forma del frasco) dentro de su discurso.
-* **Sustitución de Sinónimos por Dificultad:** El texto base contiene etiquetas dinámicas (como `{sabor}` o `{color}`). El motor del juego lee la dificultad actual ("fácil", "media", "difícil") y sustituye automáticamente esas etiquetas por un sinónimo del ingrediente. En niveles fáciles se insertan palabras muy evidentes y directas, mientras que en dificultades altas se eligen sinónimos crípticos o metafóricos para obligar al jugador a deducir la receta.
+
+Todos los personajes que entran a la tienda interactúan con el jugador a través del mismo sistema base de diálogo para plantear su encargo. El pipeline completo es el siguiente:
+
+**1. Selección de plantilla**
+
+El sistema elige una plantilla de texto según la dificultad del día actual, definida en `daysConfig.json`. Existen 3 plantillas por nivel (`facil`, `medio`, `dificil`), cada una con una redacción progresivamente más críptica y literaria. La plantilla contiene 6 etiquetas dinámicas:
+
+```
+{saludo}  {raza_objetivo}  {color}  {sabor}  {consistencia}  {temperatura}  {forma_frasco}  {despedida}
+```
+
+**2. Sustitución de sinónimos**
+
+Cada etiqueta se reemplaza por un término aleatorio del `diccionario.json` correspondiente a la dificultad activa. Por ejemplo, la etiqueta `{sabor}` con ingrediente *dulce*:
+
+| Dificultad | Ejemplos de sustitución |
+| :--- | :--- |
+| `facil` | "un sabor dulce", "un gusto azucarado" |
+| `medio` | "un toque empalagoso", "un regusto a miel" |
+| `dificil` | "notas de néctar celestial", "un dulzor que empalague" |
+
+Lo mismo aplica para `{color}`, `{consistencia}`, `{temperatura}`, `{forma_frasco}` y `{raza_objetivo}`. El jugador debe deducir el ingrediente correcto a partir del sinónimo, siendo este el núcleo del desafío en dificultades altas.
+
+**3. Tono del diálogo**
+
+`{saludo}` y `{despedida}` se eligen aleatoriamente de sus respectivos pools en el diccionario, independientes de la dificultad. Los saludos tienen 5 registros: *neutro, educado, borde, nervioso* y *misterioso*, lo que aporta variedad de personalidad sin afectar la mecánica.
+
+**4. Ejemplo completo**
+
+Un cliente en dificultad `dificil` con ingredientes *dulce / rojo / machacado / frío / corazón* podría generar:
+
+> *"Los astros me han traído hasta aquí. Mi corazón ansía desesperadamente el afecto de una hija de las corrientes cristalinas. Requiere de tu mayor arte: un elixir con el color de la sangre que posea notas de néctar celestial. Confío en que la textura de la mezcla quede reducida a una pasta fina e irreconocible y que la poción repose fría como el hielo. Presérvalo en un vaso tallado con la silueta de un corazón. Confío en tu mano."*
 
 #### 5.2.2. Clientes Normales
 Son la principal fuente de ingresos y reputación durante el bucle de juego diario, manteniendo el flujo constante de la consulta.
+
 * **Generación Modular:** Su aspecto se construye de forma dinámica. El sistema ensambla partes intercambiables. Primero el tono de piel, que se usa para elegir cuerpo, nariz y boca; un peinado; un color para pelo, cejas y otros features que lo requieran, color de ojos y ropa de la raza seleccionada aleatoriamente.
 
 Aquí una tabla con todas los sprites utilizados para los clientes:
