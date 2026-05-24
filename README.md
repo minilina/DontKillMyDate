@@ -115,163 +115,153 @@ Todos los personajes que entran a la tienda interactúan con el jugador a travé
 
 #### 5.2.2. Clientes Procedimentales (Aldeanos)
 Son la principal fuente de ingresos y reputación durante el bucle de juego diario, manteniendo el flujo constante de la consulta.
-* **Generación Modular:** Su aspecto se construye de forma dinámica. El sistema ensambla partes intercambiables. Primero el tono de piel, un peinado, luego un color para pelo, cejas y otros features que lo requieran, color de ojos y ropa de la raza seleccionada aleatoriamente.
+* **Generación Modular:** Su aspecto se construye de forma dinámica. El sistema ensambla partes intercambiables. Primero el tono de piel, que se usa para elegir cuerpo, nariz y boca; un peinado; un color para pelo, cejas y otros features que lo requieran, color de ojos y ropa de la raza seleccionada aleatoriamente.
 
-Aquí un ejemplo de las piezas modulares:
+Aquí una tabla con todas las piezas utilizadas para la gener:
 
-# 🧬 Generación Procedimental de NPCs
-
-Los NPCs se generan dinámicamente combinando capas de pixel art modulares según la raza y personalidad de cada personaje. A continuación se muestran todas las piezas disponibles organizadas por categoría.
-
----
-
-## 🫀 Cuerpos Base
+## Cuerpos Base
 
 | Capa | Opción 1 | Opción 2 | Opción 3 |
-| :--- | :---: | :---: | :---: |
+| :---: | :---: | :---: |
 | **Cuerpos** | <img src="assets/sprites/npcs/cuerpo_1.png" width="64"> | <img src="assets/sprites/npcs/cuerpo_2.png" width="64"> | <img src="assets/sprites/npcs/cuerpo_3.png" width="64"> |
-| | `cuerpo_1` | `cuerpo_2` | `cuerpo_3` |
 
 ---
 
-## 👗 Ropa por Raza
+## Ropa por Raza
 
-| Raza | Vista | Archivo |
-| :--- | :---: | :--- |
-| **Elfo** | <img src="assets/sprites/npcs/ropa_elfo.png" width="64"> | `assets/sprites/npcs/ropa_elfo.png` |
-| **Gnomo** | <img src="assets/sprites/npcs/ropa_gnomo.png" width="64"> | `assets/sprites/npcs/ropa_gnomo.png` |
-| **Hada** | <img src="assets/sprites/npcs/ropa_hada.png" width="64"> | `assets/sprites/npcs/ropa_hada.png` |
-| **Humano** | <img src="assets/sprites/npcs/ropa_humano.png" width="64"> | `assets/sprites/npcs/ropa_humano.png` |
-| **Kitsune** | <img src="assets/sprites/npcs/ropa_kitsune.png" width="64"> | `assets/sprites/npcs/ropa_kitsune.png` |
-| **Madre** | <img src="assets/sprites/npcs/ropa_madre.png" width="64"> | `assets/sprites/npcs/ropa_madre.png` |
-| **Ninfa** | <img src="assets/sprites/npcs/ropa_ninfa.png" width="64"> | `assets/sprites/npcs/ropa_ninfa.png` |
-
----
-
-## ✨ Features Especiales por Raza
-
-| Raza | Vista | Archivo |
-| :--- | :---: | :--- |
-| **Gnomo** | <img src="assets/sprites/npcs/gnomo_features.png" width="64"> | `assets/sprites/npcs/gnomo_features.png` |
-| **Hada** | <img src="assets/sprites/npcs/hada_feautures.png" width="64"> | `assets/sprites/npcs/hada_feautures.png` |
-| **Ninfa** | <img src="assets/sprites/npcs/ninfa_feautures.png" width="64"> | `assets/sprites/npcs/ninfa_feautures.png` |
-| **Kitsune** — Azul | <img src="assets/sprites/npcs/kitsune_feautures_azul.png" width="64"> | `assets/sprites/npcs/kitsune_feautures_azul.png` |
-| **Kitsune** — Negro | <img src="assets/sprites/npcs/kitsune_feautures_negro.png" width="64"> | `assets/sprites/npcs/kitsune_feautures_negro.png` |
-| **Kitsune** — Rojo | <img src="assets/sprites/npcs/kitsune_feautures_rojol.png" width="64"> | `assets/sprites/npcs/kitsune_feautures_rojol.png` |
-| **Kitsune** — Rosa | <img src="assets/sprites/npcs/kitsune_feautures_rosa.png" width="64"> | `assets/sprites/npcs/kitsune_feautures_rosa.png` |
-| **Kitsune** — Rubio | <img src="assets/sprites/npcs/kitsune_feautures_rubiol.png" width="64"> | `assets/sprites/npcs/kitsune_feautures_rubiol.png` |
-| **Kitsune** — Verde | <img src="assets/sprites/npcs/kitsune_feautures_verde.png" width="64"> | `assets/sprites/npcs/kitsune_feautures_verde.png` |
+| Raza | Vista |
+| :---: |
+| **Elfo** | <img src="assets/sprites/npcs/ropa_elfo.png" width="64"> |
+| **Gnomo** | <img src="assets/sprites/npcs/ropa_gnomo.png" width="64"> |
+| **Hada** | <img src="assets/sprites/npcs/ropa_hada.png" width="64"> |
+| **Humano** | <img src="assets/sprites/npcs/ropa_humano.png" width="64"> |
+| **Kitsune** | <img src="assets/sprites/npcs/ropa_kitsune.png" width="64"> |
+| **Madre** | <img src="assets/sprites/npcs/ropa_madre.png" width="64"> |
+| **Ninfa** | <img src="assets/sprites/npcs/ropa_ninfa.png" width="64"> |
 
 ---
 
-## 👁️ Ojos
+## Features Especiales por Raza
 
-| Capa / Color | Vista | Archivo |
-| :--- | :---: | :--- |
-| **Amarillos** | <img src="assets/sprites/npcs/ojos_amarillos.png" width="64"> | `assets/sprites/npcs/ojos_amarillos.png` |
-| **Azules** | <img src="assets/sprites/npcs/ojos_azules.png" width="64"> | `assets/sprites/npcs/ojos_azules.png` |
-| **Marrones** | <img src="assets/sprites/npcs/ojos_marrones.png" width="64"> | `assets/sprites/npcs/ojos_marrones.png` |
-| **Rojos** | <img src="assets/sprites/npcs/ojos_rojos.png" width="64"> | `assets/sprites/npcs/ojos_rojos.png` |
-| **Rosas** | <img src="assets/sprites/npcs/ojos_rosas.png" width="64"> | `assets/sprites/npcs/ojos_rosas.png` |
-| **Verdes** | <img src="assets/sprites/npcs/ojos_verdes.png" width="64"> | `assets/sprites/npcs/ojos_verdes.png` |
-| **Enfadados** | <img src="assets/sprites/npcs/ojos_enfadados.png" width="64"> | `assets/sprites/npcs/ojos_enfadados.png` |
-| **Felices** | <img src="assets/sprites/npcs/ojos_felices.png" width="64"> | `assets/sprites/npcs/ojos_felices.png` |
-
----
-
-## 💇 Pelo — Estilo 1
-
-| Color | Vista | Archivo |
-| :--- | :---: | :--- |
-| **Base** | <img src="assets/sprites/npcs/pelo_1.png" width="64"> | `assets/sprites/npcs/pelo_1.png` |
-| **Azul** | <img src="assets/sprites/npcs/pelo_1_azul.png" width="64"> | `assets/sprites/npcs/pelo_1_azul.png` |
-| **Negro** | <img src="assets/sprites/npcs/pelo_1_negro.png" width="64"> | `assets/sprites/npcs/pelo_1_negro.png` |
-| **Rojo** | <img src="assets/sprites/npcs/pelo_1_rojo.png" width="64"> | `assets/sprites/npcs/pelo_1_rojo.png` |
-| **Rosa** | <img src="assets/sprites/npcs/pelo_1_rosa.png" width="64"> | `assets/sprites/npcs/pelo_1_rosa.png` |
-| **Rubio** | <img src="assets/sprites/npcs/pelo_1_rubiol.png" width="64"> | `assets/sprites/npcs/pelo_1_rubiol.png` |
-| **Verde** | <img src="assets/sprites/npcs/pelo_1_verde.png" width="64"> | `assets/sprites/npcs/pelo_1_verde.png` |
-
-## 💇 Pelo — Estilo 2
-
-| Color | Vista | Archivo |
-| :--- | :---: | :--- |
-| **Azul** | <img src="assets/sprites/npcs/pelo_2_azul.png" width="64"> | `assets/sprites/npcs/pelo_2_azul.png` |
-| **Gris** | <img src="assets/sprites/npcs/pelo_2_gris.png" width="64"> | `assets/sprites/npcs/pelo_2_gris.png` |
-| **Negro** | <img src="assets/sprites/npcs/pelo_2_negro.png" width="64"> | `assets/sprites/npcs/pelo_2_negro.png` |
-| **Rojo** | <img src="assets/sprites/npcs/pelo_2_rojo.png" width="64"> | `assets/sprites/npcs/pelo_2_rojo.png` |
-| **Rosa** | <img src="assets/sprites/npcs/pelo_2_rosa.png" width="64"> | `assets/sprites/npcs/pelo_2_rosa.png` |
-| **Rubio** | <img src="assets/sprites/npcs/pelo_2_rubio.png" width="64"> | `assets/sprites/npcs/pelo_2_rubio.png` |
-| **Verde** | <img src="assets/sprites/npcs/pelo_2_verde.png" width="64"> | `assets/sprites/npcs/pelo_2_verde.png` |
-
-## 💇 Pelo — Estilo 3
-
-| Color | Vista | Archivo |
-| :--- | :---: | :--- |
-| **Azul** | <img src="assets/sprites/npcs/pelo_3_azul.png" width="64"> | `assets/sprites/npcs/pelo_3_azul.png` |
-| **Negro** | <img src="assets/sprites/npcs/pelo_3_negro.png" width="64"> | `assets/sprites/npcs/pelo_3_negro.png` |
-| **Rojo** | <img src="assets/sprites/npcs/pelo_3_rojo.png" width="64"> | `assets/sprites/npcs/pelo_3_rojo.png` |
-| **Rosa** | <img src="assets/sprites/npcs/pelo_3_rosa.png" width="64"> | `assets/sprites/npcs/pelo_3_rosa.png` |
-| **Rubio** | <img src="assets/sprites/npcs/pelo_3_rubio.png" width="64"> | `assets/sprites/npcs/pelo_3_rubio.png` |
-| **Verde** | <img src="assets/sprites/npcs/pelo_3_verde.png" width="64"> | `assets/sprites/npcs/pelo_3_verde.png` |
+| Raza | Vista |
+| :---: |
+| **Gnomo** | <img src="assets/sprites/npcs/gnomo_features.png" width="64"> |
+| **Hada** | <img src="assets/sprites/npcs/hada_feautures.png" width="64"> |
+| **Ninfa** | <img src="assets/sprites/npcs/ninfa_feautures.png" width="64"> |
+| **Kitsune** — Azul | <img src="assets/sprites/npcs/kitsune_feautures_azul.png" width="64"> |
+| **Kitsune** — Negro | <img src="assets/sprites/npcs/kitsune_feautures_negro.png" width="64"> |
+| **Kitsune** — Rojo | <img src="assets/sprites/npcs/kitsune_feautures_rojol.png" width="64"> |
+| **Kitsune** — Rosa | <img src="assets/sprites/npcs/kitsune_feautures_rosa.png" width="64"> |
+| **Kitsune** — Rubio | <img src="assets/sprites/npcs/kitsune_feautures_rubiol.png" width="64"> |
+| **Kitsune** — Verde | <img src="assets/sprites/npcs/kitsune_feautures_verde.png" width="64"> |
 
 ---
 
-## 🤨 Cejas
+## Ojos
 
-| Color | Vista | Archivo |
-| :--- | :---: | :--- |
-| **Azules** | <img src="assets/sprites/npcs/cejas_normales_azules.png" width="64"> | `assets/sprites/npcs/cejas_normales_azules.png` |
-| **Negras** | <img src="assets/sprites/npcs/cejas_normales_negras.png" width="64"> | `assets/sprites/npcs/cejas_normales_negras.png` |
-| **Rojas** | <img src="assets/sprites/npcs/cejas_normales_rojas.png" width="64"> | `assets/sprites/npcs/cejas_normales_rojas.png` |
-| **Rosas** | <img src="assets/sprites/npcs/cejas_normales_rosas.png" width="64"> | `assets/sprites/npcs/cejas_normales_rosas.png` |
-| **Rubias** | <img src="assets/sprites/npcs/cejas_normales_rubias.png" width="64"> | `assets/sprites/npcs/cejas_normales_rubias.png` |
-| **Verdes** | <img src="assets/sprites/npcs/cejas_normales_verdes.png" width="64"> | `assets/sprites/npcs/cejas_normales_verdes.png` |
-
----
-
-## 👄 Bocas
-
-| Expresión | Vista | Archivo |
-| :--- | :---: | :--- |
-| **Feliz** | <img src="assets/sprites/npcs/boca_feliz.png" width="64"> | `assets/sprites/npcs/boca_feliz.png` |
-| **Enfadada** | <img src="assets/sprites/npcs/boca_enfadada.png" width="64"> | `assets/sprites/npcs/boca_enfadada.png` |
-| **Normal 1** | <img src="assets/sprites/npcs/boca_normal_1.png" width="64"> | `assets/sprites/npcs/boca_normal_1.png` |
-| **Normal 2** | <img src="assets/sprites/npcs/boca_normal_2.png" width="64"> | `assets/sprites/npcs/boca_normal_2.png` |
-| **Normal 3** | <img src="assets/sprites/npcs/boca_normal_3.png" width="64"> | `assets/sprites/npcs/boca_normal_3.png` |
+| Capa / Color | Vista |
+| :---: |
+| **Amarillos** | <img src="assets/sprites/npcs/ojos_amarillos.png" width="64"> |
+| **Azules** | <img src="assets/sprites/npcs/ojos_azules.png" width="64"> |
+| **Marrones** | <img src="assets/sprites/npcs/ojos_marrones.png" width="64"> |
+| **Rojos** | <img src="assets/sprites/npcs/ojos_rojos.png" width="64"> |
+| **Rosas** | <img src="assets/sprites/npcs/ojos_rosas.png" width="64"> |
+| **Verdes** | <img src="assets/sprites/npcs/ojos_verdes.png" width="64"> |
+| **Enfadados** | <img src="assets/sprites/npcs/ojos_enfadados.png" width="64"> |
+| **Felices** | <img src="assets/sprites/npcs/ojos_felices.png" width="64"> |
 
 ---
 
-## 👃 Narices
+## Pelo — Estilo 1
 
-| Variante | Vista | Archivo |
-| :--- | :---: | :--- |
-| **Base** | <img src="assets/sprites/npcs/nariz.png" width="64"> | `assets/sprites/npcs/nariz.png` |
-| **Variante 1** | <img src="assets/sprites/npcs/nariz_1.png" width="64"> | `assets/sprites/npcs/nariz_1.png` |
-| **Variante 2** | <img src="assets/sprites/npcs/nariz_2.png" width="64"> | `assets/sprites/npcs/nariz_2.png` |
-| **Variante 3** | <img src="assets/sprites/npcs/nariz_3.png" width="64"> | `assets/sprites/npcs/nariz_3.png` |
+| Color | Vista |
+| :---: |
+| **Base** | <img src="assets/sprites/npcs/pelo_1.png" width="64"> |
+| **Azul** | <img src="assets/sprites/npcs/pelo_1_azul.png" width="64"> |
+| **Negro** | <img src="assets/sprites/npcs/pelo_1_negro.png" width="64"> |
+| **Rojo** | <img src="assets/sprites/npcs/pelo_1_rojo.png" width="64"> |
+| **Rosa** | <img src="assets/sprites/npcs/pelo_1_rosa.png" width="64"> |
+| **Rubio** | <img src="assets/sprites/npcs/pelo_1_rubiol.png" width="64"> |
+| **Verde** | <img src="assets/sprites/npcs/pelo_1_verde.png" width="64"> |
+
+## Pelo — Estilo 2
+
+| Color | Vista |
+| :---: |
+| **Azul** | <img src="assets/sprites/npcs/pelo_2_azul.png" width="64"> |
+| **Gris** | <img src="assets/sprites/npcs/pelo_2_gris.png" width="64"> |
+| **Negro** | <img src="assets/sprites/npcs/pelo_2_negro.png" width="64"> |
+| **Rojo** | <img src="assets/sprites/npcs/pelo_2_rojo.png" width="64"> |
+| **Rosa** | <img src="assets/sprites/npcs/pelo_2_rosa.png" width="64"> |
+| **Rubio** | <img src="assets/sprites/npcs/pelo_2_rubio.png" width="64"> |
+| **Verde** | <img src="assets/sprites/npcs/pelo_2_verde.png" width="64"> |
+
+## Pelo — Estilo 3
+
+| Color | Vista |
+| :---: |
+| **Azul** | <img src="assets/sprites/npcs/pelo_3_azul.png" width="64"> |
+| **Negro** | <img src="assets/sprites/npcs/pelo_3_negro.png" width="64"> |
+| **Rojo** | <img src="assets/sprites/npcs/pelo_3_rojo.png" width="64"> |
+| **Rosa** | <img src="assets/sprites/npcs/pelo_3_rosa.png" width="64"> |
+| **Rubio** | <img src="assets/sprites/npcs/pelo_3_rubio.png" width="64"> |
+| **Verde** | <img src="assets/sprites/npcs/pelo_3_verde.png" width="64"> |
 
 ---
 
-## 👂 Orejas
+## Cejas
+
+| Color | Vista |
+| :---: |
+| **Azules** | <img src="assets/sprites/npcs/cejas_normales_azules.png" width="64"> |
+| **Negras** | <img src="assets/sprites/npcs/cejas_normales_negras.png" width="64"> |
+| **Rojas** | <img src="assets/sprites/npcs/cejas_normales_rojas.png" width="64"> |
+| **Rosas** | <img src="assets/sprites/npcs/cejas_normales_rosas.png" width="64"> |
+| **Rubias** | <img src="assets/sprites/npcs/cejas_normales_rubias.png" width="64"> |
+| **Verdes** | <img src="assets/sprites/npcs/cejas_normales_verdes.png" width="64"> |
+
+---
+
+## Bocas
+
+| Expresión | Vista |
+| :---: |
+| **Feliz** | <img src="assets/sprites/npcs/boca_feliz.png" width="64"> |
+| **Enfadada** | <img src="assets/sprites/npcs/boca_enfadada.png" width="64"> |
+| **Normal 1** | <img src="assets/sprites/npcs/boca_normal_1.png" width="64"> |
+| **Normal 2** | <img src="assets/sprites/npcs/boca_normal_2.png" width="64"> |
+| **Normal 3** | <img src="assets/sprites/npcs/boca_normal_3.png" width="64"> |
+
+---
+
+## Narices
+
+| Variante | Vista |
+| :---: |
+| **Variante 1** | <img src="assets/sprites/npcs/nariz_1.png" width="64"> |
+| **Variante 2** | <img src="assets/sprites/npcs/nariz_2.png" width="64"> |
+| **Variante 3** | <img src="assets/sprites/npcs/nariz_3.png" width="64"> |
+
+---
+
+## Orejas
 
 | Tipo | Opción 1 | Opción 2 | Opción 3 |
-| :--- | :---: | :---: | :---: |
+| :---: | :---: | :---: |
 | **Elfo / Hada** | <img src="assets/sprites/npcs/orejas_1_elfo_hada.png" width="64"> | <img src="assets/sprites/npcs/orejas_2_elfo_hada.png" width="64"> | <img src="assets/sprites/npcs/orejas_3_elfo_hada.png" width="64"> |
-| | `orejas_1_elfo_hada` | `orejas_2_elfo_hada` | `orejas_3_elfo_hada` |
 | **Ninfa** | <img src="assets/sprites/npcs/orejas_ninfa_1.png" width="64"> | <img src="assets/sprites/npcs/orejas_ninfa_2.png" width="64"> | <img src="assets/sprites/npcs/orejas_ninfa_3.png" width="64"> |
-| | `orejas_ninfa_1` | `orejas_ninfa_2` | `orejas_ninfa_3` |
 
 ---
 
-## 🕵️ Accesorios Especiales
+## Accesorios Especiales
 
-| Accesorio | Vista | Archivo |
-| :--- | :---: | :--- |
-| **Bigote Inspector** | <img src="assets/sprites/npcs/bigote_inspector.png" width="64"> | `assets/sprites/npcs/bigote_inspector.png` |
-| **Gafas** | <img src="assets/sprites/npcs/gafas.png" width="64"> | `assets/sprites/npcs/gafas.png` |
-| **Gorro Inspector** | <img src="assets/sprites/npcs/gorro_inspector.png" width="64"> | `assets/sprites/npcs/gorro_inspector.png` |
+| Accesorio | Vista |
+| :---: |
+| **Gafas** | <img src="assets/sprites/npcs/gafas.png" width="64"> |
+| **Gorro Inspector** | <img src="assets/sprites/npcs/gorro_inspector.png" width="64"> |
 
 ---
+
 
 * **Construcción por Plantillas Aleatorias:** Los requisitos de su poción se deciden completamente al azar. Para generar su texto de presentación, el juego elige y une plantillas aleatorias. Una vez montada la estructura, se le aplica el sistema general de sustitución de sinónimos.
 * **Reacción:** Sus respuestas al recibir la poción son puramente visuales y mecánicas (animaciones genéricas de celebración o enfado), **sin requerir diálogos de desenlace**.
