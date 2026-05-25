@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="36" nextobjectid="101">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="40" nextobjectid="157">
  <editorsettings>
   <export target="ciudad.json" format="json"/>
  </editorsettings>
@@ -617,31 +617,7 @@
   </layer>
  </group>
  <group id="25" name="Objetos">
-  <objectgroup id="29" name="SpawnFlores" visible="0">
-   <object id="29" name="hierba amarilla" x="496" y="448">
-    <point/>
-   </object>
-   <object id="30" name="hierba amarilla" x="480" y="384">
-    <point/>
-   </object>
-   <object id="31" name="hierba amarilla" x="624" y="400">
-    <point/>
-   </object>
-   <object id="32" name="hierba amarilla" x="224" y="448">
-    <point/>
-   </object>
-   <object id="33" name="hierba amarilla" x="336" y="368">
-    <point/>
-   </object>
-   <object id="34" name="hierba amarilla" x="160" y="336">
-    <point/>
-   </object>
-   <object id="35" name="hierba amarilla" x="32" y="176">
-    <point/>
-   </object>
-   <object id="36" name="hierba amarilla" x="192" y="128">
-    <point/>
-   </object>
+  <objectgroup id="29" name="SpawnFloresArriba" visible="0">
    <object id="37" name="hierba amarilla" x="464" y="80">
     <point/>
    </object>
@@ -661,39 +637,6 @@
     <point/>
    </object>
    <object id="43" name="hierba amarilla" x="624" y="224">
-    <point/>
-   </object>
-   <object id="53" name="semilla trigo" x="368" y="240">
-    <point/>
-   </object>
-   <object id="54" name="semilla trigo" x="432" y="224">
-    <point/>
-   </object>
-   <object id="55" name="semilla trigo" x="368" y="192">
-    <point/>
-   </object>
-   <object id="56" name="semilla trigo" x="400" y="176">
-    <point/>
-   </object>
-   <object id="57" name="semilla trigo" x="384" y="208">
-    <point/>
-   </object>
-   <object id="58" name="semilla arroz" x="400" y="240">
-    <point/>
-   </object>
-   <object id="59" name="semilla arroz" x="384" y="240">
-    <point/>
-   </object>
-   <object id="60" name="semilla arroz" x="416" y="224">
-    <point/>
-   </object>
-   <object id="61" name="semilla arroz" x="432" y="208">
-    <point/>
-   </object>
-   <object id="62" name="semilla arroz" x="448" y="240">
-    <point/>
-   </object>
-   <object id="63" name="semilla arroz" x="592" y="128">
     <point/>
    </object>
    <object id="64" name="arroz" x="608" y="112">
@@ -729,9 +672,6 @@
    <object id="74" name="trigo" x="400" y="224">
     <point/>
    </object>
-   <object id="75" name="semilla trigo" x="608" y="128">
-    <point/>
-   </object>
    <object id="76" name="arroz medio" x="416" y="240">
     <point/>
    </object>
@@ -741,25 +681,82 @@
    <object id="78" name="arroz medio" x="368" y="224">
     <point/>
    </object>
-   <object id="79" name="semilla arroz" x="368" y="208">
-    <point/>
-   </object>
    <object id="80" name="arroz medio" x="592" y="112">
     <point/>
    </object>
-  </objectgroup>
-  <objectgroup id="34" name="SpawnFloresPuente" visible="0">
-   <object id="82" name="hierba amarilla" x="368" y="416">
+   <object id="101" name="hierba amarilla" x="368" y="416">
     <point/>
    </object>
-   <object id="83" name="hierba amarilla" x="400" y="448">
+   <object id="102" name="hierba amarilla" x="400" y="448">
+    <point/>
+   </object>
+  </objectgroup>
+  <objectgroup id="34" name="SpawnFlores" visible="0">
+   <object id="103" name="hierba amarilla" x="624" y="400">
+    <point/>
+   </object>
+   <object id="107" name="hierba amarilla" x="496" y="448">
+    <point/>
+   </object>
+   <object id="108" name="hierba amarilla" x="480" y="384">
+    <point/>
+   </object>
+   <object id="109" name="hierba amarilla" x="336" y="368">
+    <point/>
+   </object>
+   <object id="110" name="hierba amarilla" x="224" y="448">
+    <point/>
+   </object>
+   <object id="111" name="hierba amarilla" x="160" y="336">
+    <point/>
+   </object>
+   <object id="112" name="hierba amarilla" x="192" y="128">
+    <point/>
+   </object>
+   <object id="113" name="hierba amarilla" x="32" y="176">
+    <point/>
+   </object>
+   <object id="114" name="semilla arroz" x="368" y="208">
+    <point/>
+   </object>
+   <object id="115" name="semilla arroz" x="384" y="240">
+    <point/>
+   </object>
+   <object id="116" name="semilla arroz" x="400" y="240">
+    <point/>
+   </object>
+   <object id="117" name="semilla arroz" x="416" y="224">
+    <point/>
+   </object>
+   <object id="118" name="semilla arroz" x="432" y="208">
+    <point/>
+   </object>
+   <object id="119" name="semilla arroz" x="448" y="240">
+    <point/>
+   </object>
+   <object id="120" name="semilla arroz" x="592" y="128">
+    <point/>
+   </object>
+   <object id="121" name="semilla trigo" x="608" y="128">
+    <point/>
+   </object>
+   <object id="122" name="semilla trigo" x="432" y="224">
+    <point/>
+   </object>
+   <object id="123" name="semilla trigo" x="368" y="240">
+    <point/>
+   </object>
+   <object id="124" name="semilla trigo" x="384" y="208">
+    <point/>
+   </object>
+   <object id="125" name="semilla trigo" x="368" y="192">
+    <point/>
+   </object>
+   <object id="126" name="semilla trigo" x="400" y="176">
     <point/>
    </object>
   </objectgroup>
   <objectgroup id="15" name="SpawnArboles" visible="0">
-   <object id="1" name="arbustoFeo" x="464" y="336">
-    <point/>
-   </object>
    <object id="2" name="arbustoFeo" x="160" y="448">
     <point/>
    </object>
@@ -775,9 +772,6 @@
    <object id="6" name="arbustoFeo" x="288" y="112">
     <point/>
    </object>
-   <object id="9" name="arbustoFeo" x="560" y="336">
-    <point/>
-   </object>
    <object id="11" name="arbustoFeo" x="160" y="240">
     <point/>
    </object>
@@ -785,44 +779,60 @@
     <point/>
    </object>
   </objectgroup>
+  <objectgroup id="38" name="SpawnArbolesArriba" visible="0">
+   <object id="127" name="arbustoFeo" x="464" y="336">
+    <point/>
+   </object>
+   <object id="133" name="arbustoFeo" x="560" y="336">
+    <point/>
+   </object>
+  </objectgroup>
+  <objectgroup id="39" name="SpawnEstructurasArriba" visible="0">
+   <object id="137" name="tendedero rosa" x="576" y="208">
+    <point/>
+   </object>
+   <object id="138" name="casaRota" x="384" y="144">
+    <point/>
+   </object>
+   <object id="139" name="casaRota" x="528" y="80">
+    <point/>
+   </object>
+   <object id="142" name="luz" x="560" y="352">
+    <point/>
+   </object>
+   <object id="143" name="luz" x="480" y="352">
+    <point/>
+   </object>
+   <object id="144" name="luz" x="400" y="48">
+    <point/>
+   </object>
+   <object id="145" name="sillaBlanca" x="448" y="144">
+    <point/>
+   </object>
+   <object id="146" name="papeleraSucia" x="384" y="144">
+    <point/>
+   </object>
+   <object id="147" name="sillaRosa" x="528" y="80">
+    <point/>
+   </object>
+   <object id="148" name="papeleraSucia" x="592" y="80">
+    <point/>
+   </object>
+   <object id="155" name="banco" x="368" y="48">
+    <point/>
+   </object>
+   <object id="156" name="banco" x="432" y="48">
+    <point/>
+   </object>
+  </objectgroup>
   <objectgroup id="16" name="SpawnEstructuras" visible="0">
    <object id="7" name="agua" x="304" y="368">
-    <point/>
-   </object>
-   <object id="15" name="tendedero rosa" x="576" y="208">
-    <point/>
-   </object>
-   <object id="16" name="casaRota" x="384" y="144">
-    <point/>
-   </object>
-   <object id="20" name="casaRota" x="528" y="80">
     <point/>
    </object>
    <object id="21" name="luz" x="208" y="384">
     <point/>
    </object>
    <object id="22" name="luz" x="288" y="384">
-    <point/>
-   </object>
-   <object id="23" name="luz" x="560" y="352">
-    <point/>
-   </object>
-   <object id="24" name="luz" x="480" y="352">
-    <point/>
-   </object>
-   <object id="44" name="luz" x="400" y="48">
-    <point/>
-   </object>
-   <object id="47" name="sillaBlanca" x="448" y="144">
-    <point/>
-   </object>
-   <object id="48" name="papeleraSucia" x="384" y="144">
-    <point/>
-   </object>
-   <object id="49" name="sillaRosa" x="528" y="80">
-    <point/>
-   </object>
-   <object id="50" name="papeleraSucia" x="592" y="80">
     <point/>
    </object>
    <object id="51" name="papeleraSucia" x="224" y="320">
@@ -846,14 +856,8 @@
     </properties>
     <point/>
    </object>
-   <object id="87" name="banco" x="368" y="48">
-    <point/>
-   </object>
-   <object id="88" name="banco" x="432" y="48">
-    <point/>
-   </object>
   </objectgroup>
-  <objectgroup id="35" name="NPCs">
+  <objectgroup id="35" name="NPCs" visible="0">
    <object id="93" name="gnomo" x="80" y="288">
     <point/>
    </object>

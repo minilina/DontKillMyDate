@@ -90,6 +90,7 @@ export default class House extends topDownScene {
             if (IDs.cerrado.includes(tileValla.index)) {
                 this.fenceSound.play(); // sonido abrir
                 let sX = tileValla.x - (tileValla.index === 1394 ? 1 : (tileValla.index === 1395 ? 2 : 0));
+                
                 capaTapar?.putTileAt(1399, sX, tileValla.y - 1);
                 capaTapar?.putTileAt(1401, sX + 2, tileValla.y - 1);
                 capaVallas.putTileAt(1405, sX, tileValla.y);
@@ -98,9 +99,9 @@ export default class House extends topDownScene {
                 this.capaColisiones?.putTileAt(-1, sX + 1, tileValla.y);
                 this.player.setNavmesh(this.navMeshPlugin.buildMeshFromTilemap("mesh", this.map, [this.capaColisiones]));
             } else if (IDs.abierto.includes(tileValla.index)) {
-                this.fenceSound.play(); // sonido cerrar
                 let sX = tileValla.x - (tileValla.index === 1406 ? 1 : (tileValla.index === 1407 ? 2 : 0));
                 if (this.map.worldToTileX(this.player.x) === sX + 1 && this.map.worldToTileY(this.player.y) === tileValla.y) return;
+                this.fenceSound.play(); // sonido cerrar
 
                 capaTapar?.putTileAt(-1, sX, tileValla.y - 1);
                 capaTapar?.putTileAt(-1, sX + 2, tileValla.y - 1);

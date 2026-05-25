@@ -11,6 +11,9 @@ export default class TopDownScene extends Phaser.Scene {
 
     // Metodo generico para inicializar mapas topDown
     initScene(mapKey) {
+        this.game.canvas.style.cursor = 'default';
+        this.game.canvas.classList.remove('cursor-far');
+        
         this.map = this.make.tilemap({ key: mapKey });
         this.isTransitioning = false;
 
@@ -94,8 +97,19 @@ export default class TopDownScene extends Phaser.Scene {
 
         // Input generico de movimiento
         this.input.on('pointerdown', (pointer, gameObjects) => {
-            const tocandoUI = gameObjects.some(obj => obj.scrollFactorX === 0 || obj.scrollFactorY === 0); // Si el click es sobre un objeto con scrollFactor 0 (UI), no hacemos nada
-            if (tocandoUI) return;
+            if (gameObjects && gameObjects.length > 0) {
+                const tocandoUI = gameObjects.some(obj => obj.scrollFactorX === 0 || obj.scrollFactorY === 0);
+                if (tocandoUI) return;
+            }
+
+            if (this.game.canvas.style.cursor === 'pointer') { // para evitar que el jugador se mueva al hacer click en un objeto interactivo,
+            // el movimiento solo se activa si el cursor no es de interactuar
+                if (this.player && this.player.setPath) {
+                    this.player.setPath([]);
+                    if (this.player.body) this.player.body.setVelocity(0, 0);
+                }
+                return;
+            }
 
             const worldPoint = pointer.positionToCamera(this.cameras.main);
             const path = this.player.navMesh.findPath(
@@ -380,6 +394,7 @@ export default class TopDownScene extends Phaser.Scene {
         if (this.isTransitioning) return;
         this.isTransitioning = true;
         this.game.canvas.style.cursor = 'default'; // Por si cambiamos de escena mientras el cursor es de interactuar, lo reseteamos
+        this.game.canvas.classList.remove('cursor-far');
         this.scene.start(nuevaEscena, datos);
     }
 
@@ -403,30 +418,51 @@ export default class TopDownScene extends Phaser.Scene {
     }
     // HOVER PARA LAS VALLAS Y LA PIEDRA
     hover(configuraciones) {
+        if (this.isTransitioning) return; // Evitamos configurar el hover si ya estamos en transicion, para no tener conflictos de escenas
+
         this.input.on('pointermove', (pointer, gameObjects) => {
-            if (gameObjects.length > 0) return;
+            if (gameObjects && gameObjects.length > 0) {
+                const tocandoUI = gameObjects.some(obj => obj.scrollFactorX === 0 || obj.scrollFactorY === 0);
+                if (tocandoUI) {
+                    this.game.canvas.classList.remove('cursor-far'); // Si el raton entra en un boton (menu de pausa), quitamos el cursor gris por si acaso
+                    return;
+                }
+            }
 
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
             let esInteractivo = false;
 
-            if (this.player && this.player.active) {
-                // Calculamos a que distancia esta el raton del jugador
-                const distancia = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
+            for (const config of configuraciones) {
+                if (!config.capa) continue; // Si la capa no existe, pasamos a la siguiente
 
-                if (distancia <= 40) {
-                    for (const config of configuraciones) {
-                        if (!config.capa) continue; // Si la capa no existe, pasamos a la siguiente
-
-                        const tile = config.capa.getTileAtWorldXY(worldPoint.x, worldPoint.y);
-                        if (tile && config.ids.includes(tile.index)) {
-                            esInteractivo = true;
-                            break; // Si ya hemos encontrado algo interactivo, dejamos de buscar
-                        }
-                    }
+                const tile = config.capa.getTileAtWorldXY(worldPoint.x, worldPoint.y);
+                if (tile && config.ids.includes(tile.index)) {
+                    esInteractivo = true;
+                    break; // Si ya hemos encontrado algo interactivo, dejamos de buscar
                 }
             }
 
-            this.game.canvas.style.cursor = esInteractivo ? 'pointer' : 'default';
+            let estaCerca = false;
+            if (this.player && this.player.active) {
+                // Calculamos a que distancia esta el raton del jugador
+                const distancia = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
+                if (distancia <= 40) {
+                    estaCerca = true;
+                }
+            }
+
+            if (esInteractivo) {
+                if (estaCerca) {
+                    this.game.canvas.style.cursor = 'pointer';
+                    this.game.canvas.classList.remove('cursor-far');
+                } else {
+                    this.game.canvas.style.cursor = 'default';
+                    this.game.canvas.classList.add('cursor-far');
+                }
+            } else {
+                this.game.canvas.style.cursor = 'default';
+                this.game.canvas.classList.remove('cursor-far');
+            }
         });
     }
 

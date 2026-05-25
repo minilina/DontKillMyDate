@@ -147,6 +147,18 @@ footer {
     object-fit: contain;
 }
 
+body::after { /* con esto hacemos que los cursores esten descargados desde el principio y se pongan inmediatamente cuando haya que usarlos */
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    z-index: -1;
+    background: url('../assets/sprites/UI/pointer_far.png'),
+                url('../assets/sprites/UI/take.png'),
+                url('../assets/sprites/UI/takeable.png');
+}
+
 /* Cursor por defecto global para toda la web y el juego */
 body, html, canvas {
     cursor: url('../assets/sprites/UI/default.png'), default !important;
@@ -163,4 +175,9 @@ canvas[style*="cursor: pointer"], a, button {
 
 #juego canvas.cursor-take {
     cursor: url('../assets/sprites/UI/take.png'), move !important;
+}
+
+/* Pointer demasiado lejos */
+#juego canvas.cursor-far {
+    cursor: url('../assets/sprites/UI/pointer_far.png'), pointer !important;
 }

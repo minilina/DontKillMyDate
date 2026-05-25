@@ -54,7 +54,7 @@ export default class City extends topDownScene {
 
         // Decoracion (hierba y cultivos) con depth dinamico
         this.crearDecoracionDinamica(['Objetos/SpawnFlores']);
-        this.crearDecoracionDinamica(['Objetos/SpawnFloresPuente'], 3000);
+        this.crearDecoracionDinamica(['Objetos/SpawnFloresArriba'], 3000);
 
         // Creamos una zona para la transicion a la casa
         const zonaCasa = this.add.zone(this.map.widthInPixels - 8, 272, 8, 48).setOrigin(0, 0);
@@ -71,7 +71,9 @@ export default class City extends topDownScene {
             'peque': { key: 'arbol_peque', w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true, spriteOffsetX: 8 },
             'grande': { key: 'arbol_grande', w: 16, h: 14, ox: -8, oy: -14, centrarOffset: true, spriteOffsetX: 8 }
         };
-        this.grupoArboles = this.crearObjetos('Objetos/SpawnArboles', configArboles);
+
+        this.grupoArbolesAbajo = this.crearObjetos('Objetos/SpawnArboles', configArboles);
+        this.grupoArbolesArriba = this.crearObjetos('Objetos/SpawnArbolesArriba', configArboles, 3000);
 
         // CREACION DE ESTRUCTURAS
         const configEstructuras = {
@@ -89,8 +91,9 @@ export default class City extends topDownScene {
             'casaRota': { key: '2', dw: -14, h: 52, ox: 8, oy: -53 }
         };
 
-        this.grupoEstructuras = this.crearObjetos('Objetos/SpawnEstructuras', configEstructuras);
+        this.grupoEstructurasAbajo = this.crearObjetos('Objetos/SpawnEstructuras', configEstructuras);
+        this.grupoEstructurasArriba = this.crearObjetos('Objetos/SpawnEstructurasArriba', configEstructuras, 3000);
 
-        this.activarTransparencias([this.grupoArboles, this.grupoEstructuras]);
+        this.activarTransparencias([this.grupoArbolesAbajo, this.grupoArbolesArriba, this.grupoEstructurasAbajo, this.grupoEstructurasArriba]);
     }
 }
