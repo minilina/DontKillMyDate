@@ -3,7 +3,6 @@ import Phaser from "phaser";
 import button from "../../assets/sprites/UI/button.png";
 import buttonSound from "../../assets/sound/button.mp3";
 import GameState from "../state/GameState.js";
-// --- NUEVO IMPORT PARA EL DISEÑO BASADO EN DATOS ---
 import ENDINGS from "../../assets/json/endings.json";
 
 export default class GameOver extends Phaser.Scene {
@@ -21,13 +20,17 @@ export default class GameOver extends Phaser.Scene {
     const centerY = this.scale.height / 2;
 
     // Determinar qué final mostrar
-    let endingKey;
-    if (GameState.reputation <= 0) {
-      endingKey = "bad";
-    } else if (GameState.isNeutralEnding()) {
-      endingKey = "neutral";
-    } else {
-      endingKey = "good";
+    let endingKey = GameState.endingType;
+
+    // Fallback de seguridad por si se llama a la escena desde otro lado inesperado
+    if (!endingKey) {
+      if (GameState.reputation <= -60) {
+        endingKey = "bad";
+      } else if (GameState.isNeutralEnding()) {
+        endingKey = "neutral";
+      } else {
+        endingKey = "bad";
+      }
     }
 
     const ending = ENDINGS[endingKey];
@@ -47,7 +50,7 @@ export default class GameOver extends Phaser.Scene {
       .setStroke("#623100", 8);
 
     this.add
-      .text(centerX, centerY - 10, ending.body, {
+      .text(centerX, centerY - 15, ending.body, {
         fontFamily: "VT323, monospace",
         fontSize: "26px",
         color: "#2b1d10",

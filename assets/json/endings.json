@@ -7,14 +7,20 @@
   },
   "neutral": {
     "title": "UN CAPÍTULO SIN CERRAR",
-    "body": "Los días han pasado, pero algo quedó pendiente.\n\nTu tía apareció al final de la jornada con una mirada que lo decía todo.\n\n¿Qué hubiera pasado si hubieras seguido el hilo hasta el final?",
+    "body": "Los días han pasado, pero algo quedó pendiente.\n\nTu tía apareció al final de tus 10 días regentando. Sin embargo, sientes se te escapa algo...\n\n¿Qué hubiera pasado si hubieras hecho caso a los consejos de tus clientes?",
     "titleColor": "#ffcc00",
     "buttonLabel": "REINTENTAR"
   },
-  "good": {
+  "good_happy": {
     "title": "EL ALBA DE UN NUEVO REINO",
-    "body": "Lo lograste. Los 6 reinos hablan de ti con respeto.\n\nCada poción que preparaste fue un paso hacia algo más grande.\n\nEl futuro de la alquimia está en tus manos.",
+    "body": "Lo lograste. Tu madre ha recuperado sus fuerzas gracias a tu poción y ha conseguido que los elfos la acepten como uno de ellos.\n\nTus padres vuelven a estar juntos, ¡y todo gracias a ti!.\n\nTú futuro como princesa no suena, pero como alquimista, deslumbras.",
     "titleColor": "#ffcc00",
     "buttonLabel": "VOLVER AL MENÚ"
+  },
+  "good_bad": {
+    "title": "UN REENCUENTRO AGRIDULCE",
+    "body": "Tu madre salió de la cueva, pero tu poción no fue suficiente para restaurar sus fuerzas del todo.\n\nAunque los reinos te respetan, la familia aún tiene heridas y debilidades que sanar.\n\nQuizás podrías haberlo hecho mejor...",
+    "titleColor": "#ffcc00",
+    "buttonLabel": "REINTENTAR"
   }
 }

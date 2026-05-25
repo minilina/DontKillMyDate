@@ -39,11 +39,14 @@
     ],
     "anim": "NPCelfo",
     "dialogueTopdown": [
-      "Sigo pensando que no hay mejor lugar que el bosque, pero en esta ciudad no se está tan mal. Espero que mucha más gente sepa apreciar este lugar en el futuro."
+      "Sigo pensando que el bosque es superior, pero pasear por esta ciudad tiene su encanto.",
+      "Especialmente ahora que me sobran pretendientas gracias a mi deslumbrante presencia.",
+      "¿Esa poción que me diste tiene efectos permanentes? Es para un amigo."
     ],
     "firstDialogueTopdown": [
-      "Finalmente has venido. Muchas gracias por abrirme las puertas de tu tienda aquella vez.",
-      "Tu ayuda fue definitivamente crucial a la hora de conseguir las alianzas que buscábamos entre razas. Te lo agradezco de corazón, alquimista."
+      "¡Ah, la joven alquimista! Debo admitir que tu poción fue un éxito rotundo.",
+      "Mi cita quedó completamente fascinada conmigo. Aunque claro, mi encanto natural hizo la mayor parte del trabajo.",
+      "Aun así, te lo agradezco. No olvides mi consejo sobre la cueva del oeste, podría serte muy útil."
     ]
   },
   "nymph": {
@@ -86,12 +89,14 @@
     ],
     "anim": "NPCninfa",
     "dialogueTopdown": [
-      "Desde que estoy aquí no puedo evitar mirar a Ezarel con otros ojos... Es un tipo genial, aunque a veces se le va la cabeza con sus teorías sobre el bosque.",
-      "Me alegro de haber encontrado a alguien tan amable como tú en esta ciudad, me has hecho sentir como en casa."
+      "Las aguas de la ciudad están mucho más claras desde que sellamos la alianza.",
+      "A veces me siento a la orilla a escuchar la corriente. Deberías acompañarme algún día cuando cierres la tienda.",
+      "Me pregunto si los humanos de por aquí saben nadar tan bien como los de mi alianza..."
     ],
     "firstDialogueTopdown": [
-      "¡Anda alquimista! No sabes la ilusión que me hace verte por aquí. Gracias por tu ayuda, de verdad. Sin ti no habría podido ayudar a mi especie con el río.",
-      "Tengo ganas de volver a las aguas cristalinas de las que provengo, pero me gusta mucho esta ciudad. Si alguna vez quieres venir a visitarme, búscame por aquí, ¡estare esperando tu regreso!"
+      "¡Alquimista! Gracias a tu esencia, el ritual de purificación fue todo un éxito.",
+      "Los humanos y nosotras logramos limpiar los manantiales antes de que la oscuridad lo consumiera todo.",
+      "El río vuelve a cantar con fuerza, y todo es gracias a tu talento."
     ]
   },
   "gnomo": {
@@ -143,12 +148,14 @@
     },
     "anim": "NPCgnomo",
     "dialogueTopdown": [
-      "Muchacha ¿que tal se te da el trabajo físico? Como se te dé igual de bien que la alquimia me vendrías genial en la mina. Estoy intentando que alguien de por aquí venga a ayudar, pero no hay manera...",
-      "Si algun humano apareciera por esta ciudad seguro que podríamos entendernos bien y me podría ayudar con mis tareas. Ser tan pequeño no es fácil, ¿sabes?"
+      "Es increíble lo fácil que es alcanzar las estanterías ahora.",
+      "Aunque tengo que admitir que me doy bastantes golpes en la cabeza con los marcos de las puertas.",
+      "A mi chica elfa le encanta mi nueva altura, así que los chichones valen la pena."
     ],
     "firstDialogueTopdown": [
-      "Que tal muchacha! Por fin apareces por aquí. Yo ya me he presentado con la gente de aquí y la verdad que son todos muy apañados. Estaré intentando que alguien de por aquí venga a ayudar en la mina.",
-      "¡Gracias por tu ayuda! No sabes lo importante que es para nosotros haber podido cerrar esa grieta. Sin tu ayuda no lo habríamos conseguido, de verdad. ¡Eres un crack!"
+      "¡Muchacha! ¡Mírame bien! ¿A que desde aquí arriba las cosas se ven diferentes?",
+      "Tu poción funcionó de maravilla, di un estirón tremendo y por fin conseguí una cita con esa elfa.",
+      "¡Te debo una gigantesca! Y nunca mejor dicho, ¡jajaja!"
     ]
   },
   "fairy": {
@@ -217,12 +224,14 @@
     },
     "anim": "NPChada",
     "dialogueTopdown": [
-      "La verdad que los elfos son muy atractivos... No tendrás alguna poción de las tuyas por ahí, ¿no?",
-      "Quien me ha visto y quien me ve... Antes era una hada de los bosques, ahora estoy aquí en esta ciudad... Pero la verdad que no me está yendo tan mal, la gente es muy maja."
+      "El aire de esta ciudad es un poco denso, pero desde las alturas las vistas son preciosas.",
+      "Volar es lo mejor que hay, no entiendo cómo los demás soportan estar siempre pegados al suelo.",
+      "A mi chico gnomo le da un poco de vértigo, pero poco a poco le estoy enseñando a disfrutar de las alturas."
     ],
     "firstDialogueTopdown": [
-      "¡Alquimista! Ya he ayudado a mi pueblo gracias a tu poción, la verdad que la ayuda de otras razas ha sido clave para nuestra supervivencia...",
-      "Es verdad que somos los más luminosos de entre todos los seres, pero al final he aprendido a apreciar la diversidad de esta ciudad. Si alguna vez quieres venir a visitarme, búscame por aquí, ¡estare esperando tu regreso!"
+      "¡Alquimista, hola! ¡Mira cómo revoloteo, mis alas están perfectas!",
+      "Pude llegar a mi cita en lo alto de la montaña a tiempo, y el gnomo se quedó sin palabras al verme bajar del cielo.",
+      "Muchísimas gracias, pensé que tendría que caminar por el resto de mis días."
     ]
   },
   "human": {
@@ -266,11 +275,14 @@
     ],
     "anim": "NPChumano",
     "dialogueTopdown": [
-      "Las verduras que cultivan en este pueblo estan bastante buenas, aunque echo de menos la comida de mi tierra...",
-      "He oido que la comida de los gnomos no tiene comparación... Igual debería acercarme a sus minas a probarla, aunque no se yo si me van a dejar entrar..."
+      "He decidido quedarme un tiempo por la zona, las cosechas de este pueblo me recuerdan a mi hogar.",
+      "Además, sigo buscando pistas sobre esa chica de mi aldea que desapareció hace años...",
+      "Tu mirada me sigue resultando muy familiar. Hay algo en ti que me da mucha paz."
     ],
     "firstDialogueTopdown": [
-      "¡Hola alquimista! Vaya ciudad tan agradable teneis aquí montada, me gusta mucho. Gracias por tu ayuda, de verdad. Sin ti no habría podido ayudar a mi pueblo con la plaga."
+      "Joven alquimista, mi pueblo te estará eternamente agradecido.",
+      "Llevé tu remedio y, con la ayuda de la magia de las ninfas, la plaga de nuestras cosechas ha retrocedido.",
+      "La tierra vuelve a ser fértil y nuestra gente ya no pasará hambre."
     ]
   },
   "kitsune": {
@@ -313,11 +325,14 @@
     ],
     "anim": "NPCkitsune",
     "dialogueTopdown": [
-      "Esta ciudad es demasiado ruidosa para mí, echo de menos la tranquilidad de mi templo...",
-      "No es fácil ser un kitsune en un mundo lleno de humanos, aunque la gente de aquí es bastante agradable."
+      "El templo vuelve a estar en paz. El fuego espiritual reconforta nuestras almas.",
+      "Esta ciudad sigue siendo demasiado ruidosa para mi gusto, pero supongo que tiene su equilibrio.",
+      "Si las sombras vuelven a acechar, ya sé a qué tienda debo acudir."
     ],
     "firstDialogueTopdown": [
-      "Anda, eres tu joven. No sabes cuanto me costó ir a pedirle ayuda a alguien como tú, pero al final lo conseguí. Agradezco tu impecable desempeño. No volveré a dudar de las demás especies que habitan este reino."
+      "Alquimista. He de admitir que tu brebaje cumplió su propósito con creces.",
+      "Los faroles de nuestro santuario ancestral vuelven a arder con la chispa de las hadas, y las sombras han sido desterradas.",
+      "Has demostrado ser digna de nuestro respeto. Eso no es algo que ofrezca a la ligera."
     ]
   },
   "inspector": {
@@ -341,17 +356,82 @@
   },
   "madre": {
     "name": "Mujer misteriosa",
+    "looks": {
+      "base": "cuerpo_1",
+      "boca": "boca_normal_1",
+      "nariz": "nariz_1",
+      "ojos": "ojos_verdes",
+      "pelo": "pelo_2_negro",
+      "ropa": "ropa_madre",
+      "orejas": null,
+      "rasgoFrente": null,
+      "rasgoDetras": null
+    },
+    "requirements": {
+      "raza": "humanos",
+      "raza_objetivo": "elfos",
+      "sabor": "dulce",
+      "color": "rojo",
+      "consistencia": "machacada",
+      "temperatura": "calor",
+      "forma_frasco": "corazon"
+    },
+    "dialogue": [
+      "Hola, hija mía. Ha llegado el momento de dejar de esconderme en esta cueva.",
+      "Pero para poder presentarme ante tú padre otra vez, necesito una poción que restaure mi vitalidad, y que asegure que su reino me acepte tal y como soy, una humana.",
+      "Ya sabes que tu padre era {raza_objetivo}. Prepárame algo de color {color}, su color favorito. Y que sea {sabor}. Que la textura esté {consistencia}, sírvela con {temperatura} y ponla en un frasco con forma de {forma_frasco}. Confío en ti."
+    ],
+    "successDialogue": [
+      "Siento cómo la vitalidad vuelve a mi cuerpo... ¡Es una poción perfecta, cariño!",
+      "Estoy lista para dar la cara y estar orgullosa de la gran alquimista en la que te has convertido."
+    ],
+    "neutralDialogue": [
+      "Mmm... me da algunas fuerzas, aunque esperaba un poco más de tu talento.",
+      "Aun así, es suficiente para poder mantenerme en pie fuera de la cueva."
+    ],
+    "failDialogue": [
+      "Oh... esto no me hace sentir muy bien. Me temo que mis fuerzas no se han restaurado.",
+      "Tendré que salir así de la cueva, aunque me costará mucho recuperarme..."
+    ],
     "anim": "NPCmadre",
     "dialogueTopdown": {
-      "0" : ["Anda, alguien viniendo a visitar mi escondite en la cueva, ¿como supiste entrar? Bueno, no importa, de todas formas no deberías entrar en sitios como este, aunque me alegr... Nada olvídalo."],
-      "1" : ["¿Otro día vienes a verme? Bueno mientras solo seas tú no tengo problema... Pero ten cuidado de que nadie te vea entrar aquí."],
-      "2" : ["¿Sigues viniendo? Bueno, no me molesta, me gusta tener compañía por aquí, aunque no se si es seguro que sigas viniendo a este lugar tan peligroso..."],
-      "3" : ["Me he atrevido a salir un poco de la cueva, y he visto que las relaciones entre las razas de este reino han mejorado enormemente, no será gracias a tí ¿no?"],
-      "4" : ["Estoy pensando en si sería buena idea contarte un pequeño secreto, pero eso me pondría en peligro... Bueno en verdad te has preocupado mucho por mi viniendome a visitar tantos días a esta cueva..."],
-      "5" : ["Bueno, te contaré la verdad.. En realidad yo soy tu madre, pero tuve que esconderme aquí para protegerme de un gran peligro que se cierne sobre mí. Eres mi hija junto con el anterior rey de los elfos, y pese a que nos amabamos profundamente, los compatriotas de tu padre acabaron matándole por tener descendencia con una humana como yo. Desde entonces me he escondido aquí para vigilarte escondida. Tu tía Agatha y yo te protegeremos siempre que sea necesario, pero gracias a todo lo que estas haciendo por mejorar las relaciones entre las razas ya no parece necesario esconderme. Muchisimas gracias por todo hija mía estoy orgullosísima de tí y de tu trabajo en estas tierras"],
-      "6" : ["Mi querida hija. Que orgullosa estoy de tí. Has hecho un gran trabajo por todos los seres de este reino. Ven a visitarme a menudo anda, ¡que me aburro mucho aquí! Dentro de poco me mudaré a la ciudad, que las cosas están mejorando mucho."],
-      "7" : ["Hola cariño, ¿qué tal estás hoy? Me alegro muchísimo de verte, ¿qué tal las cosas por la tienda?"]
-
+      "0": [
+        "Anda, alguien viniendo a visitar mi escondite en la cueva, ¿como supiste entrar?",
+        "Bueno, no importa, de todas formas no deberías entrar en sitios como este, aunque me alegr... Nada olvídalo."
+      ],
+      "1": [
+        "¿Otro día vienes a verme? Bueno mientras solo seas tú no tengo problema...",
+        "Pero ten cuidado de que nadie te vea entrar aquí."
+      ],
+      "2": [
+        "¿Sigues viniendo? Bueno, no me molesta, me gusta tener compañía por aquí.",
+        "Aunque no se si es seguro que sigas viniendo a este lugar tan peligroso..."
+      ],
+      "3": [
+        "Me he atrevido a salir un poco de la cueva, y he visto que las relaciones entre las razas de este reino han mejorado enormemente.",
+        "No será gracias a tí ¿no?"
+      ],
+      "4": [
+        "Estoy pensando en si sería buena idea contarte un pequeño secreto, pero eso me pondría en peligro...",
+        "Bueno en verdad te has preocupado mucho por mi viniendome a visitar tantos días a esta cueva..."
+      ],
+      "5": [
+        "Bueno, te contaré la verdad.. En realidad yo soy tu madre, pero tuve que esconderme aquí para protegerme de un gran peligro que se cierne sobre mí.",
+        "Eres mi hija junto con el anterior rey de los elfos, y pese a que nos amabamos profundamente, los compatriotas de tu padre le hicieron abandonar a una humana como yo.",
+        "Pero les hizo prometer que dejaría que tu tia Agatha te protegiera si yo desaparecía del mapa.",
+        "Desde entonces me he escondido aquí para vigilarte a escondidas.",
+        "Tu tía Agatha y yo te protegeremos siempre que sea necesario, pero gracias a todo lo que estas haciendo por mejorar las relaciones entre las razas ya no parece necesario esconderme.",
+        "Muchisimas gracias por todo hija mía, estoy orgullosísima de tí y de tu trabajo en estas tierras."
+      ],
+      "6": [
+        "Mi querida hija. Que orgullosa estoy de tí. Has hecho un gran trabajo por todos los seres de este reino.",
+        "Ven a visitarme a menudo anda, ¡que me aburro mucho aquí!",
+        "Dentro de poco me mudaré a la ciudad, que las cosas están mejorando mucho."
+      ],
+      "7": [
+        "Hola cariño, ¿qué tal estás hoy?",
+        "Me alegro muchísimo de verte, ¿qué tal las cosas por la tienda?"
+      ]
     },
     "READMEMADRE": [
       "en el caso de madre, el dialogo que se leera cada vez que hablemos con ella sera dialogueTopdown[vez]"

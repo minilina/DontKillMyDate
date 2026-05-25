@@ -1,5 +1,6 @@
 const GameState = {
   // VARIABLES GLOBALES
+  endingType: null,
   reputation: 50,
   currentDay: 1,
   currentCustomer: 0,
@@ -42,7 +43,7 @@ const GameState = {
   },
   talkToMother() {
     //solo incrementamos las veces habladas con la madre si es un dia nuevo
-    if(this.lastDayTalkedToMother !== this.currentDay) {
+    if (this.lastDayTalkedToMother !== this.currentDay) {
       this.timesMotherTalkedToPlayer++;
       this.lastDayTalkedToMother = this.currentDay;
     }
@@ -99,7 +100,7 @@ const GameState = {
   },
 
   isNeutralEnding() {
-    return !this.hasCompletedSpecialEvent;
+    return this.getTimesTalkedToMother() < 5;
   },
 
   getCurrentCustomerType() {
@@ -293,15 +294,24 @@ const GameState = {
     // --- SISTEMA DE TIEMPO ---
     if (this.orderStartTime > 0) {
       const endTime = this.orderEndTime > 0 ? this.orderEndTime : Date.now();
-      const timeSpentSeconds = (endTime - this.orderStartTime - this.totalPausedTime) / 1000;
-      
+      const timeSpentSeconds =
+        (endTime - this.orderStartTime - this.totalPausedTime) / 1000;
+
       if (q >= 50) {
         if (timeSpentSeconds <= 30) {
-          change += 2; 
-          console.log("Tiempo rápido:", Math.round(timeSpentSeconds), "segundos. Reputación extra.");
+          change += 2;
+          console.log(
+            "Tiempo rápido:",
+            Math.round(timeSpentSeconds),
+            "segundos. Reputación extra.",
+          );
         } else if (timeSpentSeconds >= 120) {
-          change -= 2; 
-          console.log("Tiempo lento:", Math.round(timeSpentSeconds), "segundos. Reputación reducida.");
+          change -= 2;
+          console.log(
+            "Tiempo lento:",
+            Math.round(timeSpentSeconds),
+            "segundos. Reputación reducida.",
+          );
         } else {
           // tiempo normal, sin cambios
           console.log(`Tiempo normal: ${Math.round(timeSpentSeconds)}s.`);

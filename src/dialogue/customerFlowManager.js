@@ -25,6 +25,7 @@ export default class CustomerFlowManager {
 
     this.isShowingNeutralEnding = false;
     this.isKnockingNeutral = false;
+    this.motherEndingSpawned = false; // <-- NUEVA VARIABLE
 
     this._onDialogueFinished = this._onDialogueFinished.bind(this);
     this.scene.events.on("dialogue:finished", this._onDialogueFinished);
@@ -37,17 +38,26 @@ export default class CustomerFlowManager {
   spawnNextCustomer() {
     if (GameState.isDayOver()) {
       if (GameState.reputation <= -60) {
+        GameState.endingType = "bad";
         this.startGameOverSequence();
         return;
       }
 
       if (GameState.currentDay >= GameState.daysData.length) {
-        if (GameState.isNeutralEnding()) {
-          this.startNeutralEndingSequence();
+        if (GameState.getTimesTalkedToMother() >= 5) {
+          if (!this.motherEndingSpawned) {
+            this.motherEndingSpawned = true;
+            this.spawnMotherAsCustomer();
+            return;
+          } else {
+            this.triggerFinalMotherEnding();
+            return;
+          }
         } else {
-          this._finishShift(); // buen final
+          GameState.endingType = "neutral";
+          this.startNeutralEndingSequence();
+          return;
         }
-        return;
       }
 
       this._finishShift();
@@ -121,6 +131,60 @@ export default class CustomerFlowManager {
     this.dialogueManager.start(dialogueData);
   }
 
+  // ── MÉTODOS PARA EL FINAL DE LA MADRE ──────────────────────────────────────
+
+  spawnMotherAsCustomer() {
+    if (this.currentCustomer) {
+      this.currentCustomer.destroy();
+    }
+
+    const specialData = GameState.getSpecialNPC("madre");
+    const scriptedRequest = processScriptedDialogue(specialData);
+
+    this.currentRequest = {
+      requirements: scriptedRequest.requirements,
+      literalWords: scriptedRequest.literalWords,
+      specialData: specialData,
+    };
+
+    const formattedLines = [];
+    scriptedRequest.dialogueLines.forEach((line) => {
+      formattedLines.push(...splitIntoLines(line));
+    });
+
+    this.currentCustomer = new NPC(
+      this.scene,
+      this.scene.scale.width / 4,
+      this.scene.scale.height * 0.85,
+      specialData.looks,
+      this.currentRequest.requirements,
+      this.currentRequest.specialData,
+    );
+
+    this.currentCustomer.npcData = this.currentRequest.specialData;
+    this.currentCustomer.id = "madre";
+
+    this.dialogueManager.start({
+      speakerName: specialData.name,
+      lines: formattedLines,
+    });
+  }
+
+  triggerFinalMotherEnding() {
+    const score = GameState.specialNpcRecords["madre"] || 0;
+
+    if (score >= 80) {
+      GameState.endingType = "good_happy";
+    } else {
+      GameState.endingType = "good_bad";
+    }
+
+    localStorage.removeItem("potionGameSave");
+    
+    this.scene.scene.stop("store");
+    this.scene.scene.start("gameOver");
+  }
+
   // ── GAME OVER ──────────────────────────────────────────────────────────────
 
   startGameOverSequence() {
@@ -181,7 +245,7 @@ export default class CustomerFlowManager {
     // Llamada más suave a la puerta, tono ambiguo
     this.dialogueManager.start({
       speakerName: "???",
-      lines: ["*toc... toc... toc...*", "Sobrina, ¿Estás ahí?."],
+      lines: ["*Toc... toc... toc...*", "Sobrina, ¿Estás ahí?."],
     });
   }
 
@@ -263,9 +327,9 @@ export default class CustomerFlowManager {
 
     if (!this.currentRequest) return;
     this.scene.registry.set("currentOrder", this.currentRequest);
-    
+
     GameState.prepareNewCustomer();
-    
+
     this.scene.scene.sleep("store");
     this.scene.scene.launch("kitchen");
   }
@@ -286,6 +350,13 @@ export default class CustomerFlowManager {
 
   continueShift() {
     if (this.currentCustomer) {
+      if (this.currentCustomer.id === "madre") {
+        GameState.saveSpecialNpcRecord(
+          "madre",
+          GameState.currentPotion.quality,
+        );
+      }
+
       this.currentCustomer.leave(() => {
         this.currentCustomer = null;
         this.currentRequest = null;
