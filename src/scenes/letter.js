@@ -16,13 +16,29 @@ export default class Letter extends Phaser.Scene {
     this.add
       .image(0, 0, "store")
       .setOrigin(0, 0)
-      .setDisplaySize(this.scale.width, this.scale.height);
+      .setDisplaySize(this.scale.width, this.scale.height)
+      .setDepth(0);
+
+    // Capa de luz
+    this.add
+      .image(0, 0, "luzStore")
+      .setOrigin(0, 0)
+      .setDisplaySize(this.scale.width, this.scale.height)
+      .setDepth(20);
+
+    // Mostrador
+    this.add
+      .image(0, 0, "mostrador")
+      .setOrigin(0, 0)
+      .setDisplaySize(this.scale.width, this.scale.height)
+      .setDepth(40);
 
     // Carta
     this.add
       .image(0, 0, "letter")
       .setOrigin(0, 0)
-      .setDisplaySize(this.scale.width, this.scale.height);
+      .setDisplaySize(this.scale.width, this.scale.height)
+      .setDepth(50);
 
     // Área visible del texto
     this.textArea = {
@@ -33,11 +49,11 @@ export default class Letter extends Phaser.Scene {
     };
 
     // Container del texto
-    this.textContainer = this.add.container(this.textArea.x, this.textArea.y);
+    this.textContainer = this.add.container(this.textArea.x, this.textArea.y).setDepth(60);
 
     this.letterText = this.add.text(0, 0, "", {
       fontFamily: "VT323, monospace",
-      fontSize: "25px",
+      fontSize: "24px",
       color: "#4f342d",
       wordWrap: { width: this.textArea.width },
     });
@@ -61,52 +77,7 @@ export default class Letter extends Phaser.Scene {
     const uiCx = this.textArea.x + this.textArea.width / 2;
     const uiCy = this.textArea.y + this.textArea.height / 2;
 
-
-    const inputY = uiCy; // centro vertical del área
-    const confirmY = uiCy + 180;
     const closeY = uiCy + 180;
-
-    // UI nombre
-    this.nameInput = this.add
-      .dom(uiCx, inputY + 130, "input", { fontSize: "15px", padding: "5px" })
-      .setVisible(false);
-
-    this.nameInput.node.placeholder = "Escribe tu nombre";
-    this.nameInput.node.setAttribute("inputmode", "text");
-    this.nameInput.node.setAttribute("autocomplete", "off");
-    this.nameInput.node.setAttribute("autocapitalize", "none");
-    this.nameInput.node.setAttribute("spellcheck", "false");
-
-    this.nameInput.node.addEventListener("input", (e) => {
-      let v = e.target.value;
-      v = v.toLowerCase();
-      v = v.replace(/[^a-z]/g, "");
-      v = v.substring(0, 16);
-      e.target.value = v;
-    });
-
-    this.nameInput.addListener("keydown");
-    this.nameInput.on("keydown", (event) => {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        event.stopPropagation();
-        this.onConfirmName();
-      }
-    });
-
-    this.confirmText = this.add
-      .text(uiCx, confirmY, "Confirmar", {
-        fontFamily: "VT323, monospace",
-        fontSize: "21px",
-        backgroundColor: "#4f342d",
-        color: "#ffffff",
-        padding: { x: 15, y: 8 },
-      })
-      .setOrigin(0.5)
-      .setInteractive()
-      .setVisible(false);
-
-    this.confirmText.on("pointerdown", () => this.onConfirmName());
 
     // Botón cerrar
     this.closeButton = this.add
@@ -118,22 +89,23 @@ export default class Letter extends Phaser.Scene {
         padding: { x: 15, y: 8 },
       })
       .setOrigin(0.5)
-      .setInteractive()
+      .setDepth(60)
+      .setInteractive({ useHandCursor: true })
       .setVisible(false);
 
+    this.closeButton.on("pointerover", () => this.closeButton.setColor("#ffcc00"));
+    this.closeButton.on("pointerout", () => this.closeButton.setColor("#ffffff"));
+
     this.closeButton.on("pointerdown", () => {
+      this.game.canvas.style.cursor = 'default';
       this.scene.start("kitchen", { startInTutorialMode: true });
     });
-
-
 
     // ─────────────────────────────
     // PAGINACIÓN MANUAL
     // ─────────────────────────────
     this.pages = letterData.pages ?? [];
     this.pageIndex = 0;
-    this.marker = "{{NAME}}";
-    this.waitingName = false;
 
     // ─────────────────────────────
     // Estado typewriter + skip con Enter o Click
@@ -144,18 +116,10 @@ export default class Letter extends Phaser.Scene {
     this._baseText = "";
     this._onTypeComplete = null;
     this._typeIndex = 0;
-    this._afterNameInThisPage = "";
 
     // Acción unificada: si escribe -> completa; si no -> avanza/cierra
     this.advanceOrFinish = () => {
-      // Si estamos esperando nombre, no avanzar
-      if (this.waitingName) return;
-
-      // Si el foco está en un input/textarea, no avanzar
-      const ae = document.activeElement?.tagName?.toLowerCase();
-      if (ae === "input" || ae === "textarea") return;
-
-      // Si está escribiendo: completar
+      // Si estamos escribiendo: completar
       if (this.isTyping) {
         this.finishTyping();
         this.sound.play("buttonSound", { volume: 1 });
@@ -180,7 +144,6 @@ export default class Letter extends Phaser.Scene {
 
     // Enter: misma lógica que click
     this.input.keyboard.on("keydown-ENTER", () => {
-
       this.advanceOrFinish();
     });
 
@@ -193,14 +156,13 @@ export default class Letter extends Phaser.Scene {
     // Render inicial
     this.renderPage(0);
 
-
     // Pausa
     this.pauseKey = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.ESC,
     );
     this.createPauseButton();
-
   }
+
   createPauseButton() {
     const btnX = this.scale.width - 25;
     const btnY = 25;
@@ -211,8 +173,6 @@ export default class Letter extends Phaser.Scene {
       .setOrigin(0.5)
       .setScale(3)
       .setDepth(1000);
-
-
 
     // Animación hover
     this.pauseBtnBg.on('pointerover', () => {
@@ -229,6 +189,7 @@ export default class Letter extends Phaser.Scene {
       this.openPauseMenu();
     });
   }
+
   update(time, delta) {
     this.flowManager?.update(time, delta);
     if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
@@ -257,6 +218,8 @@ export default class Letter extends Phaser.Scene {
 
   // Escribe con efecto (controlable)
   typewriter(text, onComplete, opts) {
+    this.game.canvas.style.cursor = 'default';
+
     const append = opts?.append ?? false;
     const speed = opts?.speed ?? 20;
 
@@ -324,31 +287,6 @@ export default class Letter extends Phaser.Scene {
     // última página => luego mostrar "Cerrar carta"
     const isLast = index >= this.pages.length - 1;
 
-    // si en esta página está el marcador, paramos y pedimos nombre
-    const markerPos = raw.indexOf(this.marker);
-    if (markerPos !== -1) {
-      const before = raw.slice(0, markerPos);
-      const after = raw.slice(markerPos + this.marker.length);
-
-      this.waitingName = false;
-      this.closeButton.setVisible(false);
-
-      this.typewriter(before, () => {
-        this.waitingName = true;
-        this._afterNameInThisPage = after;
-
-        this.nameInput.setVisible(true);
-        this.confirmText.setVisible(true);
-
-        this.time.delayedCall(50, () => {
-          this.nameInput.node.focus();
-          this.nameInput.node.click();
-        });
-      });
-
-      return;
-    }
-
     // página normal
     this.typewriter(raw, () => {
       if (isLast) {
@@ -356,37 +294,8 @@ export default class Letter extends Phaser.Scene {
       } else {
         this.closeButton.setVisible(false);
       }
+      this.game.canvas.style.cursor = 'pointer';
     });
-  }
-
-  onConfirmName() {
-    const raw = this.nameInput.node.value ?? "";
-
-    const cleanLower = raw.replace(/\d+/g, "").trim().toLowerCase() || "sobrina";
-    const nameForLetter = this.capitalizeFirstLetter(cleanLower);
-
-    this.registry.set("playerName", nameForLetter);
-
-    this.nameInput.setVisible(false);
-    this.confirmText.setVisible(false);
-    this.waitingName = false;
-
-    const after = this._afterNameInThisPage ?? "";
-
-    // 1) pegar el nombre inmediatamente
-    this.letterText.setText((this.letterText.text ?? "") + nameForLetter);
-
-    // 2) continuar escribiendo el resto con append
-    const isLast = this.pageIndex >= this.pages.length - 1;
-    this.typewriter(
-      after,
-      () => {
-        if (isLast) {
-          this.closeButton.setVisible(true);
-        }
-      },
-      { append: true }
-    );
   }
 
   nextManualPage() {

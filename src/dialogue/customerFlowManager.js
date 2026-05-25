@@ -226,6 +226,9 @@ export default class CustomerFlowManager {
 
     // Inspector termina → pantalla Game Over
     if (this.isShowingGameOver) {
+      // borramos partida guardada
+      localStorage.removeItem('potionGameSave');
+
       this.scene.scene.stop("store");
       this.scene.scene.start("gameOver");
       return;
@@ -240,6 +243,9 @@ export default class CustomerFlowManager {
 
     // NPC del final intermedio termina → pantalla de final intermedio
     if (this.isShowingNeutralEnding) {
+      // borramos partida guardada
+      localStorage.removeItem('potionGameSave');
+
       this.isShowingNeutralEnding = false;
       this.scene.scene.stop("store");
       this.scene.scene.start("gameOver"); // ← antes ponía "neutralEnding"
