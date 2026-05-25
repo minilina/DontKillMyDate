@@ -905,7 +905,7 @@ export default class Boot extends Phaser.Scene {
 
             this.scene.start('house');
         } else {
-            this.scene.start('city');
+            this.scene.start('Letter');
         }
     }
 }
