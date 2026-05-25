@@ -121,6 +121,7 @@ import arrozMedio from '../../assets/tiled/arroz medio.png';
 
 import playerRun from '../../assets/anims/run.png';
 import playerIdle from '../../assets/anims/idle.png';
+import playerWatering from '../../assets/anims/watering.png';
 import NPCmadre from '../../assets/anims/NPCmadre.png';
 import NPCelfo from '../../assets/anims/NPCelfo.png';
 import NPChada from '../../assets/anims/NPChada.png';
@@ -459,6 +460,7 @@ export default class Boot extends Phaser.Scene {
         // TOPDOWN 
         this.load.spritesheet('player-run', playerRun, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('player-idle', playerIdle, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('player-watering', playerWatering, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('NPCmadre', NPCmadre, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('NPCelfo', NPCelfo, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('NPChada', NPChada, { frameWidth: 32, frameHeight: 32 });
@@ -903,7 +905,7 @@ export default class Boot extends Phaser.Scene {
 
             this.scene.start('house');
         } else {
-            this.scene.start('Letter');
+            this.scene.start('city');
         }
     }
 }
