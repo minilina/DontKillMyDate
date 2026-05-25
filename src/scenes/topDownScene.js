@@ -9,7 +9,9 @@ export default class TopDownScene extends Phaser.Scene {
         super({ key });
     }
 
-    // Metodo generico para inicializar mapas topDown
+    // ==========================================
+    // INICIALIZACIÓN DE ESCENA Y MAPA
+    // ==========================================
     initScene(mapKey) {
         this.game.canvas.style.cursor = 'default';
         this.game.canvas.classList.remove('cursor-far');
@@ -18,7 +20,6 @@ export default class TopDownScene extends Phaser.Scene {
         this.isTransitioning = false;
 
         const tilesetsArray = this.map.tilesets.map(tileset => {
-            // map.addTilesetImage(Nombre_en_Tiled, Nombre_en_Phaser) (nombre igual en ambos)
             return this.map.addTilesetImage(tileset.name, tileset.name);
         });
 
@@ -31,13 +32,12 @@ export default class TopDownScene extends Phaser.Scene {
                 capa.setVisible(false);
                 this.capaColisiones = capa;
             }
-
             else if (layerData.name.toLowerCase().includes('invisible')) {
                 capa.setVisible(false);
             }
         });
 
-        // Animaciones
+        // Animaciones de Tiles
         if (this.animatedTiles) {
             this.animatedTiles.init(this.map);
             this.animatedTiles.setRate(0.5);
@@ -47,55 +47,35 @@ export default class TopDownScene extends Phaser.Scene {
     }
 
     setupPlayer(startX, startY, direccion = 'down') {
-        // NavMesh
-        /* const walkableLayer = map.getObjectLayer('Walkable');
-        
-        this.navMesh = this.navMeshPlugin.buildMeshFromTiled(
-            "mesh",
-            walkableLayer//,5 //shrink amount (opcional)
-        ); */
-
         if (this.capaColisiones) {
             this.navMesh = this.navMeshPlugin.buildMeshFromTilemap("mesh", this.map, [this.capaColisiones], null, 4.5);
         }
 
-        //Descomentar esto para debuggear navmesh---------------------------------------------
-        /* this.navMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen
-        this.navMesh.debugDrawClear(); // Clears the overlay
-        // Visualize the underlying navmesh
-        this.navMesh.debugDrawMesh({
-            drawCentroid: true,
-            drawBounds: false,
-            drawNeighbors: true,
-            drawPortals: true
-        }); */
-        //-------------------------------------------------------------------------------------
-
         // Jugador
         this.player = new Player(this, startX, startY);
         if (this.navMesh) this.player.setNavmesh(this.navMesh);
-        this.player.zElevacion = 0; // Para el tema de las escaleras de la ciudad
+        this.player.zElevacion = 0;
         if (this.player.setDireccion) { this.player.setDireccion(direccion); }
 
-        // Camara
+        // Cámara
         this.cameras.main.setZoom(3);
         this.cameras.main.roundPixels = true;
         this.cameras.main.startFollow(this.player);
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-        this.cameras.main.fadeIn(600, 0, 0, 0); // todas las escenas empiezan con un fadeIn
+        this.cameras.main.fadeIn(600, 0, 0, 0);
 
         if (this.capaColisiones) {
             this.physics.add.collider(
                 this.player,
                 this.capaColisiones,
                 null,
-                () => { return this.player.zElevacion === 0; }, // Solo colisionas si no estas elevado (zElevacion)
+                () => { return this.player.zElevacion === 0; },
                 this
             );
         }
 
-        // Input generico de movimiento
+        // Input genérico de movimiento (NavMesh click)
         this.input.on('pointerdown', (pointer, gameObjects) => {
             if (gameObjects && gameObjects.length > 0) {
                 const tocandoUI = gameObjects.some(obj => obj.scrollFactorX === 0 || obj.scrollFactorY === 0);
@@ -119,91 +99,77 @@ export default class TopDownScene extends Phaser.Scene {
             if (path && path.length > 0) this.player.setPath(path);
         });
 
-        // Profundidad automatica
+        // Profundidad automática (Z-sorting)
         this.events.on('update', () => {
-            // Solo actualiza si el jugador existe y sigue activo
             if (this.player && this.player.active) {
                 this.player.setDepth(this.player.y + 4 + this.player.zElevacion);
             }
         });
     }
 
+    // ==========================================
+    // SISTEMA DE PASOS (FOOTSTEPS)
+    // ==========================================
+    setupFootstepSounds(configs) {
+        // Guardamos las configuraciones pasadas por parámetro
+        this.footstepConfigs = configs;
+        this.currentFootstep = null;
+
+        // Instanciamos físicamente los audios en Phaser y los guardamos en su config
+        for (const key of Object.keys(this.footstepConfigs)) {
+            const cfg = this.footstepConfigs[key];
+            cfg.sound = this.sound.add(cfg.key, { loop: true, volume: cfg.volume || 1 });
+        }
+
+        // Limpieza al salir de la escena
+        this.events.on('shutdown', () => {
+            for (const cfg of Object.values(this.footstepConfigs || {})) {
+                if (cfg.sound) cfg.sound.stop();
+            }
+        });
+    }
+
     setupDefaultFootstepSounds() {
+        this.capaCamino = this.map.getLayer('Suelo/Camino')?.tilemapLayer;
+        this.capaCesped = this.map.getLayer('Suelo/Cesped')?.tilemapLayer;
+        this.capaTierra = this.map.getLayer('Suelo/Tierra')?.tilemapLayer;
+        this.capaRoca = this.map.getLayer('Suelo/Roca')?.tilemapLayer;
+        this.capaAgua = this.map.getLayer('Agua/Agua')?.tilemapLayer;
 
-        this.capaCamino =
-            this.map.getLayer('Suelo/Camino')?.tilemapLayer;
-
-        this.capaCesped =
-            this.map.getLayer('Suelo/Cesped')?.tilemapLayer;
-
-        this.capaTierra =
-            this.map.getLayer('Suelo/Tierra')?.tilemapLayer;
-
+        // Ahora este método ya existe abajo y procesará la info correctamente
         this.setupFootstepSounds({
-
             camino: {
                 layer: this.capaCamino,
                 key: 'tilesSound',
                 volume: 2
             },
-
             cesped: {
                 layer: this.capaCesped,
                 key: 'grassSound',
                 volume: 1
             },
-
             tierra: {
-                layer: this.capaTierra,
+                layer: [this.capaTierra, this.capaRoca].filter(Boolean),
                 key: 'groundSound',
                 volume: 1
             }
         });
     }
 
-    setupFootstepSounds(config) {
-
-        this.footstepConfigs = config;
-
-        this.currentFootstep = null;
-
-        Object.values(this.footstepConfigs).forEach(cfg => {
-
-            cfg.sound = this.sound.add(cfg.key, {
-                loop: true,
-                volume: cfg.volume ?? 1
-            });
-        });
-
-        // Limpiar sonidos
-        this.events.on('shutdown', () => {
-
-            Object.values(this.footstepConfigs).forEach(cfg => {
-                cfg.sound.stop();
-            });
-        });
-    }
-
     updateFootstepSounds() {
+        if (!this.player || !this.player.active || !this.footstepConfigs || !this.map) return;
 
-        if (!this.player || !this.footstepConfigs) return;
-
-        const tileX =
-            this.map.worldToTileX(this.player.x);
-
-        const tileY =
-            this.map.worldToTileY(this.player.y);
-
-        const moviendose =
-            this.player.body.speed > 0;
+        const tileX = this.map.worldToTileX(this.player.x);
+        const tileY = this.map.worldToTileY(this.player.y);
+        const moviendose = this.player.body && this.player.body.speed > 0;
 
         let nuevoSonido = null;
 
         for (const cfg of Object.values(this.footstepConfigs)) {
+            if (!moviendose || !cfg.layer) continue;
 
-            const enCapa =
-                moviendose &&
-                !!cfg.layer?.getTileAt(tileX, tileY);
+            const capas = Array.isArray(cfg.layer) ? cfg.layer : [cfg.layer];
+            const enCapa = capas.some(capa => !!capa.getTileAt(tileX, tileY));
 
             if (enCapa) {
                 nuevoSonido = cfg;
@@ -211,46 +177,141 @@ export default class TopDownScene extends Phaser.Scene {
             }
         }
 
-        // Cambio de suelo
         if (this.currentFootstep !== nuevoSonido) {
-
-            if (this.currentFootstep) {
+            if (this.currentFootstep && this.currentFootstep.sound) {
                 this.currentFootstep.sound.stop();
             }
 
-            if (nuevoSonido) {
+            if (nuevoSonido && nuevoSonido.sound) {
                 nuevoSonido.sound.play();
             }
 
             this.currentFootstep = nuevoSonido;
         }
 
-        // Parado
         if (!moviendose && this.currentFootstep) {
-
-            this.currentFootstep.sound.stop();
+            if (this.currentFootstep.sound) this.currentFootstep.sound.stop();
             this.currentFootstep = null;
         }
     }
 
-    update() {
-        this.updateFootstepSounds();
+    // ==========================================
+    // AUDIO AMBIENTAL (AGUA CON CRUISE-CONTROL)
+    // ==========================================
+    setupAmbientWaterSound(audioKey, maxDistance = 120, maxVolume = 0.05) {
+        if (!this.capaAgua && this.map) {
+            this.capaAgua = this.map.getLayer('Agua/Agua')?.tilemapLayer;
+        }
+        if (!this.capaAgua) return;
+
+        this.waterMaxDistance = maxDistance;
+        this.waterMaxVolume = maxVolume;
+
+        // Cargamos los audios con volumen 0 puro, pausados.
+        this.waterSound1 = this.sound.add(audioKey, { loop: true, volume: 0 });
+        this.waterSound2 = this.sound.add(audioKey, { loop: true, volume: 0 });
+        this.waterSound2Desfasado = false;
+
+        this.events.on('shutdown', () => {
+            if (this.waterSound1) this.waterSound1.stop();
+            if (this.waterSound2) this.waterSound2.stop();
+        });
     }
 
-    // UI Y MENU DE PAUSA
+    updateAmbientWaterSound() {
+        if (!this.player || !this.player.active || !this.capaAgua || !this.waterSound1) return;
+
+        const px = this.player.x;
+        const py = this.player.y;
+
+        const maxDist = (this.waterMaxDistance && this.waterMaxDistance > 0) ? this.waterMaxDistance : 120;
+        const maxVol = typeof this.waterMaxVolume === 'number' ? this.waterMaxVolume : 0.7;
+
+        const tilesCercanos = this.capaAgua.getTilesWithinWorldXY(
+            px - maxDist,
+            py - maxDist,
+            maxDist * 2,
+            maxDist * 2,
+            { isNotEmpty: true }
+        );
+
+        let distanciaMinima = maxDist;
+
+        if (tilesCercanos && tilesCercanos.length > 0) {
+            tilesCercanos.forEach(tile => {
+                const tileCenterX = tile.pixelX + (tile.width / 2);
+                const tileCenterY = tile.pixelY + (tile.height / 2);
+                const dist = Phaser.Math.Distance.Between(px, py, tileCenterX, tileCenterY);
+
+                if (dist < distanciaMinima) {
+                    distanciaMinima = dist;
+                }
+            });
+        }
+
+        let volumenObjetivo = 0;
+        if (distanciaMinima < maxDist) {
+            volumenObjetivo = (1 - (distanciaMinima / maxDist)) * maxVol;
+        }
+
+        if (!Number.isFinite(volumenObjetivo) || Number.isNaN(volumenObjetivo)) {
+            volumenObjetivo = 0;
+        }
+        volumenObjetivo = Phaser.Math.Clamp(volumenObjetivo, 0, maxVol);
+
+        // Gestión de encendido dinámico perimetral (Evita soplidos de carga)
+        if (volumenObjetivo > 0) {
+            if (!this.waterSound1.isPlaying) {
+                this.waterSound1.setVolume(0);
+                this.waterSound1.play();
+            }
+
+            if (!this.waterSound2.isPlaying && !this.waterSound2Desfasado) {
+                this.waterSound2Desfasado = true;
+                this.time.delayedCall(1500, () => {
+                    if (this.waterSound2 && !this.waterSound2.isPlaying && this.waterSound1?.isPlaying) {
+                        this.waterSound2.setVolume(0);
+                        this.waterSound2.play();
+                    }
+                    this.waterSound2Desfasado = false;
+                });
+            }
+        } else {
+            if (this.waterSound1.isPlaying) this.waterSound1.stop();
+            if (this.waterSound2.isPlaying) this.waterSound2.stop();
+        }
+
+        // Interpolación fluida
+        [this.waterSound1, this.waterSound2].forEach(sound => {
+            if (sound && sound.isPlaying) {
+                const volActual = sound.volume;
+                const diferencia = volumenObjetivo - volActual;
+
+                if (Math.abs(diferencia) > 0.01) {
+                    const nuevoVolumen = volActual + diferencia * 0.05;
+                    if (Number.isFinite(nuevoVolumen)) {
+                        sound.setVolume(Phaser.Math.Clamp(nuevoVolumen, 0, maxVol));
+                    }
+                } else if (volActual !== volumenObjetivo) {
+                    sound.setVolume(volumenObjetivo);
+                }
+            }
+        });
+    }
+
+    // ==========================================
+    // SISTEMA DE INTERACCIONES Y UI
+    // ==========================================
     setupUI() {
         this.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
-        // Rescatamos el zoom de la camara
         const zoom = this.cameras.main.zoom;
         const w = this.scale.width;
         const h = this.scale.height;
 
-        // Calculamos las coordenadas inversas para que encaje perfecto en la esquina con zoom
         const btnX = (w / 2) + ((w / 2) / zoom) - (25 / zoom);
         const btnY = (h / 2) - ((h / 2) / zoom) + (25 / zoom);
 
-        // Creamos el boton
         this.pauseBtnBg = this.add.image(btnX, btnY, 'pauseBtn')
             .setInteractive({ useHandCursor: true })
             .setOrigin(0.5)
@@ -279,17 +340,12 @@ export default class TopDownScene extends Phaser.Scene {
 
         if (capa) {
             capa.objects.forEach(obj => {
-                // Buscamos la configuracion de este objeto en el diccionario
                 const config = configuracionFisicas[obj.name];
 
                 if (config) {
-                    // La key de la imagen (si no la hemos especificado, usamos el propio obj.name)
                     const imgKey = config.key || obj.name;
-
-                    // Creamos el sprite para saber cuanto mide la imagen en realidad
                     const sprite = grupo.create(obj.x, obj.y, imgKey);
 
-                    // Ajuste visual: Si Tiled no manda tamaño, usamos la mitad de la imagen.
                     const offsetX = config.spriteOffsetX !== undefined ? config.spriteOffsetX : (obj.width ? (obj.width / 2) : (sprite.width / 2));
                     sprite.x += offsetX;
 
@@ -303,8 +359,6 @@ export default class TopDownScene extends Phaser.Scene {
                     if (obj.properties?.find(p => p.name === 'flipX')?.value) sprite.setFlipX(true);
                     sprite.refreshBody();
 
-                    // Si configuramos 'centrarOffset: true', calcula desde el centro (para los arboles)
-                    // Si no, lo calcula desde la izquierda (para las estructuras)
                     const anchoFisica = config.dw !== undefined ? sprite.width + config.dw : config.w;
                     const finalOffsetX = config.centrarOffset ? (sprite.width / 2) + config.ox : config.ox;
 
@@ -315,15 +369,14 @@ export default class TopDownScene extends Phaser.Scene {
             });
         }
         this.physics.add.collider(this.player, grupo);
-
-        return grupo; // Devolvemos el grupo por si la escena quiere añadir cosas
+        return grupo;
     }
 
     activarTransparencias(grupos) {
         this.events.on('update', () => {
             if (!this.player || !this.player.active) return;
             const px = this.player.x;
-            const py = this.player.y + 4; // Ajustamos el punto de prueba al cuerpo del jugador
+            const py = this.player.y + 4;
 
             grupos.forEach(grupo => {
                 if (!grupo || !grupo.children) return;
@@ -333,10 +386,7 @@ export default class TopDownScene extends Phaser.Scene {
 
                     let dif = false;
 
-                    // Comprobamos si el jugador esta por detras del objeto (y menor que la base)
                     if (this.player.y < obj.y) {
-
-                        // Calculamos los bordes reales de la imagen en el mundo
                         const scaleX = obj.scaleX || 1;
                         const scaleY = obj.scaleY || 1;
                         const left = obj.x - (obj.displayOriginX * scaleX);
@@ -344,18 +394,14 @@ export default class TopDownScene extends Phaser.Scene {
                         const top = obj.y - (obj.displayOriginY * scaleY);
                         const bottom = top + (obj.height * scaleY);
 
-                        // Solo hacemos la prueba del pixel si el jugador esta dentro del cuadrado que ocupa la imagen (con un poco de margen)
                         if (px >= left - 3 && px <= right + 3 && py >= top - 3 && py <= bottom + 3) {
-
-                            // Traducimos la posicion del mundo a las coordenadas de la foto (de 0 a Width)
                             let localX = Math.floor((px - left) / scaleX);
                             let localY = Math.floor((py - top) / scaleY);
 
-                            // Si le hemos hecho un setFlipX a la imagen, invertimos la X
                             if (obj.flipX) { localX = obj.width - localX; }
 
-                            const radio = 3; // por si el pixel exacto es transparente, miramos un poco alrededor
-                            const paso = 4; // para no mirar cada pixel y optimizar (miramos cada 4 pixels, es suficiente para detectar si hay algo solido cerca)
+                            const radio = 3;
+                            const paso = 4;
                             let tocoObjeto = false;
 
                             for (let ix = -radio; ix <= radio; ix += paso) {
@@ -363,36 +409,33 @@ export default class TopDownScene extends Phaser.Scene {
                                     const checkX = localX + ix;
                                     const checkY = localY + iy;
 
-                                    // Nos aseguramos de no buscar pixeles fuera de los bordes de la imagen
                                     if (checkX >= 0 && checkX < obj.width && checkY >= 0 && checkY < obj.height) {
                                         const pixelAlpha = this.textures.getPixelAlpha(checkX, checkY, obj.texture.key, obj.frame.name);
 
                                         if (pixelAlpha > 0) {
                                             tocoObjeto = true;
-                                            break; // Si ya toco uno, paramos el bucle para ahorrar rendimiento
+                                            break;
                                         }
                                     }
                                 }
                                 if (tocoObjeto) break;
                             }
 
-                            // Si el radar detecto color, activamos la transparencia
                             if (tocoObjeto) { dif = true; }
                         }
                     }
 
-                    // Aplicamos el cambio de transparencia de forma suave
                     obj.alpha += ((dif ? 0.4 : 1) - obj.alpha) * 0.1;
                 });
             });
         });
     }
+
     openPauseMenu() {
         this.scene.launch("Menu", { parentScene: this.scene.key });
         this.scene.pause();
     }
 
-    // Cambiar escena
     cambiarEscena(nuevaEscena, datos = {}) {
         if (this.isTransitioning) return;
         this.isTransitioning = true;
@@ -401,7 +444,6 @@ export default class TopDownScene extends Phaser.Scene {
         this.scene.start(nuevaEscena, datos);
     }
 
-    // para el depth dinamico
     crearDecoracionDinamica(nombresCapasObjetos, elevacionExtra = 0) {
         nombresCapasObjetos.forEach(nombreCapa => {
             const capa = this.map.getObjectLayer(nombreCapa);
@@ -410,7 +452,6 @@ export default class TopDownScene extends Phaser.Scene {
                     const imgKey = obj.name;
                     if (imgKey) {
                         const offsetCen = obj.width ? obj.width / 2 : 8;
-
                         const img = this.add.image(obj.x + offsetCen, obj.y, imgKey);
                         img.setOrigin(0.5, 1);
                         img.setDepth(obj.y - 7 + elevacionExtra);
@@ -419,7 +460,7 @@ export default class TopDownScene extends Phaser.Scene {
             }
         });
     }
-    // HOVER PARA LAS VALLAS Y LA PIEDRA
+
     hover(configuraciones) {
         if (this.isTransitioning) return; // Evitamos configurar el hover si ya estamos en transicion, para no tener conflictos de escenas
 
@@ -486,11 +527,9 @@ export default class TopDownScene extends Phaser.Scene {
     }
 
     crearSistemaInteraccion(configuraciones, onInteract) {
-        // Boton E
         this.teclaE_icono = this.add.image(0, 0, 'eBtn').setOrigin(0.5, 0.5).setDepth(10000).setVisible(false);
         this.estadoBotonE = false;
 
-        // animacion del boton E (parpadeo)
         this.time.addEvent({
             delay: 400, loop: true,
             callback: () => {
@@ -516,9 +555,7 @@ export default class TopDownScene extends Phaser.Scene {
             let configMasCercana = null;
 
             for (const config of configuraciones) {
-                // Para que no crashee
                 if (!config.capa || !config.capa.scene) continue;
-                // Si le pasamos una condicion y es falsa (la cueva ya esta abierta) lo ignoramos
                 if (config.condicion !== undefined && !config.condicion()) continue;
 
                 const tiles = config.capa.getTilesWithinWorldXY(px - distMax, py - distMax, distMax * 2, distMax * 2);
@@ -556,7 +593,6 @@ export default class TopDownScene extends Phaser.Scene {
             }
         });
 
-        // Raton
         this.input.on('pointerdown', (pointer) => {
             if (!this.player || !this.player.active) return;
 
@@ -567,7 +603,6 @@ export default class TopDownScene extends Phaser.Scene {
                 if (config.condicion !== undefined && !config.condicion()) continue;
 
                 const tile = config.capa.getTileAtWorldXY(worldPoint.x, worldPoint.y);
-                // Si no tiene idsClic definidos usa los de la E
                 const idsPermitidos = config.idsClic || config.ids;
 
                 if (tile && idsPermitidos.includes(tile.index)) {
@@ -581,8 +616,10 @@ export default class TopDownScene extends Phaser.Scene {
         });
     }
 
+    // ==========================================
+    // SISTEMA DE INTERACCIÓN CON NPCs
+    // ==========================================
     crearNPCs(nombreCapa = 'Objetos/NPCs') {
-
         this.npcs = [];
 
         const capaNPCs = this.map.getObjectLayer(nombreCapa);
@@ -591,7 +628,6 @@ export default class TopDownScene extends Phaser.Scene {
         this.grupoNPCs = this.physics.add.staticGroup();
 
         capaNPCs.objects.forEach(obj => {
-
             const npcId = obj.name;
             const data = npcData[npcId];
 
@@ -612,18 +648,11 @@ export default class TopDownScene extends Phaser.Scene {
     }
 
     crearSistemaInteraccionNPCs() {
-
-        // ── Icono E ────────────────────────────────────────────────────────────────
-        this.teclaE_npc = this.add.image(0, 0, 'eBtn')
-            .setOrigin(0.5)
-            .setDepth(10000)
-            .setVisible(false);
-
+        this.teclaE_npc = this.add.image(0, 0, 'eBtn').setOrigin(0.5).setDepth(10000).setVisible(false);
         this.estadoBotonENPC = false;
 
         this.time.addEvent({
-            delay: 400,
-            loop: true,
+            delay: 400, loop: true,
             callback: () => {
                 if (!this.teclaE_npc.visible) return;
                 this.estadoBotonENPC = !this.estadoBotonENPC;
@@ -633,12 +662,9 @@ export default class TopDownScene extends Phaser.Scene {
 
         this.npcCercano = null;
 
-        // ── Detección del NPC más cercano ──────────────────────────────────────────
         this.events.on('update', () => {
-
             if (!this.player || !this.player.active) return;
 
-            // Si DialogueScene está activa, ocultamos el icono y no hacemos nada
             if (this.scene.manager.isActive("DialogueScene")) {
                 this.teclaE_npc.setVisible(false);
                 return;
@@ -649,9 +675,7 @@ export default class TopDownScene extends Phaser.Scene {
 
             this.npcs?.forEach(npc => {
                 if (!npc.active) return;
-                const dist = Phaser.Math.Distance.Between(
-                    this.player.x, this.player.y, npc.x, npc.y
-                );
+                const dist = Phaser.Math.Distance.Between(this.player.x, this.player.y, npc.x, npc.y);
                 if (dist < minDist) { minDist = dist; npcMasCercano = npc; }
             });
 
@@ -667,31 +691,32 @@ export default class TopDownScene extends Phaser.Scene {
             }
         });
 
-        // ── Tecla E ────────────────────────────────────────────────────────────────
         this.input.keyboard.on('keydown-E', () => {
             if (!this.npcCercano) return;
             if (this.scene.manager.isActive("DialogueScene")) return;
             this.npcCercano.interact(this);
         });
 
-        // ── Click ──────────────────────────────────────────────────────────────────
         this.input.on('pointerdown', (pointer) => {
-
             if (!this.player || !this.player.active) return;
             if (this.scene.manager.isActive("DialogueScene")) return;
 
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
-            const dist = Phaser.Math.Distance.Between(
-                this.player.x, this.player.y, worldPoint.x, worldPoint.y
-            );
+            const dist = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
             if (dist > 40) return;
 
             this.npcs?.forEach(npc => {
                 const bounds = npc.getBounds();
                 if (Phaser.Geom.Rectangle.Contains(bounds, worldPoint.x, worldPoint.y)) {
-                    this.npcCercano.interact(this);
+                    npc.interact(this);
                 }
             });
         });
+    }
+
+    // Loop central del juego
+    update() {
+        this.updateFootstepSounds();
+        this.updateAmbientWaterSound();
     }
 }

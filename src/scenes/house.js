@@ -11,8 +11,7 @@ export default class House extends topDownScene {
     create(data = {}) {
         this.initScene('casa');
 
-        // Capas especificas que usamos
-        // Usamos ?. para que si un dia borramos una capa en Tiled, el codigo no pete
+        // Capas específicas que usamos
         const capaVallas = this.map.getLayer('Delimitacion Mundo/Vallas')?.tilemapLayer;
         const capaPilares = this.map.getLayer('Mas Colisiones/Pilares')?.tilemapLayer;
         const capaFondoFalso = this.map.getLayer('Suelo/Fondo Falso')?.tilemapLayer;
@@ -32,12 +31,17 @@ export default class House extends topDownScene {
         this.setupPlayer(startX, startY, dir); // Crea NavMesh, Player, Camara y Fisicas
         this.setupUI();                   // Crea el boton de pausa y la tecla ESC
 
-        // SONIDO DE PASOS EN HIERBA
-
+        // CONFIGURACIÓN DE AUDIO
         this.fenceSound = this.sound.add('fenceSound', { volume: 1 });
-
+        this.setupAmbientWaterSound('waterAmbientSound');
+        
+        // Evitamos el pico de volumen alto al iniciar la escena bajándolo a 0
+        const sonidoAgua = this.sound.get('waterAmbientSound');
+        if (sonidoAgua) {
+            sonidoAgua.setVolume(0);
+        }
+        
         this.setupDefaultFootstepSounds();
-
 
         // Decoracion (flores y demas) con depth dinamico
         this.crearDecoracionDinamica(['Objetos/SpawnFlores']);
@@ -51,8 +55,8 @@ export default class House extends topDownScene {
         // CUEVA
         this.cuevaAbierta = false;
 
-        // Abrir cueva (funcion reutilizable)
-        const abrirCueva = (cX, cY, conTemblor = false) => {
+        // Abrir cueva (funcion reutilizable con control de sonido)
+        const abrirCueva = (cX, cY, conTemblor = false, reproducirSonido = true) => {
             this.cuevaAbierta = true;
 
             // DIBUJAR LA CUEVA ABIERTA
@@ -74,13 +78,17 @@ export default class House extends topDownScene {
                 this.cambiarEscena('cueva', { cuevaTileX: cX, cuevaTileY: cY });
             });
 
-            // TEMBLOR DE CAMARA
+            // TEMBLOR DE CAMARA Y AUDIO
             if (conTemblor) this.cameras.main.shake(200, 0.010);
+            
+            if (reproducirSonido) {
+                this.sound.play('landSlideSound', { volume: 0.5 });
+            }
         };
 
-        // Si venimos de la cueva, la abrimos sin temblor
+        // Si venimos de la cueva, la abrimos sin temblor Y SIN SONIDO (false, false)
         if (data.cuevaTileX !== undefined) {
-            abrirCueva(data.cuevaTileX, data.cuevaTileY, false);
+            abrirCueva(data.cuevaTileX, data.cuevaTileY, false, false);
         }
 
         // Abrir/cerrar vallas (funcion reutilizable)
@@ -119,7 +127,6 @@ export default class House extends topDownScene {
             { capa: capaPilares, ids: [3852], idsClic: [3852, 3868, 3869, 3870, 3871], tipo: 'cueva', offsetX: 15, offsetY: -2, condicion: () => !this.cuevaAbierta }
         ], (tipo, tile) => {
             if (tipo === 'cueva') {
-                // Buscamos la gema (id 3852) en un 3x3 alrededor del que hacemos click para usar su Y
                 let anchorY = tile.y;
                 for (let i = -3; i <= 3; i++) {
                     let t = capaPilares?.getTileAt(tile.x, tile.y + i);
@@ -128,7 +135,8 @@ export default class House extends topDownScene {
                         break;
                     }
                 }
-                abrirCueva(tile.x - 1, anchorY, true);
+                // Al interactuar manualmente, SÍ queremos temblor y SÍ queremos sonido (true, true)
+                abrirCueva(tile.x - 1, anchorY, true, true);
             } else if (tipo === 'valla') {
                 interactuarValla(tile);
             }
@@ -136,9 +144,9 @@ export default class House extends topDownScene {
 
         // CREACION DE ARBOLES DINAMICOS
         const configArboles = {
-            'grande':    { key: 'arbol_grande',  w: 16, h: 14, ox: -8, oy: -14, centrarOffset: true, spriteOffsetX: 8 },
-            'mediano':   { key: 'arbol_mediano', w: 16, h: 12, ox: -8, oy: -12, centrarOffset: true, spriteOffsetX: 8 },
-            'peque':     { key: 'arbol_peque',   w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true, spriteOffsetX: 8 },
+            'grande':     { key: 'arbol_grande',  w: 16, h: 14, ox: -8, oy: -14, centrarOffset: true, spriteOffsetX: 8 },
+            'mediano':    { key: 'arbol_mediano', w: 16, h: 12, ox: -8, oy: -12, centrarOffset: true, spriteOffsetX: 8 },
+            'peque':      { key: 'arbol_peque',   w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true, spriteOffsetX: 8 },
             'mushroom1': { key: 'seta_azul',     w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true },
             'mushroom2': { key: 'seta_cyan',     w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true },
             'mushroom3': { key: 'seta_rosa',     w: 12, h: 10, ox: -6, oy: -10, centrarOffset: true },
@@ -159,23 +167,14 @@ export default class House extends topDownScene {
         // Templo
         const spriteTemplo = this.grupoEstructuras.getChildren().find(e => e.tipoObjeto === 'templo');
         if (spriteTemplo) {
-            // Creamos la zona en la base del templo
             const z = this.add.zone(spriteTemplo.x, spriteTemplo.y + 5, 40, 20).setOrigin(0.5, 1);
             this.physics.add.existing(z, true);
             this.physics.add.overlap(this.player, z, () => {
                 this.cambiarEscena('store', { returnX: spriteTemplo.x, returnY: spriteTemplo.y + 25 });
             });
-
-            this.events.on('shutdown', () => {
-                this.sound.stopByKey('grassSound');
-                this.sound.stopByKey('fenceSound');
-                this.sound.stopByKey('tilesSound');
-                this.sound.stopByKey('groundSound');
-            });
         }
 
         // Transicion a la ciudad
-        const anchoCiudad = 640;
         const zonaCiudad = this.add.zone(0, 448, 8, 48).setOrigin(0, 0);
         this.physics.add.existing(zonaCiudad, true);
         this.physics.add.overlap(this.player, zonaCiudad, () => {
@@ -185,13 +184,22 @@ export default class House extends topDownScene {
         // TRANSPARENCIAS
         this.activarTransparencias([this.grupoArboles, this.grupoEstructuras]);
 
-        // HERRAMIENTA DE DEBUG: VER IDS TIENE LA VALLA, EL MURO...
+        // HERRAMIENTA DE DEBUG
         this.debugTiles([
             { nombre: "VALLA",       capa: capaVallas },
             { nombre: "MURO",        capa: this.capaCesped },
             { nombre: "PIEDRA AGUA", capa: capaPilares },
             { nombre: "COLISION",    capa: this.capaColisiones }
         ]);
-    }
 
+        // APAGADO GLOBAL DE AUDIOS (SHUTDOWN)
+        this.events.on('shutdown', () => {
+            this.sound.stopByKey('grassSound');
+            this.sound.stopByKey('fenceSound');
+            this.sound.stopByKey('tilesSound');
+            this.sound.stopByKey('groundSound');
+            this.sound.stopByKey('landSlideSound');
+            this.sound.stopByKey('waterAmbientSound'); // Asegura que el agua también se detenga
+        });
+    }
 }

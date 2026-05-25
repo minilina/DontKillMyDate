@@ -25,6 +25,18 @@ export default class MortarMinigame extends Phaser.Scene {
         this.bg = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000000, 0.5).setOrigin(0).setDepth(9).setInteractive();
         this.add.image(0, 0, 'mortarBg').setOrigin(0).setDepth(1).setScale(this.sc);
 
+        // --- GESTIÓN DE MÚSICA (CREATE) ---
+        // Accedemos directamente a la variable global que creaste en Start
+        if (this.game.bgMusic && this.game.bgMusic.isPlaying) {
+            this.game.bgMusic.pause();
+        }
+
+        let miniMusic = this.sound.get('minigameSound');
+        if (!miniMusic || !miniMusic.isPlaying) {
+            this.sound.play('minigameSound', { loop: true, volume: 0.3 });
+        }
+        // -------------------------
+
         this.bg.on('pointerdown', () => {
             this.sound.play('errorSound', { volume: 1 });
             if (this.gameActive) this.registerMiss();
@@ -79,7 +91,7 @@ export default class MortarMinigame extends Phaser.Scene {
 
         this.time.delayedCall(1000, () => txt.setText('2'));
         this.time.delayedCall(2000, () => txt.setText('1'));
-        this.time.delayedCall(3000, () => { 
+        this.time.delayedCall(3000, () => {
             txt.destroy();
             this.bg.setDepth(0);
             GameState.resumeTimer();
@@ -335,6 +347,20 @@ export default class MortarMinigame extends Phaser.Scene {
 
         // Enviamos la puntuación obtenida a la cocina
         kitchenScene.returnFromMinigame(this.ingredientId, 'mortar');
+
+        // --- GESTIÓN DE MÚSICA (EXIT) ---
+        // 1. Detenemos la música del minijuego
+        this.sound.stopByKey('minigameSound');
+        
+        // 2. Reanudamos la música global (que guardaste en Start.js)
+        if (this.game.bgMusic) {
+            if (this.game.bgMusic.isPaused) {
+                this.game.bgMusic.resume();
+            } else if (!this.game.bgMusic.isPlaying) {
+                this.game.bgMusic.play();
+            }
+        }
+        // -------------------------
 
         this.scene.resume('kitchen');
         this.scene.stop();

@@ -437,7 +437,9 @@ import knifeSound from '../../assets/sound/knife.mp3';
 import fillBottleSound from '../../assets/sound/fillBottle.mp3';
 import errorSound from '../../assets/sound/error.mp3';
 import successSound from '../../assets/sound/success.mp3';
-
+import waterAmbientSound from '../../assets/sound/waterAmbient.ogg';
+import landSlideSound from '../../assets/sound/landslide.ogg';
+import minigameSound from '../../assets/sound/minigame.mp3';
 //UI
 import pauseBtn from '../../assets/sprites/pauseBtn.png';
 import pauseBtnPressed from '../../assets/sprites/pauseBtnPressed.png';
@@ -870,7 +872,10 @@ export default class Boot extends Phaser.Scene {
         this.load.audio('fillBottleSound', fillBottleSound);
         this.load.audio('errorSound', errorSound);
         this.load.audio('successSound', successSound);
-
+        this.load.audio('waterAmbientSound', waterAmbientSound);
+        this.load.audio('landSlideSound', landSlideSound);
+        this.load.audio('minigameSound', minigameSound);    
+        
         this.load.image('pauseBtn', pauseBtn);
         this.load.image('pauseBtnPressed', pauseBtnPressed);
         this.load.image('btnSoundOn', btnSoundOn);

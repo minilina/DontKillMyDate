@@ -24,6 +24,19 @@ export default class CuttingMinigame extends Phaser.Scene {
         this.bg = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000000, 0.5).setOrigin(0).setDepth(9);
         this.add.image(0, 0, 'cuttingBg').setOrigin(0).setDepth(1).setScale(this.sc);
 
+        // --- GESTIÓN DE MÚSICA (CREATE) ---
+        // Pausamos la música global si está sonando
+        if (this.game.bgMusic && this.game.bgMusic.isPlaying) {
+            this.game.bgMusic.pause();
+        }
+        
+        // Iniciamos el sonido del minijuego
+        let miniMusic = this.sound.get('minigameSound');
+        if (!miniMusic || !miniMusic.isPlaying) {
+            this.sound.play('minigameSound', { loop: true, volume: 0.3 });
+        }
+        // -------------------------
+
         // crear elementos minijuego
         this.createIngredient(141 * this.sc, 67 * this.sc);
         this.createBar(74 * this.sc, 132 * this.sc);
@@ -203,16 +216,9 @@ export default class CuttingMinigame extends Phaser.Scene {
                 GameState.reducePotionQuality(unmadeCuts * 10);
             }
 
-            const cutsArray = this.zones.map(z => z.isCut);
-
             this.time.delayedCall(1500, () => {
-
-                let kitchenScene = this.scene.get('kitchen');
-                kitchenScene.returnFromMinigame(this.ingredientId, 'cut', cutsArray);
-
-                this.scene.resume('kitchen');
-                this.scene.stop();
-
+                // Hemos sustituido la repetición de código por la llamada directa a exitScene
+                this.exitScene();
             });
         }
     }
@@ -312,6 +318,21 @@ export default class CuttingMinigame extends Phaser.Scene {
         const cutsArray = this.zones.map(z => z.isCut);
         let kitchenScene = this.scene.get('kitchen');
         kitchenScene.returnFromMinigame(this.ingredientId, 'cut', cutsArray);
+
+        // --- GESTIÓN DE MÚSICA (EXIT) ---
+        // 1. Detenemos la música del minijuego
+        this.sound.stopByKey('minigameSound');
+        
+        // 2. Reanudamos la música global
+        if (this.game.bgMusic) {
+            if (this.game.bgMusic.isPaused) {
+                this.game.bgMusic.resume();
+            } else if (!this.game.bgMusic.isPlaying) {
+                this.game.bgMusic.play();
+            }
+        }
+        // -------------------------
+
         this.scene.resume('kitchen');
         this.scene.stop();
     }
