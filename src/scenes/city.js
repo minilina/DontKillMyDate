@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import topDownScene from './topDownScene.js';
+import GameState from '../state/GameState.js';
 
 export default class City extends topDownScene {
     constructor() {
@@ -24,7 +25,6 @@ export default class City extends topDownScene {
         this.setupUI();
         this.crearNPCs();
 
-
         this.setupDefaultFootstepSounds();
         this.player.zElevacion = 3000;
 
@@ -38,9 +38,41 @@ export default class City extends topDownScene {
                 () => { return this.player.zElevacion > 0; }, // Solo colisionas si estas elevado (zElevacion)
                 this
             );
-
-
         }
+
+        // REGAR
+        this.capaMojado1 = this.map.getLayer('Suelo/Regado')?.tilemapLayer;
+        this.capaMojado2 = this.map.getLayer('Suelo/Regado 2')?.tilemapLayer;
+        this.capaHuerto1 = this.map.getLayer('Suelo/Huerto')?.tilemapLayer;
+        this.capaHuerto2 = this.map.getLayer('Suelo/Huerto 2')?.tilemapLayer;
+
+        if (this.capaMojado1) this.capaMojado1.setVisible(GameState.huertosRegadosHoy.huerto1);
+        if (this.capaMojado2) this.capaMojado2.setVisible(GameState.huertosRegadosHoy.huerto2);
+
+        const configHuertos = [
+            {
+                capa: this.capaHuerto1,
+                ids: [4716, 4644, 4647, 4719],
+                tipo: 'huerto1',
+                condicion: () => !GameState.huertosRegadosHoy.huerto1,
+                fixedEX: 632, 
+                fixedEY: 88
+            },
+            {
+                capa: this.capaHuerto2,
+                ids: [4646, 4647, 4695, 4719, 4717, 4716, 4693, 4668, 4644, 4666],
+                tipo: 'huerto2',
+                condicion: () => !GameState.huertosRegadosHoy.huerto2,
+                fixedEX: 472, 
+                fixedEY: 184
+            }
+        ];
+
+        this.hover(configHuertos);
+        this.crearSistemaInteraccion(configHuertos, (tipo) => {
+            if (tipo === 'huerto1') this.regar(1, this.capaMojado1);
+            if (tipo === 'huerto2') this.regar(2, this.capaMojado2);
+        });
 
         // ZONA PARA SUBIR
         const zonaSubir = this.add.zone(512, 344, 48, 8).setOrigin(0, 0);
@@ -88,6 +120,7 @@ export default class City extends topDownScene {
             'fuente': { key: 'fuente', w: 45, h: 40, ox: -23, oy: -41, centrarOffset: true },
             'banco': { key: 'banco', w: 24, h: 12, ox: -12, oy: -14, centrarOffset: true },
             'banco girado': { key: 'bancoGirado', w: 12, h: 24, ox: -6, oy: -24, centrarOffset: true },
+            'tronco': { key: 'tronco', w: 56, h: 22, ox: -27, oy: -22, centrarOffset: true },
             'casaRota': { key: '2', dw: -14, h: 52, ox: 8, oy: -53 }
         };
 
@@ -95,5 +128,36 @@ export default class City extends topDownScene {
         this.grupoEstructurasArriba = this.crearObjetos('Objetos/SpawnEstructurasArriba', configEstructuras, 3000);
 
         this.activarTransparencias([this.grupoArbolesAbajo, this.grupoArbolesArriba, this.grupoEstructurasAbajo, this.grupoEstructurasArriba]);
+
+        this.debugTiles([
+            { nombre: 'Huerto Seco 1', capa: this.capaHuerto1 },
+            { nombre: 'Huerto Seco 2', capa: this.capaHuerto2 }
+        ]);
+    }
+
+    regar(idHuerto, capaMojada) {
+        // Bloqueamos el movimiento
+        this.bloquearClic = true;
+        if (this.player.setPath) this.player.setPath([]); 
+        if (this.player.body) this.player.body.setVelocity(0, 0);
+
+        // Animación temporal (jugador azul)
+        this.player.setTint(0x00aaff); 
+        // if (this.sound.get('waterSound')) this.sound.play('waterSound'); 
+
+        // Esperamos 1 segundo (Simula la animación de regar)
+        this.time.delayedCall(1000, () => {
+            this.player.clearTint();
+            this.bloquearClic = false;
+
+            // Mostramos la tierra mojada
+            if (capaMojada) capaMojada.setVisible(true);
+
+            // Guardamos en GameState para que no te penalicen mañana
+            GameState.huertosRegadosHoy[`huerto${idHuerto}`] = true;
+
+            // Un brillito opcional chulo al terminar
+            this.cameras.main.flash(200, 100, 200, 255); 
+        });
     }
 }

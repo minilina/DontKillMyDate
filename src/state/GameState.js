@@ -3,6 +3,10 @@ const GameState = {
   endingType: null,
   reputation: 50,
   currentDay: 1,
+  huertosRegadosHoy: {
+    huerto1: false,
+    huerto2: false
+  },
   currentCustomer: 0,
   daysData: null,
   specialNpcsData: null,
@@ -74,6 +78,7 @@ const GameState = {
     good: 0,
     bad: 0,
     repChange: 0,
+    wateringPenalty: 0
   },
 
   initData(jsonConfig, specialNpcsConfig) {
@@ -144,11 +149,15 @@ const GameState = {
     this.currentDay++;
     this.currentCustomer = 0;
 
+    this.huertosRegadosHoy.huerto1 = false;
+    this.huertosRegadosHoy.huerto2 = false;
+
     this.dailyStats = {
       served: 0,
       good: 0,
       bad: 0,
       repChange: 0,
+      wateringPenalty: 0
     };
   },
 
@@ -332,6 +341,20 @@ const GameState = {
     }
 
     this.currentCustomer++;
+
+    if (this.isDayOver()) {
+      let penalizacionHuertos = 0;
+      if (this.currentDay > 1) { // el primer dia no se puede regar, asi que no penalizamos
+        if (!this.huertosRegadosHoy.huerto1) penalizacionHuertos += 5; // 5 puntos por huerto (10 en total)
+        if (!this.huertosRegadosHoy.huerto2) penalizacionHuertos += 5;
+      }
+
+      if (penalizacionHuertos > 0) {
+        this.reputation -= penalizacionHuertos;
+        this.dailyStats.repChange -= penalizacionHuertos;
+        this.dailyStats.wateringPenalty = penalizacionHuertos; // Lo guardamos para el resumen del dia
+      }
+    }
   },
 
   getDailyStars() {

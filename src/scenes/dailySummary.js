@@ -53,11 +53,52 @@ export default class DailySummary extends Phaser.Scene {
       200,
     );
 
+    let offsetY = 0; // Variable para empujar el resto de cosas si hay penalizacion
+
+    // Regar penalizacion
+    if (stats.wateringPenalty && stats.wateringPenalty > 0) {
+      offsetY = 15;
+
+      const penaltyText = this.add.text(
+        centerX + 15,
+        centerY - 5,
+         `¡Plantas Secas! -${stats.wateringPenalty} Reputación`, {
+          fontFamily: "VT323, monospace",
+          fontSize: "26px",
+          color: textColor,
+        })
+        .setOrigin(0.5)
+        .setAlpha(0); // Empieza invisible
+
+        penaltyText.updateText();
+        const spacing = 15;
+
+        const penaltyIconLeft = this.add.image(
+          penaltyText.getTopLeft().x - spacing, // Calculado para ponerse a la izquierda del texto
+          centerY - 5, 
+          "hierba amarilla"
+        ).setScale(1.5).setAlpha(0);
+
+        const penaltyIconRight = this.add.image(
+          penaltyText.getTopRight().x + spacing, // Sumamos para ir a la derecha
+          centerY - 5, 
+          "hierba amarilla"
+        ).setScale(1.5).setAlpha(0).setFlipX(true);
+
+      // Hacemos que aparezca con un fade-in justo despues de que terminen de salir los corazones
+      this.tweens.add({
+        targets:[penaltyText, penaltyIconLeft, penaltyIconRight],
+        alpha: 1,
+        duration: 400,
+        delay: 500, 
+      });
+    }
+
     const sign = stats.repChange >= 0 ? "+" : "";
     const repLabel = `Reputación Total: ${GameState.reputation} (${sign}${stats.repChange})`;
 
     this.add
-      .text(centerX, centerY + 25, repLabel, {
+      .text(centerX, centerY + 25 + offsetY, repLabel, {
         fontFamily: "VT323, monospace",
         fontSize: "26px",
         color: textColor,
@@ -67,7 +108,7 @@ export default class DailySummary extends Phaser.Scene {
     
     this.animateIconRow(
       centerX,
-      centerY + 65,
+      centerY + 65 + offsetY,
       "corazon",
       GameState.getReputationHearts(),
       iconScale,

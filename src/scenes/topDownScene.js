@@ -293,8 +293,11 @@ export default class TopDownScene extends Phaser.Scene {
                     const offsetX = config.spriteOffsetX !== undefined ? config.spriteOffsetX : (obj.width ? (obj.width / 2) : (sprite.width / 2));
                     sprite.x += offsetX;
 
+                    // La base real del objeto esta en (oy + h). Si no tiene fisicas, el ajuste es 0. Para objetos que tienen mucho espacio vacio debajo
+                    const ajusteProfundidad = (config.oy !== undefined && config.h !== undefined) ? (config.oy + config.h) : 0;
+
                     // Aplicamos el origen y profundidad
-                    sprite.setOrigin(0.5, 1).setDepth(obj.y + elevacionExtra);
+                    sprite.setOrigin(0.5, 1).setDepth(obj.y + ajusteProfundidad + elevacionExtra);
                     sprite.tipoObjeto = obj.name;
 
                     if (obj.properties?.find(p => p.name === 'flipX')?.value) sprite.setFlipX(true);
@@ -430,28 +433,32 @@ export default class TopDownScene extends Phaser.Scene {
             }
 
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
-            let esInteractivo = false;
+            let configHovered = null;
 
             for (const config of configuraciones) {
                 if (!config.capa) continue; // Si la capa no existe, pasamos a la siguiente
 
+                if (config.condicion !== undefined && !config.condicion()) continue; // apaño para el riego
+
                 const tile = config.capa.getTileAtWorldXY(worldPoint.x, worldPoint.y);
                 if (tile && config.ids.includes(tile.index)) {
-                    esInteractivo = true;
+                    configHovered = config;
                     break; // Si ya hemos encontrado algo interactivo, dejamos de buscar
                 }
             }
 
             let estaCerca = false;
-            if (this.player && this.player.active) {
-                // Calculamos a que distancia esta el raton del jugador
-                const distancia = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
-                if (distancia <= 40) {
-                    estaCerca = true;
+            if (configHovered) {
+                // Si el jugador ya esta cerca del objeto (detectado por la "E"), el cursor se pondra en pointer
+                if (this.interactableCercano && this.interactableCercano.tipo === configHovered.tipo) estaCerca = true;
+                else if (this.player && this.player.active) { // Si no calculamos a que distancia esta el raton del jugador
+                    const distancia = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
+                    if (distancia <= 40) estaCerca = true;
                 }
+                
             }
 
-            if (esInteractivo) {
+            if (configHovered) {
                 if (estaCerca) {
                     this.game.canvas.style.cursor = 'pointer';
                     this.game.canvas.classList.remove('cursor-far');
@@ -506,6 +513,7 @@ export default class TopDownScene extends Phaser.Scene {
             let minDist = distMax;
             let tipoInteractable = null;
             let offsetBoton = { x: 0, y: 0 };
+            let configMasCercana = null;
 
             for (const config of configuraciones) {
                 // Para que no crashee
@@ -522,6 +530,7 @@ export default class TopDownScene extends Phaser.Scene {
                             tileMasCercano = t;
                             tipoInteractable = config.tipo;
                             offsetBoton = { x: config.offsetX || 0, y: config.offsetY || 0 };
+                            configMasCercana = config;
                         }
                     }
                 });
@@ -530,7 +539,9 @@ export default class TopDownScene extends Phaser.Scene {
             if (tileMasCercano) {
                 this.interactableCercano = { tile: tileMasCercano, tipo: tipoInteractable };
                 this.teclaE_icono.setVisible(true);
-                this.teclaE_icono.setPosition(tileMasCercano.pixelX + 8 + offsetBoton.x, tileMasCercano.pixelY + 8 + offsetBoton.y);
+                if (configMasCercana.fixedEX !== undefined && configMasCercana.fixedEY !== undefined) {
+                    this.teclaE_icono.setPosition(configMasCercana.fixedEX, configMasCercana.fixedEY);
+                } else this.teclaE_icono.setPosition(tileMasCercano.pixelX + 8 + offsetBoton.x, tileMasCercano.pixelY + 8 + offsetBoton.y);
             } else {
                 this.interactableCercano = null;
                 this.teclaE_icono.setVisible(false);
@@ -550,9 +561,6 @@ export default class TopDownScene extends Phaser.Scene {
             if (!this.player || !this.player.active) return;
 
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
-            const dist = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
-
-            if (dist > 40) return;
 
             for (const config of configuraciones) {
                 if (!config.capa || !config.capa.scene) continue;
@@ -563,7 +571,10 @@ export default class TopDownScene extends Phaser.Scene {
                 const idsPermitidos = config.idsClic || config.ids;
 
                 if (tile && idsPermitidos.includes(tile.index)) {
-                    onInteract(config.tipo, tile);
+                    // Verificamos si la "E" ya mira este objeto (para interactuar aunque estemos clickando lejos)
+                    if (this.interactableCercano && this.interactableCercano.tipo === config.tipo) {
+                        onInteract(config.tipo, tile);
+                    }
                     return;
                 }
             }

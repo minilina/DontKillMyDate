@@ -109,6 +109,7 @@ import tendederoRosa from '../../assets/tiled/tendedero Rosa.png';
 import fuente from '../../assets/tiled/fuente.png';
 import banco from '../../assets/tiled/banco.png';
 import bancoGirado from '../../assets/tiled/banco girado.png';
+import tronco from '../../assets/tiled/tronco.png';
 
 // flores y decoracion
 import hierbaAmarilla from '../../assets/tiled/hierba amarilla.png';
@@ -564,6 +565,7 @@ export default class Boot extends Phaser.Scene {
         this.load.image('fuente', fuente);
         this.load.image('banco', banco);
         this.load.image('bancoGirado', bancoGirado);
+        this.load.image('tronco', tronco);
         this.load.image('hierba amarilla', hierbaAmarilla);
         this.load.image('semilla arroz', semillaArroz);
         this.load.image('semilla trigo', semillaTrigo);
