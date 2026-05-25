@@ -34,13 +34,11 @@ export default class DialogueScene extends Phaser.Scene {
     const W = this.scale.width;
     const H = this.scale.height;
 
-    // ── 1. FONDO OSCURO (igual que el menú de pausa) ──────────────────────────
     this.add
       .rectangle(0, 0, W, H, 0x000000, 0.6)
       .setOrigin(0, 0)
       .setDepth(0);
 
-    // ── 2. SPRITE DEL NPC (mismo sitio que en store: cuarto izquierdo) ─────────
     if (this.npcData?.looks) {
       // NPC usa la misma clase que en la tienda. Le pasamos looks y requirements vacíos.
       this.npcSprite = new NPC(
@@ -53,17 +51,13 @@ export default class DialogueScene extends Phaser.Scene {
       );
     }
 
-    // this.add.image(0, 0, "mostrador").setOrigin(0,0).setDisplaySize(W,H).setDepth(40);
-    // this.add.image(0, 0, "luzStore").setOrigin(0,0).setDisplaySize(W,H).setDepth(20);
 
     this.scene.bringToTop();
 
     this.dialogueManager = new DialogueManager(this);
 
-    // Escuchamos el fin del diálogo
     this.events.once("dialogue:finished", () => this._onFinished());
 
-    // Arrancamos
     this.dialogueManager.start(this.dialogueData);
   }
 

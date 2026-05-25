@@ -3,8 +3,9 @@ import Player from '../game-objects/player.js';
 import NPC from '../game-objects/topdownNPC.js';
 import npcData from "../../assets/json/scriptedNpcs.json";
 import GameState from "../state/GameState.js";
+import StoppableScene from './stoppableScene.js';
 
-export default class TopDownScene extends Phaser.Scene {
+export default class TopDownScene extends StoppableScene {
     constructor(key) {
         super({ key });
     }
@@ -302,36 +303,13 @@ export default class TopDownScene extends Phaser.Scene {
     // ==========================================
     // SISTEMA DE INTERACCIONES Y UI
     // ==========================================
+
+    /**
+     * Llama a este método después de setupPlayer() en cada escena hija,
+     * ya que necesita que la cámara tenga el zoom correcto aplicado.
+     */
     setupUI() {
-        this.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-
-        const zoom = this.cameras.main.zoom;
-        const w = this.scale.width;
-        const h = this.scale.height;
-
-        const btnX = (w / 2) + ((w / 2) / zoom) - (25 / zoom);
-        const btnY = (h / 2) - ((h / 2) / zoom) + (25 / zoom);
-
-        this.pauseBtnBg = this.add.image(btnX, btnY, 'pauseBtn')
-            .setInteractive({ useHandCursor: true })
-            .setOrigin(0.5)
-            .setScale(3 / zoom)
-            .setDepth(10000)
-            .setScrollFactor(0);
-
-        this.pauseBtnBg.on('pointerover', () => this.pauseBtnBg.setTexture('pauseBtnPressed'));
-        this.pauseBtnBg.on('pointerout', () => this.pauseBtnBg.setTexture('pauseBtn'));
-
-        this.pauseBtnBg.on('pointerdown', () => {
-            this.sound.play('buttonSound', { volume: 0.2 });
-            this.openPauseMenu();
-        });
-
-        this.events.on('update', () => {
-            if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
-                this.openPauseMenu();
-            }
-        });
+        this.setupPause({ isTopDown: true });
     }
 
     crearObjetos(nombreCapaObjetos, configuracionFisicas, elevacionExtra = 0) {
@@ -429,11 +407,6 @@ export default class TopDownScene extends Phaser.Scene {
                 });
             });
         });
-    }
-
-    openPauseMenu() {
-        this.scene.launch("Menu", { parentScene: this.scene.key });
-        this.scene.pause();
     }
 
     cambiarEscena(nuevaEscena, datos = {}) {

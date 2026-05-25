@@ -1,8 +1,9 @@
 import Phaser from "phaser";
 import CustomerFlowManager from "../dialogue/customerFlowManager.js";
 import GameState from "../state/GameState.js";
+import StoppableScene from './stoppableScene.js';
 
-export default class Store extends Phaser.Scene {
+export default class Store extends StoppableScene {
   /**
    * Constructor de la escena
    */
@@ -10,7 +11,7 @@ export default class Store extends Phaser.Scene {
     super({ key: "store" });
   }
 
-  preload() {}
+  preload() { }
 
   /**
    * Creación de los elementos de la escena principal de juego
@@ -73,12 +74,7 @@ export default class Store extends Phaser.Scene {
         repeat: -1,
       });
     }
-
-    // Pausa
-    this.pauseKey = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.ESC,
-    );
-    this.createPauseButton();
+    this.setupPause();
   }
 
   crearAnimacionesPociones() {
@@ -121,44 +117,9 @@ export default class Store extends Phaser.Scene {
       });
     }
   }
-
-  createPauseButton() {
-    const btnX = this.scale.width - 25;
-    const btnY = 25;
-
-    // Sprite botón
-    this.pauseBtnBg = this.add
-      .image(btnX, btnY, "pauseBtn")
-      .setInteractive({ useHandCursor: true })
-      .setOrigin(0.5)
-      .setScale(3)
-      .setDepth(1000);
-
-    // Animación hover
-    this.pauseBtnBg.on("pointerover", () => {
-      this.pauseBtnBg.setTexture("pauseBtnPressed");
-    });
-
-    this.pauseBtnBg.on("pointerout", () => {
-      this.pauseBtnBg.setTexture("pauseBtn");
-    });
-
-    // Acción al hacer clic
-    this.pauseBtnBg.on("pointerdown", () => {
-      this.sound.play("buttonSound", { volume: 0.2 });
-      this.openPauseMenu();
-    });
-  }
   update(time, delta) {
+    super.update(time, delta);
     this.flowManager?.update(time, delta);
-    if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
-      this.openPauseMenu();
-    }
-  }
-
-  openPauseMenu() {
-    this.scene.launch("Menu", { parentScene: this.scene.key });
-    this.scene.pause();
   }
 
   showPotionResult(potionTextureKey, quality) {

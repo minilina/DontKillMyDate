@@ -38,7 +38,7 @@ export default class Menu extends Phaser.Scene {
     this.createStyledButton(
       width / 2,
       height / 2 + 75,
-      'RESUMIR',
+      'CONTINUAR',
       () => this.resumeGame()
     );
 

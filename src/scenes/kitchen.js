@@ -7,9 +7,10 @@ import KitchenTutorial from '../tutorial/kitchenTutorial.js';
 //import DialogueManager from '../dialogue/dialogueManager.js';
 import TutorialDialogueManager from '../tutorial/tutorialDialogueManager.js';
 import GameState from '../state/GameState.js';
+import StoppableScene from './stoppableScene.js';
 
 
-export default class Kitchen extends Phaser.Scene {
+export default class Kitchen extends StoppableScene {
     constructor() {
         super({ key: 'kitchen' }); // id escena
     }
@@ -184,11 +185,6 @@ export default class Kitchen extends Phaser.Scene {
         this.grab(this.emptyHeartPotion, 'emptyHeartPotionB', 'shape', 'Heart');
         this.grab(this.emptyStarPotion, 'emptyStarPotionB', 'shape', 'Star');
 
-        // pausa
-        this.pauseKey = this.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.ESC
-        );
-
 
         if (startTutorial) {
             this.dialogue = this.dialogue = new TutorialDialogueManager(this);
@@ -222,53 +218,13 @@ export default class Kitchen extends Phaser.Scene {
             this.isMinigameActive = false; 
         });
 
-        // Pausa
-        this.pauseKey = this.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.ESC,
-        );
-        this.createPauseButton();
+        this.setupPause();
 
-    }
-
-    createPauseButton() {
-        const btnX = this.scale.width - 25;
-        const btnY = 25;
-
-        // Sprite botón
-        this.pauseBtnBg = this.add.image(btnX, btnY, 'pauseBtn')
-            .setInteractive({ useHandCursor: true })
-            .setOrigin(0.5)
-            .setScale(3)
-            .setDepth(1000);
-
-
-
-        // Animación hover
-        this.pauseBtnBg.on('pointerover', () => {
-            this.pauseBtnBg.setTexture('pauseBtnPressed');
-        });
-
-        this.pauseBtnBg.on('pointerout', () => {
-            this.pauseBtnBg.setTexture('pauseBtn');
-        });
-
-        // Acción al hacer clic
-        this.pauseBtnBg.on('pointerdown', () => {
-            this.sound.play('buttonSound', { volume: 0.2 });
-            this.openPauseMenu();
-        });
     }
     
     update(time, delta) {
+        super.update(time, delta);
         this.flowManager?.update(time, delta);
-        if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
-            this.openPauseMenu();
-        }
-    }
-
-    openPauseMenu() {
-        this.scene.launch("Menu", { parentScene: this.scene.key });
-        this.scene.pause();
     }
 
     finishKitchen(potionShape, finalTexture) {
