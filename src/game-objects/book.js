@@ -477,9 +477,9 @@ export default class Book extends Phaser.GameObjects.Container {
         const descHeat = scene.add.text(180, 320, "Apaga el fuego cuando la \nflecha llegue a la temperatura \ndeseada.", estiloDesc).setOrigin(0, 0.5);
         const heatBar = scene.add.image(318, 380, 'heatBar').setScale(4);
         const frio = scene.add.text(
-            210,
+            215,
             395,
-            "Helado",
+            "Frío",
             {
                 fontFamily: "VT323, monospace",
                 fontSize: "25px",

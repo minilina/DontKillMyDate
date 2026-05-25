@@ -270,6 +270,7 @@ export default class Kitchen extends Phaser.Scene {
                 GameState.currentPotion.quality = 0;
             } else {
                 const potionData = this.bottledPotion ? this.bottledPotion : this.cauldron.currentPotion;
+                console.log('Entregando poción con estos datos:', JSON.stringify(potionData, null, 2));
                 finalQuality = GameState.evaluatePotion(potionData, currentOrder, potionShape);
             }
 

@@ -58,7 +58,7 @@ export default class Cauldron {
         }
 
         this.generalPhrases = [
-            "¡Avisame si hay beso, que desde aquí abajo no veo!",
+            "¡Avísame si hay beso, que desde aquí abajo no veo!",
             "¡Oye, que yo también necesito mis descansos para el café!",
             "¡Y decían que la hostelería mágica era un sector relajado...!",
             "¡Se me están chamuscando hasta las pestañas!"
