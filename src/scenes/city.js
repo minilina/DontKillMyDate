@@ -136,28 +136,77 @@ export default class City extends topDownScene {
     }
 
     regar(idHuerto, capaMojada) {
-        // Bloqueamos el movimiento
+        // Bloqueamos interfaz y empezamos animacion
         this.bloquearClic = true;
+        this.player.bloquearAnimaciones = true; // para que no se solapen las animaciones
         if (this.player.setPath) this.player.setPath([]); 
         if (this.player.body) this.player.body.setVelocity(0, 0);
 
-        // Animación temporal (jugador azul)
-        this.player.setTint(0x00aaff); 
-        // if (this.sound.get('waterSound')) this.sound.play('waterSound'); 
+        // Guardamos posicion original para volver al terminar
+        const origX = this.player.x;
+        const origY = this.player.y;
+        const origFlip = this.player.flipX;
+        const origDir = this.player.lastDirection;
 
-        // Esperamos 1 segundo (Simula la animación de regar)
-        this.time.delayedCall(1000, () => {
-            this.player.clearTint();
-            this.bloquearClic = false;
+        // Lugares de la animacion
+        let secuenciaMontaje = [];
 
-            // Mostramos la tierra mojada
-            if (capaMojada) capaMojada.setVisible(true);
+        if (idHuerto === 1) {
+            secuenciaMontaje = [
+                { px: (36 * 16) + 8, py: (6 * 16) + 8, dir: 'right' },
+                { px: (39 * 16) + 8, py: (6 * 16) + 8, dir: 'left' }
+            ];
+        } else if (idHuerto === 2) {
+            secuenciaMontaje = [
+                { px: (22 * 16) + 8, py: (11 * 16) + 8, dir: 'right' },
+                { px: (29 * 16) + 8, py: (13 * 16) + 8, dir: 'left' },
+                { px: (26 * 16) + 8, py: (11 * 16) + 8, dir: 'down' },
+                { px: (24 * 16) + 8, py: (14 * 16) + 8, dir: 'up' }
+            ];
+        }
+        
+        let pasoActual = 0;
 
-            // Guardamos en GameState para que no te penalicen mañana
-            GameState.huertosRegadosHoy[`huerto${idHuerto}`] = true;
+        const ejecutarCorte = () => {
+            if (pasoActual >= secuenciaMontaje.length) { // Si ya no quedan cortes, finalizamos
+                this.player.setPosition(origX, origY);
+                this.player.setFlipX(origFlip);
+                
+                // Devolvemos el control al jugador
+                this.player.bloquearAnimaciones = false;
+                if (this.player.setDireccion) this.player.setDireccion(origDir);
 
-            // Un brillito opcional chulo al terminar
-            this.cameras.main.flash(200, 100, 200, 255); 
-        });
+                // Desbloqueamos controles y mojamos la tierra
+                this.bloquearClic = false;
+                if (capaMojada) capaMojada.setVisible(true);
+                GameState.huertosRegadosHoy[`huerto${idHuerto}`] = true;
+                
+                this.cameras.main.flash(200, 100, 200, 255);
+                return;
+            }
+
+            // Aplicamos el corte actual
+            const frame = secuenciaMontaje[pasoActual];
+            this.player.setPosition(frame.px, frame.py);
+
+            // Reproducimos la animacion
+            if (frame.dir === 'left') {
+                this.player.setFlipX(true);
+                this.player.anims.play('water-right', false); 
+            } else if (frame.dir === 'right') {
+                this.player.setFlipX(false);
+                this.player.anims.play('water-right', false);
+            } else {
+                this.player.setFlipX(false);
+                this.player.anims.play(`water-${frame.dir}`, false);
+            }
+
+            pasoActual++;
+
+            // Saltamos de animacion cada 800ms
+            this.time.delayedCall(800, ejecutarCorte);
+        };
+
+        ejecutarCorte();
     }
 }

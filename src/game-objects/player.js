@@ -20,7 +20,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.speed = 100;
         this.lastDirection = 'down';
 
-        // 👉 NAVMESH
+        this.bloquearAnimaciones = false; // para regar
+
+        // NAVMESH
         this.navMesh = null;
         this.path = [];
         this.targetIndex = 0;
@@ -47,10 +49,23 @@ export default class Player extends Phaser.GameObjects.Sprite {
             this.scene.anims.create({ key: 'idle-up', frames: this.scene.anims.generateFrameNumbers('player-idle', { start: 4, end: 7 }), frameRate: 6, repeat: -1 });
             this.scene.anims.create({ key: 'idle-right', frames: this.scene.anims.generateFrameNumbers('player-idle', { start: 8, end: 11 }), frameRate: 6, repeat: -1 });
         }
+
+        // ANIMACIONES WATERING
+        if (!this.scene.anims.exists('water-down')) {
+            this.scene.anims.create({ key: 'water-down', frames: this.scene.anims.generateFrameNumbers('player-watering', { start: 0, end: 7 }), frameRate: 10, repeat: 0 });
+            this.scene.anims.create({ key: 'water-up', frames: this.scene.anims.generateFrameNumbers('player-watering', { start: 8, end: 15 }), frameRate: 10, repeat: 0 });
+            this.scene.anims.create({ key: 'water-right', frames: this.scene.anims.generateFrameNumbers('player-watering', { start: 16, end: 23 }), frameRate: 10, repeat: 0 });
+        }
     }
 
     preUpdate(t, dt) {
         super.preUpdate(t, dt);
+
+        // Si estamos regando, abortamos funcion para que no se meta Idle
+        if (this.bloquearAnimaciones) {
+            this.body.setVelocity(0);
+            return; 
+        }
 
         // Reset de velocidad en cada frame para evitar deslizamientos
         this.body.setVelocity(0);

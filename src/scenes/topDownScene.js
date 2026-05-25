@@ -462,44 +462,52 @@ export default class TopDownScene extends Phaser.Scene {
     }
 
     hover(configuraciones) {
-        if (this.isTransitioning) return; // Evitamos configurar el hover si ya estamos en transicion, para no tener conflictos de escenas
+        let objetoBajoElRaton = null;
+        let tocandoUI = false;
 
+        // Cuando mueves raton
         this.input.on('pointermove', (pointer, gameObjects) => {
-            if (gameObjects && gameObjects.length > 0) {
-                const tocandoUI = gameObjects.some(obj => obj.scrollFactorX === 0 || obj.scrollFactorY === 0);
-                if (tocandoUI) {
-                    this.game.canvas.classList.remove('cursor-far'); // Si el raton entra en un boton (menu de pausa), quitamos el cursor gris por si acaso
-                    return;
-                }
+            if (this.isTransitioning) return; // Evitamos configurar el hover si ya estamos en transicion, para no tener conflictos de escenas
+            tocandoUI = gameObjects && gameObjects.some(obj => obj.scrollFactorX === 0 || obj.scrollFactorY === 0);
+            if (tocandoUI) {
+                this.game.canvas.classList.remove('cursor-far'); // Si el raton entra en un boton (menu de pausa), quitamos el cursor gris por si acaso
+                objetoBajoElRaton = null;
+                return;
             }
 
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
-            let configHovered = null;
+            objetoBajoElRaton = null; // Reseteamos por defecto
 
             for (const config of configuraciones) {
                 if (!config.capa) continue; // Si la capa no existe, pasamos a la siguiente
-
-                if (config.condicion !== undefined && !config.condicion()) continue; // apaño para el riego
+                if (config.condicion !== undefined && !config.condicion()) continue;  // apaño para el riego
 
                 const tile = config.capa.getTileAtWorldXY(worldPoint.x, worldPoint.y);
                 if (tile && config.ids.includes(tile.index)) {
-                    configHovered = config;
+                    objetoBajoElRaton = config;
                     break; // Si ya hemos encontrado algo interactivo, dejamos de buscar
                 }
             }
+        });
 
-            let estaCerca = false;
-            if (configHovered) {
+            // Comprobar la distancia aunque el raton este quieto
+        this.events.on('update', () => {
+            if (this.isTransitioning || tocandoUI) return;
+
+            if (objetoBajoElRaton) {
+                let estaCerca = false;
+
                 // Si el jugador ya esta cerca del objeto (detectado por la "E"), el cursor se pondra en pointer
-                if (this.interactableCercano && this.interactableCercano.tipo === configHovered.tipo) estaCerca = true;
-                else if (this.player && this.player.active) { // Si no calculamos a que distancia esta el raton del jugador
+                if (this.interactableCercano && this.interactableCercano.tipo === objetoBajoElRaton.tipo) {
+                    estaCerca = true;
+                } else if (this.player && this.player.active) { // Si no calculamos a que distancia esta el raton del jugador
+                    const pointer = this.input.activePointer;
+                    const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
                     const distancia = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
                     if (distancia <= 40) estaCerca = true;
                 }
-                
-            }
 
-            if (configHovered) {
+                // Cambiamos el cursor si te alejas caminando
                 if (estaCerca) {
                     this.game.canvas.style.cursor = 'pointer';
                     this.game.canvas.classList.remove('cursor-far');
@@ -511,7 +519,7 @@ export default class TopDownScene extends Phaser.Scene {
                 this.game.canvas.style.cursor = 'default';
                 this.game.canvas.classList.remove('cursor-far');
             }
-        });
+        }); 
     }
 
     debugTiles(configuracionesCapas) {
