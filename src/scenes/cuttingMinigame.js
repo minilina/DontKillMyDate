@@ -39,6 +39,8 @@ export default class CuttingMinigame extends Phaser.Scene {
 
     // cuenta atrás antes de empezar el minijuego
     startCountdown() {
+        GameState.pauseTimer();
+
         const txt = this.add.text(this.scale.width / 2, this.scale.height / 2, '3', {
             fontFamily: "VT323, monospace",
             fontSize: '90px',
@@ -50,6 +52,7 @@ export default class CuttingMinigame extends Phaser.Scene {
         this.time.delayedCall(3000, () => {
             txt.destroy();
             this.bg.setDepth(0);
+            GameState.resumeTimer();
             this.startGame(); // cuando acaba, empieza el movimiento y los clicks
         });
     }

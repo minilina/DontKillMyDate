@@ -22,7 +22,7 @@ export default class MortarMinigame extends Phaser.Scene {
 
     create() {
         // fondo oscuro y mesa con mortero
-        this.bg = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000000, 0.5).setOrigin(0).setDepth(0).setInteractive();
+        this.bg = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000000, 0.5).setOrigin(0).setDepth(9).setInteractive();
         this.add.image(0, 0, 'mortarBg').setOrigin(0).setDepth(1).setScale(this.sc);
 
         this.bg.on('pointerdown', () => {
@@ -69,6 +69,8 @@ export default class MortarMinigame extends Phaser.Scene {
     }
 
     startCountdown() {
+        GameState.pauseTimer();
+
         const txt = this.add.text(this.scale.width / 2, this.scale.height / 2, '3', {
             fontFamily: "VT323, monospace",
             fontSize: '90px',
@@ -77,7 +79,12 @@ export default class MortarMinigame extends Phaser.Scene {
 
         this.time.delayedCall(1000, () => txt.setText('2'));
         this.time.delayedCall(2000, () => txt.setText('1'));
-        this.time.delayedCall(3000, () => { txt.destroy(); this.startGame(); });
+        this.time.delayedCall(3000, () => { 
+            txt.destroy();
+            this.bg.setDepth(0);
+            GameState.resumeTimer();
+            this.startGame();
+        });
     }
 
     startGame() {

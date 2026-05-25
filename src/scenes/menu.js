@@ -25,7 +25,7 @@ export default class Menu extends Phaser.Scene {
       .setDisplaySize(width, height);
 
     //  Texto PAUSED
-    this.add.text(width / 2, height / 2 - 120, 'PAUSED', {
+    this.add.text(width / 2, height / 2 - 120, 'JUEGO PAUSADO', {
       fontFamily: 'VT323, monospace',
       fontSize: '50px',
       fill: '#ffffff'
@@ -38,7 +38,7 @@ export default class Menu extends Phaser.Scene {
     this.createStyledButton(
       width / 2,
       height / 2 + 75,
-      'RESUME',
+      'RESUMIR',
       () => this.resumeGame()
     );
 
@@ -46,7 +46,7 @@ export default class Menu extends Phaser.Scene {
     this.createStyledButton(
       width / 2,
       height / 2 + 150,
-      'MAIN MENU',
+      'MENÚ PRINCIPAL',
       () => this.goToMainMenu()
     );
 

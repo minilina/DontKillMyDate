@@ -207,6 +207,21 @@ export default class Kitchen extends Phaser.Scene {
                 ease: 'Sine.easeInOut'
             });
         }
+
+        this.isMinigameActive = false;
+
+        this.events.on('pause', () => {
+            // solo pausa el cronómetro si NO estamos en un minijuego
+            if (!this.isMinigameActive) {
+                GameState.pauseTimer();
+            }
+        });
+        
+        this.events.on('resume', () => {
+            GameState.resumeTimer();
+            this.isMinigameActive = false; 
+        });
+
         // Pausa
         this.pauseKey = this.input.keyboard.addKey(
             Phaser.Input.Keyboard.KeyCodes.ESC,
@@ -214,6 +229,7 @@ export default class Kitchen extends Phaser.Scene {
         this.createPauseButton();
 
     }
+
     createPauseButton() {
         const btnX = this.scale.width - 25;
         const btnY = 25;
@@ -242,6 +258,7 @@ export default class Kitchen extends Phaser.Scene {
             this.openPauseMenu();
         });
     }
+    
     update(time, delta) {
         this.flowManager?.update(time, delta);
         if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
@@ -255,6 +272,9 @@ export default class Kitchen extends Phaser.Scene {
     }
 
     finishKitchen(potionShape, finalTexture) {
+        
+        GameState.stopTimer();
+        
         this.input.keyboard.enabled = false;
         this.input.enabled = false;
         this.isDraggingItem = false;
@@ -651,6 +671,7 @@ export default class Kitchen extends Phaser.Scene {
                 if (dropHook.cancelled) return false;
 
                 // minijuego cortar
+                this.isMinigameActive = true;
                 this.scene.pause();
                 this.scene.launch('cuttingMinigame', { ingredient: dropData });
                 isDroppedSuccessfully = true;
@@ -664,6 +685,7 @@ export default class Kitchen extends Phaser.Scene {
                 if (dropHook && dropHook.cancelled) return;
 
                 // minijuego machacar
+                this.isMinigameActive = true;
                 this.scene.pause();
                 this.scene.launch('mortarMinigame', { ingredient: dropData });
                 isDroppedSuccessfully = true;

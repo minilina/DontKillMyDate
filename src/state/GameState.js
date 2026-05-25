@@ -9,6 +9,11 @@ const GameState = {
     quality: 100,
   },
 
+  orderStartTime: 0,
+  orderEndTime: 0,
+  totalPausedTime: 0,
+  pauseStartTime: 0,
+
   hasCompletedSpecialEvent: false,
 
   specialNpcRecords: {
@@ -108,6 +113,30 @@ const GameState = {
 
   prepareNewCustomer() {
     this.currentPotion.quality = 100;
+    this.orderStartTime = Date.now();
+    this.orderEndTime = 0;
+    this.totalPausedTime = 0;
+    this.pauseStartTime = 0;
+  },
+
+  pauseTimer() {
+    if (this.orderStartTime > 0 && this.pauseStartTime === 0) {
+      this.pauseStartTime = Date.now();
+    }
+  },
+
+  resumeTimer() {
+    if (this.pauseStartTime > 0) {
+      const timePaused = Date.now() - this.pauseStartTime;
+      this.totalPausedTime += timePaused;
+      this.pauseStartTime = 0;
+    }
+  },
+
+  stopTimer() {
+    if (this.orderStartTime > 0 && this.orderEndTime === 0) {
+      this.orderEndTime = Date.now();
+    }
   },
 
   advanceDay() {
@@ -259,6 +288,25 @@ const GameState = {
       change = -5;
     } else {
       change = -15;
+    }
+
+    // --- SISTEMA DE TIEMPO ---
+    if (this.orderStartTime > 0) {
+      const endTime = this.orderEndTime > 0 ? this.orderEndTime : Date.now();
+      const timeSpentSeconds = (endTime - this.orderStartTime - this.totalPausedTime) / 1000;
+      
+      if (q >= 50) {
+        if (timeSpentSeconds <= 30) {
+          change += 2; 
+          console.log("Tiempo rápido:", Math.round(timeSpentSeconds), "segundos. Reputación extra.");
+        } else if (timeSpentSeconds >= 120) {
+          change -= 2; 
+          console.log("Tiempo lento:", Math.round(timeSpentSeconds), "segundos. Reputación reducida.");
+        } else {
+          // tiempo normal, sin cambios
+          console.log(`Tiempo normal: ${Math.round(timeSpentSeconds)}s.`);
+        }
+      }
     }
 
     this.reputation += change;

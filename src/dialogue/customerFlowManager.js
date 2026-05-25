@@ -58,8 +58,6 @@ export default class CustomerFlowManager {
       this.currentCustomer.destroy();
     }
 
-    GameState.prepareNewCustomer();
-
     const customerType = GameState.getCurrentCustomerType();
     const difficulty = GameState.getCurrentDifficulty
       ? GameState.getCurrentDifficulty()
@@ -259,6 +257,9 @@ export default class CustomerFlowManager {
 
     if (!this.currentRequest) return;
     this.scene.registry.set("currentOrder", this.currentRequest);
+    
+    GameState.prepareNewCustomer();
+    
     this.scene.scene.sleep("store");
     this.scene.scene.launch("kitchen");
   }
