@@ -748,7 +748,7 @@ A raíz de los resultados, hemos realizado las siguientes mejoras:
 4.  **Guía en el Top-Down:** Hemos añadido indicadores visuales (la tecla "E") sobre todos los objetos con los que se puede interactuar. Además, hemos enriquecido los diálogos de los personajes y los textos del resumen diario para que funcionen como pistas contextuales, indicando al jugador qué objetivos puede cumplir en el mapa.
 5.  **Ajuste de Recursos:** Hemos modificado el color de una de las probetas para asegurar una distinción más clara entre ellas.
 
-## 9. Referencias
+## 10. Referencias
 
 #### Referencias visuales y artísticas
 - Stardew Valley
