@@ -96,6 +96,19 @@ El sistema de tutorial y la introducción quedaron completamente funcionales y s
 
 * **Valoración General:**
 
+  Valoración escrita por `@lucass-05`:
+
+  Laura ha sido también una desarrolladora clave en este juego. Han destacado sus `diseños muy cuidados` y `adorables` que aportan muchísimo encanto al juego.
+
+   Se ha encargado del `funcionamiento de la cocina`, parte indudablemente principal del juego,  donde movemos todos los `ingredientes`, escogemos `frascos` y ajustamos `temperaturas`, aspecto completamente principal del juego y que hace que la experiencia sea entretenida. Además también participó en desarrollar el avance del juego por `reputación`. Por ambos motivos, el `core-loop` del juego no tendría sentido sin su aportación.
+  
+  Podríamos destacar su `diseño de la cocina`, que es totalmente acogedora y engancha al jugador a esta historia, además de todos los pequeños `detalles e ingredientes` con los que debemos trastear para elaborar las pociones. Es también la desarrolladora del carismático `personaje de fuego` que nos guía en el juego. Este personaje nos va diciendo distintas `frases enternecedoras` y tiene unas `animaciones adorables`. Laura ha sido una gran ayuda para todos con su dominio de `libresprite`. Además nos aconsejó en todos los diseños del juego.
+
+   Su atención a todos los detalles estéticos hacen que el juego deje una `huella` en el jugador, siendo la estética del juego posiblemente su aspecto más característico y reconocible. 
+
+  
+
+  
 * **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
 ---
