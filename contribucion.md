@@ -38,6 +38,11 @@
 
   Ha participado en `diseño` mucho con `@laurimba`, colaborado conmigo al facilitarme todos los dibujos que necesité para hacer la versión topdown de los npcs así como sus dialogos en el topdown. Además, ha sido muy activa en el grupo de whatsapp ayudando a todos los demas colaboradores.
 
+  Valoración escrita por `@sergiicl`:
+
+ Alba ha sido en mi opinión ha sido uno de los pilares principales de este proyecto, ha dedicado una gran parte de tiempo dibujando los personajes y pensando las historias de los personajes principales además de desarrollar toda la mecánica de los `.json` facilitando el ciclo del juego. Siento que desde se añadió la visión sobre el futuro del proyecto ha estado bastante claro y hemos podido continuar con mucha más fluidez y claridad. Cabe también destacar su compañerismo y saber coordinar al grupo.
+
+
   
 * **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
@@ -106,9 +111,10 @@ El sistema de tutorial y la introducción quedaron completamente funcionales y s
 
    Su atención a todos los detalles estéticos hacen que el juego deje una `huella` en el jugador, siendo la estética del juego posiblemente su aspecto más característico y reconocible. 
 
-  
+   Valoración escrita por `@sergiicl`:
 
-  
+   Otro de los pilares principales del proyecto. Ha sido responsable de la clase `kitchen` en su totalidad, tanto el arte, sprites, animaciones, mecánicas (desarollo e implementación), perfeccionando hasta el más último detalle. Su implementación de `cuttingMinigame` personalmente me ayudo bastante para el desarrollo del `mortarMinigame` además de hacer el arte que utilicé en él.
+
 * **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
 ---
@@ -137,20 +143,30 @@ El sistema de tutorial y la introducción quedaron completamente funcionales y s
 
   ** Seguir la estética de los diálogos y botones para tanto el `menu` como las `conversaciones con los npc`, reutilizando y modificando clases como `dialogueManager` y `dialogueUI` , que inicialmente estaban pensadas para `store`, pero consiguiendo adecuarlas a otras partes del juego sin estropear su funcionamiento en `store`.
 
+Valoración escrita por `@sergiicl`:
+
+  Gracias al esfuerzo e insistencia de Lucas hemos podido implementar el Navmesh y movimiento del protagonista en el `topDownScene` casi a la perfección dentro de lo permitido con las herramientas posibles, además de las interacciones con los personajes principales en la ciudad con ellos. Muy persistente y trabajador.
 
 * **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
 ---
 
 ### 👤 @sergiicl (Sergio Casanova)
-* **Rol:** Programador de UI / Soporte
+* **Rol:** Programador / Composición y Productor
 * **Tareas Realizadas:**
-    * Programación de la funcionalidad de los botones del Menú Principal.
-    * Ajustes menores en los créditos del juego.
+    * Desarrollo completo de la clase `book`, implementando toda su lógica de interacción, navegación entre pestañas y conexión con las mecánicas jugables. El sistema fue diseñado para funcionar como apoyo constante al jugador durante la preparación de pociones, integrando información dinámica sobre afinidades, ingredientes, colores y razas sin romper el flujo de gameplay.
+    * Composición y producción de la banda sonora original del juego. La música fue planteada para acompañar el ritmo relajado de exploración y contrastar con la tensión ligera de la cocina y los minijuegos.
+    * Diseño, implementación e integración de todos los efectos de sonido y sistemas de ambientación sonora del juego, trabajando especialmente sobre `topDownScene`, `kitchen` y escenas generales del proyecto. Se añadieron sonidos contextuales para interacciones, interfaces, cocina, diálogos, fuego, mezclas y elementos ambientales del pueblo, buscando mejorar el feedback del jugador y dar más vida al entorno.
+    * Configuración completa del `mortarMinigame`, ajustando parámetros de aparición, ritmo, dificultad y penalizaciones para conseguir un equilibrio entre desafío y accesibilidad. También se trabajó en el feedback visual y sonoro de las interacciones para reforzar la sensación de rapidez y precisión durante la preparación de ingredientes.
+    * Colaboración en la implementación de las mecánicas de drag & drop de la cocina, ayudando en la integración de objetos interactivos, validación de zonas de interacción y cohesión general entre ingredientes, herramientas y caldero dentro de las escenas de `kitchen`.
+    * Programación de distintas funcionalidades de interfaz y navegación, incluyendo los botones del `MainMenu`, ajustes visuales y comportamiento de menús. También participé en el desarrollo de la **pantalla de inicio (`StartMenu`)**, diseñando e implementando la experiencia inicial del jugador, la navegación entre opciones y la transición entre escenas principales del juego.
+    * Programación completa de la escena `start`, incluyendo la transición hacia las escenas principales y diseño e implementación del fondo animado de la pantalla de inicio.
+    * Participación parcial en el desarrollo del **final intermedio** del juego, colaborando en su integración narrativa como en la implementación técnica de eventos, escenas y transiciones relacionadas con la progresión de la historia.
+
 * **Valoración General:**
     
   
-* **Puntuación:** ⭐⭐☆☆☆ (2/5)
+* **Puntuación:** ⭐⭐⭐⭐☆ (4/5)
 
 ---
 
@@ -163,4 +179,4 @@ El sistema de tutorial y la introducción quedaron completamente funcionales y s
 | **@didimax89** | Arte / UI       |   ⭐⭐⭐⭐⭐ |           5            |
 | **@laurimba**     | Programadora / Diseñadora / Artista 2D  |   ⭐⭐⭐⭐⭐ |           5            |
 | **@lucass-05**     | Programador/ Diseño animaciones 2D/ Redacción de diálogos  |   ⭐⭐⭐⭐⭐ |           5            |
-| **@sergiicl**   | Programación UI |   ⭐⭐☆☆☆  |           2            |
+| **@sergiicl**   | Programación / Compositor y Productor |   ⭐⭐⭐⭐☆  |           4            |
