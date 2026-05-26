@@ -183,3 +183,20 @@ canvas[style*="cursor: pointer"], a, button {
 #juego canvas.cursor-far {
     cursor: url('../assets/sprites/UI/pointer_far.png'), pointer !important;
 }
+
+/* Contenedor para centrar el video */
+.contenedor-video {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    width: 100%;
+}
+
+/* Estilos reproductor de video */
+.contenedor-video video {
+    width: 100%;
+    max-width: 800px; /* El video no crecera más de 800px en pantallas grandes */
+    border-radius: 12px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Pequeña sombra para darle profundidad */
+}
