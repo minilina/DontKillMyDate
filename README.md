@@ -176,6 +176,27 @@ La reputación es la "vida" de la tienda, comenzando el día 1 en 20 puntos. Tra
   * *(El tiempo que el juego pasa pausado en el menú o en cuenta atrás de minijuegos no contabiliza para este cálculo).*
 * **Mantenimiento del Huerto:** Al finalizar el día, se comprueba el estado de los dos huertos del pueblo. Por cada huerto que el jugador no haya regado, sufrirá una penalización de **-5 puntos de reputación** al cierre de la jornada (máximo -10 puntos). Esta mecánica no se aplica durante el Día 1.
 
+---
+
+### 3.5. Sistema de Guardado y Progresión
+
+El progreso de la partida se almacena de forma persistente en el navegador del jugador, lo que permite cerrar el juego y retomar la partida exactamente en el mismo día durante futuras sesiones.
+
+#### 3.5.1. Guardado Automático
+El juego no requiere que el jugador guarde manualmente. El guardado se realiza de forma automática **al finalizar cada jornada laboral**:
+- Se activa en la pantalla de **Resumen Diario**, justo al hacer clic para avanzar al día siguiente.
+- Se muestra un pequeño mensaje en pantalla ("¡Progreso guardado!") para dar *feedback* visual al jugador antes de pasar a la siguiente escena.
+
+#### 3.5.2. Qué datos se conservan
+Para mantener la coherencia narrativa y mecánica, el sistema guarda exclusivamente el estado general del juego entre días (no se guardan pociones a medias ni acciones a mitad de jornada). Se conserva:
+- **El progreso general:** Día actual, puntuación de reputación y si ya se ha completado el tutorial.
+- **El progreso narrativo:** Las conversaciones que ya se han tenido con los habitantes del pueblo (para que los NPCs no repitan sus diálogos de presentación) y el resultado de los encargos de los Clientes Especiales.
+- **El arco de la Madre:** El número de visitas realizadas a la cueva, un factor esencial para desbloquear el final de la historia.
+
+#### 3.5.3. Pantalla de Título
+Al abrir el juego, la pantalla de inicio detecta automáticamente si existe un progreso guardado:
+- **Continuar:** Si hay datos previos, aparece un botón de "CONTINUAR" que indica el día exacto por el que va el jugador, llevándolo directamente a su casa al inicio de esa jornada.
+- **Nueva Partida:** Si el jugador selecciona "Nueva Partida" (o "Jugar" si es la primera vez), la historia comienza de cero. Si ya existía un progreso anterior, este se borra de forma irreversible para evitar conflictos.
 
 ## 4.	Interfaz
 ### 4.1.	Controles
