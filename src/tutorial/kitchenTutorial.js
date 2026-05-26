@@ -292,7 +292,7 @@ export default class KitchenTutorial {
 
             this.k.events.once('cauldron:speech:finished', () => {
                 this.showStartPopup(() => {
-                    this.step7();
+                    this.step1();
                 });
             });
         };
