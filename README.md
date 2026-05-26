@@ -223,6 +223,16 @@ Al finalizar cada jornada se muestra una pantalla de resumen con los siguientes 
 - **Consejo del día** — texto rotatorio con un tip narrativo que aparece con efecto de escritura progresiva. Rota en ciclo entre 6 mensajes según el día.
 - **Guardado automático** — al hacer clic para continuar, el progreso se guarda automáticamente y se muestra una confirmación en pantalla antes de pasar al siguiente día.
 
+#### Pantalla de Menú de Pausa
+
+<p align="center">
+<img src="assets/img/CapturaMenu.png" width = 45%>
+</p>
+
+Este Menú se puede abrir desde casi todas las escenas del juego, a traves de pulsar el botón de la esquina superior derecha o de la tecla `esc`
+En el podemos pausar la partida y modificar aspectos del gameplay como puede ser la `pantalla completa` o la opción de `mute`.
+Además nos permite volver al menú principal.
+
 ## 5.	Mundo del juego
 ### 5.1.	Personajes
 #### 5.1.1. Razas
