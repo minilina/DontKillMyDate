@@ -95,9 +95,9 @@ El sistema de tutorial y la introducción quedaron completamente funcionales y s
 * **Valoración General:**
     Estoy muy orgulloso del trabajo que he realizado. A lo largo del desarrollo, he buscado aportar tanto a nivel técnico como artístico, encargándome del diseño del mostrador de la tienda y la animación de regar del personaje. Mi trabajo en la clase player sirvió como base del movimiento sobre la que luego pudimos iterar junto con '@lucass-05'.
 
-En el apartado de programación, me encargué de crear la arquitectura del mapa. He implementado sistemas inmersivos como el sistema visual del cursor y transparencias, dándole mucho mimo a la estética y a que no hubiesen errores o pequeños bugs. Además, dediqué mucho esfuerzo a solucionar problemas complejos de físicas, como gestionar las diferentes alturas en los puentes aislando las mallas de navegación, o ajustar los colliders asimétricos de los edificios.
+   En el apartado de programación, me encargué de crear la arquitectura del mapa. He implementado sistemas inmersivos como el sistema visual del cursor y transparencias, dándole mucho mimo a la estética y a que no hubiesen errores o pequeños bugs. Además, dediqué mucho esfuerzo a solucionar problemas complejos de físicas, como gestionar las diferentes alturas en los puentes aislando las mallas de navegación, o ajustar los colliders asimétricos de los edificios.
 
-Mi colaboración con '@lucass-05' en la parte TopDown fue clave para unificar los mapas con las mecánicas de juego de los NPCs. Ha sido un proyecto exigente, pero me considero una persona resolutiva y que ha no ha tenido problemas para echar horas, que siempre ha estado dispuesta a pulir cada parte del código y del mapa hasta conseguir que la experiencia del jugador fuese la deseada.
+   Mi colaboración con '@lucass-05' en la parte TopDown fue clave para unificar los mapas con las mecánicas de juego de los NPCs. Ha sido un proyecto exigente, pero me considero una persona resolutiva y que ha no ha tenido problemas para echar horas, que siempre ha estado dispuesta a pulir cada parte del código y del mapa hasta conseguir que la experiencia del jugador fuese la deseada.
 
 * **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
