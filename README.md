@@ -9,7 +9,7 @@ Para ver la contribución de cada integrante, consultar [el archivo de contribuc
 ### 1.1.	Descripción
 <i>Don't Kill My Date !</i> es un videojuego en el que el jugador encarna a una hechicera que dirige una consulta en un pequeño pueblo. Allí acuden clientes con disputas románticas, a quienes ayuda creando pociones adaptadas a sus necesidades mediante la selección y preparación de distintos ingredientes.
 
-La combinación de ingredientes y la destreza del jugador para trabajar a contrarreloj determinan la calidad y los efectos de cada poción. El resultado influye directamente en el éxito o fracaso de la cita del cliente y en su reputación como hechicero. Además, el jugador podrá explorar los alrededores para encontrarse con distintos personajes y cuidar del huerto de la ciudad. El futuro de la hechicera depende de sus decisiones.
+La combinación de ingredientes y la destreza del jugador para trabajar a contrarreloj determinan la calidad y los efectos de cada poción. El resultado influye directamente en el éxito o fracaso de la cita del cliente y en su reputación como hechicero. Además, el jugador podrá explorar los alrededores para encontrarse con distintos personajes y cuidar del huerto de la ciudad. El futuro de la hechicera depende de tus decisiones.
 
 ### 1.2.	Género
 Simulación/Casual.
@@ -75,35 +75,70 @@ Un cliente en dificultad `dificil` con ingredientes *dulce / rojo / machacado / 
 
 > *"Los astros me han traído hasta aquí. Mi corazón ansía desesperadamente el afecto de una hija de las corrientes cristalinas. Requiere de tu mayor arte: un elixir con el color de la sangre que posea notas de néctar celestial. Confío en que la textura de la mezcla quede reducida a una pasta fina e irreconocible y que la poción repose fría como el hielo. Presérvalo en un vaso tallado con la silueta de un corazón. Confío en tu mano."*
 
-### 3.2. Libro
-PÁGINA DE COMPATIBILIDAD
-- Abrir el libro por la página de compatibilidad. En esta aparecen las 6 razas en círculo y una interrogación en el medio.
-- Seleccionar 2 de las 6 razas que aparecen para consultar su compatibilidad (ver <i>punto 5.1.2.</i> para más información sobre la compatibilidad entre razas). Saldrá en el medio el color de la probeta que tiene que seleccionar.
+---
 
-PÁGINA DE PLANTAS
-- Abrir el libro por la página de plantas. En esta hay información del sabor de cada una.
+### 3.2. Libro de Alquimia
 
-### 3.2.	Preparación de pociones
-El jugador tiene que combinar 5 atributos distintos en el caldero a la hora de preparar una poción.
+<img align="left" width="80" hspace="10" src="assets/sprites/kitchen/libro_mesa.png"> El jugador dispone de un libro interactivo que actúa como enciclopedia y guía para la creación de pociones. El libro se abre mediante la interacción con su modelo sobre el mostrador de la cocina y cuenta con un sistema de cuatro pestañas laterales de colores (roja, azul, verde y morada) para navegar entre sus páginas.
+<br clear="left"/>
 
-#### 3.2.1. Compatibilidad razas (olor)
-Seleccionar 1 de las 3 probetas disponibles para dar olor a la poción. Deslizar la probeta elegida hasta el caldero y soltarla.
+- **Página de Afinidad (1):** Permite consultar la compatibilidad amorosa entre las distintas razas. El jugador selecciona dos iconos de razas dispuestas en círculo; el sistema cruza los datos y revela un resultado visual en el centro que le indica qué probeta (olor) debe utilizar: tubo verde (afín), tubo gris (igual/neutro) o tubo rojo (hostil).
+- **Páginas de Referencia (2, 3 y 4):** Funcionan como manuales estáticos. Detallan la relación entre cada ingrediente y su sabor correspondiente, las texturas que se consiguen según el procesado (entero, tabla de cortar o mortero), cómo conseguir colores secundarios mezclando tintes, el funcionamiento de la barra de temperatura del caldero y una guía visual para identificar la raza de los clientes normales según su vestimenta.
 
-#### 3.2.2. Plantas (sabor)
-Seleccionar 1 de las 5 plantas disponibles. Para procesarlas existen las siguientes mecánicas, según la textura que se quiere conseguir:
-- Sin procesar: Deslizar la planta elegida al caldero y soltarla para echarla entera.
-- Cortar: Deslizar la planta elegida a la tabla de cortar y soltarla. Aparecerá en la pantalla una barra horizontal con zonas marcadas y un cuchillo deslizándose sobre ella de un lado a otro. El jugador tendrá que hacer click sobre las zonas marcadas sin equivocarse para cortar bien la planta. Si hace click fuera de las zonas, la satisfacción del cliente bajará. Habrá el mismo número de intentos que de zonas marcadas.
-- Machacar: Elegir el mortero. Irán apareciendo en la pantalla círculos en distintas posiciones. El jugador tendrá que hacerles click antes de que desaparezcan. Cuantos más círculos no consiga dar a tiempo, más bajará la satisfacción del cliente.
+---
 
-#### 3.2.3. Polvos (color)
-Seleccionar 1 o varios de los 3 cuencos con polvos de colores disponibles para conseguir el color de poción deseado. Cada vez que el jugador elija un polvo, saldrá el color de la mezcla en un cuenco más grande. En caso de equivocación, se podrá descartar la mezcla pulsando un botón y tirarla a la basura. Una vez se haya conseguido el color deseado, se podrá pulsar un botón que permitirá seleccionar y deslizar el cuenco con la mezcla al caldero.
+### 3.3. Preparación de pociones
 
-#### 3.2.4. Fuego (temperatura)
-Una vez metidos los 3 ingredientes anteriores al caldero, fuego naranja (caliente) o frío (azul). Barra con 3 temperaturas que sube/baja según el fuego.
+La fase de creación de pociones se desarrolla en la vista de la cocina. El jugador interactúa con los ingredientes y herramientas mediante un sistema de *Drag & Drop* (arrastrar y soltar) con el ratón. Al coger un objeto, el sistema resalta visualmente (con un reborde) los lugares válidos donde puede ser soltado o procesado. El jugador debe combinar 5 atributos distintos en el caldero: olor, sabor, consistencia, color y temperatura.
 
-#### 3.2.5. Frasco (forma)
-Elegir la forma del frasco. Verter el contenido del caldero al frasco con precisión.
+<img src="assets/sprites/kitchen/cocina_completa.png">
 
+#### 3.3.1. Compatibilidad de razas (Olor)
+El jugador debe seleccionar una de las tres probetas (roja, gris o verde) de la gradilla para dar olor a la poción, según lo consultado en el libro de afinidad. Se arrastra la probeta elegida hasta el caldero y se suelta.
+
+#### 3.3.2. Plantas (Sabor y Consistencia)
+El jugador selecciona 1 de las 5 plantas disponibles en los frascos (seta, baya, raíz, alga, cristal). La forma de procesar la planta determina su textura final, la cual puede requerir superar un minijuego:
+
+- **Sin procesar (Textura sólida):** El jugador arrastra la planta elegida directamente al caldero, echándola entera.
+- **Tabla de cortar (Textura cortada):** Al arrastrar la planta a la tabla, se inicia un minijuego. Aparece una barra horizontal dividida en tres segmentos con zonas oscuras aleatorias y una flecha desplazándose de un lado a otro. El jugador debe hacer clic exactamente cuando la flecha pase por las zonas marcadas para realizar 3 cortes exitosos.
+- **Mortero (Textura machacada):** Al arrastrar la planta al mortero, inicia un minijuego de agilidad. Círculos semitransparentes aparecen en posiciones aleatorias de la pantalla y el jugador debe hacerles clic antes de que desaparezcan.
+
+En ambos minijuegos, cometer errores (hacer clic fuera de las zonas, no realizar los cortes a tiempo o dejar desaparecer los círculos del mortero) aplica una penalización directa a la calidad de la poción final.
+
+<p align="center">
+  <img src="assets/sprites/kitchen/minijuego_tabla.png" width="45%">
+  <img src="assets/sprites/kitchen/minijuego_mortero.png" width="45%">
+</p>
+
+**Parámetros de Minijuegos:**
+- **Penalización Tabla de Cortar:** -5% de calidad por clic fallido y por cada corte no realizado de los 3 requeridos.
+- **Penalización Mortero:** -1% de calidad por cada círculo que el jugador deje desaparecer sin hacer clic.
+- **Tiempo Límite Mortero:** 6000 milisegundos por sesión.
+
+#### 3.3.3. Polvos (Color)
+Existen tres cuencos con polvos de colores primarios (rojo, azul, amarillo).
+- **Colores primarios:** Se arrastra el polvo directamente al caldero.
+- **Colores secundarios (naranja, morado, verde):** El jugador debe arrastrar dos polvos primarios distintos al plato de mezclas de la mesa. Una vez combinados, se genera el color secundario que se puede arrastrar al caldero.
+
+Si el jugador se equivoca de color en el plato de mezcla, puede arrastrar el polvo resultante a la papelera. Una vez el color se vierte en el caldero, este no se puede retirar sin desechar toda la poción.
+
+#### 3.3.4. Fuego (Temperatura)
+Al hacer clic sobre las piedras de la cocina, se enciende (o apaga) el fuego situado bajo el caldero. Mientras el fuego está encendido, una flecha en un medidor lateral subirá progresivamente, indicando la temperatura de la mezcla. El jugador debe apagar el fuego en el momento exacto para fijar la temperatura deseada.
+
+Además, el fuego está vivo y posee personalidad: tiene ojos animados y suelta pequeños comentarios de texto (bocadillos) aleatorios durante el proceso, reaccionando de forma especial si el jugador permite que la temperatura llegue al máximo.
+
+**Parámetros:**
+- **Velocidad de cambio térmico:** +/- 0.005 unidades de temperatura por delta de tiempo.
+- **Umbrales de temperatura:**
+  - < 33.3% = Frío (`cold`)
+  - < 66.6% = Templado (`warm`)
+  - ≥ 66.6% = Caliente (`hot`)
+
+#### 3.3.5. Envasado y Entrega (Forma del frasco)
+Existen frascos vacíos con 3 formas distintas (normal, corazón y estrella). Una vez que el caldero tiene líquido, el jugador debe arrastrar el frasco correspondiente hacia el caldero. El frasco se llenará automáticamente con la mezcla actual. Posteriormente, el frasco lleno debe arrastrarse a la campana de entrega para dárselo al cliente, o a la papelera si el jugador sabe que ha cometido un error.
+
+#### 3.3.6. Papelera (Descarte)
+La papelera, situada en la parte derecha de la cocina, permite al jugador deshacerse de ingredientes procesados (cortados o machacados), de polvos mal mezclados en el platito, o de pociones ya envasadas que sean incorrectas, permitiendo al jugador reiniciar el proceso sin penalización (más allá de la pérdida de tiempo que supone volver a empezar).
 
 ### 3.3.	Sistemas de puntuación
 ### 3.4.	Sistemas de reseñas
