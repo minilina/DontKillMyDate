@@ -586,7 +586,7 @@ La interfaz se integra directamente en el escenario mediante elementos diegétic
 - Frascos
 - Ingredientes
 - Herramientas físicas visibles en pantalla
-- 
+  
 #### Exploración Top-Down
 
 La exploración exterior utiliza una vista cenital (top-down) inspirada en simuladores de vida y granja.
@@ -755,7 +755,7 @@ A raíz de los resultados, hemos realizado las siguientes mejoras:
 - Potion Craft
 - Good Pizza, Great Pizza
 - Papers, Please
-- 
+  
 #### Referencias jugables y narrativas
 - La exploración del pueblo, el huerto y la ambientación cozy están inspiradas en Stardew Valley.
 - La alquimia, la elaboración de pociones y la estética medieval fantástica toman referencias directas de Potion Craft.
