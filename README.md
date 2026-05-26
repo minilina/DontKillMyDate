@@ -37,6 +37,8 @@ Durante el día en el que se desarrolla la actividad comercial, el core loop es 
 3.	Realizamos la poción con los ingredientes y para el destinatario adecuados.
 4.	Termina el día y recibimos noticias de si las citas han ido bien o mal y de la reputación conseguida o perdida.
 
+![Core loop](assets/img/core_loop.svg)
+
 ## 3.	Mecánicas
 
 ### 3.1.	Diálogo
