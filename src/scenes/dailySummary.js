@@ -15,14 +15,12 @@ export default class DailySummary extends Phaser.Scene {
     const starScale = 1.3;
     const iconSpacing = 65;
 
-    
     this.add.image(centerX, centerY, "resumenBg").setScale(bgScale);
 
     const stats = GameState.dailyStats;
     const titleColor = "#f9ce2a";
     const textColor = "#623100";
 
-   
     this.add
       .text(centerX, centerY - 140, `DÍA ${GameState.currentDay} FINALIZADO`, {
         fontFamily: "VT323, monospace",
@@ -34,7 +32,6 @@ export default class DailySummary extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    
     this.add
       .text(centerX, centerY - 85, "Desempeño Alquímico", {
         fontFamily: "VT323, monospace",
@@ -59,38 +56,48 @@ export default class DailySummary extends Phaser.Scene {
     if (stats.wateringPenalty && stats.wateringPenalty > 0) {
       offsetY = 15;
 
-      const penaltyText = this.add.text(
-        centerX + 15,
-        centerY - 5,
-         `¡Plantas Secas! -${stats.wateringPenalty} Reputación`, {
-          fontFamily: "VT323, monospace",
-          fontSize: "26px",
-          color: textColor,
-        })
+      const penaltyText = this.add
+        .text(
+          centerX + 15,
+          centerY - 5,
+          `¡Plantas Secas! -${stats.wateringPenalty} Reputación`,
+          {
+            fontFamily: "VT323, monospace",
+            fontSize: "26px",
+            color: textColor,
+          },
+        )
         .setOrigin(0.5)
         .setAlpha(0); // Empieza invisible
 
-        penaltyText.updateText();
-        const spacing = 15;
+      penaltyText.updateText();
+      const spacing = 15;
 
-        const penaltyIconLeft = this.add.image(
+      const penaltyIconLeft = this.add
+        .image(
           penaltyText.getTopLeft().x - spacing, // Calculado para ponerse a la izquierda del texto
-          centerY - 5, 
-          "hierba amarilla"
-        ).setScale(1.5).setAlpha(0);
+          centerY - 5,
+          "hierba amarilla",
+        )
+        .setScale(1.5)
+        .setAlpha(0);
 
-        const penaltyIconRight = this.add.image(
+      const penaltyIconRight = this.add
+        .image(
           penaltyText.getTopRight().x + spacing, // Sumamos para ir a la derecha
-          centerY - 5, 
-          "hierba amarilla"
-        ).setScale(1.5).setAlpha(0).setFlipX(true);
+          centerY - 5,
+          "hierba amarilla",
+        )
+        .setScale(1.5)
+        .setAlpha(0)
+        .setFlipX(true);
 
       // Hacemos que aparezca con un fade-in justo despues de que terminen de salir los corazones
       this.tweens.add({
-        targets:[penaltyText, penaltyIconLeft, penaltyIconRight],
+        targets: [penaltyText, penaltyIconLeft, penaltyIconRight],
         alpha: 1,
         duration: 400,
-        delay: 500, 
+        delay: 500,
       });
     }
 
@@ -113,7 +120,6 @@ export default class DailySummary extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    
     this.animateIconRow(
       centerX,
       centerY + 65 + offsetY,
@@ -124,11 +130,14 @@ export default class DailySummary extends Phaser.Scene {
       800,
     );
 
+    // --- AQUÍ ESTÁN LOS CONSEJOS ACTUALIZADOS ---
     const consejos = [
+      "Recuerda regar las plantas del huerto de la ciudad a diario, ¡o tu reputación bajará!",
       "Investiga todo lo que puedas, el bosque aguarda secretos.",
-      "El tiempo vuela fuera, aprovecha cada paso en el exterior.",
-      "Tu reputación determina tu futuro, cuida cada pocion que sirves.",
+      "Si descuidas el huerto, las plantas se secarán y la gente dejará de confiar en ti.",
+      "Tu reputación determina tu futuro, cuida cada poción que sirves.",
       "Explora cada rincón fuera de la casa antes de marcharte.",
+      "Un buen alquimista también es un buen jardinero. ¡No olvides regar hoy!",
     ];
 
     const consejoDelDia =
@@ -145,7 +154,6 @@ export default class DailySummary extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    
     this.time.delayedCall(1500, () => {
       let currentChar = 0;
       this.time.addEvent({
@@ -157,7 +165,6 @@ export default class DailySummary extends Phaser.Scene {
         repeat: consejoDelDia.length - 1,
       });
 
-      
       this.tweens.add({
         targets: tipText,
         alpha: { from: 0.7, to: 1 },
@@ -169,7 +176,6 @@ export default class DailySummary extends Phaser.Scene {
       });
     });
 
-   
     this.input.once("pointerdown", () => {
       GameState.advanceDay();
 
@@ -177,29 +183,43 @@ export default class DailySummary extends Phaser.Scene {
         currentDay: GameState.currentDay,
         reputation: GameState.reputation,
         specialNpcRecords: GameState.specialNpcRecords,
-        tutorialDone: true
+        tutorialDone: true,
       };
 
-      localStorage.setItem('potionGameSave', JSON.stringify(saveData));
-      
-      const saveText = this.add.text(centerX, this.scale.height - 30, "¡Progreso guardado!", {
+      localStorage.setItem("potionGameSave", JSON.stringify(saveData));
+
+      const saveText = this.add
+        .text(centerX, this.scale.height - 30, "¡Progreso guardado!", {
           fontFamily: "VT323, monospace",
           fontSize: "26px",
           color: "#ffffff",
-          shadow: { offsetX: 2, offsetY: 2, color: '#000000', blur: 0, stroke: false, fill: true }
-      }).setOrigin(0.5).setAlpha(0);
+          shadow: {
+            offsetX: 2,
+            offsetY: 2,
+            color: "#000000",
+            blur: 0,
+            stroke: false,
+            fill: true,
+          },
+        })
+        .setOrigin(0.5)
+        .setAlpha(0);
 
       this.tweens.add({
-          targets: saveText,
-          alpha: 1,
-          y: '-=10',
-          duration: 700,
-          ease: 'Power2',
-          onComplete: () => {
-              this.time.delayedCall(3000, () => {
-                  this.scene.start("house", {spawnX: 720, spawnY: 230, direccion: 'down'}); // cambio de escena
-              });
-          }
+        targets: saveText,
+        alpha: 1,
+        y: "-=10",
+        duration: 700,
+        ease: "Power2",
+        onComplete: () => {
+          this.time.delayedCall(3000, () => {
+            this.scene.start("house", {
+              spawnX: 720,
+              spawnY: 230,
+              direccion: "down",
+            }); // cambio de escena
+          });
+        },
       });
     });
   }
@@ -231,11 +251,11 @@ export default class DailySummary extends Phaser.Scene {
       icons.push(icon);
     }
 
-    // animacion 
+    // animacion
     this.tweens.add({
       targets: icons,
       scale: scale,
-      ease: "Back.easeOut", 
+      ease: "Back.easeOut",
       duration: 400,
       delay: this.tweens.stagger(150, { start: delayStart }),
     });
