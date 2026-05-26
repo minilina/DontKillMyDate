@@ -633,7 +633,7 @@ y reforzar el tono ligero y humorístico de la narrativa.
 
 El apartado visual se divide en dos bloques principales con identidades diferenciadas.
 
-#### Cocina / Consulta
+#### 6.2.1. Cocina / Consulta
 
 La preparación de pociones ocurre en una vista fija inspirada en juegos de gestión clásicos y novelas visuales.
 
@@ -655,7 +655,7 @@ La interfaz se integra directamente en el escenario mediante elementos diegétic
 - Ingredientes
 - Herramientas físicas visibles en pantalla
   
-#### Exploración Top-Down
+#### 6.2.2. Exploración Top-Down
 
 La exploración exterior utiliza una vista cenital (top-down) inspirada en simuladores de vida y granja.
 
@@ -794,6 +794,10 @@ El arte se desarrolló siguiendo dos pipelines visuales distintos:
 
 Los personajes normales utilizan composición modular mediante capas para generar variedad visual automáticamente.
 
+### 8.4. Posibles expansiones
+
+Debido al gran alcance de nuestro juegos se han planteado ciertas modificaciones que no se han podido llegar a implementar por tiempo. Entre estas encontramos la posibilidad de tener pedidos express o a mitad de la jornada (mientras estás con un cliente) o eventos diarios que tienes que cumplir para obtener un plus. Además en los mapas top Down se pensó meter un npc la primera vez que sales, que te guíe a la ciudad y ahí explicar la mecánica de regar y como la reputación afecta al mapa. También meter más interacciones con objetos del mapa como la tumba o las señales. Por último, se había planteado la ciudad con esa forma para poder continuar la historia, metiendo una tercera ciudad que posibilite el acceso del jugador al puente completamente y con ello a un nuevo mapa.
+
 ## 9. Playtest
 
 El 16 de abril de 2026 llevamos a cabo una sesión de playtest con **5 personas** durante sesiones de juego de entre 10 y 20 minutos. El objetivo fue poner a prueba el *core loop* de la cocina y la exploración del mapa.
@@ -862,3 +866,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+This software includes art from EmanuelleDev
+
+These asset packs can be used in any commercial or non-commercial project. 
+You are free to modify the assets as you like. 
+However, these asset packs cannot be resold or redistributed, even if modified.
+
+Credits are mandatory: You can credit me by linking to my Itch.io page: emanuelledev.itch.io.
+
+You can be credited as "EmanuelleDev".
+
+Additionally, I’d love to share your project on my Itch.io page! 
+Please let me know if you create something with these assets so I can play and share it!
+
+- farmrpgassetpack@gmail.com
