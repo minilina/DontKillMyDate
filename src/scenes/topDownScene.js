@@ -36,6 +36,11 @@ export default class TopDownScene extends StoppableScene {
                 capa.setVisible(false);
                 this.capaColisiones = capa;
             }
+            else if (layerData.name === 'Colisiones Puente') {
+                capa.setCollisionByExclusion([-1]);
+                capa.setVisible(false);
+                this.capaColisionesPuente = capa;
+            }
             else if (layerData.name.toLowerCase().includes('invisible')) {
                 capa.setVisible(false);
             }
@@ -50,10 +55,27 @@ export default class TopDownScene extends StoppableScene {
         return { map: this.map, tilesets: tilesetsArray };
     }
 
+    cambiarPiso(esElevado) {
+        this.player.zElevacion = esElevado ? 3000 : 0;
+        if (esElevado && this.navMeshPuente) {
+            this.player.setNavmesh(this.navMeshPuente);
+        } else if (this.navMeshSuelo) {
+            this.player.setNavmesh(this.navMeshSuelo);
+        }
+    }
+
     setupPlayer(startX, startY, direccion = 'down') {
         // NavMesh
+        this.navMeshSuelo = null;
+        this.navMeshPuente = null;
+
+        // Malla altura 0
         if (this.capaColisiones) {
-            this.navMesh = this.navMeshPlugin.buildMeshFromTilemap("mesh", this.map, [this.capaColisiones], null, 4.5);
+            this.navMeshSuelo = this.navMeshPlugin.buildMeshFromTilemap("meshSuelo", this.map, [this.capaColisiones], null, 4.5);
+        }
+        // Malla altura puente (si existe)
+        if (this.capaColisionesPuente) {
+            this.navMeshPuente = this.navMeshPlugin.buildMeshFromTilemap("meshPuente", this.map, [this.capaColisionesPuente], null, 4.5);
         }
 
         //Descomentar esto para debuggear navmesh---------------------------------------------
@@ -70,7 +92,7 @@ export default class TopDownScene extends StoppableScene {
 
         // Jugador
         this.player = new Player(this, startX, startY);
-        if (this.navMesh) this.player.setNavmesh(this.navMesh);
+        this.player.setNavmesh(this.navMeshSuelo);
         this.player.zElevacion = 0; // Para el tema de las escaleras de la ciudad
         if (this.player.setDireccion) { this.player.setDireccion(direccion); }
 
@@ -358,6 +380,7 @@ export default class TopDownScene extends StoppableScene {
                     // Aplicamos el origen y profundidad
                     sprite.setOrigin(0.5, 1).setDepth(obj.y + ajusteProfundidad + elevacionExtra);
                     sprite.tipoObjeto = obj.name;
+                    sprite.zElevacionObjeto = elevacionExtra;
 
                     if (obj.properties?.find(p => p.name === 'flipX')?.value) sprite.setFlipX(true);
                     sprite.refreshBody();
@@ -373,9 +396,13 @@ export default class TopDownScene extends StoppableScene {
                 }
             });
         }
-        this.physics.add.collider(this.player, grupo);
-        
-        return grupo; // Devolvemos el grupo por si la escena quiere añadir cosas
+
+        this.physics.add.collider(this.player, grupo, null, () => {
+            if (elevacionExtra > 0) return this.player.zElevacion > 0;
+            return this.player.zElevacion === 0;
+        });
+
+        return grupo;
     }
 
     activarTransparencias(grupos) {
@@ -392,9 +419,12 @@ export default class TopDownScene extends StoppableScene {
 
                     let dif = false;
 
+                    let mismoNivel = false;
+                    if (obj.zElevacionObjeto > 0 && this.player.zElevacion > 0) mismoNivel = true;
+                    if ((!obj.zElevacionObjeto || obj.zElevacionObjeto === 0) && this.player.zElevacion === 0) mismoNivel = true;
+
                     // Comprobamos si el jugador esta por detras del objeto (y menor que la base)
-                    if (this.player.y < obj.y) {
-                        
+                    if (this.player.y < obj.y && mismoNivel) {
                         // Calculamos los bordes reales de la imagen en el mundo
                         const scaleX = obj.scaleX || 1;
                         const scaleY = obj.scaleY || 1;
@@ -476,7 +506,8 @@ export default class TopDownScene extends StoppableScene {
 
     // HOVER PARA LAS VALLAS Y LA PIEDRA
     hover(configuraciones) {
-        let objetoBajoElRaton = null;
+        let configBajoElRaton = null;
+        let tileBajoElRaton = null;
         let tocandoUI = false;
 
         // Cuando mueves raton
@@ -485,12 +516,14 @@ export default class TopDownScene extends StoppableScene {
             tocandoUI = gameObjects && gameObjects.some(obj => obj.scrollFactorX === 0 || obj.scrollFactorY === 0);
             if (tocandoUI) {
                 this.game.canvas.classList.remove('cursor-far'); // Si el raton entra en un boton (menu de pausa), quitamos el cursor gris por si acaso
-                objetoBajoElRaton = null;
+                configBajoElRaton = null;
+                tileBajoElRaton = null;
                 return;
             }
 
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
-            objetoBajoElRaton = null; // Reseteamos por defecto
+            configBajoElRaton = null;
+            tileBajoElRaton = null; // Reseteamos por defecto
 
             for (const config of configuraciones) {
                 if (!config.capa) continue; // Si la capa no existe, pasamos a la siguiente
@@ -498,7 +531,8 @@ export default class TopDownScene extends StoppableScene {
 
                 const tile = config.capa.getTileAtWorldXY(worldPoint.x, worldPoint.y);
                 if (tile && config.ids.includes(tile.index)) {
-                    objetoBajoElRaton = config;
+                    configBajoElRaton = config;
+                    tileBajoElRaton = tile;
                     break; // Si ya hemos encontrado algo interactivo, dejamos de buscar
                 }
             }
@@ -508,17 +542,18 @@ export default class TopDownScene extends StoppableScene {
         this.events.on('update', () => {
             if (this.isTransitioning || tocandoUI) return;
 
-            if (objetoBajoElRaton) {
+            if (configBajoElRaton && tileBajoElRaton) {
                 let estaCerca = false;
 
                 // Si el jugador ya esta cerca del objeto (detectado por la "E"), el cursor se pondra en pointer
-                if (this.interactableCercano && this.interactableCercano.tipo === objetoBajoElRaton.tipo) {
-                    estaCerca = true;
-                } else if (this.player && this.player.active) { // Si no calculamos a que distancia esta el raton del jugador
-                    const pointer = this.input.activePointer;
-                    const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
-                    const distancia = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
-                    if (distancia <= 40) estaCerca = true;
+                if (configBajoElRaton.tipo && this.interactableCercano && this.interactableCercano.tipo === configBajoElRaton.tipo) estaCerca = true;
+
+                else if (this.player && this.player.active) {
+                    const distAlTile = Phaser.Math.Distance.Between(
+                        this.player.x, this.player.y, 
+                        tileBajoElRaton.pixelX + 8, tileBajoElRaton.pixelY + 8 
+                    );
+                    if (distAlTile <= 40) estaCerca = true;
                 }
 
                 // Cambiamos el cursor si te alejas caminando
@@ -637,6 +672,17 @@ export default class TopDownScene extends StoppableScene {
                     // Verificamos si la "E" ya mira este objeto (para interactuar aunque estemos clickando lejos)
                     if (this.interactableCercano && this.interactableCercano.tipo === config.tipo) {
                         onInteract(config.tipo, tile);
+                        return;
+                    }
+
+                    const distAlTile = Phaser.Math.Distance.Between(
+                        this.player.x, this.player.y, 
+                        tile.pixelX + 8, tile.pixelY + 8
+                    );
+
+                    if (distAlTile <= 40) {
+                        onInteract(config.tipo, tile);
+                        return;
                     }
                     return;
                 }

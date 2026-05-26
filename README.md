@@ -342,7 +342,7 @@ Ninfa que ha forjado una alianza secreta con humanos para purificar los manantia
 
 Gnomo enamorado de una elfa que literalmente no le ve, ya que le pasa por alto debido a su estatura. Acude a la tienda buscando un "estirón mágico" que le permita estar a la altura (en todos los sentidos) de su pretendida. Su historia es la más cómica del juego y cuenta con una animación de éxito exclusiva en la que crece visiblemente al tomar la poción.
 
-**Sprite completo:** ![David](assets/img_modelo_gnomo.png)
+**Sprite completo:** ![David](assets/img/modelo_gnomo.png)
 
 **Poción requerida:** Raza objetivo: elfos · Sabor: dulce · Color: rojo · Consistencia: cortada · Temperatura: frío · Frasco: estrella
 

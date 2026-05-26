@@ -44,7 +44,7 @@ export default class CustomerFlowManager {
       }
 
       if (GameState.currentDay >= GameState.daysData.length) {
-        if (GameState.getTimesTalkedToMother() >= 5) {
+        if (GameState.getTimesTalkedToMother() >= 5 && GameState.reputation >= 170) {
           if (!this.motherEndingSpawned) {
             this.motherEndingSpawned = true;
             this.spawnMotherAsCustomer();
