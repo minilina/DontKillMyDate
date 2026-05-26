@@ -194,6 +194,7 @@ export default class CustomerFlowManager {
     }
 
     this.isKnocking = true;
+    this.scene.sound.play('stompingDoorSound', { volume: 0.5 });
 
     this.dialogueManager.start({
       speakerName: "???",
@@ -247,6 +248,7 @@ export default class CustomerFlowManager {
       speakerName: "???",
       lines: ["*Toc... toc... toc...*", "Sobrina, ¿Estás ahí?."],
     });
+    this.scene.sound.play('knockingDoorSound', { volume: 0.5 });
   }
 
   spawnNeutralEndingNPC() {

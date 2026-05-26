@@ -12,6 +12,7 @@ export default class House extends topDownScene {
         this.initScene('casa');
 
         // Capas específicas que usamos
+        // Usamos ?. para que si un día borramos una capa en Tiled, el código no pete
         const capaVallas = this.map.getLayer('Delimitacion Mundo/Vallas')?.tilemapLayer;
         const capaPilares = this.map.getLayer('Mas Colisiones/Pilares')?.tilemapLayer;
         const capaFondoFalso = this.map.getLayer('Suelo/Fondo Falso')?.tilemapLayer;
@@ -31,7 +32,7 @@ export default class House extends topDownScene {
         this.setupPlayer(startX, startY, dir); // Crea NavMesh, Player, Camara y Fisicas
         this.setupUI();                   // Crea el boton de pausa y la tecla ESC
 
-        // CONFIGURACIÓN DE AUDIO
+        // CONFIGURACIÓN DE AUDIO Y PASOS
         this.fenceSound = this.sound.add('fenceSound', { volume: 1 });
         this.setupAmbientWaterSound('waterAmbientSound');
         
@@ -127,6 +128,7 @@ export default class House extends topDownScene {
             { capa: capaPilares, ids: [3852], idsClic: [3852, 3868, 3869, 3870, 3871], tipo: 'cueva', offsetX: 15, offsetY: -2, condicion: () => !this.cuevaAbierta }
         ], (tipo, tile) => {
             if (tipo === 'cueva') {
+                // Buscamos la gema (id 3852) en un 3x3 alrededor del que hacemos click para usar su Y
                 let anchorY = tile.y;
                 for (let i = -3; i <= 3; i++) {
                     let t = capaPilares?.getTileAt(tile.x, tile.y + i);
@@ -167,6 +169,7 @@ export default class House extends topDownScene {
         // Templo
         const spriteTemplo = this.grupoEstructuras.getChildren().find(e => e.tipoObjeto === 'templo');
         if (spriteTemplo) {
+            // Creamos la zona en la base del templo
             const z = this.add.zone(spriteTemplo.x, spriteTemplo.y + 5, 40, 20).setOrigin(0.5, 1);
             this.physics.add.existing(z, true);
             this.physics.add.overlap(this.player, z, () => {
@@ -184,7 +187,7 @@ export default class House extends topDownScene {
         // TRANSPARENCIAS
         this.activarTransparencias([this.grupoArboles, this.grupoEstructuras]);
 
-        // HERRAMIENTA DE DEBUG
+        // HERRAMIENTA DE DEBUG: VER IDS TIENE LA VALLA, EL MURO...
         this.debugTiles([
             { nombre: "VALLA",       capa: capaVallas },
             { nombre: "MURO",        capa: this.capaCesped },
