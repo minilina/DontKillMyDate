@@ -552,4 +552,31 @@ No aparece como cliente sino como personaje de cierre narrativo. Es la propietar
 ## 6.	Estética y contenido
 ## 7.	Experiencia de juego
 ## 8.	Producción
+
+
+## 9. Playtest
+
+El 16 de abril de 2026 llevamos a cabo una sesión de playtest con **5 personas** durante sesiones de juego de entre 10 y 20 minutos. El objetivo fue poner a prueba el *core loop* de la cocina y la exploración del mapa.
+
+### Análisis de los Resultados
+* **Desempeño:** Los jugadores jugaron el tutorial e iniciaron el Día 1 con una reputación base de 50. La mayoría logró completar las 2 peticiones con éxito y ganar reputación, pero observamos una discrepancia clara: los jugadores con experiencia previa en este tipo de juegos superaron los retos sin problemas, mientras que un perfil de jugador menos habituado tuvo dificultades críticas, llegando a fallar casi todos los ingredientes de la poción (ya que no leyeron con tanta atención los diálogos del tutorial). Esto nos confirmó que la curva de aprendizaje es sensible al perfil del jugador.
+* **Debate sobre la Ayuda Visual:** Surgió un debate importante sobre si el jugador debía saber qué ingredientes había introducido en el caldero. Tras contrastar el feedback de los jugadores con la opinión del profesorado, hemos decidido **mantener la dificultad sin ayudas visuales**. Creemos que forzar la memoria del jugador añade un nivel de reto necesario para la experiencia.
+* **Puntos Críticos Detectados:**
+    * **Identificación de razas:** Los jugadores fueron incapaces de distinguir las razas de los clientes, lo que invalidaba la utilidad del libro de afinidades.
+    * **Poco feedback en el resultado de la poción:** La mayoría de jugadores sintieron que no recibían suficiente feedback si hacías bien o mal la poción.
+    * **Exploración Top-Down:** En ese estado del desarrollo, al estar la zona *top-down* poco desarrollada (limitada a la interacción con la cueva y vallas), los usuarios no entendían su propósito ni qué podían hacer en ella.
+    * **Diseño visual:** Dos de las probetas de olor eran cromáticamente demasiado similares, provocando confusión a la hora de seleccionarlas.
+
+### Decisiones de Diseño y Cambios Implementados
+A raíz de los resultados, hemos realizado las siguientes mejoras:
+
+1.  **Libro de Alquimia:** Hemos incluido fotos de referencia en el libro vinculando la vestimenta a cada raza, eliminando la ambigüedad al identificar clientes.
+2.  **Feedback post-jornada:** Para solucionar la falta de información tras entregar pociones, hemos diseñado una **pantalla de resumen al final del día**, resolviendo la necesidad de feedback que los jugadores demandaban.
+3.  **Tutorial:** Aunque el tutorial estaba en fases iniciales, hemos corregido su base para que sea menos genérico. Ahora implementamos un **resaltado visual en amarillo** sobre los objetos con los que el jugador debe interactuar, asegurando que nadie se sienta perdido.
+4.  **Guía en el Top-Down:** Hemos añadido indicadores visuales (la tecla "E") sobre todos los objetos con los que se puede interactuar. Además, hemos enriquecido los diálogos de los personajes y los textos del resumen diario para que funcionen como pistas contextuales, indicando al jugador qué objetivos puede cumplir en el mapa.
+5.  **Ajuste de Recursos:** Hemos modificado el color de una de las probetas para asegurar una distinción más clara entre ellas.
+
+
+
+
 ## 9.	Referencias
