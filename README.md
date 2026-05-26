@@ -318,7 +318,7 @@ Personajes únicos con diseños fijos y motivaciones específicas que aportan lo
 
 Elfo de clase alta con una larga relación con la tienda, ya que era cliente habitual de la tía Agatha. Acude antes de cada cita para asegurarse de tener ventaja, aunque atribuye todo el mérito de sus conquistas a su "encanto natural". Es el primer cliente especial que visita la consulta y actúa como introducción al sistema de diálogos scriptados. Si se le atiende bien, revela la existencia de la cueva del oeste, clave para encontrar a la madre.
 
-**Sprite completo:** `// TODO: captura del sprite completo`
+**Sprite completo:** ![Ezarel](assets/img/modelo_elfo.png)
 
 **Poción requerida:** Raza objetivo: elfos · Sabor: dulce · Color: rojo · Consistencia: entera · Temperatura: frío · Frasco: estrella
 
@@ -330,7 +330,7 @@ Elfo de clase alta con una larga relación con la tienda, ya que era cliente hab
 
 Ninfa que ha forjado una alianza secreta con humanos para purificar los manantiales del bosque antes de que una oscuridad desconocida los destruya. Su encargo no es romántico en apariencia, sino que el catalizador mágico que necesita para el ritual de purificación resulta ser también un filtro de amor. Representa la tensión entre las razas y su capacidad de cooperar ante una amenaza común.
 
-**Sprite completo:** `// TODO: captura del sprite completo`
+**Sprite completo:** ![Thalass](assets/img/modelo_ninfa.png)
 
 **Poción requerida:** Raza objetivo: humanos · Sabor: salado · Color: azul · Consistencia: cortada · Temperatura: del tiempo · Frasco: corazón
 
@@ -342,20 +342,20 @@ Ninfa que ha forjado una alianza secreta con humanos para purificar los manantia
 
 Gnomo enamorado de una elfa que literalmente no le ve, ya que le pasa por alto debido a su estatura. Acude a la tienda buscando un "estirón mágico" que le permita estar a la altura (en todos los sentidos) de su pretendida. Su historia es la más cómica del juego y cuenta con una animación de éxito exclusiva en la que crece visiblemente al tomar la poción.
 
-**Sprite completo:** `// TODO: captura del sprite completo`
+**Sprite completo:** ![David](assets/img_modelo_gnomo.png)
 
 **Poción requerida:** Raza objetivo: elfos · Sabor: dulce · Color: rojo · Consistencia: cortada · Temperatura: frío · Frasco: estrella
 
 ---
 
-###### 🧚 Campanita, Tejedora de Luz
+###### Campanita, Tejedora de Luz
 
 > *"Mis alas se han vuelto rígidas y he perdido la capacidad de alzar el vuelo."*
 
 Hada alegre y parlanchina con una cita pendiente en lo alto de una montaña con un gnomo al que está enseñando a perder el vértigo. El problema: sus alas se han vuelto rígidas y no puede volar. Necesita una poción que restaure su aleteo a tiempo. Su animación de espera muestra las alas batiendo en bucle, y su salida de éxito es la única del juego en la que el personaje sale volando literalmente por arriba de la pantalla.
 
 
-**Sprite completo:** `// TODO: captura del sprite completo`
+**Sprite completo:** ![Campanita](assets/img/modelo_hada.png)
 
 **Poción requerida:** Raza objetivo: gnomos · Sabor: ácido · Color: amarillo · Consistencia: machacada · Temperatura: frío · Frasco: estrella
 
@@ -367,7 +367,7 @@ Hada alegre y parlanchina con una cita pendiente en lo alto de una montaña con 
 
 Humano que ha viajado semanas desde su aldea, cuyas cosechas se marchitan bajo una plaga desconocida. Busca el poder purificador de las ninfas para salvar a su pueblo. Es uno de los personajes con más carga narrativa implícita: sus comentarios sobre "una chica de su aldea que desapareció" y la familiaridad que siente con la protagonista apuntan a una conexión con el lore de la madre. Si se le atiende bien, se queda en el pueblo cercano disponible para hablar.
 
-**Sprite completo:** `// TODO: captura del sprite completo`
+**Sprite completo:** ![Kaleen](assets/img/modelo_humano.png)
 
 **Poción requerida:** Raza objetivo: ninfas · Sabor: amargo · Color: verde · Consistencia: machacada · Temperatura: calor · Frasco: normal
 
@@ -379,7 +379,7 @@ Humano que ha viajado semanas desde su aldea, cuyas cosechas se marchitan bajo u
 
 Kitsune de carácter frío y ceremonioso. Los faroles de su santuario ancestral se han apagado y, según la tradición, solo la chispa de un hada puede devolver el fuego espiritual. Acude a la tienda sin mostrar emociones, pero si se le atiende bien revela un lado más cercano y ofrece enseñar "trucos interesantes" a la protagonista. Es el personaje con el tono más solemne y misterioso de todos los scriptados.
 
-**Sprite completo:** `// TODO: captura del sprite completo`
+**Sprite completo:** ![Kaleen](assets/img/modelo_kitsune.png)
 
 **Poción requerida:** Raza objetivo: hadas · Sabor: umami · Color: naranja · Consistencia: cortada · Temperatura: calor · Frasco: estrella
 
@@ -391,7 +391,7 @@ Kitsune de carácter frío y ceremonioso. Los faroles de su santuario ancestral 
 
 No es un cliente al uso, sino el desenlace negativo del juego. Aparece si la reputación de la protagonista cae demasiado. No hace ningún encargo: simplemente entra, declara la clausura de la tienda y destierra a la protagonista del pueblo. No tiene diálogo de resolución ni aparece en el top-down.
 
-**Sprite completo:** `// TODO: captura del sprite completo`
+**Sprite completo:**![Kaleen](assets/img/modelo_inspector.png)
 
 ---
 
@@ -401,7 +401,7 @@ No es un cliente al uso, sino el desenlace negativo del juego. Aparece si la rep
 
 Personaje central del arco narrativo principal, aunque su verdadera identidad solo se desvela tras múltiples visitas a la cueva del oeste. Se presenta como una mujer misteriosa que vive escondida, y a lo largo de 5 visitas progresivas va revelando su historia: es la madre de la protagonista, humana que se enamoró del anterior rey de los elfos y tuvo que desaparecer para protegerse. Su diálogo en el top-down es el único del juego que avanza de forma secuencial visita a visita, revelando el lore de la protagonista de forma gradual.
 
-**Sprite completo:** `// TODO: captura del sprite completo`
+**Sprite completo:**![Kaleen](assets/img/modelo_madre.png)
 
 **Poción requerida:** Raza objetivo: elfos · Sabor: dulce · Color: rojo · Consistencia: machacada · Temperatura: calor · Frasco: corazón
 
@@ -413,7 +413,7 @@ Personaje central del arco narrativo principal, aunque su verdadera identidad so
 
 No aparece como cliente sino como personaje de cierre narrativo. Es la propietaria original de la tienda y quien la dejó a cargo de la protagonista. Aparece al final del juego para ceder oficialmente la tienda, reconocer el trabajo realizado y quedarse como apoyo permanente. Junto a la madre, forma el núcleo del arco narrativo de la protagonista.
 
-**Sprite completo:** `// TODO: captura del sprite completo`
+**Sprite completo:** ![Kaleen](assets/img/modelo_tia.png)
 
 ### 5.2.	Objetos
 #### 5.2.1 Cocina
