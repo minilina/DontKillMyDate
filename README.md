@@ -140,24 +140,58 @@ Existen frascos vacíos con 3 formas distintas (normal, corazón y estrella). Un
 #### 3.3.6. Papelera (Descarte)
 La papelera, situada en la parte derecha de la cocina, permite al jugador deshacerse de ingredientes procesados (cortados o machacados), de polvos mal mezclados en el platito, o de pociones ya envasadas que sean incorrectas, permitiendo al jugador reiniciar el proceso sin penalización (más allá de la pérdida de tiempo que supone volver a empezar).
 
-### 3.3.	Sistemas de puntuación
-### 3.4.	Sistemas de reseñas
+---
+
+### 3.4. Sistemas de evaluación y puntuación
+
+El rendimiento del jugador se evalúa en dos fases secuenciales: primero se calcula la **calidad de la poción** creada y, posteriormente, esa calidad (junto al tiempo invertido) determina el cambio en la **reputación de la tienda**.
+
+#### 3.4.1. Calidad de la Poción (0% - 100%)
+Todas las pociones comienzan su elaboración con una calidad base del 100%. Este porcentaje puede verse reducido por dos factores principales:
+
+1. **Penalizaciones de Procesado (Minijuegos):** Los errores cometidos durante la fase de preparación de ingredientes (fallos en la tabla de cortar o en el mortero) restan puntos directamente a la calidad base de la poción en tiempo real.
+2. **Evaluación de la Receta:** En el momento de la entrega, el sistema compara el contenido del caldero y el frasco elegido con los requisitos del cliente. Se restan **20 puntos de calidad** por cada uno de los siguientes fallos:
+   * Color incorrecto.
+   * Sabor o consistencia ausentes o incorrectos.
+   * Olor (probeta de afinidad) incorrecto.
+   * Temperatura incorrecta al momento de envasar.
+   * Forma del frasco incorrecta.
+   * **Ingredientes sobrantes:** Se restan 20 puntos adicionales por cada atributo o sabor extra que se haya añadido al caldero y que el cliente no haya pedido.
+
+Si el jugador entrega un frasco vacío, la calidad de la poción se fija automáticamente en 0%. La calidad mínima posible siempre será 0%.
+
+#### 3.4.2. Sistema de Reputación
+La reputación es la "vida" de la tienda, comenzando el día 1 en 20 puntos. Tras entregar una poción, la calidad final determina el cambio en la reputación del jugador según los siguientes rangos:
+
+* **100% (Poción Perfecta):** +10 puntos de reputación.
+* **80% - 99% (Poción Excelente):** +5 puntos de reputación.
+* **50% - 79% (Poción Aceptable):** +1 punto de reputación.
+* **20% - 49% (Poción Deficiente):** -5 puntos de reputación.
+* **< 20% o Vacía (Poción Desastrosa):** -15 puntos de reputación.
+
+#### 3.4.3. Bonificadores y Penalizaciones Adicionales
+* **Control de Tiempos:** Si la poción entregada es válida (Calidad >= 50%), el sistema evalúa el tiempo invertido desde que el cliente hizo el encargo.
+  * **Servicio rápido (<= 30 segundos):** Bonificación de +2 puntos de reputación.
+  * **Servicio lento (>= 120 segundos):** Penalización de -2 puntos de reputación.
+  * *(El tiempo que el juego pasa pausado en el menú o en cuenta atrás de minijuegos no contabiliza para este cálculo).*
+* **Mantenimiento del Huerto:** Al finalizar el día, se comprueba el estado de los dos huertos del pueblo. Por cada huerto que el jugador no haya regado, sufrirá una penalización de **-5 puntos de reputación** al cierre de la jornada (máximo -10 puntos). Esta mecánica no se aplica durante el Día 1.
+
 
 ## 4.	Interfaz
 ### 4.1.	Controles
-Ratón
+
 ### 4.2.	Cámara 
 CONSULTA: Cámara fija y vista en primera persona. <br/>
 PUEBLO: Vista top-down.
 
-### 4.3.	HUD
-### 4.3. HUD
+### 4.3.  Pantallas y menús
 
 #### Pantalla de Resumen Diario
 
-![Pantalla de resumen diario 1](assets/img/hud_daily_summary_1.png)
-
-![Pantalla de resumen diario 2](assets/img/hud_daily_summary_2.png)
+<p align="center">
+<img src="assets/img/hud_daily_summary_1.png" width = 45%>
+<img src="assets/img/hud_daily_summary_2.png" width = 45%>
+</p>
 
 Al finalizar cada jornada se muestra una pantalla de resumen con los siguientes elementos:
 
@@ -167,7 +201,6 @@ Al finalizar cada jornada se muestra una pantalla de resumen con los siguientes 
 - **Corazones de reputación** — fila de 5 corazones que representa visualmente el nivel de reputación actual.
 - **Consejo del día** — texto rotatorio con un tip narrativo que aparece con efecto de escritura progresiva. Rota en ciclo entre 6 mensajes según el día.
 - **Guardado automático** — al hacer clic para continuar, el progreso se guarda automáticamente y se muestra una confirmación en pantalla antes de pasar al siguiente día.
-### 4.4.	Menús
 
 ## 5.	Mundo del juego
 ### 5.1.	Personajes
