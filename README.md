@@ -1,27 +1,30 @@
 # GDD
 
 ### Equipo de desarrollo:
-Programación y arte: Diego Barba, Laura Valles y Alba Gómez. <br/> Programación y sonido: Sergio Casanova. <br/> Programación: Lucas Suárez y María Bravo.
+Programación y arte: Diego Barba, Laura Valles, Alba Gómez y Lucas Suárez. <br/> Programación y sonido: Sergio Casanova. <br/> Programación: María Bravo.
+
+Para ver la contribución de cada integrante, consultar [el archivo de contribuciones](contribucion.md).
 
 ## 1.	Resumen
 ### 1.1.	Descripción
-<i>Don't Kill My Date !</i> es un videojuego en el que el jugador encarna a un hechicero que dirige una consulta en un pequeño pueblo. Allí acuden clientes con disputas románticas, a quienes ayuda creando pociones adaptadas a sus necesidades mediante la selección y preparación de distintos ingredientes.
+<i>Don't Kill My Date !</i> es un videojuego en el que el jugador encarna a una hechicera que dirige una consulta en un pequeño pueblo. Allí acuden clientes con disputas románticas, a quienes ayuda creando pociones adaptadas a sus necesidades mediante la selección y preparación de distintos ingredientes.
 
-La combinación de ingredientes y la destreza del jugador para trabajar a contrarreloj determinan la calidad y los efectos de cada poción. El resultado influye directamente en el éxito o fracaso de la cita del cliente y en su reputación como hechicero. A medida que aumenta esta reputación, se desbloquean mejoras que amplían las posibilidades del jugador y le permiten enfrentarse a desafíos románticos cada vez más complejos.
+La combinación de ingredientes y la destreza del jugador para trabajar a contrarreloj determinan la calidad y los efectos de cada poción. El resultado influye directamente en el éxito o fracaso de la cita del cliente y en su reputación como hechicero. Además, el jugador podrá explorar los alrededores para encontrarse con distintos personajes y cuidar del huerto de la ciudad. El futuro de la hechicera depende de sus decisiones.
 
 ### 1.2.	Género
 Simulación/Casual.
 
 ### 1.3.	Setting
-El juego se ambienta en un bosque fantástico habitado por criaturas mágicas. En este entorno, el jugador gestiona una pequeña consulta de hechicería dedicada a resolver problemas sentimentales mediante el uso de magia y alquimia. A medida que avanza la partida, llegan clientes cada vez más peculiares y exigentes, lo que obliga al jugador a tomar decisiones estratégicas sobre qué ingredientes usar y cómo mejorar sus habilidades mágicas.
+El juego se ambienta en un bosque fantástico habitado por criaturas mágicas. En este entorno, el jugador gestiona una pequeña consulta de hechicería dedicada a resolver problemas sentimentales mediante el uso de magia y alquimia. A medida que avanza la partida, llegan clientes cada vez más peculiares.
 
 ### 1.4.	Características principales
 - Estilo visual pixel art con ambientación fantástica en un bosque lleno de criaturas mágicas.
 -	Elaboración de pociones mediante la combinación de ingredientes con efectos específicos.
 -	Atención a clientes mágicos con distintos problemas amorosos y resultados variables en sus citas.
--	Sistema de reputación que permite desbloquear mejoras e ingredientes.
--	Incremento progresivo de la dificultad y la complejidad de las decisiones.
-- Cuidado de un huerto que afecta la reputación y la disponibilidad de ingredientes.
+-	Sistema de reputación que permite desbloquear distintos finales.
+-	Incremento progresivo de la dificultad en las peticiones de los clientes.
+- Cuidado de un huerto que afecta la reputación.
+- Exploración del mapa del pueblo.
 
 ## 2.	Gameplay
 ### 2.1.	Objetivo del juego
@@ -33,8 +36,6 @@ Durante el día en el que se desarrolla la actividad comercial, el core loop es 
 2.	Una vez abierta la consulta, van entrando clientes a la tienda uno por uno y nos comentan su petición.
 3.	Realizamos la poción con los ingredientes y para el destinatario adecuados.
 4.	Termina el día y recibimos noticias de si las citas han ido bien o mal y de la reputación conseguida o perdida.
-
-// TODO Insertar diagrama
 
 ## 3.	Mecánicas
 
@@ -414,32 +415,32 @@ No aparece como cliente sino como personaje de cierre narrativo. Es la propietar
 
 ### 5.2.	Objetos
 #### 5.2.1 Cocina
-// TODO añadir sprites pixelart
 
 - Probetas
 
-| | Roja | Blanca | Verde |
+| | Roja | Gris | Verde |
 | :--- | :---: | :---: | :---: |
-| **Sprite** |  |  |  |
+| **Sprite** | <img src="assets/sprites/kitchen/probeta_roja.png" width="16"> | <img src="assets/sprites/kitchen/probeta_gris.png" width="16"> | <img src="assets/sprites/kitchen/probeta_verde.png" width="16"> |
 
-- Plantas
+- Ingredientes
 
 | | Seta | Bayas | Raíz | Algas | Cristal |
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **Sabor** | Umami | Ácido | Amargo | Dulce | Salado |
-| **Sprite** |  |  |  |  |  |
+| **Sprite 1** | <img src="assets/sprites/kitchen/frasco_setas.png" width="32"> | <img src="assets/sprites/kitchen/frasco_bayas.png" width="32"> | <img src="assets/sprites/kitchen/frasco_raices.png" width="32"> | <img src="assets/sprites/kitchen/frasco_algas.png" width="32"> | <img src="assets/sprites/kitchen/frasco_cristal.png" width="32"> |
+| **Sprite 2** | <img src="assets/sprites/kitchen/seta.png" width="32"> | <img src="assets/sprites/kitchen/baya.png" width="32"> | <img src="assets/sprites/kitchen/raiz.png" width="32"> | <img src="assets/sprites/kitchen/alga.png" width="32"> | <img src="assets/sprites/kitchen/cristal.png" width="32"> |
 
 - Polvos
 
 | | Rojo | Azul | Amarillo |
 | :--- | :---: | :---: | :---: |
-| **Sprite** |  |  |  |
+| **Sprite** | <img src="assets/sprites/kitchen/cuenco_rojo.png" width="32"> | <img src="assets/sprites/kitchen/cuenco_azul.png" width="32"> | <img src="assets/sprites/kitchen/cuenco_amarillo.png" width="32"> |
 
 - Frascos
 
 | | Normal | Corazón | Estrella |
 | :--- | :---: | :---: | :---: |
-| **Sprite** |  |  |  |
+| **Sprite** | <img src="assets/sprites/kitchen/pocion_normal_vacia.png" width="32"> | <img src="assets/sprites/kitchen/pocion_corazon_vacia.png" width="32"> | <img src="assets/sprites/kitchen/pocion_estrella_vacia.png" width="32"> |
 
 ## 6.	Estética y contenido
 ## 7.	Experiencia de juego
