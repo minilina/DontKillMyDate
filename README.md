@@ -586,7 +586,7 @@ La interfaz se integra directamente en el escenario mediante elementos diegétic
 - Frascos
 - Ingredientes
 - Herramientas físicas visibles en pantalla
-- 
+  
 #### Exploración Top-Down
 
 La exploración exterior utiliza una vista cenital (top-down) inspirada en simuladores de vida y granja.
@@ -648,9 +648,83 @@ Los efectos de sonido refuerzan la interacción con los objetos:
 - Sonidos ambientales
 - Reacciones de clientes
 
-## 7.	Experiencia de juego
+## 7. Experiencia de juego
+
+La experiencia de Don't Kill My Date ! se centra en combinar relajación, humor y gestión ligera dentro de un entorno fantástico acogedor.
+
+El juego alterna constantemente entre dos ritmos distintos:
+
+- Una fase de concentración y presión suave dentro de la cocina
+- Una fase tranquila de exploración y diálogo en el pueblo
+
+Este contraste busca evitar la repetición y mantener una progresión dinámica durante toda la partida.
+
+#### Sensaciones buscadas
+
+El diseño del juego intenta transmitir:
+
+- Satisfacción al preparar correctamente una poción,
+- Descubrimiento progresivo de mecánicas y personajes,
+- Apego al pueblo y sus habitantes,
+- Curiosidad por el misterio principal de la protagonista.
+
+El jugador mejora poco a poco interpretando pistas más complejas, optimizando tiempos y comprendiendo mejor las relaciones entre razas y personajes.
+
+#### Ritmo de juego
+
+El gameplay sigue un ciclo diario estructurado:
+
+- Atención de clientes
+- Preparación de pociones
+- Evaluación de resultados
+- Progresión narrativa
+- Exploración y cuidado del pueblo
+
+Este bucle busca generar una sensación de rutina acogedora similar a juegos de simulación de vida.
+
+#### Dificultad
+
+La dificultad aumenta progresivamente mediante:
+
+- Diálogos más ambiguos
+- Clientes más complejos
+- Necesidad de memorizar sistemas
+- Penalizaciones derivadas de errores o mala gestión del tiempo
+
+Aun así, el juego mantiene un tono accesible y casual durante toda la experiencia.
+
 ## 8.	Producción
 
+### 8.1. Herramientas utilizadas
+
+El proyecto ha sido desarrollado utilizando:
+
+- Phaser como motor principal
+- JavaScript para la lógica de programación
+- Libresprite para la creación de sprites y animaciones pixel art
+- Tiled para la creación de mapas
+- GitHub para control de versiones y trabajo colaborativo.
+- 
+### 8.2. Organización del equipo
+
+El desarrollo se dividió en distintas áreas:
+
+- Programación de mecánicas
+- Arte y animación
+- Narrativa y diseño de diálogos
+- Sonido
+- Interfaz
+
+El trabajo se realizó de forma iterativa, comenzando por las mecánicas principales de la cocina y expandiendo posteriormente el contenido narrativo y la exploración top-down.
+
+### 8.3. Pipeline artístico
+
+El arte se desarrolló siguiendo dos pipelines visuales distintos:
+
+- Sprites detallados para la cocina, mostrador, personajes y objetos
+- Tilesets para el mundo top-down.
+
+Los personajes normales utilizan composición modular mediante capas para generar variedad visual automáticamente.
 
 ## 9. Playtest
 
@@ -674,7 +748,16 @@ A raíz de los resultados, hemos realizado las siguientes mejoras:
 4.  **Guía en el Top-Down:** Hemos añadido indicadores visuales (la tecla "E") sobre todos los objetos con los que se puede interactuar. Además, hemos enriquecido los diálogos de los personajes y los textos del resumen diario para que funcionen como pistas contextuales, indicando al jugador qué objetivos puede cumplir en el mapa.
 5.  **Ajuste de Recursos:** Hemos modificado el color de una de las probetas para asegurar una distinción más clara entre ellas.
 
+## 10. Referencias
 
-
-
-## 9.	Referencias
+#### Referencias visuales y artísticas
+- Stardew Valley
+- Potion Craft
+- Good Pizza, Great Pizza
+- Papers, Please
+  
+#### Referencias jugables y narrativas
+- La exploración del pueblo, el huerto y la ambientación cozy están inspiradas en Stardew Valley.
+- La alquimia, la elaboración de pociones y la estética medieval fantástica toman referencias directas de Potion Craft.
+- El sistema de atención a clientes, gestión de pedidos y estructura basada en jornadas está inspirado en Good Pizza, Great Pizza.
+- El componente narrativo, la toma de decisiones, la existencia de múltiples finales y los personajes especiales con historias propias se inspiran en Papers, Please. Además, la necesidad de interpretar correctamente las peticiones de los clientes mediante pistas y diálogos también toma influencia de este título.
