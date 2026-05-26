@@ -29,6 +29,16 @@
       con color diferenciado y animación, con enlace directo a la nota de la cocina.
    * Implementación de los finales malos y buenos del juego: `gameOver`
 * **Valoración General:**.
+
+  Valoración escrita por `@lucass-05`:
+  
+  Alba ha sido de las personas más involucradas en el desarrollo del juego.
+  
+  Han destacado sus `diseños de personajes`, que han sido muy bonitos todos y con gran `escalabilidad` (al poder crear muchísimas variaciones de personajes con su diseño modular aleatorio). También ha sido la desarrolladora detrás de las `historias de todos los NPC` scripteados del juego, así como los posibles `finales del juego`, por lo que gran parte del disfrute del lore del juego es gracias a su participación. Además nos ha ayudado con nuestras partes siempre que se lo hemos pedido, siendo una `compañera ejemplar`.
+
+  Ha participado en `diseño` mucho con `@laurimba`, colaborado conmigo al facilitarme todos los dibujos que necesité para hacer la versión topdown de los npcs así como sus dialogos en el topdown. Además, ha sido muy activa en el grupo de whatsapp ayudando a todos los demas colaboradores.
+
+  
 * **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
 ---
