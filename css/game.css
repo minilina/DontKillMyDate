@@ -186,17 +186,22 @@ canvas[style*="cursor: pointer"], a, button {
 
 /* Contenedor para centrar el video */
 .contenedor-video {
-    display: flex;
-    justify-content: center;
     width: 100%;
-    margin: 20px 0;
+    max-width: 800px; /* Tamaño maximo en escritorio */
+    margin: 20px auto; /* Centrado automatico */
+    position: relative;
+    padding-bottom: 56.25%; /* Relacion 16:9  */
+    height: 0;
+    overflow: hidden;
+    border-radius: 12px;
 }
 
 /* Estilos reproductor de video */
-.contenedor-video video {
+.contenedor-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 800px; /* El video no crecera mas de 800px en pantallas grandes */
-    aspect-ratio: 16 / 9;
-    border-radius: 12px; /* Bordes redondeados */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Pequeña sombra para darle profundidad */
+    height: 100%;
+    border: 0;
 }
