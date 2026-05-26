@@ -34,14 +34,24 @@
 ---
 
 ### 👤 @meriwen (María Bravo)
-* **Rol:** Artista 2D / UI
+* **Rol:** Programadora
 * **Tareas Realizadas:**
-    * Diseño y animación del personaje principal (Idle, Run, Jump, Attack).
-    * Creación del *tileset* para el nivel 1 (bosque) y nivel 2 (cueva).
-    * Diseño de la interfaz de usuario (HUD): barra de vida y contador de monedas.
-    * Diseño del logotipo del juego y pantalla de título.
+  
+* *Sistema de Tutorial Completo:*
+    * ​Diseño e implementación de la arquitectura lógica del tutorial.
+    * ​Desarrollo de la interfaz de usuario (Vista/UI) y su integración con los sistemas del juego.
+    * Programación de los disparadores (triggers) y flujo de aprendizaje para el jugador.
+ 
+* *Arquitectura Base del Juego:*
+    * ​Diseño y desarrollo del esqueleto técnico para el Sistema de Días (gestión del tiempo/bucles).
+    * ​Creación de la estructura base del Sistema de Diálogos (gestión de nodos o flujos de texto).
+
+* *​Escena de Introducción:*
+    * ​Implementación y lógica del flujo inicial del juego.
+
 * **Valoración General:**
-    La calidad visual es excelente y coherente. Entregó todos los *assets* a tiempo y correctamente exportados para Unity/Godot. Mostró gran iniciativa proponiendo mejoras visuales en la UI.
+El sistema de tutorial y la introducción quedaron completamente funcionales y se integran muy bien con la estética y flujo del juego. Por otro lado, la entrega del esqueleto básico para los sistemas de días y diálogos permitió establecer los cimientos técnicos necesarios, sirviendo como base sólida para que el equipo pueda continuar expandiendo y puliendo estas mecánicas en las siguientes etapas.
+
 * **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
 ---
