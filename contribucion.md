@@ -13,7 +13,7 @@
       bocas, narices, orejas, cejas y features especiales por raza.
     * Diseño del pergamino de resumen diario junto a los iconos
       de corazones y estrellas.
-   * Implementación de `NPCGenerator`: genera aleatoriamente los datos de aspecto
+    * Implementación de `NPCGenerator`: genera aleatoriamente los datos de aspecto
       de los clientes normales, seleccionando tono de piel, peinado, color, ojos,
       ropa por raza, etc.
     * Implementación de la clase `NPC`: recibe los datos de aspecto —ya sean
@@ -69,14 +69,26 @@
 
 ---
 
-### 👤 @lazy_coder_x (Lucas Suárez)
-* **Rol:** Programador de UI / Soporte
+### 👤 @lucass-05 (Lucas Suárez)
+* **Rol:** Programador/ Diseño animaciones 2D/ Redacción de diálogos
 * **Tareas Realizadas:**
-    * Programación de la funcionalidad de los botones del Menú Principal.
-    * Ajustes menores en los créditos del juego.
+    * Diseño del `personaje` al completo, desde sus animaciones, como sus funcionalidades de         movimiento.
+    * Integración completa del `navmesh` para el movimiento del personaje en los mapas topDown de Tiled a través de `click and go` (permitiendo también el movimiento con `wasd`).
+    * Creación de la escena abstracta `stoppableScene` que permite abrir el `menu` desde             cualquier escena que la herede tanto con `ESC` como con el botón superior derecha.
+    * Creación de la escena `dialogueScene` que permite la dinámica de conversación con personajes en el `topDown`.
+    * Implementación del `menú`, junto con sus funcionalidades de `mute` y `pantalla completa`
+    * Diseño de las `animaciones topDown` de personajes, de todos los `scriptedNPCs `                  desbloqueables en formato pequeño (los que aparecen en el mapa), así como las                funcionalidades de conversar con ellos y desbloquearlos.
+    * Implementación de la mecánica de conversación con la `madre`, con sus diferentes diálogos que se desbloquean cuanto más hablemos con ella.
+    * Colaboración en la redacción de los diálogos de todos los `scriptedNpcs` e integración de sus funcionalidades del topdown a las funcionalidades que ya teníamos en escenas como `store`, reutilizando codigo como el de `DialogueManager` consiguiendo un código más extensible y compacto.
 * **Valoración General:**
-    Su contribución fue baja en comparación con el resto del equipo. Faltó a varias reuniones de *daily scrum* y la funcionalidad del menú tuvo que ser refactorizada por @dev_master_99 debido a errores de lógica.
-* **Puntuación:** ⭐⭐☆☆☆ (2/5)
+    Me enfoqué totalmente en el diseño de la parte `topDown` del juego, metiendo dinámicas divertidas como la `conversación con los personajes` y su `desbloqueo`, así como funcionalidades de manejo como el `navmesh` y el comportamiento de `player`. Diseñé muchas `animaciones 2d` del personaje principal y de los NPC (versión topDown) y metí funcionalidades generales como todo lo relacionado con el `menú de pausa` y las `escenas de diálogo` con personajes. Además redacté unos cuantos `diálogos` relacionados con el lore del juego.
+
+  Colaboré principalmente con `@didimax89` en la parte topdown por su implicación en los mapas añadiendo juntos muchas funcionalidades, y con `@minilina` en los apartados de los NPC al haber creado ella todos sus diseños en grande y sus diálogos y personalidades que podemos ver en el store.
+  Finalmente conseguí cohesionar muchas partes del codigo sin añadir muchos archivos innecesarios, al
+** Añadir la informacion de los npcs del topdown en el mismo archivo scriptedNPCs
+** Adaptarme al Tiled para las funcionalidades navmesh y de interacción y las funcionalidades sin modificarlo
+** Seguir la estética de los diálogos y botones para tanto el menu como las conversaciones con los npc reultiulizando y modificando clases como `dialogueManager` y `dialogueUI` , que inicialmente estaban pensadas para `store`, pero consiguiendo adecuarlas a otras partes del juego sin estropear su funcionamiento en `store`.
+* **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
 ---
 
@@ -86,7 +98,8 @@
     * Programación de la funcionalidad de los botones del Menú Principal.
     * Ajustes menores en los créditos del juego.
 * **Valoración General:**
-    Su contribución fue baja en comparación con el resto del equipo. Faltó a varias reuniones de *daily scrum* y la funcionalidad del menú tuvo que ser refactorizada por @dev_master_99 debido a errores de lógica.
+    
+  
 * **Puntuación:** ⭐⭐☆☆☆ (2/5)
 
 ---
@@ -99,5 +112,5 @@
 | **@meriwen** | Arte / UI       |   ⭐⭐⭐⭐⭐ |           5            |
 | **@didimax89** | Arte / UI       |   ⭐⭐⭐⭐⭐ |           5            |
 | **@laurimba**     | Audio / Diseño  |   ⭐⭐⭐⭐☆ |           4            |
-| **@**     | Audio / Diseño  |   ⭐⭐⭐⭐☆ |           4            |
+| **@lucass-05**     | Programación  |   ⭐⭐⭐⭐⭐ |           5            |
 | **@sergiicl**   | Programación UI |   ⭐⭐☆☆☆  |           2            |
