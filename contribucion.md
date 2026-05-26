@@ -83,7 +83,7 @@
 * **Valoración General:**
     Me enfoqué totalmente en el diseño de la parte `topDown` del juego, metiendo dinámicas divertidas como la `conversación con los personajes` y su `desbloqueo`, así como funcionalidades de manejo como el `navmesh` y el comportamiento de `player`. Diseñé muchas `animaciones 2d` del personaje principal y de los NPC (versión topDown) y metí funcionalidades generales como todo lo relacionado con el `menú de pausa` y las `escenas de diálogo` con personajes. Además redacté unos cuantos `diálogos` relacionados con el lore del juego.
 
-  Colaboré principalmente con `@didimax89` en la parte topdown por su implicación en los mapas añadiendo juntos muchas funcionalidades, y con `@minilina` en los apartados de los NPC al haber creado ella todos sus diseños en grande y sus diálogos y personalidades que podemos ver en el store.
+  Colaboré principalmente con `@didimax89` en la parte topdown por su implicación en los mapas añadiendo juntos muchas funcionalidades, y con `@minilina` en los apartados de los NPC al haber creado ella todos sus diseños y sus personalidades en los diálogos, además de sus mecánicas especiales (crecer el gnomo o las alas del hada). Inspirándome en ello implementé sus interacciones en el `topdown` y sus animaciones en pequeñito.
   Finalmente conseguí cohesionar muchas partes del codigo sin añadir muchos archivos innecesarios, al:
 
   ** Añadir la informacion de los npcs del topdown en el mismo archivo scriptedNPC
