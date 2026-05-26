@@ -24,7 +24,7 @@ const config = {
     height: 540,
     parent: 'juego',
     dom: { createContainer: true },
-    scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+    scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.NO_CENTER },
     pixelArt: true,
     roundPixels: true,
     physics: { default: 'arcade', arcade: { gravity: { y: 0 }, debug: false } },
