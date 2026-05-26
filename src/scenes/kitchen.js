@@ -212,25 +212,25 @@ export default class Kitchen extends StoppableScene {
                 GameState.pauseTimer();
             }
         });
-        
+
         this.events.on('resume', () => {
             GameState.resumeTimer();
-            this.isMinigameActive = false; 
+            this.isMinigameActive = false;
         });
 
         this.setupPause();
 
     }
-    
+
     update(time, delta) {
         super.update(time, delta);
         this.flowManager?.update(time, delta);
     }
 
     finishKitchen(potionShape, finalTexture) {
-        
+
         GameState.stopTimer();
-        
+
         this.input.keyboard.enabled = false;
         this.input.enabled = false;
         this.isDraggingItem = false;
@@ -400,7 +400,7 @@ export default class Kitchen extends StoppableScene {
                 if (sourceSprite && sourceSprite.active && sourceSprite.getBounds().contains(ptr.x, ptr.y)) {
                     this.game.canvas.classList.add('cursor-takeable');
                 }
-                
+
                 this.hideIndicators();
                 this.input.off('pointermove', onPointerMove);
                 this.resetBorders();
@@ -711,8 +711,13 @@ export default class Kitchen extends StoppableScene {
         } else if (itemType === 'shape') {
             if (objectsUnderMouse.includes(this.delivery)) {
                 // DISPARAMOS HOOK "ENTREGAR POCION"
-                const deliverHook = this.runHook('kitchen:deliver', { shape: dropData });
-                if (deliverHook.cancelled) return false;
+                const deliverHook = this.runHook('kitchen:deliver', {
+                    shape: dropData,
+                    sourceSprite: sourceSprite
+                });
+                if (deliverHook.cancelled) {
+                    return true;
+                }
 
                 this.finishKitchen(dropData, draggedTexture);
                 isDroppedSuccessfully = true;

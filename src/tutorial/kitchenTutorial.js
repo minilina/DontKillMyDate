@@ -74,8 +74,6 @@ export default class KitchenTutorial {
     // --- MÉTODOS DE AYUDA ---
     // BLOQUEO DE OBJETOS
     disableAllInteractions() {
-        // Creamos una lista de todos los objetos que queremos bloquear.
-        // Añade aquí cualquier otro objeto interactivo que tengas.
         const itemsToDisable = [
             this.k.mortar, this.k.cuttingBoard,
             this.k.crystalJar, this.k.algaeJar, this.k.mushroomJar, this.k.berriesJar, this.k.rootsJar,
@@ -89,13 +87,13 @@ export default class KitchenTutorial {
         ];
 
         itemsToDisable.forEach(item => {
-            if (item) {
+            // CAMBIO: Verificamos existencia antes de deshabilitar
+            if (item && item.active && item.scene) {
                 item.disableInteractive();
             }
         });
     }
-
-    /** Reactiva la interactividad de todos los objetos. */
+    /** Reactiva la interactividad de todos los objetos de forma segura. */
     enableAllInteractions() {
         const itemsToEnable = [
             this.k.mortar, this.k.cuttingBoard,
@@ -111,8 +109,9 @@ export default class KitchenTutorial {
         ];
 
         itemsToEnable.forEach(item => {
-            if (item) {
-                item.setInteractive(); // Reactivamos los clics.
+            // CAMBIO: Verificamos que el item exista, esté activo y tenga una escena vinculada
+            if (item && item.active && item.scene) {
+                item.setInteractive();
             }
         });
     }
@@ -223,58 +222,57 @@ export default class KitchenTutorial {
 
     showStartPopup(onConfirm) {
         const { width, height } = this.k.scale;
-        const overlay = this.k.add.rectangle(0, 0, width, height, 0x000000, 0.6)
+
+        // 1. Limpieza de seguridad por si acaso
+        if (this.popupElements) {
+            this.popupElements.forEach(el => el.destroy());
+        }
+        this.popupElements = [];
+
+        // 2. EL OVERLAY (El truco es que sea interactivo pero NO apague el input global)
+        const overlay = this.k.add.rectangle(0, 0, width, height, 0x000000, 0.7)
             .setOrigin(0)
-            .setInteractive();
+            .setInteractive() // Captura clics
+            .setDepth(30000);
 
-        const panelW = 300;
-        const panelH = 150;
+        // Evita que el clic pase a lo que hay detrás (la cocina)
+        overlay.on('pointerdown', (pointer, localX, localY, event) => {
+            if (event) event.stopPropagation();
+        });
 
-        const border = this.k.add.rectangle(width / 2, height / 2, panelW + 8, panelH + 8, 0xf2e3d3, 1);
-        const panel = this.k.add.rectangle(width / 2, height / 2, panelW, panelH, 0x2b1b16, 0.95);
+        const border = this.k.add.rectangle(width / 2, height / 2, 310, 160, 0xf2e3d3).setDepth(30001);
+        const panel = this.k.add.rectangle(width / 2, height / 2, 300, 150, 0x2b1b16).setDepth(30002);
 
         const title = this.k.add.text(width / 2, height / 2 - 35, "COMENZAR TUTORIAL", {
-            fontFamily: "VT323, monospace",
-            fontSize: "30px",
-            color: "#ffffff",
-            stroke: "#000000",
-            strokeThickness: 5
-        }).setOrigin(0.5);
+            fontFamily: "VT323, monospace", fontSize: "30px", color: "#ffffff"
+        }).setOrigin(0.5).setDepth(30003);
 
-        const btnStyle = {
-            fontFamily: "VT323, monospace",
-            fontSize: "28px",
-            backgroundColor: "#4f342d",
-            color: "#ffffff",
-            padding: { x: 20, y: 10 }
-        };
+        const startButton = this.k.add.text(width / 2, height / 2 + 35, " ¡VAMOS! ", {
+            fontFamily: "VT323, monospace", fontSize: "32px", backgroundColor: "#4f342d", color: "#ffffff", padding: { x: 20, y: 10 }
+        }).setOrigin(0.5).setInteractive({ useHandCursor: true }).setDepth(30004);
 
-        const startButton = this.k.add.text(width / 2, height / 2 + 30, "¡VAMOS!", btnStyle)
-            .setOrigin(0.5)
-            .setInteractive({ useHandCursor: true });
+        this.popupElements = [overlay, border, panel, title, startButton];
 
-        startButton.on('pointerover', () => startButton.setTint(0xdddddd));
+        // 3. Lógica con pointerup (más seguro para evitar que el clic se "arrastre" al fondo)
+        startButton.once('pointerup', (pointer, localX, localY, event) => {
+            if (event) event.stopPropagation();
+
+            // Destrucción total inmediata
+            this.popupElements.forEach(el => {
+                if (el) el.destroy();
+            });
+            this.popupElements = null;
+
+            // Pequeño delay para asegurar que el input se limpie antes de empezar el Step 1
+            this.k.time.delayedCall(150, () => {
+                onConfirm();
+            });
+        });
+
+        // Feedback visual para estar seguros de que el botón recibe el ratón
+        startButton.on('pointerover', () => startButton.setTint(0xffff00));
         startButton.on('pointerout', () => startButton.clearTint());
-
-        const popup = this.k.add.container(0, 0, [overlay, border, panel, title, startButton]).setDepth(20000);
-
-        popup.setScale(0.9);
-        popup.setAlpha(0);
-
-        this.k.tweens.add({
-            targets: popup,
-            alpha: 1,
-            scale: 1,
-            duration: 300,
-            ease: 'Back.easeOut'
-        });
-
-        startButton.once('pointerdown', () => {
-            popup.destroy(true);
-            onConfirm();
-        });
     }
-
     // --- LÓGICA DE LOS TUTORIALES ---
 
     startFullFlow() {
@@ -287,21 +285,14 @@ export default class KitchenTutorial {
 
             // Ahora inicia el diálogo de bienvenida
 
-            // Tomamos el nombre del jugador para dirigirnos a el, en caso de que anteriormente no haya
-            // seleccionado nombre, nos dirijimos por defecto como "sobrina de Agatha"
-            let playerName = this.k.registry.get("playerName");
-            if (!playerName || playerName.toLowerCase() === "sobrina") {
-                playerName = "la sobrina de Agatha";
-            }
-
-            const saludo = `¡Hola! Tú debes de ser ${playerName}. Me llamo Castiel y tu tía me ha encomendado la tarea de enseñarte todo lo que necesitas saber para preparar tu primera poción. ¿Comenzamos?`
+            const saludo = `¡Hola! Tú debes de ser la sobrina de Agatha. Me llamo Castiel y tu tía me ha encomendado la tarea de enseñarte todo lo que necesitas saber para preparar tu primera poción. ¿Comenzamos?`
 
             this.k.cauldron.forceSpeech(saludo, 5000);
 
 
             this.k.events.once('cauldron:speech:finished', () => {
                 this.showStartPopup(() => {
-                    this.step1();
+                    this.step7();
                 });
             });
         };
@@ -347,7 +338,6 @@ export default class KitchenTutorial {
             this.hook('kitchen:drop:cuttingBoard', (payload) => {
                 // Nos aseguramos de que está soltando las bayas (por si acaso)
                 if (payload.dropData === 'cutBerry') {
-                    // ¡Correcto! Lanzamos el minijuego.
                     this.k.scene.launch('cuttingMinigame', { isTutorial: true, ingredient: payload.dropData });
 
                     // Esperamos la señal de que el minijuego ha terminado.
@@ -356,9 +346,23 @@ export default class KitchenTutorial {
                         this.clearHelp();
                         this.stop();
 
-                        // Al terminar, continuamos con el siguiente paso del tutorial.
-                        this.say("¡Genial! Ya sabes cómo usar la tabla. Vamos al siguiente paso. Ahora vamos a utilizar el mortero.", -176, 235, () => {
-                            this.step3();
+                        this.say("¡Bien cortadas! Ahora arrastra las *bayas troceadas* al caldero.", -176, 235, () => {
+                            this.showHelp("Echa las bayas troceadas al caldero");
+                            this.highlight(this.k.cauldronImg);
+                            this.k.cauldronImg.setInteractive();
+                            // Nota: El objeto cortado suele estar en la tabla, nos aseguramos de que sea interactivo
+                            this.k.cuttingBoard.setInteractive();
+
+                            this.hook('kitchen:drop:cauldron', (dropPayload) => {
+
+                                this.stop();
+                                this.clearHelp();
+                                this.say("¡Genial! Al caldero van. Vamos ahora con el mortero.", -176, 235, () => {
+                                    this.step3();
+                                });
+                                return { cancel: true };
+
+                            });
                         });
                     });
 
@@ -390,7 +394,23 @@ export default class KitchenTutorial {
                     this.k.events.once('minigame:tutorial:finished', () => {
                         this.clearHelp();
                         this.stop();
-                        this.say("¡Estupendo! Ahora ya sabes cómo usar las dos herramientas.", -279, 176, () => this.step4());
+                        this.say("¡Buen trabajo! Ahora echa el *polvo de raíces* al caldero.", -279, 176, () => {
+                            this.showHelp("Arrastra el contenido del mortero al caldero");
+                            this.highlight(this.k.cauldronImg);
+                            this.k.cauldronImg.setInteractive();
+                            this.k.mortar.setInteractive();
+
+                            this.hook('kitchen:drop:cauldron', (dropPayload) => {
+
+                                this.stop();
+                                this.clearHelp();
+                                this.say("¡Estupendo! Ya dominas las herramientas básicas.", -279, 176, () => {
+                                    this.step4();
+                                });
+                                return { cancel: true };
+
+                            });
+                        });
                     });
 
                     return { cancel: true };
@@ -534,13 +554,15 @@ export default class KitchenTutorial {
             this.k.cauldron.resetCauldron();
 
             this.k.stones.setInteractive();
-            this.highlight(this.k.stones);
+
 
             this.k.stones.once('pointerdown', () => {
                 this.clearHelp();
                 this.disableAllInteractions();
                 this.stop();
                 this.say("¡Perfecto! Ya sabes cómo ajustar la temperatura. ", -368, 221, () => {
+                    this.k.cauldron.resetCauldron();
+                    this.k.cauldron.toggleFire(false);
 
                     this.step8();
                 });
@@ -605,6 +627,7 @@ export default class KitchenTutorial {
         this.disableAllInteractions();
         this.stop();
         this.k.tutorialMode = true;
+        this.k.cauldron.toggleFire(false);
 
         this.say(
             "Y llegamos al último paso: entregar al cliente. Rellena otra poción y déjala esta vez en la estación de entrega", 191, -59,
@@ -618,8 +641,12 @@ export default class KitchenTutorial {
                 this.k.emptyStarPotion.setInteractive();
 
                 // Esperar a que entregue UNA poción
-                this.hook('kitchen:deliver', ({ shape }) => {
+                this.hook('kitchen:deliver', (payload) => {
+
+                    if (payload.sourceSprite) payload.sourceSprite.destroy(); // <--- ¡ADIÓS POCIÓN!
+
                     this.say("¡Perfecto! Has completado el tutorial. Ya puedes preparar y entregar pociones por tu cuenta.", 191, -59, () => {
+
                         this.finish();
 
                         // LIMPAMOS EL CALDERO PARA LA PARTIDA REAL
