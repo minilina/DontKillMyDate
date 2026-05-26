@@ -204,7 +204,7 @@ Al abrir el juego, la pantalla de inicio detecta automáticamente si existe un p
   <img src="assets/img/CapturaDialogueFairy.png" width = 45%>
 </p>
 
-Ciertos personajes especiales de cada raza del juego nos traerán nuevas historias cuando aparezcan en nuestra tienda, y se desbloquearán en nuestra ciudad una vez les hayamos atendido correctamente. Estos tendrán divertidos diálogos que nos hablarán más sobre nuestra función en esta sociedad mágica y como vamos fomentando la diversidad y la buena relación entre todas las razas fantásticas. Estos personajes tendrán un dialogo inicial y despues seguiran contándonos lo mismo las veces que hablemos con ellos.
+Ciertos `personajes especiales` de cada raza del juego nos traerán nuevas historias cuando aparezcan en nuestra tienda, y se `desbloquearán en nuestra ciudad` una vez les hayamos atendido correctamente. Estos tendrán divertidos diálogos que nos hablarán más sobre nuestra función en esta sociedad mágica y como vamos fomentando la diversidad y la buena relación entre todas las razas fantásticas. Estos personajes tendrán un `dialogo inicial` y después seguiran contándonos lo mismo las veces que hablemos con ellos.
 
 
 #### 3.6.1. Diálogos con la mujer misteriosa en la cueva
@@ -213,7 +213,7 @@ Ciertos personajes especiales de cada raza del juego nos traerán nuevas histori
   <img src="assets/img/CapturaDialogueMadre.png" width = 45%>
 </p>
 
-Desde el primer día de juego encontraremos una mujer misteriosa en la cueva cercana a la tienda. Si hablamos con ella nos irá contando más información de quién es y de su papel en la historia. Si la visitamos varios días sabremos finalmente su identidad y ¡habremos forjado una buena amistad con ella!
+Desde el primer día de juego encontraremos una `mujer misteriosa`en la `cueva` cercana a la tienda. Si hablamos con ella nos irá contando más información de quién es y de su papel en la historia. Si la visitamos `varios días` sabremos finalmente su identidad y ¡habremos forjado una buena amistad con ella!
 
 ## 4.	Interfaz
 ### 4.1.	Controles
