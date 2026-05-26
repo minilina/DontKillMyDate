@@ -188,15 +188,14 @@ canvas[style*="cursor: pointer"], a, button {
 .contenedor-video {
     display: flex;
     justify-content: center;
-    align-items: center;
-    margin: 20px 0;
     width: 100%;
+    margin: 20px 0;
 }
 
 /* Estilos reproductor de video */
 .contenedor-video video {
     width: 100%;
-    max-width: 800px; /* El video no crecera más de 800px en pantallas grandes */
+    max-width: 800px; /* El video no crecera mas de 800px en pantallas grandes */
     aspect-ratio: 16 / 9;
     border-radius: 12px; /* Bordes redondeados */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Pequeña sombra para darle profundidad */
