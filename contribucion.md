@@ -67,6 +67,9 @@
 * **Valoración General:**
 El sistema de tutorial y la introducción quedaron completamente funcionales y se integran muy bien con la estética y flujo del juego. Por otro lado, la entrega del esqueleto básico para los sistemas de días y diálogos permitió establecer los cimientos técnicos necesarios, sirviendo como base sólida para que el equipo pueda continuar expandiendo y puliendo estas mecánicas en las siguientes etapas.
 
+Valoracion hecha por `@minilina`:
+María se ha encargado de toda la parte del tutorial y la ha dejado perfecta. También hizo la estrcutura sobre la que yo trabajé y modfiqué para los diálogos y en los hitos ha sido nuestra mejor oradora.
+
 * **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
 ---
@@ -98,6 +101,9 @@ El sistema de tutorial y la introducción quedaron completamente funcionales y s
    En el apartado de programación, me encargué de crear la arquitectura del mapa. He implementado sistemas inmersivos como el sistema visual del cursor y transparencias, dándole mucho mimo a la estética y a que no hubiesen errores o pequeños bugs. Además, dediqué mucho esfuerzo a solucionar problemas complejos de físicas, como gestionar las diferentes alturas en los puentes aislando las mallas de navegación, o ajustar los colliders asimétricos de los edificios.
 
    Mi colaboración con '@lucass-05' en la parte TopDown fue clave para unificar los mapas con las mecánicas de juego de los NPCs. Ha sido un proyecto exigente, pero me considero una persona resolutiva y que ha no ha tenido problemas para echar horas, que siempre ha estado dispuesta a pulir cada parte del código y del mapa hasta conseguir que la experiencia del jugador fuese la deseada.
+
+Valoracion hecha por `@minilina`:
+   Diego ha sido sin duda el responsable de que todo el diseño y funcionamiento del topdown, junto a Lucas. Ha asumido el liderazgo en situaciones díficiles y ha colaborado en la resolución de muchos problemas de código que teníamos.
 
 * **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
@@ -135,6 +141,9 @@ El sistema de tutorial y la introducción quedaron completamente funcionales y s
 
    Otro de los pilares principales del proyecto. Ha sido responsable de la clase `kitchen` en su totalidad, tanto el arte, sprites, animaciones, mecánicas (desarollo e implementación), perfeccionando hasta el más último detalle. Su implementación de `cuttingMinigame` personalmente me ayudo bastante para el desarrollo del `mortarMinigame` además de hacer el arte que utilicé en él.
 
+  Valoracion hecha por `@minilina`:
+     Laura ha sido una de las mayores colaboradoras de este proyecto. Todas las mecánicas de la cocina se las debemos a ella y su atención al detalle le ha dado un toque súper profesional a nuestro juego.
+
 * **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
 ---
@@ -167,6 +176,9 @@ Valoración escrita por `@sergiicl`:
 
   Gracias al esfuerzo e insistencia de Lucas hemos podido implementar el Navmesh y movimiento del protagonista en el `topDownScene` casi a la perfección dentro de lo permitido con las herramientas posibles, además de las interacciones con los personajes principales en la ciudad con ellos. Muy persistente y trabajador.
 
+Valoracion hecha por `@minilina`:
+   Junto a Lucas he desarrollado el diálogo de los personajes del topdown y gracias a nuestra colaboración hemos tenido un resultado del que estamos orgullosos.
+   
 * **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
 ---
@@ -184,6 +196,9 @@ Valoración escrita por `@sergiicl`:
     * Participación parcial en el desarrollo del **final intermedio** del juego, colaborando en su integración narrativa como en la implementación técnica de eventos, escenas y transiciones relacionadas con la progresión de la historia.
 
 * **Valoración General:**
+
+  Valoracion hecha por `@minilina`:
+     Sergio ha sido el responsable de que nuestro juego tenga vida gracias a su gran trabajo componiendo las sintonías principales del juego y su detalle de poner sonidos a cada uno de los eventos del juego: desde el topdown pasando por la tienda y la cocina. Sin él la atmósfera del juego no sería la misma.
     
   
 * **Puntuación:** ⭐⭐⭐⭐☆ (4/5)
