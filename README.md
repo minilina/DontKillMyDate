@@ -140,7 +140,7 @@ PUEBLO: Vista top-down.
 #### 5.2. Clientes
 Los clientes son el motor narrativo y mecánico de la tienda. Acuden a la consulta buscando ayuda mágica para sus problemas y se dividen en dos grandes categorías, compartiendo un mismo núcleo para procesar sus textos.
 
-#### 5.2.2. Clientes Normales
+#### 5.2.1. Clientes Normales
 Son la principal fuente de ingresos y reputación durante el bucle de juego diario, manteniendo el flujo constante de la consulta.
 
 * **Generación Modular:** Su aspecto se construye de forma dinámica. El sistema ensambla partes intercambiables. Primero el tono de piel, que se usa para elegir cuerpo, nariz y boca; un peinado; un color para pelo, cejas y otros features que lo requieran, color de ojos y ropa de la raza seleccionada aleatoriamente.
@@ -294,18 +294,123 @@ Aquí una tabla con todas los sprites utilizados para los clientes:
 * **Construcción por Plantillas Aleatorias:** Los requisitos de su poción se deciden completamente al azar. Para generar su texto de presentación, el juego elige y une plantillas aleatorias. Una vez montada la estructura, se le aplica el sistema general de sustitución de sinónimos.
 * **Reacción:** Sus respuestas al recibir la poción son puramente visuales y mecánicas (animaciones genéricas de celebración o enfado), **sin requerir diálogos de desenlace**.
 
-#### 5.2.3. Clientes Especiales (Scriptados)
+#### 5.2.2. Clientes Especiales (Scriptados)
 Personajes únicos con diseños fijos y motivaciones específicas que aportan lore y contexto sobre el mundo del juego. Toda su lógica narrativa se controla desde archivos de configuración centralizados.
-* **Textos Fijos Escritos a Mano:** A diferencia de los [clientes normales](#clientes-normales), estos personajes no eligen una plantilla aleatoria; su diálogo de presentación está completamente escrito a mano para narrar su trasfondo e historia personal. Sin embargo, **sí que utilizan el sistema general de sinónimos**: sus textos contienen las mismas etiquetas dinámicas para que las pistas de los ingredientes cambien según la dificultad seleccionada.
+* **Textos Fijos:** A diferencia de los [clientes normales](#5.2.1.-clientes-normales), estos personajes no eligen una plantilla aleatoria; su diálogo de presentación está completamente personalizado para narrar su trasfondo e historia personal. Sin embargo, **sí que utilizan el sistema general de sinónimos**: sus textos contienen las mismas etiquetas dinámicas para que las pistas de los ingredientes cambien según la dificultad seleccionada.
 * **Diálogos de Resolución:** Cuentan con líneas de texto adicionales tras recibir el encargo. El sistema evalúa la calidad de la mezcla y desencadena una de tres respuestas exclusivas:
-  * **Éxito (Calidad >= 80%):** El cliente resuelve su problema de forma óptima y su historia avanza positivamente.
+  * **Éxito (Calidad >= 80%):** El cliente resuelve su problema de forma óptima y aparecerán en la zona topdown.
   * **Neutral (Calidad 50% - 79%):** El resultado es pasable. Soluciona el problema a medias, dejando una sensación agridulce.
   * **Fracaso (Calidad < 50%):** La poción resulta perjudicial, empeorando la situación del cliente y afectando gravemente la reputación.
 * **Animaciones Únicas:** Ejecutan comportamientos físicos exclusivos según la situación, como animaciones en bucle durante su espera o salidas animadas.
 
-#### 5.2.1.	Hechicer@
-#### 5.2.2.	Mamá
-#### 5.2.3.	David (Gnomo)
+#### 5.2.3. Clientes Especiales (Scriptados)
+
+Personajes únicos con diseños fijos y motivaciones específicas que aportan lore y contexto sobre el mundo del juego. Toda su lógica narrativa se controla desde `scriptedNpcs.json`.
+
+---
+
+###### Ezarel, el Casanova
+
+> *"Demuéstrame lo que vales, joven alquimista."*
+
+Elfo de clase alta con una larga relación con la tienda, ya que era cliente habitual de la tía Agatha. Acude antes de cada cita para asegurarse de tener ventaja, aunque atribuye todo el mérito de sus conquistas a su "encanto natural". Es el primer cliente especial que visita la consulta y actúa como introducción al sistema de diálogos scriptados. Si se le atiende bien, revela la existencia de la cueva del oeste, clave para encontrar a la madre.
+
+**Sprite completo:** `// TODO: captura del sprite completo`
+
+**Poción requerida:** Raza objetivo: elfos · Sabor: dulce · Color: rojo · Consistencia: entera · Temperatura: frío · Frasco: estrella
+
+---
+
+###### Thalassa de las Aguas Claras
+
+> *"Las raíces oscuras están envenenando el río..."*
+
+Ninfa que ha forjado una alianza secreta con humanos para purificar los manantiales del bosque antes de que una oscuridad desconocida los destruya. Su encargo no es romántico en apariencia, sino que el catalizador mágico que necesita para el ritual de purificación resulta ser también un filtro de amor. Representa la tensión entre las razas y su capacidad de cooperar ante una amenaza común.
+
+**Sprite completo:** `// TODO: captura del sprite completo`
+
+**Poción requerida:** Raza objetivo: humanos · Sabor: salado · Color: azul · Consistencia: cortada · Temperatura: del tiempo · Frasco: corazón
+
+---
+
+###### David, ¿el gnomo?
+
+> *"Soy ese cono parlante de ahí abajo."*
+
+Gnomo enamorado de una elfa que literalmente no le ve, ya que le pasa por alto debido a su estatura. Acude a la tienda buscando un "estirón mágico" que le permita estar a la altura (en todos los sentidos) de su pretendida. Su historia es la más cómica del juego y cuenta con una animación de éxito exclusiva en la que crece visiblemente al tomar la poción.
+
+**Sprite completo:** `// TODO: captura del sprite completo`
+
+**Poción requerida:** Raza objetivo: elfos · Sabor: dulce · Color: rojo · Consistencia: cortada · Temperatura: frío · Frasco: estrella
+
+---
+
+###### 🧚 Campanita, Tejedora de Luz
+
+> *"Mis alas se han vuelto rígidas y he perdido la capacidad de alzar el vuelo."*
+
+Hada alegre y parlanchina con una cita pendiente en lo alto de una montaña con un gnomo al que está enseñando a perder el vértigo. El problema: sus alas se han vuelto rígidas y no puede volar. Necesita una poción que restaure su aleteo a tiempo. Su animación de espera muestra las alas batiendo en bucle, y su salida de éxito es la única del juego en la que el personaje sale volando literalmente por arriba de la pantalla.
+
+
+**Sprite completo:** `// TODO: captura del sprite completo`
+
+**Poción requerida:** Raza objetivo: gnomos · Sabor: ácido · Color: amarillo · Consistencia: machacada · Temperatura: frío · Frasco: estrella
+
+---
+
+###### Kaelen el Errante
+
+> *"Tu mirada me sigue resultando muy familiar."*
+
+Humano que ha viajado semanas desde su aldea, cuyas cosechas se marchitan bajo una plaga desconocida. Busca el poder purificador de las ninfas para salvar a su pueblo. Es uno de los personajes con más carga narrativa implícita: sus comentarios sobre "una chica de su aldea que desapareció" y la familiaridad que siente con la protagonista apuntan a una conexión con el lore de la madre. Si se le atiende bien, se queda en el pueblo cercano disponible para hablar.
+
+**Sprite completo:** `// TODO: captura del sprite completo`
+
+**Poción requerida:** Raza objetivo: ninfas · Sabor: amargo · Color: verde · Consistencia: machacada · Temperatura: calor · Frasco: normal
+
+---
+
+###### Akira, Sombra del Templo
+
+> *"Los faroles de nuestro santuario ancestral se han apagado."*
+
+Kitsune de carácter frío y ceremonioso. Los faroles de su santuario ancestral se han apagado y, según la tradición, solo la chispa de un hada puede devolver el fuego espiritual. Acude a la tienda sin mostrar emociones, pero si se le atiende bien revela un lado más cercano y ofrece enseñar "trucos interesantes" a la protagonista. Es el personaje con el tono más solemne y misterioso de todos los scriptados.
+
+**Sprite completo:** `// TODO: captura del sprite completo`
+
+**Poción requerida:** Raza objetivo: hadas · Sabor: umami · Color: naranja · Consistencia: cortada · Temperatura: calor · Frasco: estrella
+
+---
+
+###### Inspector Real
+
+> *"Por orden del alcalde, esta tienda queda clausurada de inmediato."*
+
+No es un cliente al uso, sino el desenlace negativo del juego. Aparece si la reputación de la protagonista cae demasiado. No hace ningún encargo: simplemente entra, declara la clausura de la tienda y destierra a la protagonista del pueblo. No tiene diálogo de resolución ni aparece en el top-down.
+
+**Sprite completo:** `// TODO: captura del sprite completo`
+
+---
+
+###### Mujer Misteriosa
+
+> *"Hola, hija mía. Ha llegado el momento de dejar de esconderme en esta cueva."*
+
+Personaje central del arco narrativo principal, aunque su verdadera identidad solo se desvela tras múltiples visitas a la cueva del oeste. Se presenta como una mujer misteriosa que vive escondida, y a lo largo de 5 visitas progresivas va revelando su historia: es la madre de la protagonista, humana que se enamoró del anterior rey de los elfos y tuvo que desaparecer para protegerse. Su diálogo en el top-down es el único del juego que avanza de forma secuencial visita a visita, revelando el lore de la protagonista de forma gradual.
+
+**Sprite completo:** `// TODO: captura del sprite completo`
+
+**Poción requerida:** Raza objetivo: elfos · Sabor: dulce · Color: rojo · Consistencia: machacada · Temperatura: calor · Frasco: corazón
+
+---
+
+###### Tía Agatha
+
+> *"Creo que es hora de que esta tienda pase a ser tuya."*
+
+No aparece como cliente sino como personaje de cierre narrativo. Es la propietaria original de la tienda y quien la dejó a cargo de la protagonista. Aparece al final del juego para ceder oficialmente la tienda, reconocer el trabajo realizado y quedarse como apoyo permanente. Junto a la madre, forma el núcleo del arco narrativo de la protagonista.
+
+**Sprite completo:** `// TODO: captura del sprite completo`
 
 ### 5.2.	Objetos
 #### 5.2.1 Cocina
