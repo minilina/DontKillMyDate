@@ -6,16 +6,29 @@
 ---
 
 ## 👥 Desglose por Miembros
-
 ### 👤 @minilina (Alba Gómez)
-* **Rol:** Programador Principal / Gameplay
+* **Rol:** Programadora / Gameplay / Artista 2D
 * **Tareas Realizadas:**
-    * Implementación del sistema de movimiento del jugador y físicas de salto.
-    * Creación del script `GameManager` para el control de estados (Menú, Juego, Game Over).
-    * Integración de colisiones y *triggers* para los enemigos básicos.
-    * Corrección de bugs críticos en el sistema de guardado.
-* **Valoración General:**
-    Su trabajo ha sido fundamental para el "core loop" del juego. El código es limpio y modular. Asumió el liderazgo técnico resolviendo los problemas de fusión en Git.
+    * Diseño y creación de todos los sprites de personajes: cuerpos, ropa, pelo, ojos,
+      bocas, narices, orejas, cejas y features especiales por raza.
+    * Diseño del pergamino de resumen diario junto a los iconos
+      de corazones y estrellas.
+   * Implementación de `NPCGenerator`: genera aleatoriamente los datos de aspecto
+      de los clientes normales, seleccionando tono de piel, peinado, color, ojos,
+      ropa por raza, etc.
+    * Implementación de la clase `NPC`: recibe los datos de aspecto —ya sean
+      generados aleatoriamente por `NPCGenerator` o definidos fijamente en
+      `scriptedNpcs.json`— y ensambla y renderiza todas las capas del personaje.
+    * Implementación del sistema de diálogos dinámicos y configuración narrativa
+      completa: `CustomerFlowManager`, `diccionario.json`, `daysConfig.json`.
+    * Implementación de `scriptedNpcs.json`: no solo los diálogos y lore de cada
+      personaje especial, sino también la definición de su aspecto fijo por capas.
+    * Desarrollo del flujo completo de atención al cliente (customer flow),
+      desde la entrada del NPC hasta la entrega de la poción.
+    * Implementación de la interfaz de diálogos: resaltado de palabras clave
+      con color diferenciado y animación, con enlace directo a la nota de la cocina.
+   * Implementación de los finales malos y buenos del juego: `gameOver`
+* **Valoración General:**.
 * **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
 ---

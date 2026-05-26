@@ -151,6 +151,22 @@ CONSULTA: Cámara fija y vista en primera persona. <br/>
 PUEBLO: Vista top-down.
 
 ### 4.3.	HUD
+### 4.3. HUD
+
+#### Pantalla de Resumen Diario
+
+![Pantalla de resumen diario 1](assets/img/hud_daily_summary_1.png)
+
+![Pantalla de resumen diario 2](assets/img/hud_daily_summary_2.png)
+
+Al finalizar cada jornada se muestra una pantalla de resumen con los siguientes elementos:
+
+- **Título** — indica el número de día finalizado.
+- **Estrellas de desempeño** — fila de 5 estrellas que refleja la calidad general de las pociones servidas durante el día.
+- **Reputación** — muestra la reputación total acumulada y la variación neta del día. Si el huerto no fue regado, se desglosa por separado la penalización de plantas secas respecto a los puntos obtenidos por pociones.
+- **Corazones de reputación** — fila de 5 corazones que representa visualmente el nivel de reputación actual.
+- **Consejo del día** — texto rotatorio con un tip narrativo que aparece con efecto de escritura progresiva. Rota en ciclo entre 6 mensajes según el día.
+- **Guardado automático** — al hacer clic para continuar, el progreso se guarda automáticamente y se muestra una confirmación en pantalla antes de pasar al siguiente día.
 ### 4.4.	Menús
 
 ## 5.	Mundo del juego
