@@ -12,7 +12,7 @@ export default class City extends topDownScene {
     create(data = {}) {
         let mapKey = 'ciudad';
         
-        if (GameState.reputation >= 100) {
+        if (GameState.reputation >= 90) {
             mapKey = 'ciudad2';
         }
 
