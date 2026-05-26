@@ -198,6 +198,23 @@ Al abrir el juego, la pantalla de inicio detecta automáticamente si existe un p
 - **Continuar:** Si hay datos previos, aparece un botón de "CONTINUAR" que indica el día exacto por el que va el jugador, llevándolo directamente a su casa al inicio de esa jornada.
 - **Nueva Partida:** Si el jugador selecciona "Nueva Partida" (o "Jugar" si es la primera vez), la historia comienza de cero. Si ya existía un progreso anterior, este se borra de forma irreversible para evitar conflictos.
 
+### 3.6. Diálogo con los personajes en la ciudad
+
+<p align="center">
+  <img src="assets/img/CapturaDialogueFairy.png" width = 45%>
+</p>
+
+Ciertos personajes especiales de cada raza del juego nos traerán nuevas historias cuando aparezcan en nuestra tienda, y se desbloquearán en nuestra ciudad una vez les hayamos atendido correctamente. Estos tendrán divertidos diálogos que nos hablarán más sobre nuestra función en esta sociedad mágica y como vamos fomentando la diversidad y la buena relación entre todas las razas fantásticas. Estos personajes tendrán un dialogo inicial y despues seguiran contándonos lo mismo las veces que hablemos con ellos.
+
+
+#### 3.6.1. Diálogos con la mujer misteriosa en la cueva
+
+<p align="center">
+  <img src="assets/img/CapturaDialogueMadre.png" width = 45%>
+</p>
+
+Desde el primer día de juego encontraremos una mujer misteriosa en la cueva cercana a la tienda. Si hablamos con ella nos irá contando más información de quién es y de su papel en la historia. Si la visitamos varios días sabremos finalmente su identidad y ¡habremos forjado una buena amistad con ella!
+
 ## 4.	Interfaz
 ### 4.1.	Controles
 
@@ -435,6 +452,8 @@ Elfo de clase alta con una larga relación con la tienda, ya que era cliente hab
 
 **Sprite completo:** ![Ezarel](assets/img/modelo_elfo.png)
 
+**Animación topDown:** ![Ezarel](assets/anims/NPCelfo.png)
+
 **Poción requerida:** Raza objetivo: elfos · Sabor: dulce · Color: rojo · Consistencia: entera · Temperatura: frío · Frasco: estrella
 
 ---
@@ -445,7 +464,9 @@ Elfo de clase alta con una larga relación con la tienda, ya que era cliente hab
 
 Ninfa que ha forjado una alianza secreta con humanos para purificar los manantiales del bosque antes de que una oscuridad desconocida los destruya. Su encargo no es romántico en apariencia, sino que el catalizador mágico que necesita para el ritual de purificación resulta ser también un filtro de amor. Representa la tensión entre las razas y su capacidad de cooperar ante una amenaza común.
 
-**Sprite completo:** ![Thalass](assets/img/modelo_ninfa.png)
+**Sprite completo:** ![Thalassa](assets/img/modelo_ninfa.png)
+
+**Animación topDown:** ![Thalassa](assets/anims/NPCninfa.png)
 
 **Poción requerida:** Raza objetivo: humanos · Sabor: salado · Color: azul · Consistencia: cortada · Temperatura: del tiempo · Frasco: corazón
 
@@ -458,6 +479,8 @@ Ninfa que ha forjado una alianza secreta con humanos para purificar los manantia
 Gnomo enamorado de una elfa que literalmente no le ve, ya que le pasa por alto debido a su estatura. Acude a la tienda buscando un "estirón mágico" que le permita estar a la altura (en todos los sentidos) de su pretendida. Su historia es la más cómica del juego y cuenta con una animación de éxito exclusiva en la que crece visiblemente al tomar la poción.
 
 **Sprite completo:** ![David](assets/img/modelo_gnomo.png)
+
+**Animación topDown:** ![David](assets/anims/NPCgnomo.png)
 
 **Poción requerida:** Raza objetivo: elfos · Sabor: dulce · Color: rojo · Consistencia: cortada · Temperatura: frío · Frasco: estrella
 
@@ -472,6 +495,8 @@ Hada alegre y parlanchina con una cita pendiente en lo alto de una montaña con 
 
 **Sprite completo:** ![Campanita](assets/img/modelo_hada.png)
 
+**Animación topDown:** ![Campanita](assets/anims/NPChada.png)
+
 **Poción requerida:** Raza objetivo: gnomos · Sabor: ácido · Color: amarillo · Consistencia: machacada · Temperatura: frío · Frasco: estrella
 
 ---
@@ -484,6 +509,8 @@ Humano que ha viajado semanas desde su aldea, cuyas cosechas se marchitan bajo u
 
 **Sprite completo:** ![Kaleen](assets/img/modelo_humano.png)
 
+**Animación topDown:** ![Kaleen](assets/anims/NPChumano.png)
+
 **Poción requerida:** Raza objetivo: ninfas · Sabor: amargo · Color: verde · Consistencia: machacada · Temperatura: calor · Frasco: normal
 
 ---
@@ -495,6 +522,8 @@ Humano que ha viajado semanas desde su aldea, cuyas cosechas se marchitan bajo u
 Kitsune de carácter frío y ceremonioso. Los faroles de su santuario ancestral se han apagado y, según la tradición, solo la chispa de un hada puede devolver el fuego espiritual. Acude a la tienda sin mostrar emociones, pero si se le atiende bien revela un lado más cercano y ofrece enseñar "trucos interesantes" a la protagonista. Es el personaje con el tono más solemne y misterioso de todos los scriptados.
 
 **Sprite completo:** ![Kaleen](assets/img/modelo_kitsune.png)
+
+**Animación topDown:** ![Kaleen](assets/anims/NPCkitsune.png)
 
 **Poción requerida:** Raza objetivo: hadas · Sabor: umami · Color: naranja · Consistencia: cortada · Temperatura: calor · Frasco: estrella
 
@@ -517,6 +546,8 @@ No es un cliente al uso, sino el desenlace negativo del juego. Aparece si la rep
 Personaje central del arco narrativo principal, aunque su verdadera identidad solo se desvela tras múltiples visitas a la cueva del oeste. Se presenta como una mujer misteriosa que vive escondida, y a lo largo de 5 visitas progresivas va revelando su historia: es la madre de la protagonista, humana que se enamoró del anterior rey de los elfos y tuvo que desaparecer para protegerse. Su diálogo en el top-down es el único del juego que avanza de forma secuencial visita a visita, revelando el lore de la protagonista de forma gradual.
 
 **Sprite completo:**![Kaleen](assets/img/modelo_madre.png)
+
+**Animación topDown:** ![Ezarel](assets/anims/NPCmadre.png)
 
 **Poción requerida:** Raza objetivo: elfos · Sabor: dulce · Color: rojo · Consistencia: machacada · Temperatura: calor · Frasco: corazón
 
@@ -765,9 +796,10 @@ A raíz de los resultados, hemos realizado las siguientes mejoras:
 - Potion Craft
 - Good Pizza, Great Pizza
 - Papers, Please
+
   
 #### Referencias jugables y narrativas
 - La exploración del pueblo, el huerto y la ambientación cozy están inspiradas en Stardew Valley.
 - La alquimia, la elaboración de pociones y la estética medieval fantástica toman referencias directas de Potion Craft.
-- El sistema de atención a clientes, gestión de pedidos y estructura basada en jornadas está inspirado en Good Pizza, Great Pizza.
+- El sistema de atención a clientes, gestión de pedidos y estructura basada en jornadas está inspirado en Good Pizza, Great Pizza o Papa´s Freezeria.
 - El componente narrativo, la toma de decisiones, la existencia de múltiples finales y los personajes especiales con historias propias se inspiran en Papers, Please. Además, la necesidad de interpretar correctamente las peticiones de los clientes mediante pistas y diálogos también toma influencia de este título.
