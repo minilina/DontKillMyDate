@@ -235,7 +235,15 @@ Ciertos `personajes especiales` de cada raza del juego nos traerán nuevas histo
 Desde el primer día de juego encontraremos una `mujer misteriosa`en la `cueva` cercana a la tienda. Si hablamos con ella nos irá contando más información de quién es y de su papel en la historia. Si la visitamos `varios días` sabremos finalmente su identidad y ¡habremos forjado una buena amistad con ella!
 
 ## 4.	Interfaz
+
 ### 4.1.	Controles
+#### 4.1.1.	TopDown
+
+Usamos las teclas `wasd`para el movimiento o el `ratón`, implementando la mecánica de `click and go` calculando las rutas evitando colisiones con `navmesh`. También usamos la tecla `E`para interactuar con los personajes o objetos interactuables del mapa, unque estos también se pueden activar con `click`. Por último tenemos la tecla `ESC` para abrir el menú de pausa.
+
+#### 4.1.2.	No TopDown
+
+Usamos el `ratón` para interactuar con todo lo que aparece por pantalla, asi como la tecla `ENTER` para avanzar los diálogos. En aslgunas escenas también podemos abrir el menu de pausa con la tecla `ESC`. 
 
 ### 4.2.	Cámara 
 CONSULTA: Cámara fija y vista en primera persona. <br/>
