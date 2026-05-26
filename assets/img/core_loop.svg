@@ -1,0 +1,61 @@
+<svg width="680" height="520" viewBox="0 0 680 520" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arrow-loop" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#aaa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- FASE 1: Mañana -->
+  <ellipse cx="340" cy="48" rx="130" ry="32" fill="#d4f0e4" stroke="#4aaa80" stroke-width="1.5"/>
+  <text x="340" y="43" text-anchor="middle" font-size="14" font-weight="600" fill="#1a6644">Fase mañana</text>
+  <text x="340" y="60" text-anchor="middle" font-size="11" fill="#2d8a5e">Huerto · NPCs del pueblo</text>
+
+  <!-- Flecha mañana → bucle -->
+  <line x1="340" y1="80" x2="340" y2="112" stroke="#888" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <!-- CONTENEDOR BUCLE -->
+  <rect x="55" y="112" width="570" height="268" rx="16" fill="none" stroke="#ccc" stroke-width="1.2" stroke-dasharray="7 4"/>
+  <text x="88" y="132" font-size="11" fill="#aaa">Bucle de atención — se repite por cada cliente</text>
+
+  <!-- SUBFASE: Llega cliente -->
+  <ellipse cx="160" cy="200" rx="90" ry="36" fill="#e8e0f8" stroke="#7c5cbf" stroke-width="1.5"/>
+  <text x="160" y="195" text-anchor="middle" font-size="13" font-weight="600" fill="#3d2080">Llega cliente</text>
+  <text x="160" y="212" text-anchor="middle" font-size="11" fill="#5a3aaa">Diálogo · petición</text>
+
+  <!-- Flecha llega → prepara -->
+  <line x1="251" y1="200" x2="293" y2="200" stroke="#888" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <!-- SUBFASE: Preparación -->
+  <ellipse cx="380" cy="200" rx="86" ry="36" fill="#fef0d4" stroke="#d4900a" stroke-width="1.5"/>
+  <text x="380" y="195" text-anchor="middle" font-size="13" font-weight="600" fill="#7a4e00">Preparación</text>
+  <text x="380" y="212" text-anchor="middle" font-size="11" fill="#9a6610">Ingredientes · caldero</text>
+
+  <!-- Flecha prepara → entrega -->
+  <line x1="466" y1="200" x2="503" y2="200" stroke="#888" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <!-- SUBFASE: Entrega -->
+  <ellipse cx="570" cy="200" rx="70" ry="36" fill="#fde0d8" stroke="#c05535" stroke-width="1.5"/>
+  <text x="570" y="195" text-anchor="middle" font-size="13" font-weight="600" fill="#7a2510">Entrega</text>
+  <text x="570" y="212" text-anchor="middle" font-size="11" fill="#9a3520">Poción · reacción</text>
+
+  <!-- Flecha vuelta: entrega → llega cliente (por abajo) -->
+  <path d="M570 236 Q570 310 380 330 Q200 348 160 236" fill="none" stroke="#bbb" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#arrow-loop)"/>
+  <text x="365" y="358" text-anchor="middle" font-size="11" fill="#aaa">siguiente cliente</text>
+
+  <!-- Flecha salida bucle -->
+  <line x1="340" y1="380" x2="340" y2="412" stroke="#888" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <!-- FASE FIN DE DÍA -->
+  <ellipse cx="340" cy="452" rx="160" ry="36" fill="#ddeeff" stroke="#3a6fbf" stroke-width="1.5"/>
+  <text x="340" y="447" text-anchor="middle" font-size="14" font-weight="600" fill="#1a3a7a">Fin de día</text>
+  <text x="340" y="464" text-anchor="middle" font-size="11" fill="#2a50aa">Resultados · reputación ganada o perdida</text>
+
+  <!-- Flecha día siguiente (izquierda) -->
+  <path d="M185 452 Q48 452 48 48 Q48 20 210 20" fill="none" stroke="#ccc" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#arrow-loop)"/>
+  <text x="22" y="250" text-anchor="middle" font-size="11" fill="#bbb" transform="rotate(-90,22,250)">día siguiente</text>
+
+</svg>
