@@ -42,7 +42,8 @@
 
  Alba ha sido en mi opinión ha sido uno de los pilares principales de este proyecto, ha dedicado una gran parte de tiempo dibujando los personajes y pensando las historias de los personajes principales además de desarrollar toda la mecánica de los `.json` facilitando el ciclo del juego. Siento que desde se añadió la visión sobre el futuro del proyecto ha estado bastante claro y hemos podido continuar con mucha más fluidez y claridad. Cabe también destacar su compañerismo y saber coordinar al grupo.
 
-
+  Valoración escrita por `@laurimba`:
+Como ya han comentado mis compañeros, Alba se ha implicado muchísimo en el desarrollo del videojuego de principio a fin. Su aportación ha sido clave en múltiples áreas: desde la creación del lore y la historia, hasta la programación y el arte de los personajes. Cabe destacar que los diseñó sin tener experiencia previa en pixel art, y el resultado ha sido precioso. Además, ha logrado que el juego sea mucho más interesante dándoles vida a los protagonistas y programando todos los distintos finales. En resumen, ha hecho un trabajo excepcional.
   
 * **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
@@ -69,6 +70,9 @@ El sistema de tutorial y la introducción quedaron completamente funcionales y s
 
 Valoracion hecha por `@minilina`:
 María se ha encargado de toda la parte del tutorial y la ha dejado perfecta. También hizo la estrcutura sobre la que yo trabajé y modfiqué para los diálogos y en los hitos ha sido nuestra mejor oradora.
+
+  Valoración escrita por `@laurimba`:
+María ha creado una estructura de diálogos muy reutilizable, y se ha esforzado mucho en la programación del tutorial, quedando las mecánicas de la cocina perfectamente explicadas.
 
 * **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
@@ -104,6 +108,7 @@ María se ha encargado de toda la parte del tutorial y la ha dejado perfecta. Ta
 
 Valoracion hecha por `@minilina`:
    Diego ha sido sin duda el responsable de que todo el diseño y funcionamiento del topdown, junto a Lucas. Ha asumido el liderazgo en situaciones díficiles y ha colaborado en la resolución de muchos problemas de código que teníamos.
+
 
 * **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
@@ -143,6 +148,7 @@ Valoracion hecha por `@minilina`:
 
   Valoracion hecha por `@minilina`:
      Laura ha sido una de las mayores colaboradoras de este proyecto. Todas las mecánicas de la cocina se las debemos a ella y su atención al detalle le ha dado un toque súper profesional a nuestro juego.
+
 
 * **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
@@ -199,6 +205,9 @@ Valoracion hecha por `@minilina`:
 
   Valoracion hecha por `@minilina`:
      Sergio ha sido el responsable de que nuestro juego tenga vida gracias a su gran trabajo componiendo las sintonías principales del juego y su detalle de poner sonidos a cada uno de los eventos del juego: desde el topdown pasando por la tienda y la cocina. Sin él la atmósfera del juego no sería la misma.
+
+  Valoración escrita por `@laurimba`:
+Sergio ha logrado captar exactamente la esencia que visualizábamos para nuestro juego. Gracias a la música y los efectos de sonido que ha implementado, ha creado una atmósfera sumamente acogedora. Cabe destacar que ha compuesto la canción principal desde cero, lo cual tiene un mérito increíble. Además, siempre se ha mostrado dispuesto a ayudarme con la programación de las mecánicas de la cocina, encargándose específicamente del mortero y el libro.
     
   
 * **Puntuación:** ⭐⭐⭐⭐☆ (4/5)
