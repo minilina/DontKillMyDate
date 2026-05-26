@@ -72,14 +72,34 @@ El sistema de tutorial y la introducción quedaron completamente funcionales y s
 ---
 
 ### 👤 @didimax89 (Diego Barba)
-* **Rol:** Diseño de Sonido / Level Design
+* **Rol**: Programador / Level Designer / Artista 2D / Gameplay 
 * **Tareas Realizadas:**
-    * Composición del tema principal y música de batalla.
-    * Creación de efectos de sonido (SFX) para salto, golpe y recolección de items.
-    * Diseño del layout del Nivel 1.
+    * Implementación e integración de todos los mapas TopDown creados en Tiled, gestionando la carga de capas, colisiones y objetos.
+    * Implementación de herencia compartida para todos los mapas a partir de topDownScene y abstracción de todos los métodos que se habían usado para un único mapa.
+    * Creación del sistema de interacciones tanto con objetos como con UI, incluyendo un cursor inteligente que detecta objetos usables.
+    * Implemetación de un sistema complejo de cursores personalizados en todo el proyecto, no solo en las escenas topDown.
+    * Implementación del sistema de activación interactiva con la tecla "E" para la comunicación con NPCs y objetos.
+    * Diseño de físicas complejas y profundidad (Z-Sorting), aplicando transparencias automáticas a techos y árboles cuando el jugador camina detrás de ellos.
+    * Gestión de diferentes alturas de colisión (zElevacion) para permitir al jugador navegar por encima y por debajo de puentes.
+    * Lógica de evolución del mundo, donde el mapa principal cambia dinámicamente a una versión mejorada cuando el jugador supera los 100 puntos de reputación.
+    * Implementación de la mecánica de cuidado de huertos con animaciones de riego por secuencias.
+    * Creación de zonas de transición seguras entre escenarios mediante interfaces de confirmación.
+    * Creación de "colliders" compuestos y muros invisibles dinámicos para adaptar las cajas de colisión (hitboxes) a edificios con formas asimétricas (en "L") procedentes de Tiled.
+    * Adaptación del sistema de "NavMesh" para soportar múltiples alturas, creando mallas de navegación independientes para el suelo y el puente, evitando que el algoritmo de búsqueda de caminos colapsara.
+    * Diseño artístico e ilustración completa del mostrador de la tienda.
+    * Ilustración de los frames y diseño visual de la animación de regar del personaje principal.
+    * Desarrollo e implementación de la clase del jugador (player.js) junto con Lucas, programando su sistema de movimiento base y la lógica de la animación de riego.
+    * Soporte para solucionar bugs + playtesting.
+    * Grabacion del vídeo explicativo junto con Alba y edición e implementación del vídeo.
+
 * **Valoración General:**
-    El audio encaja muy bien con la estética. Sin embargo, hubo un retraso en la entrega del diseño del Nivel 1, lo que obligó a los programadores a usar prototipos grises (placeholders) durante más tiempo del previsto.
-* **Puntuación:** ⭐⭐⭐⭐☆ (4/5)
+    Estoy muy orgulloso del trabajo que he realizado. A lo largo del desarrollo, he buscado aportar tanto a nivel técnico como artístico, encargándome del diseño del mostrador de la tienda y la animación de regar del personaje. Mi trabajo en la clase player sirvió como base del movimiento sobre la que luego pudimos iterar junto con '@lucass-05'.
+
+En el apartado de programación, me encargué de crear la arquitectura del mapa. He implementado sistemas inmersivos como el sistema visual del cursor y transparencias, dándole mucho mimo a la estética y a que no hubiesen errores o pequeños bugs. Además, dediqué mucho esfuerzo a solucionar problemas complejos de físicas, como gestionar las diferentes alturas en los puentes aislando las mallas de navegación, o ajustar los colliders asimétricos de los edificios.
+
+Mi colaboración con '@lucass-05' en la parte TopDown fue clave para unificar los mapas con las mecánicas de juego de los NPCs. Ha sido un proyecto exigente, pero me considero una persona resolutiva y que ha no ha tenido problemas para echar horas, que siempre ha estado dispuesta a pulir cada parte del código y del mapa hasta conseguir que la experiencia del jugador fuese la deseada.
+
+* **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
 ---
 
