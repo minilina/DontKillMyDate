@@ -196,7 +196,7 @@ Valoración escrita por `@sergiicl`:
 |:--------------------|:----------------|:----------:|:----------------------:|
 | **@minilina**  | Programadora / Gameplay / Artista 2D    |   ⭐⭐⭐⭐⭐ |           5            |
 | **@meriwen** |Programadora       |   ⭐⭐⭐⭐⭐ |           5            |
-| **@didimax89** | Arte / UI       |   ⭐⭐⭐⭐⭐ |           5            |
+| **@didimax89** | Programador / Level Designer / Artista 2D / Gameplay |   ⭐⭐⭐⭐⭐ |           5            |
 | **@laurimba**     | Programadora / Diseñadora / Artista 2D  |   ⭐⭐⭐⭐⭐ |           5            |
 | **@lucass-05**     | Programador/ Diseño animaciones 2D/ Redacción de diálogos  |   ⭐⭐⭐⭐⭐ |           5            |
 | **@sergiicl**   | Programación / Compositor y Productor |   ⭐⭐⭐⭐☆  |           4            |
