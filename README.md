@@ -565,38 +565,39 @@ y reforzar el tono ligero y humorístico de la narrativa.
 
 El apartado visual se divide en dos bloques principales con identidades diferenciadas.
 
-Cocina / Consulta
+#### Cocina / Consulta
 
 La preparación de pociones ocurre en una vista fija inspirada en juegos de gestión clásicos y novelas visuales.
 
 La escena utiliza:
 
-interiores medievales de piedra y madera,
-iluminación cálida,
-decoración alquímica,
-objetos interactivos detallados,
-y animaciones ambientales.
+- Interiores medievales de piedra y madera
+- Iluminación cálida,
+- Decoración alquímica
+- Objetos interactivos detallados
+- Animaciones ambientales
 
 El caldero y el fuego funcionan como elementos centrales de la composición visual. El fuego posee personalidad propia mediante ojos animados y pequeños comentarios, reforzando el tono cómico del juego.
 
 La interfaz se integra directamente en el escenario mediante elementos diegéticos:
 
-estanterías,
-libros,
-frascos,
-ingredientes,
-y herramientas físicas visibles en pantalla.
-Exploración Top-Down
+- Estanterías
+- Libros
+- Frascos
+- Ingredientes
+- Herramientas físicas visibles en pantalla
+- 
+#### Exploración Top-Down
 
 La exploración exterior utiliza una vista cenital (top-down) inspirada en simuladores de vida y granja.
 
 El pueblo presenta:
 
-caminos de tierra,
-vegetación abundante,
-cultivos,
-casas de madera,
-y elementos naturales distribuidos para reforzar la sensación de entorno rural vivo.
+- Caminos de tierra
+- Vegetación abundante
+- Cultivos
+- Casas de madera
+- Elementos naturales distribuidos para reforzar la sensación de entorno rural vivo
 
 La paleta de colores utiliza verdes, marrones y amarillos saturados para crear un ambiente agradable y luminoso.
 
@@ -608,12 +609,12 @@ Los personajes combinan proporciones simples con rasgos visuales exagerados y f�
 
 Los NPCs normales utilizan un sistema modular basado en capas:
 
-peinados,
-ojos,
-ropa,
-accesorios,
-colores,
-y elementos raciales.
+- Peinados
+- Ojos
+- Ropa
+- Accesorios
+- Colores
+- Elementos raciales
 
 Esto permite generar una gran variedad de clientes manteniendo coherencia estética.
 
@@ -625,10 +626,10 @@ La interfaz utiliza marcos, botones y cajas de diálogo inspirados en RPGs clás
 
 Se prioriza:
 
-legibilidad,
-contraste alto,
-navegación simple,
-y feedback visual inmediato.
+- Legibilidad
+- Contraste alto
+- Navegación simple
+- Feedback visual inmediato
 
 Las cajas de diálogo grandes y el uso de tipografía pixelada ayudan a mantener la coherencia estética general.
 
@@ -640,12 +641,12 @@ La música utiliza melodías suaves y relajadas durante la exploración, mientra
 
 Los efectos de sonido refuerzan la interacción con los objetos:
 
-burbujeos,
-fuego,
-golpes de mortero,
-cortes,
-sonidos mágicos,
-y reacciones de clientes.
+- Burbujeos
+- Fuego
+- Golpes de mortero
+- Cortes
+- Sonidos ambientales
+- Reacciones de clientes
 
 ## 7.	Experiencia de juego
 ## 8.	Producción
