@@ -62,10 +62,17 @@ export default class TopDownScene extends StoppableScene {
     }
 
     setupPlayer(startX, startY, direccion = 'down') {
+        this.navMeshSuelo = null;
+        this.navMeshPuente = null;
+
         // Malla altura 0
-        this.navMeshSuelo = this.navMeshPlugin.buildMeshFromTilemap("meshSuelo", this.map, [this.capaColisiones], null, 4.5);
+        if (this.capaColisiones) {
+            this.navMeshSuelo = this.navMeshPlugin.buildMeshFromTilemap("meshSuelo", this.map, [this.capaColisiones], null, 4.5);
+        }
         // Malla altura puente (si existe)
-        this.navMeshPuente = this.navMeshPlugin.buildMeshFromTilemap("meshPuente", this.map, [this.capaColisionesPuente], null, 4.5);
+        if (this.capaColisionesPuente) {
+            this.navMeshPuente = this.navMeshPlugin.buildMeshFromTilemap("meshPuente", this.map, [this.capaColisionesPuente], null, 4.5);
+        }
 
         // Jugador
         this.player = new Player(this, startX, startY);
@@ -460,7 +467,8 @@ export default class TopDownScene extends StoppableScene {
     }
 
     hover(configuraciones) {
-        let objetoBajoElRaton = null;
+        let configBajoElRaton = null;
+        let tileBajoElRaton = null;
         let tocandoUI = false;
 
         // Cuando mueves raton
@@ -469,12 +477,14 @@ export default class TopDownScene extends StoppableScene {
             tocandoUI = gameObjects && gameObjects.some(obj => obj.scrollFactorX === 0 || obj.scrollFactorY === 0);
             if (tocandoUI) {
                 this.game.canvas.classList.remove('cursor-far'); // Si el raton entra en un boton (menu de pausa), quitamos el cursor gris por si acaso
-                objetoBajoElRaton = null;
+                configBajoElRaton = null;
+                tileBajoElRaton = null;
                 return;
             }
 
             const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
-            objetoBajoElRaton = null; // Reseteamos por defecto
+            configBajoElRaton = null;
+            tileBajoElRaton = null; // Reseteamos por defecto
 
             for (const config of configuraciones) {
                 if (!config.capa) continue; // Si la capa no existe, pasamos a la siguiente
@@ -482,21 +492,30 @@ export default class TopDownScene extends StoppableScene {
 
                 const tile = config.capa.getTileAtWorldXY(worldPoint.x, worldPoint.y);
                 if (tile && config.ids.includes(tile.index)) {
-                    objetoBajoElRaton = config;
+                    configBajoElRaton = config;
+                    tileBajoElRaton = tile;
                     break; // Si ya hemos encontrado algo interactivo, dejamos de buscar
                 }
             }
         });
 
-            // Comprobar la distancia aunque el raton este quieto
+        // Comprobar la distancia aunque el raton este quieto
         this.events.on('update', () => {
             if (this.isTransitioning || tocandoUI) return;
 
-            if (objetoBajoElRaton) {
+            if (configBajoElRaton && tileBajoElRaton) {
                 let estaCerca = false;
 
                 // Si el jugador ya esta cerca del objeto (detectado por la "E"), el cursor se pondra en pointer
-                if (this.interactableCercano && this.interactableCercano.tipo === objetoBajoElRaton.tipo) estaCerca = true;
+                if (configBajoElRaton.tipo && this.interactableCercano && this.interactableCercano.tipo === configBajoElRaton.tipo) estaCerca = true;
+
+                else if (this.player && this.player.active) {
+                    const distAlTile = Phaser.Math.Distance.Between(
+                        this.player.x, this.player.y, 
+                        tileBajoElRaton.pixelX + 8, tileBajoElRaton.pixelY + 8 
+                    );
+                    if (distAlTile <= 40) estaCerca = true;
+                }
 
                 // Cambiamos el cursor si te alejas caminando
                 if (estaCerca) {
@@ -608,6 +627,17 @@ export default class TopDownScene extends StoppableScene {
                     // Verificamos si la "E" ya mira este objeto (para interactuar aunque estemos clickando lejos)
                     if (this.interactableCercano && this.interactableCercano.tipo === config.tipo) {
                         onInteract(config.tipo, tile);
+                        return;
+                    }
+
+                    const distAlTile = Phaser.Math.Distance.Between(
+                        this.player.x, this.player.y, 
+                        tile.pixelX + 8, tile.pixelY + 8
+                    );
+
+                    if (distAlTile <= 40) {
+                        onInteract(config.tipo, tile);
+                        return;
                     }
                     return;
                 }

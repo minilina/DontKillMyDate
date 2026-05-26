@@ -32,7 +32,7 @@ export default class City extends topDownScene {
         this.crearNPCs();
 
         this.setupDefaultFootstepSounds();
-        this.player.zElevacion = 3000;
+        this.cambiarPiso(true);
 
         if (capaColisionesPuente) {
             capaColisionesPuente.setCollisionByExclusion([-1]);

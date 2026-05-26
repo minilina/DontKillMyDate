@@ -94,8 +94,16 @@ export default class DailySummary extends Phaser.Scene {
       });
     }
 
-    const sign = stats.repChange >= 0 ? "+" : "";
-    const repLabel = `Reputación Total: ${GameState.reputation} (${sign}${stats.repChange})`;
+    let repLabel = "";
+    const netSign = stats.repChange >= 0 ? "+" : "";
+
+    if (stats.wateringPenalty && stats.wateringPenalty > 0) {
+      const repPorPociones = stats.repChange + stats.wateringPenalty;
+      const potionSign = repPorPociones >= 0 ? "+" : "";
+      repLabel = `Reputación Total: ${GameState.reputation} (Pociones: ${potionSign}${repPorPociones} | Neto: ${netSign}${stats.repChange})`;
+    } else {
+      repLabel = `Reputación Total: ${GameState.reputation} (${netSign}${stats.repChange})`;
+    }
 
     this.add
       .text(centerX, centerY + 25 + offsetY, repLabel, {
