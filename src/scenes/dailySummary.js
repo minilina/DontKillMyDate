@@ -169,7 +169,10 @@ export default class DailySummary extends Phaser.Scene {
         currentDay: GameState.currentDay,
         reputation: GameState.reputation,
         specialNpcRecords: GameState.specialNpcRecords,
-        tutorialDone: true
+        tutorialDone: true,
+        topdownNpcFirstDialogueDone: GameState.topdownNpcFirstDialogueDone,
+        timesMotherTalkedToPlayer: GameState.timesMotherTalkedToPlayer,
+        lastDayTalkedToMother: GameState.lastDayTalkedToMother
       };
 
       localStorage.setItem('potionGameSave', JSON.stringify(saveData));

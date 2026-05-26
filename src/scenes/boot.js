@@ -911,6 +911,12 @@ export default class Boot extends Phaser.Scene {
                 this.registry.set('tutorialDone', true);
             }
 
+            if (data.saveData.topdownNpcFirstDialogueDone) {
+                GameState.topdownNpcFirstDialogueDone = data.saveData.topdownNpcFirstDialogueDone;
+            }
+            GameState.timesMotherTalkedToPlayer = data.saveData.timesMotherTalkedToPlayer || 0;
+            GameState.lastDayTalkedToMother = data.saveData.lastDayTalkedToMother || 0;
+
             this.scene.start('house');
         } else {
             this.scene.start('Letter');
