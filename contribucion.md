@@ -125,6 +125,7 @@ El sistema de tutorial y la introducción quedaron completamente funcionales y s
     * Implementación de la mecánica de conversación con la `madre`, con sus diferentes diálogos que se desbloquean cuanto más hablemos con ella.
     * Colaboración en la redacción de los diálogos de todos los `scriptedNpcs` e integración de sus funcionalidades del topdown a las funcionalidades que ya teníamos en escenas como `store`, reutilizando codigo como el de `DialogueManager` consiguiendo un código más extensible y compacto.
 * **Valoración General:**
+
     Me enfoqué totalmente en el diseño de la parte `topDown` del juego, metiendo dinámicas divertidas como la `conversación con los personajes` y su `desbloqueo`, así como funcionalidades de manejo como el `navmesh` y el comportamiento de `player`. Diseñé muchas `animaciones 2d` del personaje principal y de los NPC (versión topDown) y metí funcionalidades generales como todo lo relacionado con el `menú de pausa` y las `escenas de diálogo` con personajes. Además redacté unos cuantos `diálogos` relacionados con el lore del juego.
 
   Colaboré principalmente con `@didimax89` en la parte topdown por su implicación en los mapas añadiendo juntos muchas funcionalidades, y con `@minilina` en los apartados de los NPC al haber creado ella todos sus diseños y sus personalidades en los diálogos, además de sus mecánicas especiales (crecer el gnomo o las alas del hada). Inspirándome en ello implementé sus interacciones en el `topdown` y sus animaciones en pequeñito.
@@ -132,9 +133,9 @@ El sistema de tutorial y la introducción quedaron completamente funcionales y s
 
   ** Añadir la informacion de los npcs del topdown en el mismo archivo scriptedNPC
 
-  ** Adaptarme al Tiled para las funcionalidades navmesh y de interacción y las funcionalidades sin modificarlo
+  ** Adaptarme al Tiled para las funcionalidades de navmesh y de interacción, sin modificar el propio Tiled.
 
-  ** Seguir la estética de los diálogos y botones para tanto el menu como las conversaciones con los npc reutilizando y modificando clases como `dialogueManager` y `dialogueUI` , que inicialmente estaban pensadas para `store`, pero consiguiendo adecuarlas a otras partes del juego sin estropear su funcionamiento en `store`.
+  ** Seguir la estética de los diálogos y botones para tanto el `menu` como las `conversaciones con los npc`, reutilizando y modificando clases como `dialogueManager` y `dialogueUI` , que inicialmente estaban pensadas para `store`, pero consiguiendo adecuarlas a otras partes del juego sin estropear su funcionamiento en `store`.
 
 
 * **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
