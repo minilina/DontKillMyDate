@@ -659,6 +659,12 @@ export default class Kitchen extends StoppableScene {
             }
         } else if (itemType === 'processedTaste') {
             if (objectsUnderMouse.includes(this.cauldronImg)) {
+
+                if (dropData.penalty && dropData.penalty > 0) {
+                    GameState.reducePotionQuality(dropData.penalty);
+                    console.log("Penalización aplicada:", dropData.penalty, "Calidad actual:", GameState.currentPotion.quality);
+                }
+                
                 // DISPARAMOS HOOK "DROP EN CALDERO"
                 this.runHook('kitchen:drop:cauldron', { itemType, dropData });
 
@@ -727,6 +733,8 @@ export default class Kitchen extends StoppableScene {
                 const trashHook = this.runHook('kitchen:trash', { shape: dropData });
                 if (trashHook.cancelled) return false;
 
+                GameState.currentPotion.quality = 100;
+                
                 if (!this.cauldron.hasLiquid) {
                     this.resetKitchen();
                 }
@@ -852,7 +860,7 @@ export default class Kitchen extends StoppableScene {
     }
 
     // devolver el ingrediente procesado a la cocina después del minijuego
-    returnFromMinigame(ingredient, processType, cutsArray = []) {
+    returnFromMinigame(ingredient, processType, cutsArray = [], penalty = 0) {
         if (processType === 'cut') {
 
             const baseName = ingredient.replace('cut', '').toLowerCase();
@@ -886,7 +894,8 @@ export default class Kitchen extends StoppableScene {
                 name: baseName,
                 consistency: 'chopped',
                 cuts: cutsArray,
-                source: 'board'
+                source: 'board',
+                penalty: penalty
             });
 
         } else if (processType === 'mortar') {
@@ -929,7 +938,8 @@ export default class Kitchen extends StoppableScene {
             this.grab(mashedIngredient, spriteKeys.smashed, 'processedTaste', {
                 name: baseName,
                 consistency: 'mashed',
-                source: 'mortar'
+                source: 'mortar',
+                penalty: penalty
             });
         }
     }

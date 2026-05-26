@@ -18,6 +18,7 @@ export default class MortarMinigame extends Phaser.Scene {
         this.gameActive = false;
         this.circles = [];
         this.sc = 3; // escala
+        this.penalty = 0;
     }
 
     create() {
@@ -204,13 +205,13 @@ export default class MortarMinigame extends Phaser.Scene {
         // Flash rojo
         this.cameras.main.flash(200, 102, 14, 14);
 
-        // ❗ Penalización de score
+        // Penalización de score
         this.score = Math.max(0, this.score - 1);
         this.scoreText.setText('Score: ' + this.score);
 
         // Penalización de la poción (solo fuera del tutorial)
         if (!this.isTutorial) {
-            GameState.reducePotionQuality(1);
+            this.penalty += 1;
         }
     }
 
@@ -346,7 +347,7 @@ export default class MortarMinigame extends Phaser.Scene {
         let kitchenScene = this.scene.get('kitchen');
 
         // Enviamos la puntuación obtenida a la cocina
-        kitchenScene.returnFromMinigame(this.ingredientId, 'mortar');
+        kitchenScene.returnFromMinigame(this.ingredientId, 'mortar', [], this.penalty);
 
         // --- GESTIÓN DE MÚSICA (EXIT) ---
         // 1. Detenemos la música del minijuego

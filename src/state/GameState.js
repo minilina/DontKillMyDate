@@ -169,7 +169,7 @@ const GameState = {
   },
 
   evaluatePotion(cauldronPotion, expectedOrder, potionShape) {
-    let quality = 100;
+    let quality = this.currentPotion.quality;
     const req = expectedOrder.requirements;
 
     const dict = {

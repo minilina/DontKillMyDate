@@ -15,6 +15,7 @@ export default class CuttingMinigame extends Phaser.Scene {
         this.misses = 0;
         this.zones = [];
         this.sc = 3; // escala
+        this.penalty = 0;
     }
 
     create() {
@@ -191,7 +192,7 @@ export default class CuttingMinigame extends Phaser.Scene {
             this.misses++;
             this.cameras.main.flash(200, 102, 14, 14); // flash rojo
             // penalización por fallo
-            GameState.reducePotionQuality(5);
+            this.penalty += 5;
             this.sound.play('errorSound', { volume: 1 });
         }
 
@@ -213,11 +214,10 @@ export default class CuttingMinigame extends Phaser.Scene {
             // penalización por cortes no realizados
             const unmadeCuts = 3 - this.cutsMade;
             if (unmadeCuts > 0) {
-                GameState.reducePotionQuality(unmadeCuts * 10);
+                this.penalty += (unmadeCuts * 5);
             }
 
             this.time.delayedCall(1500, () => {
-                // Hemos sustituido la repetición de código por la llamada directa a exitScene
                 this.exitScene();
             });
         }
@@ -317,7 +317,7 @@ export default class CuttingMinigame extends Phaser.Scene {
     exitScene() {
         const cutsArray = this.zones.map(z => z.isCut);
         let kitchenScene = this.scene.get('kitchen');
-        kitchenScene.returnFromMinigame(this.ingredientId, 'cut', cutsArray);
+        kitchenScene.returnFromMinigame(this.ingredientId, 'cut', cutsArray, this.penalty);
 
         // --- GESTIÓN DE MÚSICA (EXIT) ---
         // 1. Detenemos la música del minijuego
@@ -331,7 +331,6 @@ export default class CuttingMinigame extends Phaser.Scene {
                 this.game.bgMusic.play();
             }
         }
-        // -------------------------
 
         this.scene.resume('kitchen');
         this.scene.stop();
