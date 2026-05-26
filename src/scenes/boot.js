@@ -464,8 +464,8 @@ import successSound from '../../assets/sound/success.mp3';
 import waterAmbientSound from '../../assets/sound/waterAmbient.ogg';
 import landSlideSound from '../../assets/sound/landslide.ogg';
 import minigameSound from '../../assets/sound/minigame.mp3';
-import stompingDoorSound from '../../assets/sound/stompingDoor.mp3';
-import knockingDoorSound from '../../assets/sound/knockingDoor.mp3';
+import stompingDoorSound from '../../assets/sound/stompingdoor.mp3';
+import knockingDoorSound from '../../assets/sound/knockingdoor.mp3';
 import watering1Sound from '../../assets/sound/watering1.mp3';
 //import watering2Sound from '../../assets/sound/watering2.mp3';
 //UI
