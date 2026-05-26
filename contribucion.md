@@ -1,7 +1,7 @@
 # 📄 Informe de Contribución: Don't Kill My Date
 
-**Fecha del informe:** 29 de Enero, 2026
-**Estado del proyecto:** [Ej: Beta / Finalizado / Sprint 3]
+**Fecha del informe:** 26 de Mayo, 2026
+**Estado del proyecto:** Finalizado
 
 ---
 
@@ -79,13 +79,24 @@ El sistema de tutorial y la introducción quedaron completamente funcionales y s
 ---
 
 ### 👤 @laurimba (Laura Valles)
-* **Rol:** Programador de UI / Soporte
+* **Rol:** Programadora / Disñadora / Artista 2D
 * **Tareas Realizadas:**
-    * Programación de la funcionalidad de los botones del Menú Principal.
-    * Ajustes menores en los créditos del juego.
+    * Diseño artístico e ilustración de la `cocina` y de todos sus objetos interactivos (frascos, ingredientes, cuencos y herramientas).
+    * Ilustración del sprite del `Libro de Alquimia` abierto y sus etiquetas, y de la carta para la escena introductoria `Letter`.
+    * Programación completa de todas las mecánicas de la cocina (`kitchen.js`), integrando el sistema de `Drag & Drop` para manipular objetos, la lógica de la mesa de trabajo (plato de mezclas y papelera) y el sistema interactivo de ayudas visuales (bordes iluminados y flechas indicativas).
+    * Programación completa de la lógica del caldero (`cauldron.js`) y del control de su barra de temperatura.
+    * Diseño y animación completa del personaje del `fuego`, incluyendo sus expresiones.
+    * Programación de los bocadillos de texto y frases dinámicas que dice el fuego de forma aleatoria.
+    * Ilustración y programación completa del minijuego de cortar ingredientes en la cocina (`cuttingMinigame.js`).
+    * Ilustración fondo del minijuego de machacar ingredientes en la cocina (`mortar Minigame.js`).
+    * Desarrollo en `GameState.js` del sistema que calcula la puntuación y la calidad de las pociones entregadas, restando puntos por cada fallo cometido.
+    * Programación del sistema de `reputación` según la calidad y el tiempo de la poción.
+    * Implementación del sistema de guardado automático con `localStorage` para guardar de forma permanente el día actual, la reputación y el progreso de la historia.
+    * Diseño y programación de la página web del videojuego utilizando HTML y CSS.
+
 * **Valoración General:**
-    Su contribución fue baja en comparación con el resto del equipo. Faltó a varias reuniones de *daily scrum* y la funcionalidad del menú tuvo que ser refactorizada por @dev_master_99 debido a errores de lógica.
-* **Puntuación:** ⭐⭐☆☆☆ (2/5)
+
+* **Puntuación:** ⭐⭐⭐⭐⭐ (5/5)
 
 ---
 
@@ -136,6 +147,6 @@ El sistema de tutorial y la introducción quedaron completamente funcionales y s
 | **@minilina**  | Programadora / Gameplay / Artista 2D    |   ⭐⭐⭐⭐⭐ |           5            |
 | **@meriwen** |Programadora       |   ⭐⭐⭐⭐⭐ |           5            |
 | **@didimax89** | Arte / UI       |   ⭐⭐⭐⭐⭐ |           5            |
-| **@laurimba**     | Audio / Diseño  |   ⭐⭐⭐⭐☆ |           4            |
+| **@laurimba**     | Programadora / Diseñadora / Artista 2D  |   ⭐⭐⭐⭐⭐ |           5            |
 | **@lucass-05**     | Programador/ Diseño animaciones 2D/ Redacción de diálogos  |   ⭐⭐⭐⭐⭐ |           5            |
 | **@sergiicl**   | Programación UI |   ⭐⭐☆☆☆  |           2            |
