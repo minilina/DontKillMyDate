@@ -745,7 +745,7 @@ El proyecto ha sido desarrollado utilizando:
 - Libresprite para la creación de sprites y animaciones pixel art
 - Tiled para la creación de mapas
 - GitHub para control de versiones y trabajo colaborativo.
-- 
+  
 ### 8.2. Organización del equipo
 
 El desarrollo se dividió en distintas áreas:
