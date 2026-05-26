@@ -39,6 +39,8 @@ Durante el día en el que se desarrolla la actividad comercial, el core loop es 
 
 ![Core loop](assets/img/core_loop.svg)
 
+Este core-loop se repite durante **10 días** de juego.
+
 ## 3.	Mecánicas
 
 ### 3.1.	Diálogo
@@ -175,6 +177,23 @@ La reputación es la "vida" de la tienda, comenzando el día 1 en 20 puntos. Tra
   * **Servicio lento (>= 120 segundos):** Penalización de -2 puntos de reputación.
   * *(El tiempo que el juego pasa pausado en el menú o en cuenta atrás de minijuegos no contabiliza para este cálculo).*
 * **Mantenimiento del Huerto:** Al finalizar el día, se comprueba el estado de los dos huertos del pueblo. Por cada huerto que el jugador no haya regado, sufrirá una penalización de **-5 puntos de reputación** al cierre de la jornada (máximo -10 puntos). Esta mecánica no se aplica durante el Día 1.
+
+#### 3.4.4. La Reputación y sus Consecuencias
+
+La reputación no es solo un marcador de rendimiento: determina directamente el desenlace de la partida y el estado del mundo en el top-down.
+
+**Desbloqueo de personajes en la ciudad**
+Atender correctamente (calidad ≥ 80%) a un cliente especial desbloquea su aparición permanente en el mapa top-down, donde podrá ser visitado para obtener diálogos adicionales de lore.
+
+**Finales posibles**
+
+* **Final Malo (Reputación ≤ -60):** La Guardia Real llama a la puerta. El Inspector Real entra y declara la clausura inmediata de la tienda, desterrando a la protagonista del pueblo. La partida guardada se borra.
+
+* **Final Intermedio (Día 15 completado sin cumplir las condiciones del final bueno):** La tía Agatha llama a la puerta y recupera la tienda. La protagonista no ha conseguido ganarse del todo su lugar en el pueblo. La partida guardada se borra.
+
+* **Final Bueno — Variante Feliz (Día 15 completado + ≥ 5 visitas a la madre + reputación ≥ 170 + poción final a la madre con calidad ≥ 80%):** La madre aparece como cliente final. Si la poción que le entregamos es de calidad suficiente, se desvela su identidad y la historia concluye de forma óptima.
+
+* **Final Bueno — Variante Agridulce (mismas condiciones pero poción final < 80%):** La madre aparece igualmente, pero el desenlace deja una sensación incompleta al no haber conseguido la poción perfecta en el momento decisivo.
 
 ---
 
