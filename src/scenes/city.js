@@ -194,7 +194,6 @@ export default class City extends topDownScene {
             if (pasoActual >= secuenciaMontaje.length) { // Si ya no quedan cortes, finalizamos
                 this.player.setPosition(origX, origY);
                 this.player.setFlipX(origFlip);
-                
                 // Devolvemos el control al jugador
                 this.player.bloquearAnimaciones = false;
                 if (this.player.setDireccion) this.player.setDireccion(origDir);
@@ -211,6 +210,7 @@ export default class City extends topDownScene {
             // Aplicamos el corte actual
             const frame = secuenciaMontaje[pasoActual];
             this.player.setPosition(frame.px, frame.py);
+            this.sound.play('watering1Sound', { volume: 0.6 });
 
             // Reproducimos la animacion
             if (frame.dir === 'left') {

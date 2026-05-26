@@ -13,6 +13,8 @@ export default class TopDownScene extends StoppableScene {
     // ==========================================
     // INICIALIZACIÓN DE ESCENA Y MAPA
     // ==========================================
+    
+    // Metodo generico para inicializar mapas topDown
     initScene(mapKey) {
         this.game.canvas.style.cursor = 'default';
         this.game.canvas.classList.remove('cursor-far');
@@ -21,6 +23,7 @@ export default class TopDownScene extends StoppableScene {
         this.isTransitioning = false;
 
         const tilesetsArray = this.map.tilesets.map(tileset => {
+            // map.addTilesetImage(Nombre_en_Tiled, Nombre_en_Phaser) (nombre igual en ambos)
             return this.map.addTilesetImage(tileset.name, tileset.name);
         });
 
@@ -62,6 +65,7 @@ export default class TopDownScene extends StoppableScene {
     }
 
     setupPlayer(startX, startY, direccion = 'down') {
+        // NavMesh
         this.navMeshSuelo = null;
         this.navMeshPuente = null;
 
@@ -74,10 +78,22 @@ export default class TopDownScene extends StoppableScene {
             this.navMeshPuente = this.navMeshPlugin.buildMeshFromTilemap("meshPuente", this.map, [this.capaColisionesPuente], null, 4.5);
         }
 
+        //Descomentar esto para debuggear navmesh---------------------------------------------
+        /* this.navMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen
+        this.navMesh.debugDrawClear(); // Clears the overlay
+        // Visualize the underlying navmesh
+        this.navMesh.debugDrawMesh({
+            drawCentroid: true,
+            drawBounds: false,
+            drawNeighbors: true,
+            drawPortals: true
+        }); */
+        //-------------------------------------------------------------------------------------
+
         // Jugador
         this.player = new Player(this, startX, startY);
         this.player.setNavmesh(this.navMeshSuelo);
-        this.player.zElevacion = 0;
+        this.player.zElevacion = 0; // Para el tema de las escaleras de la ciudad
         if (this.player.setDireccion) { this.player.setDireccion(direccion); }
 
         // Cámara
@@ -86,14 +102,14 @@ export default class TopDownScene extends StoppableScene {
         this.cameras.main.startFollow(this.player);
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-        this.cameras.main.fadeIn(600, 0, 0, 0);
+        this.cameras.main.fadeIn(600, 0, 0, 0); // todas las escenas empiezan con un fadeIn
 
         if (this.capaColisiones) {
             this.physics.add.collider(
                 this.player,
                 this.capaColisiones,
                 null,
-                () => { return this.player.zElevacion === 0; },
+                () => { return this.player.zElevacion === 0; }, // Solo colisionas si no estas elevado (zElevacion)
                 this
             );
         }
@@ -124,6 +140,7 @@ export default class TopDownScene extends StoppableScene {
 
         // Profundidad automática (Z-sorting)
         this.events.on('update', () => {
+            // Solo actualiza si el jugador existe y sigue activo
             if (this.player && this.player.active) {
                 this.player.setDepth(this.player.y + 4 + this.player.zElevacion);
             }
@@ -144,7 +161,7 @@ export default class TopDownScene extends StoppableScene {
             cfg.sound = this.sound.add(cfg.key, { loop: true, volume: cfg.volume || 1 });
         }
 
-        // Limpieza al salir de la escena
+        // Limpiar sonidos
         this.events.on('shutdown', () => {
             for (const cfg of Object.values(this.footstepConfigs || {})) {
                 if (cfg.sound) cfg.sound.stop();
@@ -200,6 +217,7 @@ export default class TopDownScene extends StoppableScene {
             }
         }
 
+        // Cambio de suelo
         if (this.currentFootstep !== nuevoSonido) {
             if (this.currentFootstep && this.currentFootstep.sound) {
                 this.currentFootstep.sound.stop();
@@ -212,6 +230,7 @@ export default class TopDownScene extends StoppableScene {
             this.currentFootstep = nuevoSonido;
         }
 
+        // Parado
         if (!moviendose && this.currentFootstep) {
             if (this.currentFootstep.sound) this.currentFootstep.sound.stop();
             this.currentFootstep = null;
@@ -331,6 +350,7 @@ export default class TopDownScene extends StoppableScene {
      * ya que necesita que la cámara tenga el zoom correcto aplicado.
      */
     setupUI() {
+        // UI Y MENU DE PAUSA
         this.setupPause({ isTopDown: true });
     }
 
@@ -340,12 +360,17 @@ export default class TopDownScene extends StoppableScene {
 
         if (capa) {
             capa.objects.forEach(obj => {
+                // Buscamos la configuracion de este objeto en el diccionario
                 const config = configuracionFisicas[obj.name];
 
                 if (config) {
+                    // La key de la imagen (si no la hemos especificado, usamos el propio obj.name)
                     const imgKey = config.key || obj.name;
+                    
+                    // Creamos el sprite para saber cuanto mide la imagen en realidad
                     const sprite = grupo.create(obj.x, obj.y, imgKey);
 
+                    // Ajuste visual: Si Tiled no manda tamaño, usamos la mitad de la imagen.
                     const offsetX = config.spriteOffsetX !== undefined ? config.spriteOffsetX : (obj.width ? (obj.width / 2) : (sprite.width / 2));
                     sprite.x += offsetX;
 
@@ -360,6 +385,8 @@ export default class TopDownScene extends StoppableScene {
                     if (obj.properties?.find(p => p.name === 'flipX')?.value) sprite.setFlipX(true);
                     sprite.refreshBody();
 
+                    // Si configuramos 'centrarOffset: true', calcula desde el centro (para los arboles)
+                    // Si no, lo calcula desde la izquierda (para las estructuras)
                     const anchoFisica = config.dw !== undefined ? sprite.width + config.dw : config.w;
                     const finalOffsetX = config.centrarOffset ? (sprite.width / 2) + config.ox : config.ox;
 
@@ -382,7 +409,7 @@ export default class TopDownScene extends StoppableScene {
         this.events.on('update', () => {
             if (!this.player || !this.player.active) return;
             const px = this.player.x;
-            const py = this.player.y + 4;
+            const py = this.player.y + 4; // Ajustamos el punto de prueba al cuerpo del jugador
 
             grupos.forEach(grupo => {
                 if (!grupo || !grupo.children) return;
@@ -396,7 +423,9 @@ export default class TopDownScene extends StoppableScene {
                     if (obj.zElevacionObjeto > 0 && this.player.zElevacion > 0) mismoNivel = true;
                     if ((!obj.zElevacionObjeto || obj.zElevacionObjeto === 0) && this.player.zElevacion === 0) mismoNivel = true;
 
+                    // Comprobamos si el jugador esta por detras del objeto (y menor que la base)
                     if (this.player.y < obj.y && mismoNivel) {
+                        // Calculamos los bordes reales de la imagen en el mundo
                         const scaleX = obj.scaleX || 1;
                         const scaleY = obj.scaleY || 1;
                         const left = obj.x - (obj.displayOriginX * scaleX);
@@ -404,14 +433,18 @@ export default class TopDownScene extends StoppableScene {
                         const top = obj.y - (obj.displayOriginY * scaleY);
                         const bottom = top + (obj.height * scaleY);
 
+                        // Solo hacemos la prueba del pixel si el jugador esta dentro del cuadrado que ocupa la imagen (con un poco de margen)
                         if (px >= left - 3 && px <= right + 3 && py >= top - 3 && py <= bottom + 3) {
+                            
+                            // Traducimos la posicion del mundo a las coordenadas de la foto (de 0 a Width)
                             let localX = Math.floor((px - left) / scaleX);
                             let localY = Math.floor((py - top) / scaleY);
 
+                            // Si le hemos hecho un setFlipX a la imagen, invertimos la X
                             if (obj.flipX) { localX = obj.width - localX; }
 
-                            const radio = 3;
-                            const paso = 4;
+                            const radio = 3; // por si el pixel exacto es transparente, miramos un poco alrededor
+                            const paso = 4; // para no mirar cada pixel y optimizar (miramos cada 4 pixels, es suficiente para detectar si hay algo solido cerca)
                             let tocoObjeto = false;
 
                             for (let ix = -radio; ix <= radio; ix += paso) {
@@ -419,28 +452,32 @@ export default class TopDownScene extends StoppableScene {
                                     const checkX = localX + ix;
                                     const checkY = localY + iy;
 
+                                    // Nos aseguramos de no buscar pixeles fuera de los bordes de la imagen
                                     if (checkX >= 0 && checkX < obj.width && checkY >= 0 && checkY < obj.height) {
                                         const pixelAlpha = this.textures.getPixelAlpha(checkX, checkY, obj.texture.key, obj.frame.name);
 
                                         if (pixelAlpha > 0) {
                                             tocoObjeto = true;
-                                            break;
+                                            break; // Si ya toco uno, paramos el bucle para ahorrar rendimiento
                                         }
                                     }
                                 }
                                 if (tocoObjeto) break;
                             }
 
+                            // Si el radar detecto color, activamos la transparencia
                             if (tocoObjeto) { dif = true; }
                         }
                     }
 
+                    // Aplicamos el cambio de transparencia de forma suave
                     obj.alpha += ((dif ? 0.4 : 1) - obj.alpha) * 0.1;
                 });
             });
         });
     }
 
+    // Cambiar escena
     cambiarEscena(nuevaEscena, datos = {}) {
         if (this.isTransitioning) return;
         this.isTransitioning = true;
@@ -449,6 +486,7 @@ export default class TopDownScene extends StoppableScene {
         this.scene.start(nuevaEscena, datos);
     }
 
+    // para el depth dinamico
     crearDecoracionDinamica(nombresCapasObjetos, elevacionExtra = 0) {
         nombresCapasObjetos.forEach(nombreCapa => {
             const capa = this.map.getObjectLayer(nombreCapa);
@@ -466,6 +504,7 @@ export default class TopDownScene extends StoppableScene {
         });
     }
 
+    // HOVER PARA LAS VALLAS Y LA PIEDRA
     hover(configuraciones) {
         let configBajoElRaton = null;
         let tileBajoElRaton = null;
@@ -545,9 +584,11 @@ export default class TopDownScene extends StoppableScene {
     }
 
     crearSistemaInteraccion(configuraciones, onInteract) {
+        // Boton E
         this.teclaE_icono = this.add.image(0, 0, 'eBtn').setOrigin(0.5, 0.5).setDepth(10000).setVisible(false);
         this.estadoBotonE = false;
 
+        // animacion del boton E (parpadeo)
         this.time.addEvent({
             delay: 400, loop: true,
             callback: () => {
@@ -573,7 +614,9 @@ export default class TopDownScene extends StoppableScene {
             let configMasCercana = null;
 
             for (const config of configuraciones) {
+                // Para que no crashee
                 if (!config.capa || !config.capa.scene) continue;
+                // Si le pasamos una condicion y es falsa (la cueva ya esta abierta) lo ignoramos
                 if (config.condicion !== undefined && !config.condicion()) continue;
 
                 const tiles = config.capa.getTilesWithinWorldXY(px - distMax, py - distMax, distMax * 2, distMax * 2);
@@ -611,6 +654,7 @@ export default class TopDownScene extends StoppableScene {
             }
         });
 
+        // Raton
         this.input.on('pointerdown', (pointer) => {
             if (!this.player || !this.player.active) return;
 
@@ -621,6 +665,7 @@ export default class TopDownScene extends StoppableScene {
                 if (config.condicion !== undefined && !config.condicion()) continue;
 
                 const tile = config.capa.getTileAtWorldXY(worldPoint.x, worldPoint.y);
+                // Si no tiene idsClic definidos usa los de la E
                 const idsPermitidos = config.idsClic || config.ids;
 
                 if (tile && idsPermitidos.includes(tile.index)) {
@@ -677,6 +722,7 @@ export default class TopDownScene extends StoppableScene {
     }
 
     crearSistemaInteraccionNPCs() {
+        // ── Icono E ────────────────────────────────────────────────────────────────
         this.teclaE_npc = this.add.image(0, 0, 'eBtn').setOrigin(0.5).setDepth(10000).setVisible(false);
         this.estadoBotonENPC = false;
 
@@ -691,9 +737,11 @@ export default class TopDownScene extends StoppableScene {
 
         this.npcCercano = null;
 
+        // ── Detección del NPC más cercano ──────────────────────────────────────────
         this.events.on('update', () => {
             if (!this.player || !this.player.active) return;
 
+            // Si DialogueScene está activa, ocultamos el icono y no hacemos nada
             if (this.scene.manager.isActive("DialogueScene")) {
                 this.teclaE_npc.setVisible(false);
                 return;
@@ -720,12 +768,14 @@ export default class TopDownScene extends StoppableScene {
             }
         });
 
+        // ── Tecla E ────────────────────────────────────────────────────────────────
         this.input.keyboard.on('keydown-E', () => {
             if (!this.npcCercano) return;
             if (this.scene.manager.isActive("DialogueScene")) return;
             this.npcCercano.interact(this);
         });
 
+        // ── Click ──────────────────────────────────────────────────────────────────
         this.input.on('pointerdown', (pointer) => {
             if (!this.player || !this.player.active) return;
             if (this.scene.manager.isActive("DialogueScene")) return;

@@ -464,6 +464,10 @@ import successSound from '../../assets/sound/success.mp3';
 import waterAmbientSound from '../../assets/sound/waterAmbient.ogg';
 import landSlideSound from '../../assets/sound/landslide.ogg';
 import minigameSound from '../../assets/sound/minigame.mp3';
+import stompingDoorSound from '../../assets/sound/stompingDoor.mp3';
+import knockingDoorSound from '../../assets/sound/knockingDoor.mp3';
+import watering1Sound from '../../assets/sound/watering1.mp3';
+//import watering2Sound from '../../assets/sound/watering2.mp3';
 //UI
 import pauseBtn from '../../assets/sprites/pauseBtn.png';
 import pauseBtnPressed from '../../assets/sprites/pauseBtnPressed.png';
@@ -923,7 +927,11 @@ export default class Boot extends Phaser.Scene {
         this.load.audio('successSound', successSound);
         this.load.audio('waterAmbientSound', waterAmbientSound);
         this.load.audio('landSlideSound', landSlideSound);
-        this.load.audio('minigameSound', minigameSound);    
+        this.load.audio('minigameSound', minigameSound);   
+        this.load.audio('stompingDoorSound', stompingDoorSound); 
+        this.load.audio('knockingDoorSound', knockingDoorSound);
+        this.load.audio('watering1Sound', watering1Sound);
+        //this.load.audio('watering2Sound', watering2Sound);
         
         this.load.image('pauseBtn', pauseBtn);
         this.load.image('pauseBtnPressed', pauseBtnPressed);
