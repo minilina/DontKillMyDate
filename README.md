@@ -549,7 +549,104 @@ No aparece como cliente sino como personaje de cierre narrativo. Es la propietar
 | :--- | :---: | :---: | :---: |
 | **Sprite** | <img src="assets/sprites/kitchen/pocion_normal_vacia.png" width="32"> | <img src="assets/sprites/kitchen/pocion_corazon_vacia.png" width="32"> | <img src="assets/sprites/kitchen/pocion_estrella_vacia.png" width="32"> |
 
-## 6.	Estética y contenido
+## 6. Estética y contenido
+### 6.1. Dirección artística
+
+Don't Kill My Date ! utiliza una dirección artística pixel art inspirada en la fantasía medieval y en los juegos cozy de simulación y gestión. El objetivo visual es transmitir una sensación acogedora y mágica, mezclando humor, alquimia y vida cotidiana dentro de un pequeño pueblo fantástico.
+
+El juego combina elementos visuales cálidos y relajantes con detalles caricaturescos y expresivos, especialmente en los objetos interactivos de la cocina y en algunos personajes especiales.
+
+La estética general busca:
+
+transmitir comodidad visual,
+facilitar la lectura rápida de ingredientes y herramientas,
+y reforzar el tono ligero y humorístico de la narrativa.
+### 6.2. Estilo visual
+
+El apartado visual se divide en dos bloques principales con identidades diferenciadas.
+
+Cocina / Consulta
+
+La preparación de pociones ocurre en una vista fija inspirada en juegos de gestión clásicos y novelas visuales.
+
+La escena utiliza:
+
+interiores medievales de piedra y madera,
+iluminación cálida,
+decoración alquímica,
+objetos interactivos detallados,
+y animaciones ambientales.
+
+El caldero y el fuego funcionan como elementos centrales de la composición visual. El fuego posee personalidad propia mediante ojos animados y pequeños comentarios, reforzando el tono cómico del juego.
+
+La interfaz se integra directamente en el escenario mediante elementos diegéticos:
+
+estanterías,
+libros,
+frascos,
+ingredientes,
+y herramientas físicas visibles en pantalla.
+Exploración Top-Down
+
+La exploración exterior utiliza una vista cenital (top-down) inspirada en simuladores de vida y granja.
+
+El pueblo presenta:
+
+caminos de tierra,
+vegetación abundante,
+cultivos,
+casas de madera,
+y elementos naturales distribuidos para reforzar la sensación de entorno rural vivo.
+
+La paleta de colores utiliza verdes, marrones y amarillos saturados para crear un ambiente agradable y luminoso.
+
+Esta sección funciona como espacio de relajación y exploración narrativa entre jornadas de trabajo dentro de la tienda.
+
+### 6.3. Diseño de personajes
+
+Los personajes combinan proporciones simples con rasgos visuales exagerados y fácilmente reconocibles.
+
+Los NPCs normales utilizan un sistema modular basado en capas:
+
+peinados,
+ojos,
+ropa,
+accesorios,
+colores,
+y elementos raciales.
+
+Esto permite generar una gran variedad de clientes manteniendo coherencia estética.
+
+Por otro lado, los personajes especiales poseen ilustraciones y sprites únicos más detallados, reforzando su importancia narrativa.
+
+### 6.4. Interfaz y UX visual
+
+La interfaz utiliza marcos, botones y cajas de diálogo inspirados en RPGs clásicos y juegos Flash de gestión.
+
+Se prioriza:
+
+legibilidad,
+contraste alto,
+navegación simple,
+y feedback visual inmediato.
+
+Las cajas de diálogo grandes y el uso de tipografía pixelada ayudan a mantener la coherencia estética general.
+
+### 6.5. Sonido y música
+
+La ambientación sonora está inspirada en fantasía medieval ligera y juegos cozy.
+
+La música utiliza melodías suaves y relajadas durante la exploración, mientras que en la cocina el ritmo se vuelve más dinámico para acompañar la presión de los minijuegos y la preparación de pociones.
+
+Los efectos de sonido refuerzan la interacción con los objetos:
+
+burbujeos,
+fuego,
+golpes de mortero,
+cortes,
+sonidos mágicos,
+y reacciones de clientes.
+
 ## 7.	Experiencia de juego
 ## 8.	Producción
 
