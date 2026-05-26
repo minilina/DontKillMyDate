@@ -123,9 +123,9 @@ El sistema de tutorial y la introducción quedaron completamente funcionales y s
 
 | Usuario (GitHub)    | Rol             | Puntuación | Puntuación como número |
 |:--------------------|:----------------|:----------:|:----------------------:|
-| **@minilina**  | Programación    |   ⭐⭐⭐⭐⭐ |           5            |
-| **@meriwen** | Arte / UI       |   ⭐⭐⭐⭐⭐ |           5            |
+| **@minilina**  | Programadora / Gameplay / Artista 2D    |   ⭐⭐⭐⭐⭐ |           5            |
+| **@meriwen** |Programadora       |   ⭐⭐⭐⭐⭐ |           5            |
 | **@didimax89** | Arte / UI       |   ⭐⭐⭐⭐⭐ |           5            |
 | **@laurimba**     | Audio / Diseño  |   ⭐⭐⭐⭐☆ |           4            |
-| **@lucass-05**     | Programación  |   ⭐⭐⭐⭐⭐ |           5            |
+| **@lucass-05**     | Programador/ Diseño animaciones 2D/ Redacción de diálogos  |   ⭐⭐⭐⭐⭐ |           5            |
 | **@sergiicl**   | Programación UI |   ⭐⭐☆☆☆  |           2            |
