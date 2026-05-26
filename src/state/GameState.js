@@ -1,7 +1,7 @@
 const GameState = {
   // VARIABLES GLOBALES
   endingType: null,
-  reputation: 50,
+  reputation: 150,
   currentDay: 1,
   huertosRegadosHoy: {
     huerto1: false,

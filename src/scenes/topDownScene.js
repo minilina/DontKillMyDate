@@ -33,6 +33,11 @@ export default class TopDownScene extends StoppableScene {
                 capa.setVisible(false);
                 this.capaColisiones = capa;
             }
+            else if (layerData.name === 'Colisiones Puente') {
+                capa.setCollisionByExclusion([-1]);
+                capa.setVisible(false);
+                this.capaColisionesPuente = capa;
+            }
             else if (layerData.name.toLowerCase().includes('invisible')) {
                 capa.setVisible(false);
             }
@@ -47,14 +52,24 @@ export default class TopDownScene extends StoppableScene {
         return { map: this.map, tilesets: tilesetsArray };
     }
 
-    setupPlayer(startX, startY, direccion = 'down') {
-        if (this.capaColisiones) {
-            this.navMesh = this.navMeshPlugin.buildMeshFromTilemap("mesh", this.map, [this.capaColisiones], null, 4.5);
+    cambiarPiso(esElevado) {
+        this.player.zElevacion = esElevado ? 3000 : 0;
+        if (esElevado && this.navMeshPuente) {
+            this.player.setNavmesh(this.navMeshPuente);
+        } else if (this.navMeshSuelo) {
+            this.player.setNavmesh(this.navMeshSuelo);
         }
+    }
+
+    setupPlayer(startX, startY, direccion = 'down') {
+        // Malla altura 0
+        this.navMeshSuelo = this.navMeshPlugin.buildMeshFromTilemap("meshSuelo", this.map, [this.capaColisiones], null, 4.5);
+        // Malla altura puente (si existe)
+        this.navMeshPuente = this.navMeshPlugin.buildMeshFromTilemap("meshPuente", this.map, [this.capaColisionesPuente], null, 4.5);
 
         // Jugador
         this.player = new Player(this, startX, startY);
-        if (this.navMesh) this.player.setNavmesh(this.navMesh);
+        this.player.setNavmesh(this.navMeshSuelo);
         this.player.zElevacion = 0;
         if (this.player.setDireccion) { this.player.setDireccion(direccion); }
 
@@ -333,6 +348,7 @@ export default class TopDownScene extends StoppableScene {
                     // Aplicamos el origen y profundidad
                     sprite.setOrigin(0.5, 1).setDepth(obj.y + ajusteProfundidad + elevacionExtra);
                     sprite.tipoObjeto = obj.name;
+                    sprite.zElevacionObjeto = elevacionExtra;
 
                     if (obj.properties?.find(p => p.name === 'flipX')?.value) sprite.setFlipX(true);
                     sprite.refreshBody();
@@ -346,7 +362,12 @@ export default class TopDownScene extends StoppableScene {
                 }
             });
         }
-        this.physics.add.collider(this.player, grupo);
+
+        this.physics.add.collider(this.player, grupo, null, () => {
+            if (elevacionExtra > 0) return this.player.zElevacion > 0;
+            return this.player.zElevacion === 0;
+        });
+
         return grupo;
     }
 
@@ -364,7 +385,11 @@ export default class TopDownScene extends StoppableScene {
 
                     let dif = false;
 
-                    if (this.player.y < obj.y) {
+                    let mismoNivel = false;
+                    if (obj.zElevacionObjeto > 0 && this.player.zElevacion > 0) mismoNivel = true;
+                    if ((!obj.zElevacionObjeto || obj.zElevacionObjeto === 0) && this.player.zElevacion === 0) mismoNivel = true;
+
+                    if (this.player.y < obj.y && mismoNivel) {
                         const scaleX = obj.scaleX || 1;
                         const scaleY = obj.scaleY || 1;
                         const left = obj.x - (obj.displayOriginX * scaleX);
@@ -471,14 +496,7 @@ export default class TopDownScene extends StoppableScene {
                 let estaCerca = false;
 
                 // Si el jugador ya esta cerca del objeto (detectado por la "E"), el cursor se pondra en pointer
-                if (this.interactableCercano && this.interactableCercano.tipo === objetoBajoElRaton.tipo) {
-                    estaCerca = true;
-                } else if (this.player && this.player.active) { // Si no calculamos a que distancia esta el raton del jugador
-                    const pointer = this.input.activePointer;
-                    const worldPoint = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
-                    const distancia = Phaser.Math.Distance.Between(this.player.x, this.player.y, worldPoint.x, worldPoint.y);
-                    if (distancia <= 40) estaCerca = true;
-                }
+                if (this.interactableCercano && this.interactableCercano.tipo === objetoBajoElRaton.tipo) estaCerca = true;
 
                 // Cambiamos el cursor si te alejas caminando
                 if (estaCerca) {

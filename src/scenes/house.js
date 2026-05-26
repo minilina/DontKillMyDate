@@ -48,8 +48,8 @@ export default class House extends topDownScene {
 
         // HOVER PARA LAS VALLAS Y LA PIEDRA
         this.hover([
-            { capa: capaVallas,  ids: [1393, 1394, 1395, 1405, 1406, 1407] },
-            { capa: capaPilares, ids: [3852, 3868, 3869, 3870, 3871] }
+            { capa: capaVallas,  ids: [1393, 1394, 1395, 1405, 1406, 1407], tipo: 'valla' },
+            { capa: capaPilares, ids: [3852, 3868, 3869, 3870, 3871], tipo: 'cueva', condicion: () => !this.cuevaAbierta}
         ]);
 
         // CUEVA

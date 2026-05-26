@@ -189,7 +189,7 @@ export default class DailySummary extends Phaser.Scene {
           ease: 'Power2',
           onComplete: () => {
               this.time.delayedCall(3000, () => {
-                  this.scene.start("house"); // cambio de escena
+                  this.scene.start("house", {spawnX: 720, spawnY: 230, direccion: 'down'}); // cambio de escena
               });
           }
       });
